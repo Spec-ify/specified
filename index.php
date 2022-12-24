@@ -106,7 +106,7 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
 <div id="main">
     <!--$-->
     <header class="header_header">
-        <a class="logo" href="/">
+        <a class="logo" href="landing.html">
             <img src="assets/logo.png" height="25em">
         </a>
         <select title="mappings">
@@ -795,6 +795,7 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
 
         </div>
         </div>
+        <span>Massive Shoutout to <a href="https://spark.lucko.me/" target="_blank">Spark</a></span>
     </main>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
