@@ -1,7 +1,7 @@
 <?php
 $json_file = 'files/'.$_GET['file'];
 $json = file_get_contents($json_file);
-
+$test=0;
 $json_data = json_decode($json,true);
 
 $working_set = 0;
