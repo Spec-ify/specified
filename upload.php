@@ -8,8 +8,15 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     return;
 }
 
+if ($_SERVER["CONTENT_TYPE"] !== "application/json") {
+    http_response_code(400);
+    echo "You must use application/json";
+    return;
+}
+
 // https://stackoverflow.com/a/8945912
-$json_data = json_decode(file_get_contents("php://input"));
+$raw_data = file_get_contents("php://input");
+$json_data = json_decode($raw_data, true);
 
 // https://stackoverflow.com/a/6041773/11585384
 if (json_last_error() !== JSON_ERROR_NONE) {
@@ -18,10 +25,16 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     return;
 }
 
-$filename = date("c").md5($json_data["Version"].$json_data["Meta"]["GenerationDate"]);
+$fullhash = md5($json_data["Version"].$json_data["Meta"]["GenerationDate"].$json_data["BasicInfo"]["Hostname"]);
+$parthash = substr($fullhash, 0, 8);
+$filename = "$parthash.json";
+$filepath = "$FILES_FOLDER$filename";
 
 if (!file_exists($FILES_FOLDER)) {
     mkdir($FILES_FOLDER, 0775);
 }
 
-echo $FILES_FOLDER.$filename;
+file_put_contents($filepath, $raw_data);
+http_response_code(201);
+header("Location: ".dirname($_SERVER["REQUEST_URI"])."/index.php?file=$filepath");
+echo "File successfully created: $filepath";
