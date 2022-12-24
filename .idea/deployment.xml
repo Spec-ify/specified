@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" uploadOnCheckin="d31c1b82-a708-442d-b33e-0135d67df210">
+  <component name="PublishConfigData" serverName="Specify Server" uploadOnCheckin="d31c1b82-a708-442d-b33e-0135d67df210">
     <serverData>
       <paths name="Specified">
         <serverdata>
@@ -12,7 +12,8 @@
       <paths name="Specify Server">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/specified" local="$PROJECT_DIR$" web="/" />
+            <mapping local="" />
           </mappings>
         </serverdata>
       </paths>

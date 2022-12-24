@@ -1,5 +1,5 @@
 <?php
-$json_file = 'files/'.$_GET['file'];
+$json_file = $_GET['file'];
 $json = file_get_contents($json_file);
 $test=0;
 $json_data = json_decode($json,true);
@@ -105,7 +105,7 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <div id="main">
     <!--$-->
-    <header class="header_header__UqdiK">
+    <header class="header_header">
         <a class="logo" href="/">
             <img src="assets/logo.png" height="25em">
         </a>
@@ -117,8 +117,8 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
             </optgroup>
         </select>
         </span></header><main>
-        <div class="sampler_sampler__BhYgT">
-            <div class="controls_controls__YZ2Bb">
+        <div class="specify">
+            <div class="controls">
                 <div class="textbox title">
                     <span>Profile  <span id="filename"><?=$json_file?></span> created
                 <?=date("F j, Y, g:i a",$ds)?>, runtime
@@ -129,8 +129,8 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                 <input class="searchbar" type="text" placeholder="Search..." id="searchBarDiv"  onkeyup="searchFunction()">
             </div>
             <div  id="main">
-            <div class="metadata_metadata__j9P_x expanded">
-                <div class="widgets_widgets__z8bJJ widgets" id="hardware_widgets" data-hide="false">
+            <div class="metadata_metadata expanded">
+                <div class="widgets_widgets widgets" id="hardware_widgets" data-hide="false">
                     <div class="widget widget-cpu hover">
                         <h1>CPU</h1>
                         <div class="widget-values">
@@ -430,7 +430,7 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                     </div>
 
                 </div>
-                <div class="widgets_widgets__z8bJJ widgets" id="storage_widgets" data-hide="false">
+                <div class="widgets_widgets widgets" id="storage_widgets" data-hide="false">
 
                     <?php
                     $drives_amount = count($json_data['Hardware']['Storage']);
@@ -518,7 +518,7 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                     }
                     ?>
                 </div>
-                <div class="widgets_widgets__z8bJJ widgets" id="realtime_widgets"  data-hide="false">
+                <div class="widgets_widgets widgets" id="realtime_widgets" data-hide="false">
                     <div class="widget widget-cpu hover">
                         <h1>CPU
                             <span>(Used)</span>
