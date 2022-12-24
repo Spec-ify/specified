@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" uploadOnCheckin="d31c1b82-a708-442d-b33e-0135d67df210">
+    <serverData>
+      <paths name="Specified">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="Specified" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Specify Server">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myUploadOnCheckinName" value="Specify Server" />
+  </component>
+</project>
