@@ -36,5 +36,5 @@ if (!file_exists($FILES_FOLDER)) {
 
 file_put_contents($filepath, $raw_data);
 http_response_code(201);
-header("Location: ".realpath(dirname($_SERVER["REQUEST_URI"]))."/index.php?file=$filepath");
+header("Location: ".rtrim(dirname($_SERVER["REQUEST_URI"]), "/")."/index.php?file=$filepath");
 echo "File successfully created: $filepath";
