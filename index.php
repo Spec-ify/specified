@@ -195,7 +195,7 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                                         $ram_stick = 0;
                                         for($ram_stick; $ram_stick<$ram_sticks;$ram_stick++){
                                             $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity']);
-                                            $ram_speed = $json_data['Hardware']['Ram'][$ram_stick]['ConfiguredSpeed'] *2;
+                                            $ram_speed = $json_data['Hardware']['Ram'][$ram_stick]['ConfiguredSpeed'];
                                             echo
                                                 '<tr>
                                                 <td>'.$json_data['Hardware']['Ram'][$ram_stick]['DeviceLocation'].'</td>
@@ -355,6 +355,23 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                                                 <td>Domain</td>
                                                 <td>'.$json_data['BasicInfo']['Domain'].'</td>
                                             </tr>';
+                                        if($json_data['Security']['UacEnabled']){
+                                            $uac_status = 'Enabled';}
+                                        else{
+                                            $uac_status ='Disabled';
+                                        }
+
+                                        echo
+
+                                            '<tr>
+                                                <td>UAC Status</td>
+                                                <td>'.$uac_status.'</td>
+                                            </tr>';
+                                        echo
+                                            '<tr>
+                                                <td>UAC Level</td>
+                                                <td>'.$json_data['Security']['UacLevel'].'</td>
+                                            </tr>';
                                         echo
                                             '<tr>
                                                 <td>Boot Mode</td>
@@ -365,7 +382,28 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                                                 <td>Boot State</td>
                                                 <td>'.$json_data['BasicInfo']['BootState'].'</td>
                                             </tr>';
+                                        if($json_data['Security']['Tpm']['IsEnabled_InitialValue']){
+                                            $tpm_status = 'Enabled';}
+                                        else{
+                                                $tpm_status ='Disabled';
+                                            }
 
+                                        echo
+
+                                            '<tr>
+                                                <td>TPM Status</td>
+                                                <td>'.$tpm_status.'</td>
+                                            </tr>';
+                                        echo
+                                            '<tr>
+                                                <td>Manufacturer Version</td>
+                                                <td>'.$json_data['Security']['Tpm']['ManufacturerVersionInfo'].' '.$json_data['Security']['Tpm']['ManufacturerVersion'].'</td>
+                                            </tr>';
+                                        echo
+                                            '<tr>
+                                                <td>Version</td>
+                                                <td>'.$json_data['Security']['Tpm']['SpecVersion'].'</td>
+                                            </tr>';
                                         ?>
                                         </tbody>
                                     </table>
@@ -590,7 +628,74 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                                 </div>
                             </div>
                         </div>
+                    <div class="widget widget-power hover"type="button" data-mdb-toggle="modal" data-mdb-target="#powerModal">
+                        <h1>Power Profile/Battery
+                        </h1>
+                        <div class="widget-values">
+                            <div class="widget-value">
+                                <div class="widget-value">
 
+										<?php
+                                        $profile_count = count($json_data['System']['PowerProfiles']);
+                                        $profile_color = '';
+                                        $current_profile = '';
+                                        for($profile=0;$profile<$profile_count;$profile++){
+                                            if($json_data['System']['PowerProfiles'][$profile]['IsActive']){
+                                                $current_profile =  $json_data['System']['PowerProfiles'][$profile]['ElementName'];
+                                            }
+                                        }
+                                        if(str_contains(strtolower($current_profile),'balanced')){
+                                            $profile_color = '#EBCB8B';
+                                        }
+                                        elseif(str_contains(strtolower($current_profile),'high')){
+                                            $profile_color = '#D08770';
+                                        }
+                                        elseif(str_contains(strtolower($current_profile),'saver')){
+                                            $profile_color = '#A3BE8C';
+                                        }
+
+                                        echo '<span style="color:'.$profile_color.';">'.$current_profile.'</span>';
+                                        ?>
+
+
+                                    <div style="font-size: 10pt;">Current Profile</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade " id="powerModal" tabindex="-1" aria-labelledby="powerModal" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ModalLabel">Power/Battery</h5>
+                                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table id="powerTable" class="table">
+                                        <thead>
+                                        <th>Description</th>
+                                        <th>Element</th>
+                                        <th>Instance Path</th>
+                                        <th>Status</th>
+                                        </thead>
+                                    </table>
+                                    <h4>Battery</h4>
+                                    <table id="batteryTable" class="table">
+                                        <thead>
+                                        <th>Name</th>
+                                        <th>Manufacturer</th>
+                                        <th>Chemistry</th>
+                                        <th>Design Capacity</th>
+                                        <th>Current Full Charge Capacity</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="textbox metadata-detail" id="notes">
                     <ul class="metadata-detail-controls">
@@ -688,7 +793,7 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
 
             </div>
             <div>
-
+                <div class="textbox metadata-detail" id="accordionTablesApps">
                 <div class="accordion">
                     <h1 class="accordion-header" id="runningProcessesButton">
                         <button
@@ -733,55 +838,162 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                         </thead>
                     </table>
                 </div>
-                    <h1 class="accordion-header" id="servicesTableButton">
-                        <button
-                                class="accordion-button"
-                                type="button"
-                                data-mdb-toggle="collapse"
-                                data-mdb-target="#services"
-                                aria-expanded="true"
-                                aria-controls="services"
-                        >
-                            Services
-                        </button></h1>
-                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="services">
-                        <table id="servicesTable" class="table">
-                            <thead>
-                            <th>Caption</th>
-                            <th>Name</th>
-                            <th>Path</th>
-                            <th>Start Mode</th>
-                            <th>State</th>
-                            </thead>
-                        </table>
-                    </div>
-                    <h1 class="accordion-header" id="tasksTableButton">
-                        <button
-                                class="accordion-button"
-                                type="button"
-                                data-mdb-toggle="collapse"
-                                data-mdb-target="#tasks"
-                                aria-expanded="true"
-                                aria-controls="tasks"
-                        >
-                            Tasks
-                        </button></h1>
-                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="tasks">
-                        <table id="tasksTable" class="table">
-                            <thead>
-                            <th>Path</th>
-                            <th>Name</th>
-                            <th>State</th>
-                            <th>Active</th>
-                            <th>Author</th>
-                            <th>Triggers</th>
-                            </thead>
-                        </table>
-                    </div>
 
                 </div>
+                </div>
             </div>
+                <div>
+                    <div class="textbox metadata-detail" id="accordionTablesServices">
+                        <div class="accordion">
+                            <h1 class="accordion-header" id="servicesTableButton">
+                                <button
+                                        class="accordion-button"
+                                        type="button"
+                                        data-mdb-toggle="collapse"
+                                        data-mdb-target="#services"
+                                        aria-expanded="true"
+                                        aria-controls="services"
+                                >
+                                    Services
+                                </button></h1>
+                            <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="services">
+                                <table id="servicesTable" class="table">
+                                    <thead>
+                                    <th>Caption</th>
+                                    <th>Name</th>
+                                    <th>Path</th>
+                                    <th>Start Mode</th>
+                                    <th>State</th>
+                                    </thead>
+                                </table>
+                            </div>
+                            <h1 class="accordion-header" id="tasksTableButton">
+                                <button
+                                        class="accordion-button"
+                                        type="button"
+                                        data-mdb-toggle="collapse"
+                                        data-mdb-target="#tasks"
+                                        aria-expanded="true"
+                                        aria-controls="tasks"
+                                >
+                                    Tasks
+                                </button></h1>
+                            <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="tasks">
+                                <table id="tasksTable" class="table">
+                                    <thead>
+                                    <th>Path</th>
+                                    <th>Name</th>
+                                    <th>State</th>
+                                    <th>Active</th>
+                                    <th>Author</th>
+                                    <th>Triggers</th>
+                                    </thead>
+                                </table>
+                            </div>
 
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="textbox metadata-detail" id="accordionTablesNetwork">
+                        <div class="accordion">
+                            <h1 class="accordion-header" id="netconTableButton">
+                                <button
+                                        class="accordion-button"
+                                        type="button"
+                                        data-mdb-toggle="collapse"
+                                        data-mdb-target="#netcon"
+                                        aria-expanded="true"
+                                        aria-controls="netcon"
+                                >
+                                    Network Connections
+                                </button></h1>
+                            <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="netcon">
+                                <table id="netconTable" class="table">
+                                    <thead>
+                                    <th>Local IP</th>
+                                    <th>Local Port</th>
+                                    <th>Remote IP</th>
+                                    <th>Remote Port</th>
+                                    <th>PID</th>
+                                    </thead>
+                                </table>
+                            </div>
+                            <h1 class="accordion-header" id="routesTableButton">
+                                <button
+                                        class="accordion-button"
+                                        type="button"
+                                        data-mdb-toggle="collapse"
+                                        data-mdb-target="#routes"
+                                        aria-expanded="true"
+                                        aria-controls="routes"
+                                >
+                                    Routes Table
+                                </button></h1>
+                            <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="routes">
+                                <table id="routesTable" class="table">
+                                    <thead>
+                                    <th>Route</th>
+                                    <th>Destination</th>
+                                    <th>Interface Index</th>
+                                    <th>Mask</th>
+                                    <th>Metric</th>
+                                    <th>Next Hop</th>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="textbox metadata-detail" id="accordionTablesDevices">
+                        <div class="accordion">
+                            <h1 class="accordion-header" id="devicesTableButton">
+                                <button
+                                        class="accordion-button"
+                                        type="button"
+                                        data-mdb-toggle="collapse"
+                                        data-mdb-target="#devices"
+                                        aria-expanded="true"
+                                        aria-controls="devices"
+                                >
+                                    Devices
+                                </button></h1>
+                            <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="devices">
+                                <table id="devicesTable" class="table">
+                                    <thead>
+                                    <th>Description</th>
+                                    <th>DID</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    </thead>
+                                </table>
+                            </div>
+                            <h1 class="accordion-header" id="driversTableButton">
+                                <button
+                                        class="accordion-button"
+                                        type="button"
+                                        data-mdb-toggle="collapse"
+                                        data-mdb-target="#drivers"
+                                        aria-expanded="true"
+                                        aria-controls="drivers"
+                                >
+                                    Drivers
+                                </button></h1>
+                            <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="drivers">
+                                <table id="driversTable" class="table">
+                                    <thead>
+                                    <th>DID</th>
+                                    <th>Name</th>
+                                    <th>Version</th>
+                                    <th>Friendly Name</th>
+                                    <th>Manufacturer</th>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
         </div>
         <span>Massive Shoutout to <a href="https://spark.lucko.me/" target="_blank">Spark</a></span>

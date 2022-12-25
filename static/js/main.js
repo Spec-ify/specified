@@ -128,6 +128,7 @@ $.ajax({
             ]
         } );
     }});
+
 $.ajax({
     url: filename,
     dataType : "json",
@@ -143,7 +144,128 @@ $.ajax({
             ]
         } );
     }});
-
+$.ajax({
+    url: filename,
+    dataType : "json",
+    success: function(result){
+        JsonData = result.System.PowerProfiles;
+        $('#powerTable').DataTable( {
+            "autoWidth": false,
+            data: JsonData,
+            columns: [
+                { data: 'Description' },
+                { data: 'ElementName' },
+                { data: 'SensorValue' },
+                { data: 'InstanceID' },
+                { data: 'IsActive' }
+            ]
+        } );
+    }});
+$.ajax({
+    url: filename,
+    dataType : "json",
+    success: function(result){
+        JsonData = result.Hardware.Batteries;
+        $('#batteryTable').DataTable( {
+            "autoWidth": false,
+            data: JsonData,
+            columns: [
+                { data: 'Name' },
+                { data: 'Manufacturer' },
+                { data: 'Chemistry' },
+                { data: 'Design_Capacity' },
+                { data: 'Full_Charge_Capacity' }
+            ]
+        } );
+    }});
+$.ajax({
+    url: filename,
+    dataType : "json",
+    success: function(result){
+        JsonData = result.Network.NetworkConnections;
+        $('#netconTable').DataTable( {
+            "autoWidth": false,
+            data: JsonData,
+            columns: [
+                { data: 'LocalIPAddress' },
+                { data: 'LocalPort' },
+                { data: 'RemoteIPAddress' },
+                { data: 'RemotePort' },
+                { data: 'OwningPID' }
+            ]
+        } );
+    }});
+$("#netconTableButton").click(function() {
+    $('html, body').animate({
+        scrollTop: $("#netcon").offset().top
+    }, );
+});
+$.ajax({
+    url: filename,
+    dataType : "json",
+    success: function(result){
+        JsonData = result.Network.Routes;
+        $('#netconTable').DataTable( {
+            "autoWidth": false,
+            data: JsonData,
+            columns: [
+                { data: 'Description' },
+                { data: 'Destination' },
+                { data: 'InterfaceIndex' },
+                { data: 'Mask' },
+                { data: 'Metric1' },
+                { data: 'NextHop' }
+            ]
+        } );
+    }});
+$("#routesTableButton").click(function() {
+    $('html, body').animate({
+        scrollTop: $("#routes").offset().top
+    }, );
+});
+$.ajax({
+    url: filename,
+    dataType : "json",
+    success: function(result){
+        JsonData = result.Hardware.Devices;
+        $('#devicesTable').DataTable( {
+            "autoWidth": false,
+            data: JsonData,
+            columns: [
+                { data: 'Description' },
+                { data: 'DeviceID' },
+                { data: 'Name' },
+                { data: 'Status' }
+            ]
+        } );
+    }});
+$("#devicesTableButton").click(function() {
+    $('html, body').animate({
+        scrollTop: $("#devices").offset().top
+    }, );
+});
+$.ajax({
+    url: filename,
+    dataType : "json",
+    success: function(result){
+        JsonData = result.Hardware.Drivers;
+        $('#devicesTable').DataTable( {
+            "autoWidth": false,
+            data: JsonData,
+            columns: [
+                { data: 'DeviceID' },
+                { data: 'DeviceName' },
+                { data: 'DriverVersion' },
+                { data: 'FriendlyName' },
+                { data: 'Manufacturer' }
+            ]
+        } );
+    }});
+$("#driversTableButton").click(function() {
+    $('html, body').animate({
+        scrollTop: $("#drivers").offset().top
+    }, );
+});
 function searchFunction() {
 
     var input, filter, li, i, txtValue, h1;

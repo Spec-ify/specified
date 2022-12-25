@@ -762,5 +762,5 @@ article h1:before,article h2:before {
     background:none!important;
 }
 .accordion-button:hover {
-    background:#5E81AC;
+    background:#5E81AC!important;
 }
