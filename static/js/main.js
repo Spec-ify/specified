@@ -151,11 +151,13 @@ $.ajax({
         JsonData = result.System.PowerProfiles;
         $('#powerTable').DataTable( {
             "autoWidth": false,
+            searching: false,
+            ordering:  false,
+            paging: false,
             data: JsonData,
             columns: [
                 { data: 'Description' },
                 { data: 'ElementName' },
-                { data: 'SensorValue' },
                 { data: 'InstanceID' },
                 { data: 'IsActive' }
             ]
@@ -169,6 +171,9 @@ $.ajax({
         $('#batteryTable').DataTable( {
             "autoWidth": false,
             data: JsonData,
+            searching: false,
+            ordering:  false,
+            paging: false,
             columns: [
                 { data: 'Name' },
                 { data: 'Manufacturer' },
@@ -205,7 +210,7 @@ $.ajax({
     dataType : "json",
     success: function(result){
         JsonData = result.Network.Routes;
-        $('#netconTable').DataTable( {
+        $('#routesTable').DataTable( {
             "autoWidth": false,
             data: JsonData,
             columns: [
@@ -249,7 +254,7 @@ $.ajax({
     dataType : "json",
     success: function(result){
         JsonData = result.Hardware.Drivers;
-        $('#devicesTable').DataTable( {
+        $('#driversTable').DataTable( {
             "autoWidth": false,
             data: JsonData,
             columns: [
