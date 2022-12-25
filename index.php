@@ -85,6 +85,13 @@ function timeConvert($time) {
     return $timeString;
 }
 $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
+$paths = $json_data['System']['UserVariables']['Path'];
+
+// Split the paths into an array using the semicolon as the delimiter
+$path_array = explode(';', $paths);
+
+// Iterate through the array and print each path on a new line
+
 ?>
 
 
@@ -214,7 +221,7 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                             </div>
                         </div>
                     </div>
-                    <div class="widget widget-board hover">
+                    <div class="widget widget-board hover" type="button" data-mdb-toggle="modal" data-mdb-target="#boardModal">
                         <h1>Motherboard</h1>
                         <div class="widget-values">
                             <div class="widget-value">
@@ -228,6 +235,81 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                                     <?=$json_data['Hardware']['Motherboard']['Product']?>
                                 </div>
                                 <div>Chipset</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="boardModal" tabindex="-1" aria-labelledby="boardModal" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ModalLabel">Board Information</h5>
+                                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table">
+                                        <thead>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>Manufacturer</td>
+                                            <td><?=$json_data['Hardware']['BiosInfo'][0]['Manufacturer']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Version</td>
+                                            <td><?=$json_data['Hardware']['BiosInfo'][0]['SMBIOSBIOSVersion']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Release Date</td>
+                                            <?php
+                                            $biosdate = $json_data['Hardware']['BiosInfo'][0]['ReleaseDate'];
+
+                                            // Use the DateTime class to parse the date string
+                                            $datetime = DateTime::createFromFormat('YmdHis.uO', $biosdate);
+
+                                            // Format the date using the desired MMDDYYYY format
+                                            $formattedbiosdate = $datetime->format('m/d/Y');
+                                            ?>
+                                            <td><?=$formattedbiosdate?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Base</td>
+                                            <td><?=$json_data['Hardware']['BiosInfo'][0]['BIOSVersion'][2]?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Serial Number</td>
+                                            <td><?=$json_data['Hardware']['BiosInfo'][0]['SerialNumber']?></td>
+                                        </tr>
+                                        <?php
+                                        if($json_data['Security']['Tpm']['IsEnabled_InitialValue']){
+                                            $tpm_status = 'Enabled';}
+                                        else{
+                                            $tpm_status ='Disabled';
+                                        }
+
+                                        echo
+
+                                            '<tr>
+                                                <td>TPM Status</td>
+                                                <td>'.$tpm_status.'</td>
+                                            </tr>';
+                                        echo
+                                            '<tr>
+                                                <td>Manufacturer Version</td>
+                                                <td>'.$json_data['Security']['Tpm']['ManufacturerVersionInfo'].' '.$json_data['Security']['Tpm']['ManufacturerVersion'].'</td>
+                                            </tr>';
+                                        echo
+                                            '<tr>
+                                                <td>Version</td>
+                                                <td>'.$json_data['Security']['Tpm']['SpecVersion'].'</td>
+                                            </tr>';
+                                        ?>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -381,28 +463,6 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                                             '<tr>
                                                 <td>Boot State</td>
                                                 <td>'.$json_data['BasicInfo']['BootState'].'</td>
-                                            </tr>';
-                                        if($json_data['Security']['Tpm']['IsEnabled_InitialValue']){
-                                            $tpm_status = 'Enabled';}
-                                        else{
-                                                $tpm_status ='Disabled';
-                                            }
-
-                                        echo
-
-                                            '<tr>
-                                                <td>TPM Status</td>
-                                                <td>'.$tpm_status.'</td>
-                                            </tr>';
-                                        echo
-                                            '<tr>
-                                                <td>Manufacturer Version</td>
-                                                <td>'.$json_data['Security']['Tpm']['ManufacturerVersionInfo'].' '.$json_data['Security']['Tpm']['ManufacturerVersion'].'</td>
-                                            </tr>';
-                                        echo
-                                            '<tr>
-                                                <td>Version</td>
-                                                <td>'.$json_data['Security']['Tpm']['SpecVersion'].'</td>
                                             </tr>';
                                         ?>
                                         </tbody>
@@ -628,6 +688,49 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                                 </div>
                             </div>
                         </div>
+                    <div class="widget widget-audio hover"  type="button" data-mdb-toggle="modal" data-mdb-target="#audioModal">
+                        <h1>Audio Devices</h1>
+                        <div class="widget-values">
+                                <?php
+                                $internalaudio=0;
+                                $externalaudio=0;
+                                foreach($json_data['Hardware']['AudioDevices'] as $audioDevice){
+                                    if(str_contains(strtolower($audioDevice['DeviceID']),'hdaudio')){
+                                        $internalaudio = $internalaudio + 1;
+                                    }
+                                    else {
+                                        $externalaudio = $externalaudio+1;
+                                    }
+                                    ;
+                                }
+                                echo '<div class="widget-value" style="color:'.$cpu_color.';">Internal : '.$internalaudio.'</div>';
+                                echo '<div class="widget-value" style="color:'.$cpu_color.';">External : '.$externalaudio.'</div>';
+                                ?>
+                        </div>
+                    </div>
+                    <div class="modal fade " id="audioModal" tabindex="-1" aria-labelledby="audioModal" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ModalLabel">Audio Devices</h5>
+                                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table id="audioTable" class="table">
+                                        <thead>
+                                        <th>Device ID</th>
+                                        <th>Manufacturer</th>
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="widget widget-power hover"type="button" data-mdb-toggle="modal" data-mdb-target="#powerModal">
                         <h1>Power Profile/Battery
                         </h1>
@@ -636,9 +739,11 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                                 <div class="widget-value">
 
 										<?php
+                                        if($json_data['System']['PowerProfiles']){
                                         $profile_count = count($json_data['System']['PowerProfiles']);
                                         $profile_color = '';
                                         $current_profile = '';
+                                        if($profile_count != 0){
                                         for($profile=0;$profile<$profile_count;$profile++){
                                             if($json_data['System']['PowerProfiles'][$profile]['IsActive']){
                                                 $current_profile =  $json_data['System']['PowerProfiles'][$profile]['ElementName'];
@@ -655,9 +760,9 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                                         }
 
                                         echo '<span style="color:'.$profile_color.';">'.$current_profile.'</span>';
+                                        }
+                                        }
                                         ?>
-
-
                                     <div style="font-size: 10pt;">Current Profile</div>
                                 </div>
                             </div>
@@ -769,7 +874,15 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                                 if($uservar != "Path"){
                                 echo '<tr><td>'.$uservar.'</td><td>'.$json_data['System']['UserVariables'][$uservar].'</td></tr>';
                                 };
-                            }?>
+                            };
+                            echo '<table class="table"><thead><th>Path Variables</th></thead>';
+                            foreach ($path_array as $path) {
+                                // Only print the path if it starts with a Windows-accepted drive letter
+                                if (preg_match('/^[C-Z]:/', $path)) {
+                                    echo '<tr><td>'.$path .'</td></tr>';
+                                }
+                            }
+                            ?>
                             </tbody>
                         </table>
                         <table id="variables_table" class="table">
@@ -792,6 +905,55 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                 </div>
 
             </div>
+                <div>
+                    <div class="textbox metadata-detail" id="accordionTablesDevices">
+                        <div class="accordion">
+                            <h1 class="accordion-header" id="devicesTableButton">
+                                <button
+                                        class="accordion-button"
+                                        type="button"
+                                        data-mdb-toggle="collapse"
+                                        data-mdb-target="#devices"
+                                        aria-expanded="true"
+                                        aria-controls="devices"
+                                >
+                                    Devices
+                                </button></h1>
+                            <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="devices">
+                                <table id="devicesTable" class="table">
+                                    <thead>
+                                    <th>Description</th>
+                                    <th>DID</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    </thead>
+                                </table>
+                            </div>
+                            <h1 class="accordion-header" id="driversTableButton">
+                                <button
+                                        class="accordion-button"
+                                        type="button"
+                                        data-mdb-toggle="collapse"
+                                        data-mdb-target="#drivers"
+                                        aria-expanded="true"
+                                        aria-controls="drivers"
+                                >
+                                    Drivers
+                                </button></h1>
+                            <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="drivers">
+                                <table id="driversTable" class="table">
+                                    <thead>
+                                    <th>DID</th>
+                                    <th>Name</th>
+                                    <th>Version</th>
+                                    <th>Friendly Name</th>
+                                    <th>Manufacturer</th>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <div>
                 <div class="textbox metadata-detail" id="accordionTablesApps">
                 <div class="accordion">
@@ -807,7 +969,6 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                             Running Processes
                         </button></h1>
                 <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="runningProcesses">
-                    <h1>Running Processes</h1>
                     <table id="runningProcessesTable" class="table">
                         <thead>
                         <th>Name</th>
@@ -942,58 +1103,27 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
                                     </thead>
                                 </table>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="textbox metadata-detail" id="accordionTablesDevices">
-                        <div class="accordion">
-                            <h1 class="accordion-header" id="devicesTableButton">
+                            <h1 class="accordion-header" id="hostsTableButton">
                                 <button
                                         class="accordion-button"
                                         type="button"
                                         data-mdb-toggle="collapse"
-                                        data-mdb-target="#devices"
+                                        data-mdb-target="#hosts"
                                         aria-expanded="true"
-                                        aria-controls="devices"
+                                        aria-controls="hosts"
                                 >
-                                    Devices
+                                    Hosts File
                                 </button></h1>
-                            <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="devices">
-                                <table id="devicesTable" class="table">
-                                    <thead>
-                                    <th>Description</th>
-                                    <th>DID</th>
-                                    <th>Name</th>
-                                    <th>Status</th>
-                                    </thead>
-                                </table>
-                            </div>
-                            <h1 class="accordion-header" id="driversTableButton">
-                                <button
-                                        class="accordion-button"
-                                        type="button"
-                                        data-mdb-toggle="collapse"
-                                        data-mdb-target="#drivers"
-                                        aria-expanded="true"
-                                        aria-controls="drivers"
-                                >
-                                    Drivers
-                                </button></h1>
-                            <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="drivers">
-                                <table id="driversTable" class="table">
-                                    <thead>
-                                    <th>DID</th>
-                                    <th>Name</th>
-                                    <th>Version</th>
-                                    <th>Friendly Name</th>
-                                    <th>Manufacturer</th>
-                                    </thead>
-                                </table>
+                            <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="hosts">
+                                <?php
+                                $hoststext = nl2br($json_data['Network']['HostsFile']);
+                                ?>
+                                    <p><?=$hoststext?> </p>
                             </div>
                         </div>
                     </div>
                 </div>
+
         </div>
         </div>
         <span>Massive Shoutout to <a href="https://spark.lucko.me/" target="_blank">Spark</a></span>

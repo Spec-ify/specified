@@ -167,6 +167,25 @@ $.ajax({
     url: filename,
     dataType : "json",
     success: function(result){
+        JsonData = result.Hardware.AudioDevices;
+        $('#audioTable').DataTable( {
+            "autoWidth": false,
+            searching: false,
+            ordering:  false,
+            paging: false,
+            data: JsonData,
+            columns: [
+                { data: 'DeviceID' },
+                { data: 'Manufacturer' },
+                { data: 'Name' },
+                { data: 'Status' }
+            ]
+        } );
+    }});
+$.ajax({
+    url: filename,
+    dataType : "json",
+    success: function(result){
         JsonData = result.Hardware.Batteries;
         $('#batteryTable').DataTable( {
             "autoWidth": false,
