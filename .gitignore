@@ -1,1 +1,3 @@
 files/
+# used for the specify server webhook
+gh-webhook.php
