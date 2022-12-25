@@ -688,19 +688,7 @@ $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
 
             </div>
             <div>
-                <div class="allview">
-                    <div class="header">
-                        <h2>All View</h2>
-                        <p>This is the default Specified view. It shows the entire profile as an expandable tree.</p>
-                    </div>
-                    <hr>
-                    <div class="stack">
-                        <li class="node collapsed parent">
 
-                        </li>
-                    </div>
-
-                </div>
                 <div class="accordion">
                     <h1 class="accordion-header" id="runningProcessesButton">
                         <button
