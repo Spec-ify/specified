@@ -1,18 +1,27 @@
 $('.pups_button').click(function(){
     $('#notes').hide();
     $('#variables').hide();
+    $('#browsers').hide();
     $('#pups').show();
 });
 
 $('.notes_button').click(function(){
     $('#pups').hide();
     $('#variables').hide();
+    $('#browsers').hide();
     $('#notes').show();
 });
 $('.variables_button').click(function(){
     $('#pups').hide();
     $('#notes').hide();
+    $('#browsers').hide();
     $('#variables').show();
+});
+$('.browsers_button').click(function(){
+    $('#pups').hide();
+    $('#notes').hide();
+    $('#variables').hide();
+    $('#browsers').show();
 });
 var filename = document.getElementById('filename').innerText;
 var JsonData;
@@ -163,6 +172,66 @@ $.ajax({
             ]
         } );
     }});
+
+
+
+$.ajax({
+        async:false,
+    url: filename,
+    dataType : "json",
+    success:function(result){
+
+        JsonData = result.System.BrowserExtensions;
+        var Browsers = Object.keys(JsonData);
+        Browsers.forEach(function(Browser){
+            var Profiles = Object.keys(result.System.BrowserExtensions[Browser].Profiles);
+            JsonData = result.System.BrowserExtensions;
+            Profiles.forEach(function(Profile){
+                let BrowserName = "#" + JsonData[Browser].Name + "Profile"+[Profile]+"Table";
+                let BrowserJsonData = result.System.BrowserExtensions[Browser].Profiles[Profile].Extensions;
+                if($(BrowserName).html().length <= 41){
+                $(BrowserName).DataTable( {
+                    "autoWidth": false,
+                    searching: false,
+                    ordering:  false,
+                    paging: false,
+                    data: BrowserJsonData,
+                    columns: [
+                        { data: 'name' },
+                        { data: 'version' },
+                        { data: 'description' }
+                    ]
+                } );
+                } else {
+
+                            $(BrowserName).DataTable( {
+                                "autoWidth": false,
+                                searching: false,
+                                ordering:  false,
+                                paging: false,
+                                data: BrowserJsonData,
+                                columns: [
+                                    { data: 'name' },
+                                    { data: 'version' },
+                                    { data: 'description' }
+                                ]
+                            } );
+
+
+
+                }
+
+            });
+
+        });
+    }
+});
+
+jQuery('<div>',{
+    id:"Test",
+    class: "table",
+}).appendTo('#browserContainer');
+
 $.ajax({
     url: filename,
     dataType : "json",

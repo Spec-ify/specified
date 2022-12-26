@@ -55,29 +55,29 @@ function timeConvert($time) {
     // Split the time string into its parts
     $parts = preg_split('/[:.]/', $time);
 
-    // Extract the days, hours, and minutes
-    $days = (int) $parts[0];
-    $hours = (int) $parts[1];
-    $minutes = (int) $parts[2];
+    // Extract the hours, minutes, and seconds
+    $hours = (int) $parts[0];
+    $minutes = (int) $parts[1];
+    $seconds = (int) $parts[2];
 
-    // Initialize the string with the number of days
-    $timeString = "{$days} day";
-    if ($days != 1) {
+    // Initialize the string with the number of hours
+    $timeString = "{$hours} hour";
+    if ($hours != 1) {
         $timeString .= 's';
     }
 
-    // Add the number of hours to the string
-    if ($hours > 0 || $minutes > 0) {
-        $timeString .= ", {$hours} hour";
-        if ($hours != 1) {
+    // Add the number of minutes to the string
+    if ($minutes > 0 || $seconds > 0) {
+        $timeString .= ", {$minutes} minute";
+        if ($minutes != 1) {
             $timeString .= 's';
         }
     }
 
-    // Add the number of minutes to the string
-    if ($minutes > 0) {
-        $timeString .= ", and {$minutes} minute";
-        if ($minutes != 1) {
+    // Add the number of seconds to the string
+    if ($seconds > 0) {
+        $timeString .= ", and {$seconds} second";
+        if ($seconds != 1) {
             $timeString .= 's';
         }
     }
@@ -85,13 +85,64 @@ function timeConvert($time) {
     return $timeString;
 }
 $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
+
+//Uservar paths split function
 $paths = $json_data['System']['UserVariables']['Path'];
 
 // Split the paths into an array using the semicolon as the delimiter
 $path_array = explode(';', $paths);
 
-// Iterate through the array and print each path on a new line
 
+//PUP check
+$badSoftware = array(
+'Driver Booster*',
+    'iTop',
+    'Driver Easy',
+    'Roblox',
+    'ccleaner',
+    'Malwarebytes',
+    'Wallpaper Engine',
+    'Voxal Voice Changer',
+    'Clownfish Voice Changer',
+    'Voicemod',
+    'Microsoft Office Enterprise 2007',
+    'System Mechanic',
+    'MyCleanPC',
+    'DriverFix',
+    'Reimage Repair',
+    'cFosSpeed',
+    'Browser Assistant',
+    'KMS',
+    'Advanced SystemCare',
+    'AVG',
+    'Avast',
+    'salad',
+    'McAfee',
+    'Citrix',
+    'Norton',
+    'Cleaner',
+    'Kaspersky',
+    'Speedify',
+    'UltraUXThemePatcher'
+);
+$normalizedArray = array_map('strtolower',$badSoftware);
+// Set up the reference list
+$referenceList = $json_data['System']['InstalledApps'];
+
+// Set up the list to check
+$checkList = $badSoftware;
+$pupsfound = array();
+foreach ($normalizedArray as $searchitem) {
+    foreach ($referenceList as $object){
+    $checkobject = strtolower($object['Name']);
+    // Check if the object's name is in the array of names
+    if (str_contains( $checkobject,$searchitem)) {
+        // If the name is not in the array, output a message
+        $pupsfound[] = $object['Name'];
+        //echo "Name " . $object['Name'] . " was found in the array of names.\n";
+    }
+    }
+}
 ?>
 
 
@@ -807,6 +858,7 @@ $path_array = explode(';', $paths);
                         <li class="selected">Notes</li>
                         <li class="pups_button">PUPs</li>
                         <li class="variables_button">Variables</li>
+                        <li class="browsers_button">Browsers</li>
                     </ul>
                     <div class="metadata-detail-content">
                         <p>The OS is<?php
@@ -849,9 +901,16 @@ $path_array = explode(';', $paths);
                         <li class="notes_button">Notes</li>
                         <li class="selected">PUPs</li>
                         <li class="variables_button">Variables</li>
+                        <li class="browsers_button">Browsers</li>
                     </ul>
-                    <div class="metadata-detail-content">
-
+                    <div class="metadata-detail-content jsondata">
+                        <table id="pupsTable" class="table">
+                        <?php
+                        foreach($pupsfound as $pup){
+                            echo '<tr><td>'.$pup.' Found installed</td></tr>';
+                        }
+                        ?>
+                        </table>
                     </div>
                 </div>
                 <div class="textbox metadata-detail" id="variables">
@@ -859,6 +918,7 @@ $path_array = explode(';', $paths);
                         <li class="notes_button">Notes</li>
                         <li class="pups_button">PUPs</li>
                         <li class="selected">Variables</li>
+                        <li class="browsers_button">Browsers</li>
                     </ul>
                     <div class="metadata-detail-content jsondata">
                         <table id="variables_table" class="table">
@@ -903,8 +963,79 @@ $path_array = explode(';', $paths);
                         </table>
                     </div>
                 </div>
+                <div class="textbox metadata-detail" id="browsers">
+                    <ul class="metadata-detail-controls">
+                        <li class="notes_button">Notes</li>
+                        <li class="pups_button">PUPs</li>
+                        <li class="variables_button">Variables</li>
+                        <li class="selected">Browsers</li>
+                    </ul>
+                    <div class="metadata-detail-content jsondata">
+                        <div class="widgets_widgets widgets">
 
-            </div>
+                                <?php
+                                $browser_icon= '';
+                                foreach($json_data['System']['BrowserExtensions'] as $browser){
+                                    $browsercheckformat = strtolower($browser['Name']);
+
+                                    if(str_contains($browsercheckformat,'chrome')){
+                                        $browser_icon= 'assets/chrome.png';
+                                    }
+                                    elseif(str_contains($browsercheckformat,'firefox')){
+                                        $browser_icon='assets/firefox.png';
+                                    }
+                                    elseif(str_contains($browsercheckformat,'edge')){
+                                        $browser_icon='assets/edge.png';
+                                    }
+                                    elseif(str_contains($browsercheckformat,'opera')){
+                                        $browser_icon='assets/gx.png';
+                                    }
+                                    elseif(str_contains($browsercheckformat,'brave')){
+                                        $browser_icon='assets/brave.png';
+                                    }
+                                    elseif(str_contains($browsercheckformat,'vivaldi')){
+                                        $browser_icon='assets/vivaldi.png';
+                                    }
+                                    else{
+                                        $browser_icon='#';
+                                    }
+                                    echo '<div class="widget widget-browser hover"  type="button" data-mdb-toggle="modal" data-mdb-target="#'.$browser['Name'].'Modal">
+<div class="widget-values">
+                                            <div class="widget-value">
+                                            <h1>'.$browser['Name'].'</h1>
+                                            <img class="center" height="48px" width="48px" src="'.$browser_icon.'">
+                                            </div>
+                                          </div>
+                                          </div>
+                                    ';
+                                echo '<div class="modal fade " id="'.$browser['Name'].'Modal" tabindex="-1" aria-labelledby="'.$browser['Name'].'Modal" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="ModalLabel">'.$browser['Name'].' Extensions</h5>
+                                        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body" id="browserContainer'.$browser['Name'].'">';
+                                foreach($browser['Profiles']as $browserprofile){
+                                    $profileKey = array_search($browserprofile,$browser['Profiles']);
+                                    echo '
+                                        <h2>'.$browser['Name'].' Profile "'.$browser['Profiles'][$profileKey]['name'].'"</h2>
+                                        <table id="'.$browser['Name'].'Profile'.$profileKey.'Table" class="table">
+                                        </table>';
+                                };
+                                echo '
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>';
+                                }
+                                ?>
+                        </div>
+                    </div>
+                </div>
                 <div>
                     <div class="textbox metadata-detail" id="accordionTablesDevices">
                         <div class="accordion">

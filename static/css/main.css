@@ -754,7 +754,9 @@ article h1:before,article h2:before {
 #variables{
     display:none;
 }
-
+#browsers{
+    display:none;
+}
 .jsondata table{
     background:none;
 }
@@ -763,4 +765,9 @@ article h1:before,article h2:before {
 }
 .accordion-button:hover {
     background:#5E81AC!important;
+}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
