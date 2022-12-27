@@ -220,7 +220,7 @@ function bytesToGigabytes($bytes) {
                                     $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity']/1000);
                                     echo '
 							<div class="widget-value">
-								<div style="color: <?=$green?>;">'.$ram_size.'GB</div>
+								<div style="color:'.$green. '">'.$ram_size.'GB</div>
 								<div>DIMM'.$current_ram_stick.'</div>
 							</div>';
                                 }
@@ -678,7 +678,10 @@ function bytesToGigabytes($bytes) {
                         $drive_taken_raw = $drive_size_raw - $drive_free_raw;
                         $drive_size = floor($drive_size_raw)/1073741824;
                         $drive_taken = floor($drive_taken_raw)/1073741824;
+                        if($drive_taken!=0){
                         $drive_percentage = round((float)$drive_taken / (float)$drive_size*100);
+                        }
+                        else $drive_percentage = 0;
                         $flavor_color = '';
 
                         if($drive_percentage>=80){
@@ -834,8 +837,8 @@ function bytesToGigabytes($bytes) {
                                     }
                                     ;
                                 }
-                                echo '<div class="widget-value" style="color:'.$cpu_color.';">Internal : '.$internalaudio.'</div>';
-                                echo '<div class="widget-value" style="color:'.$cpu_color.';">External : '.$externalaudio.'</div>';
+                                echo '<div class="widget-value" style="color:'.$green.';">Internal : '.$internalaudio.'</div>';
+                                echo '<div class="widget-value" style="color:'.$yellow.';">External : '.$externalaudio.'</div>';
                                 ?>
                         </div>
                     </div>
@@ -974,6 +977,54 @@ function bytesToGigabytes($bytes) {
 								<?=$json_data['Meta']['ElapsedTime']."ms"?>
 							</span>.
                         </p>
+                        <?php
+                        if($json_data['System']['UsernameSpecialCharacters']==true){
+                        echo '
+                        <p>
+                            Username found with <span>Special Characters</span>
+                        </p>
+                        ';}
+                        if($json_data['System']['OneDriveCommercialPathLength']!=null){
+                            echo '
+                        <p>
+                            OneDrive Path Length : <span>'.$json_data['System']['OneDriveCommercialPathLength'].'</span>
+                            OneDrive Name Length : <span>'.$json_data['System']['OneDriveCommercialNameLength'].'</span>
+                        </p>
+                        ';
+                        }
+                        ?>
+                        <br>
+                        <h4>Rudimentary Registry Checks</h4>
+                        <br>
+                        <?php
+                        if($json_data['System']['StaticCoreCount']!=false){
+                            echo '
+                            <p>
+                                <span>Static Core Count</span> found set.
+                            </p>
+                            ';
+                        }
+                        if($json_data['System']['RecentMinidumps']!=0){
+                            echo '
+                            <p>
+                                There have been <span>'.$json_data['System']['RecentMinidumps'].' Minidumps found</span>
+                            </p>>
+                            
+                            ';
+                        }
+                        foreach($json_data['System']['ChoiceRegistryValues'] as $regkey){
+                            if($regkey['Value']!= null && $regkey['Name']!= "NetworkThrottlingIndex"){
+                                echo '
+                                <p>Registry Value <span>'.$regkey['Name'].'</span> found set, value of <span>'.$regkey['Value'].'</span></p>
+                                ';
+                            }
+                        }
+                        if($json_data['System']['ChoiceRegistryValues'][2]['Value']!=10){
+                            echo '
+                            <p>Network Throttling Index found set at <span>'.$json_data['System']['ChoiceRegistryValues'][2]['Value'].'</span></p>
+                            ';
+                        }
+                        ?>
                     </div>
                 </div>
                 <div class="textbox metadata-detail" id="pups">
@@ -1055,7 +1106,12 @@ function bytesToGigabytes($bytes) {
 
                                 <?php
                                 $browser_icon= '';
+                                $default_browser= '';
                                 foreach($json_data['System']['BrowserExtensions'] as $browser){
+                                    if(str_contains(strtolower($json_data['System']['DefaultBrowser']),strtolower($browser['Name']))){
+                                        $default_browser = "(Default)";
+                                    }
+                                    else $default_browser = '';
                                     $browsercheckformat = strtolower($browser['Name']);
 
                                     if(str_contains($browsercheckformat,'chrome')){
@@ -1082,7 +1138,7 @@ function bytesToGigabytes($bytes) {
                                     echo '<div class="widget widget-browser hover"  type="button" data-mdb-toggle="modal" data-mdb-target="#'.$browser['Name'].'Modal">
 <div class="widget-values">
                                             <div class="widget-value">
-                                            <h1>'.$browser['Name'].'</h1>
+                                            <h1>'.$browser['Name'].$default_browser.'</h1>
                                             <img class="center" height="48px" width="48px" src="'.$browser_icon.'">
                                             </div>
                                           </div>
