@@ -1,4 +1,9 @@
 <?php
+print $_GET['file'];
+if(!file_exists($_GET['file'])){
+    header('Location: 404.html');
+    die();
+}
 $json_file = $_GET['file'];
 $json = file_get_contents($json_file);
 $test=0;
