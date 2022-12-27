@@ -165,7 +165,7 @@ foreach ($normalizedArray as $searchitem) {
 <div id="main">
     <!--$-->
     <header class="header_header">
-        <a class="logo" href="landing.html">
+        <a class="logo" href="index.html">
             <img src="assets/logo.png" height="25em">
         </a>
         <select title="mappings">
