@@ -1,5 +1,4 @@
 <?php
-print $_GET['file'];
 if(!file_exists($_GET['file'])){
     header('Location: 404.html');
     die();
