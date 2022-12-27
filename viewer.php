@@ -1,9 +1,9 @@
 <?php
-print $_GET['file'];
 if(!file_exists($_GET['file'])){
     header('Location: 404.html');
     die();
 }
+
 $json_file = $_GET['file'];
 $json = file_get_contents($json_file);
 $test=0;
@@ -148,9 +148,10 @@ foreach ($normalizedArray as $searchitem) {
     }
     }
 }
+function bytesToGigabytes($bytes) {
+    return $bytes / 1073741824;
+}
 ?>
-
-
 <!doctype html><html lang="en">
 <meta content="text/html;charset=UTF-8" http-equiv="content-type"/>
 <head>
@@ -586,7 +587,80 @@ foreach ($normalizedArray as $searchitem) {
 
                 </div>
                 <div class="widgets_widgets widgets" id="storage_widgets" data-hide="false">
-
+                    <div class="widget widget-temps hover"  type="button" data-mdb-toggle="modal" data-mdb-target="#partitionsModal">
+                        <h1>Partitions</h1>
+                        <div class="widget-values">
+                            <div class="widget-value">
+                                <div >
+                                All partitions
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade " id="partitionsModal" tabindex="-1" aria-labelledby="partitionsModal" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ModalLabel">Partitions and Drive information</h5>
+                                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="metadata-detail" id="accordionTablesPartitions">
+                                        <?php
+                                            foreach($json_data['Hardware']['Storage'] as $current_drive){
+                                                $driveKey = array_search($current_drive, $json_data['Hardware']['Storage']);
+                                        echo '
+                                        <div class="accordion">
+                                            <h1 class="accordion-header" id="partitionsTableButton'.$driveKey.'">
+                                                <button
+                                                        class="accordion-button"
+                                                        type="button"
+                                                        data-mdb-toggle="collapse"
+                                                        data-mdb-target="#partitionModal'.$driveKey.'"
+                                                        aria-expanded="true"
+                                                        aria-controls="partitionModal'.$driveKey.'"
+                                                >
+                                                   '. $current_drive['DeviceName'].'
+                                                </button></h1>
+                                            <div class="metadata-detail tablebox jsondata accordion-item accordion-collapse collapse storagemodal" id="partitionModal'.$driveKey.'">
+                                                <table id="partitionsTable'.$driveKey.'Info" class="table">
+                                                    <thead>
+                                                    <th>Name</th>
+                                                    <th>SN</th>
+                                                    <th>#</th>
+                                                    <th>Capacity</th>
+                                                    <th>Free</th>
+                                                    </thead>
+                                                    <tbody>
+                                                    '.'<td>'.$current_drive['DeviceName'].'</td>'.'
+                                                    '.'<td>'.$current_drive['SerialNumber'].'</td>'.'
+                                                    '.'<td>'.$current_drive['DiskNumber'].'</td>'.'
+                                                    '.'<td>'.floor(bytesToGigabytes($current_drive['DiskCapacity'])).'GB</td>'.'
+                                                    '.'<td>'.floor(bytesToGigabytes($current_drive['DiskFree'])).'GB</td>'.'
+                                                    </tbody>
+                                                </table>
+                                                <h5>Partitions</h5>
+                                                <table id="partitionsTable'.$driveKey.'" class="table">
+                                                    <thead>
+                                                    <th>Label</th>
+                                                    <th>Capacity</th>
+                                                    <th>Free</th>
+                                                    <th>FS Type</th>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>';}
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <?php
                     $drives_amount = count($json_data['Hardware']['Storage']);
                     $drive = 0;

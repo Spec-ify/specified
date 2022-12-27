@@ -23,7 +23,8 @@ $('.browsers_button').click(function(){
     $('#variables').hide();
     $('#browsers').show();
 });
-var filename = document.getElementById('filename').innerText;
+filename = "files/"+document.getElementById('filename').innerText+".json";
+//var filename = document.getElementById('filename').innerText;
 var JsonData;
 
 $.ajax({
@@ -226,12 +227,41 @@ $.ajax({
         });
     }
 });
+$.ajax({
+    async:false,
+    url: filename,
+    dataType : "json",
+    success:function(result){
 
-jQuery('<div>',{
-    id:"Test",
-    class: "table",
-}).appendTo('#browserContainer');
-
+        JsonData = result.Hardware.Storage;
+        var Drives = Object.keys(JsonData);
+        Drives.forEach(function(Drive){
+            JsonData = result.Hardware.Storage;
+            let DriveModal = "#partitionsTable"+Drive;
+            let PartitionJsonData = JsonData[Drive].Partitions;
+            $(DriveModal).DataTable( {
+                "autoWidth": false,
+                searching: false,
+                ordering:  false,
+                paging: false,
+                data: PartitionJsonData,
+                columns: [
+                    { data: 'PartitionLabel' },
+                    { data: 'PartitionCapacity',
+                    render: function(data, row){
+                        return Math.floor(data /1048576)+" MB";
+                    }
+                    },
+                    { data: 'PartitionFree',
+                        render: function(data, row){
+                            return Math.floor(data /1048576)+" MB";
+                        } },
+                    { data: 'Filesystem' }
+                ]
+            } );
+        });
+    }
+});
 $.ajax({
     url: filename,
     dataType : "json",
