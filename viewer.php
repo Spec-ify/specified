@@ -1,13 +1,14 @@
 <?php
 if(!file_exists($_GET['file'])){
-    header('Location: 404.html');
+    http_send_status(404);
+    header("Location: 404.html");
     die();
 }
 $json_file = $_GET['file'];
 $json = file_get_contents($json_file);
 $test=0;
 $json_data = json_decode($json,true);
-$profilename = explode(".", explode("/", $json_file)[1])[0];
+$profile_name = explode(".", explode("/", $json_file)[1])[0];
 
 $working_set = 0;
 $cpu_percent = 0;
@@ -183,7 +184,7 @@ foreach ($normalizedArray as $searchitem) {
         <div class="specify">
             <div class="controls">
                 <div class="textbox title">
-                    <span>Profile  <span id="filename"><?=$json_file?></span> created
+                    <span>Profile  <span id="filename"><?=$profile_name?></span> created
                 <?=date("F j, Y, g:i a",$ds)?>, runtime
 					<?=$json_data['Meta']['ElapsedTime']." ms,"?>
                 Under Specify Version <?=$json_data['Version']?>
