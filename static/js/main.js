@@ -23,10 +23,26 @@ $('.browsers_button').click(function(){
     $('#variables').hide();
     $('#browsers').show();
 });
+
 filename = "files/"+document.getElementById('filename').innerText+".json";
 //var filename = document.getElementById('filename').innerText;
 var JsonData;
 
+
+$('#CollapseToggle').click(function(){
+    $('.accordion-collapse').toggleClass('show');
+});
+$('#CollapseToggle').click(function(){
+    $('#CollapseToggle').toggleClass('btn-info btn-warning');
+    $(this).text($(this).text() == 'Collapse All' ? 'Uncollapse All' : 'Collapse All');
+});
+$('#ModeToggle').change(function(){
+    $(document.body).toggleClass('LightModeBody');
+    $('.textbox').toggleClass('LightModeTextbox');
+    $('.searchbar').toggleClass('LightModeTextbox');
+    $('.widget').toggleClass('LightModeTextbox');
+    $('.header_header').toggleClass('LightModeTextbox');
+});
 $.ajax({
     url: filename,
     dataType : "json",
@@ -49,7 +65,6 @@ $("#runningProcessesButton").click(function() {
         scrollTop: $("#runningProcesses").offset().top
     }, );
 });
-var JsonData;
 $.ajax({
     url: filename,
     dataType : "json",
@@ -101,8 +116,8 @@ $.ajax({
             "autoWidth": false,
             data: JsonData,
             columns: [
-                { data: 'Path' },
                 { data: 'Name' },
+                { data: 'Path' },
                 { data: 'State' },
                 { data: 'IsActive' },
                 { data: 'Author' },
@@ -328,13 +343,24 @@ $.ajax({
     dataType : "json",
     success: function(result){
         JsonData = result.Network.Routes;
+        Interfaces = result.Network.Adapters;
         $('#routesTable').DataTable( {
             "autoWidth": false,
             data: JsonData,
             columns: [
                 { data: 'Description' },
                 { data: 'Destination' },
-                { data: 'InterfaceIndex' },
+                { data: 'InterfaceIndex',
+                "render":function(data){
+                    Interfaces.forEach(function(Interface){
+                        if(Interface.InterfaceIndex == data){
+                            data = Interface.Description;
+                        }
+                    });
+                    return data;
+                }
+                }
+                ,
                 { data: 'Mask' },
                 { data: 'Metric1' },
                 { data: 'NextHop' }
@@ -356,8 +382,8 @@ $.ajax({
             data: JsonData,
             columns: [
                 { data: 'Description' },
-                { data: 'DeviceID' },
                 { data: 'Name' },
+                { data: 'DeviceID' },
                 { data: 'Status' }
             ]
         } );
@@ -376,11 +402,11 @@ $.ajax({
             "autoWidth": false,
             data: JsonData,
             columns: [
-                { data: 'DeviceID' },
                 { data: 'DeviceName' },
-                { data: 'DriverVersion' },
                 { data: 'FriendlyName' },
-                { data: 'Manufacturer' }
+                { data: 'Manufacturer' },
+                { data: 'DeviceID' },
+                { data: 'DriverVersion' }
             ]
         } );
     }});
@@ -400,7 +426,7 @@ function searchFunction() {
     for (i = 0; i < li.length; i++) {
         if(li[i].getElementsByTagName("h1")[0]){
             h1 = li[i].getElementsByTagName("h1")[0];
-        };
+        }
         txtValue = h1.textContent || h1.innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
             li[i].style.display = "";

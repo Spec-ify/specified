@@ -771,3 +771,19 @@ article h1:before,article h2:before {
     margin-left: auto;
     margin-right: auto;
 }
+
+.LightModeBody{
+    background-color:#ECEFF4!important;
+    color:#252b2d!important;
+}
+
+.LightModeTextbox{
+    background:#D8DEE9!important;
+    color:#252b2d!important;
+}
+.LightModeTextbox h1{
+    color:#252b2d!important;
+}
+.LightModeTextbox h1{
+    color:#252b2d!important;
+}

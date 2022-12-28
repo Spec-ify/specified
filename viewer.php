@@ -175,13 +175,16 @@ function bytesToGigabytes($bytes) {
         <a class="logo" href="index.html">
             <img src="assets/logo.png" height="25em">
         </a>
-        <select title="mappings">
+        <button type="button" class="btn btn-info" id="CollapseToggle">Collapse All</button>
+        <select title="mappings" id="ModeToggle">
+
             <optgroup
                     label="View">
                 <option value="auto">Dark Mode</option>
-                <option value="none">Light Mode</option>
+                <option value="none">(WIP)Light Mode</option>
             </optgroup>
         </select>
+
         </span></header><main>
         <div class="specify">
             <div class="controls">
@@ -1190,8 +1193,8 @@ function bytesToGigabytes($bytes) {
                                 <table id="devicesTable" class="table">
                                     <thead>
                                     <th>Description</th>
-                                    <th>DID</th>
                                     <th>Name</th>
+                                    <th>DID</th>
                                     <th>Status</th>
                                     </thead>
                                 </table>
@@ -1210,11 +1213,11 @@ function bytesToGigabytes($bytes) {
                             <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="drivers">
                                 <table id="driversTable" class="table">
                                     <thead>
-                                    <th>DID</th>
                                     <th>Name</th>
-                                    <th>Version</th>
                                     <th>Friendly Name</th>
                                     <th>Manufacturer</th>
+                                    <th>DID</th>
+                                    <th>Version</th>
                                     </thead>
                                 </table>
                             </div>
@@ -1309,8 +1312,8 @@ function bytesToGigabytes($bytes) {
                             <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="tasks">
                                 <table id="tasksTable" class="table">
                                     <thead>
-                                    <th>Path</th>
                                     <th>Name</th>
+                                    <th>Path</th>
                                     <th>State</th>
                                     <th>Active</th>
                                     <th>Author</th>
@@ -1363,7 +1366,7 @@ function bytesToGigabytes($bytes) {
                                     <thead>
                                     <th>Route</th>
                                     <th>Destination</th>
-                                    <th>Interface Index</th>
+                                    <th>Interface</th>
                                     <th>Mask</th>
                                     <th>Metric</th>
                                     <th>Next Hop</th>
@@ -1385,7 +1388,7 @@ function bytesToGigabytes($bytes) {
                                 <?php
                                 $hoststext = nl2br($json_data['Network']['HostsFile']);
                                 ?>
-                                    <p><?=$hoststext?> </p>
+                                    <p style="font-size: 10pt;"><?=$hoststext?> </p>
                             </div>
                         </div>
                     </div>
