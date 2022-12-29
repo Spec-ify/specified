@@ -1,17 +1,17 @@
-.homepage_homepage__i_gmT section {
+.homepage_homepage section {
     background-color: #252b2d;
     border-radius: 15px;
     margin: 25px 0;
     padding: .1px 15px
 }
 
-.homepage_homepage__i_gmT .link .link-description {
+.homepage_homepage .link .link-description {
     width: 17.5rem;
     font-weight: 400
 }
 
 @media (max-width: 640px) {
-    .homepage_homepage__i_gmT .link {
+    .homepage_homepage .link {
         flex-direction: column;
         align-items: start;
         height: auto;
@@ -19,41 +19,43 @@
         gap: .5rem
     }
 
-    .homepage_homepage__i_gmT .link .link-description {
+    .homepage_homepage .link .link-description {
         width: auto;
         margin-bottom: .5rem
     }
 }
 
-.homepage_homepage__i_gmT .feature {
+.homepage_homepage .feature {
     display: flex;
     gap: 20px;
     padding-left: 20px;
     margin: 30px 0
 }
 
-.homepage_homepage__i_gmT .feature > svg {
-    font-size: 70px;
-    margin: auto 0;
-    color: #7e7e7e
-}
-
-.homepage_homepage__i_gmT .feature > div {
+.homepage_homepage .feature > div {
     max-width: 70%
 }
 
-.homepage_homepage__i_gmT .feature > div h3 {
+.homepage_homepage .feature > div h3 {
     margin: 0;
     color: #ffc93a
 }
 
-.homepage_file-picker__qIG03 {
+.file-picker {
     text-align: center;
     cursor: pointer;
-    border: 2px dashed
+    border: 2px dashed;
+    width: 100%;
 }
-
-.homepage_file-picker__qIG03 em {
+.file-picker:hover{
+    transition : border 500ms ease-out;
+    border-color: red;
+}
+.hoverBox{
+    transition : border 500ms ease-out;
+    border-color: red;
+}
+.file-picker em {
     font-size: 60%
 }
 h2 {

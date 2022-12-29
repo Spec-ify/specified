@@ -171,6 +171,13 @@ function bytesToGigabytes($bytes) {
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <div id="main">
     <!--$-->
+    <button
+            type="button"
+            class="btn btn-info btn-floating btn-lg"
+            id="btn-back-to-top"
+    >
+        <i class="fas fa-arrow-up"></i>
+    </button>
     <header class="header_header">
         <a class="logo" href="index.html">
             <img src="assets/logo.png" height="25em">
