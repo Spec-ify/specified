@@ -30,30 +30,7 @@ $(function() {
 
     // Drop
     $('#uploadbox').on('drop', function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        var file = e.originalEvent.dataTransfer.files;
-        var fd = new FormData();
-        fd.append('specify', file[0]);
-        $.ajax({
-            url: 'manualupload.php',
-            type: 'post',
-            data: fd,
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "json",
-            success: function(data, textStatus){
-                const startIndex = data.indexOf('id="filename">') + 'id="filename">'.length;
-                const endIndex = data.indexOf('<',startIndex);
-                const tempfile = data.substring(startIndex, endIndex);
-                window.location.replace('viewer.php?file=files/'+tempfile+'.json');
-            },
-            error: function(xhr, status, error) {
-                alert(xhr.responseText);
-            }
-        });
+        $("#uploadform").submit();
     });
 });
 

@@ -17,9 +17,11 @@
         $errors[]="extension not allowed, please choose a Specify JSON file";
     }
     $file_name = $randomString.".json";
+
     if(empty($errors)==true) {
         move_uploaded_file($file_tmp,"files/".$file_name);
-        $pointer = 'viewer.php?file=files/'.$file_name;
+        $pointer = 'profile/'.$randomString;
+        http_response_code(303);
         header('Location: '.$pointer);
         echo json_encode(array('redirecturl'=>$pointer));
 
