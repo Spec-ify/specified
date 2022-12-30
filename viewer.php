@@ -169,7 +169,7 @@ function bytesToGigabytes($bytes) {
 
     <meta name="og:title" content="<?= $json_data["BasicInfo"]["Hostname"] ?>" />
     <meta name="og:site_name" content="Specify" />
-    <meta name="og:description" content="Generated on <?= $json_data["BasicInfo"]["GenerationDate"] ?>" />
+    <meta name="og:description" content="Generated on <?= $json_data["Meta"]["GenerationDate"] ?>" />
     <meta name="og:type" content="data.specify_result" />
 </head>
 <body>
