@@ -2,7 +2,6 @@
 if(!file_exists($_GET['file'])){
     http_response_code(404);
     header("Location: 404.html");
-    //echo "could not find file ".$_GET['file'];
     die();
 }
 

@@ -43,7 +43,6 @@ $('#ModeToggle').change(function(){
     $('.widget').toggleClass('LightModeTextbox');
     $('.header_header').toggleClass('LightModeTextbox');
 });
-console.log("this is before the ajax post request");
 $.ajax({
     url: filename,
     dataType : "json",
