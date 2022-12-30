@@ -166,6 +166,11 @@ function bytesToGigabytes($bytes) {
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.dark.min.css" rel="stylesheet">
     <link href="static/css/main.css" rel="stylesheet">
+
+    <meta name="og:title" content="<?= $json_data["BasicInfo"]["Hostname"] ?>" />
+    <meta name="og:site_name" content="Specify" />
+    <meta name="og:description" content="Generated on <?= $json_data["BasicInfo"]["GenerationDate"] ?>" />
+    <meta name="og:type" content="data.specify_result" />
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
