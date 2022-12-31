@@ -14,7 +14,7 @@ else
 {
     if(isset($_POST))
     {echo '
-        <form method="POST" action="archive.php">
+        <form method="POST" action="archive">
             User <input type="text" name="user"></input><br/>
             Pass <input type="password" name="pass"></input><br/>
             <input type="submit" name="submit" value="Go"></input>

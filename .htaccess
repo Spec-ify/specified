@@ -2,4 +2,7 @@ RewriteEngine on
 RewriteBase /specified
 RewriteRule ^profile/([a-z0-9]+)$ viewer.php?file=files/$1.json [QSA]
 RewriteRule ^profile/(static|assets|files)/(.*) $1/$2 [R=temp,L]
-RewriteRule ^profile/404.html$ 404.html [R=permanent,L]
+RewriteRule ^profile/(.*).(php|html)$ $1.$2 [R=permanent,L]
+RewriteRule ^download$ https://github.com/Spec-ify/specify/releases/latest/download/Specify.exe [R=permanent,L]
+RewriteRule ^(archive)$ $1.php
+RewriteRule ^rudimentary.php$ "-" [F]
