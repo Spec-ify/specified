@@ -794,3 +794,8 @@ article h1:before,article h2:before {
     z-index: 999;
     display: none;
 }
+
+#archive{
+    margin: auto;
+    width:80%;
+}
