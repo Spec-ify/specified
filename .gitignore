@@ -3,3 +3,5 @@ files/
 git-deploy/
 # old test files
 test*.json
+
+archive_secret.php

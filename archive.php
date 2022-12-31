@@ -1,12 +1,14 @@
 <?php
 ini_set('display_errors', 0);
-$user = $_POST['user'];
-$pass = $_POST['pass'];
+include('archive_secret.php');
+$login_user = $_POST['user'];
+$login_pass = $_POST['pass'];
 
-if($user == "rts"
-    && $pass == "helpgang")
+if($login_user == $user
+    && $login_pass == $pass)
 {
     include("rudimentary.php");
+    die;
 }
 else
 {
