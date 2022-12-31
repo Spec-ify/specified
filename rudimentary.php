@@ -75,7 +75,7 @@ foreach($scanned_directory as $profile){
     $json_data = json_decode($json,true);
     $profile_name = explode(".", explode("/", $json_file)[1])[0];
     $ds=strtotime($json_data['Meta']['GenerationDate']);
-    echo '<a href="viewer.php?file=files/'.$profile.'" target="_blank"><div class="widget hover"><div >
+    echo '<a href="profile/'.$profile.'" target="_blank"><div class="widget hover"><div >
   <div class="card-body">
     <h5 class="card-title">'.$profile_name.'</h5>
     <div class="widget-values">
