@@ -1,9 +1,11 @@
 <?php
+//Shutting out error printing because the two vars will be unset a lot of the time and php will complain
 ini_set('display_errors', 0);
 include('archive_secret.php');
 $login_user = $_POST['user'];
 $login_pass = $_POST['pass'];
 
+//Checking if given username and pw are correct
 if($login_user == $user
     && $login_pass == $pass)
 {
@@ -12,6 +14,7 @@ if($login_user == $user
 }
 else
 {
+    //Else, printing out the login page. It's a simple form that just posts back on itself to run the check again.
     if(isset($_POST))
     {echo '
         <meta content="text/html;charset=UTF-8" http-equiv="content-type"/>

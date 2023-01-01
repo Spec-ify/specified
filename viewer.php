@@ -1,20 +1,20 @@
 <?php
+//Checking if the file requested via GET exists. If not, we send to a custom 404.
 if(!file_exists($_GET['file'])){
     http_response_code(404);
     header("Location: 404.html");
     die();
 }
-
+//Opening the file that comes after profile/ via GET and then parsing it with json_decode to get a usable variable with the json info back.
 $json_file = $_GET['file'];
 $json = file_get_contents($json_file);
 $test=0;
 $json_data = json_decode($json,true);
 $profile_name = explode(".", explode("/", $json_file)[1])[0];
 
-$working_set = 0;
-$cpu_percent = 0;
-$process_count = count($json_data['System']['RunningProcesses']);
-$i=0;
+//This is done manually currently, but there's hopes to implementing an automated version to return Support/EOL versions of Windows friendly versions.
+//Right now, it's just a string that holds all the EOL version of Windows, and the Friendly version inside the json is being compared against each of the string's
+//positions.
 $eollist = '21H1 20H2 2004 1909 1903 1809 1803 1709 1703 1607 1511 1507';
 $eol= false;
 if(strpos($eollist, $json_data['BasicInfo']['FriendlyVersion'])==true){
@@ -26,6 +26,14 @@ if($eol==true){
 }
 else $eoltext = "Not EOL";
 
+//The lines below are for the loop that calculates total RAM/CPU used.
+//CPU doesn't work right now because we are not able to efficiently get the CPU usage of each running process.
+$working_set = 0;
+$cpu_percent = 0;
+$process_count = count($json_data['System']['RunningProcesses']);
+$i=0;
+
+
 for($i==0;$i<$process_count;$i++){
     $working_set = $working_set + $json_data['System']['RunningProcesses'][$i]['WorkingSet'];
 }
@@ -34,12 +42,17 @@ for($i==0;$i<$process_count;$i++){
     $cpu_percent = $cpu_percent + $json_data['System']['RunningProcesses'][$i]['WorkingSet'];
 }
 $ram_used = number_format($working_set/1073741824, 2, '.', '');
+
+
+//Some generic color inserts. I know I could have used a smarter CSS alternative, but call me old fashioned.
 $green = '#A3BE8C';
 $yellow = 'rgb(235, 203, 139)';
 $red = 'rgb(191, 97, 106)';
 $amd = 'rgb(215,27,27)';
 $intel = 'rgb(8,110,224)';
 
+//Don't ask me why this is an old fashioned for loop, I got carried away.
+//Getting the total amount of RAM in the system.
 $total_ram = 0;
 $ram_sticks = count($json_data['Hardware']['Ram']);
 $ram_stick = 0;
@@ -48,41 +61,55 @@ for($ram_stick == 0; $ram_stick<$ram_sticks;$ram_stick++){
         $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity']/1000);
         $total_ram = $total_ram + $ram_size;
     }}
+//Calculating how much of it is used
 $ram_used_percent = round((float)$ram_used / (float)$total_ram*100);
+
+//Trimming the motherboard manufacturer string after the first space.
 $motherboard = strtok($json_data['Hardware']['Motherboard']['Manufacturer'], " ");
+
+//Little bit of cheeky coloring for the CPU based on what it's name contains.
 if (str_contains($json_data['Hardware']['Cpu']['Name'], 'AMD')) {
     $cpu_color = $amd;
 }
 else{
     $cpu_color = $intel;
 }
+//Basic string to time php function to take the generation date and turn it into a usable format.
 $ds=strtotime($json_data['Meta']['GenerationDate']);
 function timeConvert($time) {
     // Split the time string into its parts
     $parts = preg_split('/[:.]/', $time);
 
     // Extract the hours, minutes, and seconds
-    $hours = (int) $parts[0];
-    $minutes = (int) $parts[1];
-    $seconds = (int) $parts[2];
+    $days = (int) $parts[0];
+    $hours = (int) $parts[1];
+    $minutes = (int) $parts[2];
+    $seconds = (int) $parts[3];
 
-    // Initialize the string with the number of hours
-    $timeString = "{$hours} day";
-    if ($hours != 1) {
+    // Initialize the string with the number of days
+    $timeString = "{$days} day";
+    if ($days != 1) {
         $timeString .= 's';
     }
 
-    // Add the number of minutes to the string
+    // Add the number of hours to the string
     if ($minutes > 0 || $seconds > 0) {
-        $timeString .= ", {$minutes} hour";
-        if ($minutes != 1) {
+        $timeString .= ", {$hours} hour";
+        if ($hours != 1) {
             $timeString .= 's';
         }
     }
 
+    // Add the number of minutes to the string
+    if ($seconds > 0) {
+        $timeString .= ", {$minutes} minutes";
+        if ($minutes != 1) {
+            $timeString .= 's';
+        }
+    }
     // Add the number of seconds to the string
     if ($seconds > 0) {
-        $timeString .= ", and {$seconds} minute";
+        $timeString .= ", and {$seconds} seconds";
         if ($seconds != 1) {
             $timeString .= 's';
         }
@@ -144,6 +171,8 @@ foreach ($normalizedArray as $searchitem) {
         }
     }
 }
+
+//XDDDDD
 function bytesToGigabytes($bytes) {
     return $bytes / 1073741824;
 }
@@ -161,7 +190,7 @@ function bytesToGigabytes($bytes) {
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.dark.min.css" rel="stylesheet">
     <link href="static/css/main.css" rel="stylesheet">
-
+    <!--This section is for the discord embed card. Need to expand upon it. -->
     <meta name="og:title" content="<?= $json_data["BasicInfo"]["Hostname"] ?>" />
     <meta name="og:site_name" content="Specify" />
     <meta name="og:description" content="Generated on <?= $json_data["Meta"]["GenerationDate"] ?>" />

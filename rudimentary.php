@@ -66,7 +66,12 @@
 <div id="archive">
 <div class="widgets_widgets widgets" id="hardware_widgets" data-hide="false">
 <?php
+//Initializing the directory
 $dir = "files/";
+
+//This returns the directory as an ordered array by last modified.
+//https://gist.github.com/joeydenbraven/bbeba738ee9981f289907a8d2821ae64
+
 function scan_dir($dir) {
     $ignored = array('.', '..', '.svn', '.htaccess'); // -- ignore these file names
     $files = array(); //----------------------------------- create an empty files array to play with
@@ -80,6 +85,8 @@ function scan_dir($dir) {
     return ($files) ? $files : false;
 }
 $scanned_directory = scan_dir($dir);
+
+//Looping through each result in the directory and writing out a widget card with it's values, closing the entire thing in a hyperlink tag for easy navigation.
 foreach($scanned_directory as $profile){
     $json_file = "files/".$profile;
     $json = file_get_contents($json_file);

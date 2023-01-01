@@ -1,4 +1,5 @@
 <?php
+//This is the Specify interlink handler. Specify POSTs to this file to upload it's data.
 
 $FILES_FOLDER = "files/"; // should end with slash
 
@@ -24,7 +25,8 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     echo "Invalid JSON data!";
     return;
 }
-
+//In this upload method, we take two strings from inside the file itself, combine them, hash them into md5 and then trim them to the 8th character to assign a random
+//filename to each upload.
 $fullhash = md5($json_data["Version"].$json_data["Meta"]["GenerationDate"].$json_data["BasicInfo"]["Hostname"]);
 $parthash = substr($fullhash, 0, 8);
 $filename = "$parthash.json";

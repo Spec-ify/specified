@@ -1,3 +1,6 @@
+//This is the drag and drop upload handler, I wish it was easier, but it's pretty self explanatory.
+
+//Using the jQ .on methods, we assign a set of instructions to exec at each stage of the drag event.
 $(function() {
 
     // preventing page from redirecting
@@ -29,6 +32,7 @@ $(function() {
     });
 
     // Drop
+    //This used to originally be an ajax call post but then SealsRock figured out a plain old submit will do the trick too, :wicked:
     $('#uploadbox').on('drop', function (e) {
         $("#uploadform").submit();
     });

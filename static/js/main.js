@@ -1,3 +1,4 @@
+//These are very rudimentary ways of implementing quick pagination of elements without needing any complicated setups.
 $('.pups_button').click(function(){
     $('#notes').hide();
     $('#variables').hide();
@@ -24,11 +25,11 @@ $('.browsers_button').click(function(){
     $('#browsers').show();
 });
 
+//We get the filename by probing the php print of the filename and adding the full path and filetype to it.
 filename = "files/"+document.getElementById('filename').innerText+".json";
-//var filename = document.getElementById('filename').innerText;
 var JsonData;
 
-
+//Logic for the Collapse button at the top. It simply just toggles the show class on all accordion class divs.
 $('#CollapseToggle').click(function(){
     $('.accordion-collapse').toggleClass('show');
 });
@@ -36,6 +37,8 @@ $('#CollapseToggle').click(function(){
     $('#CollapseToggle').toggleClass('btn-info btn-warning');
     $(this).text($(this).text() == 'Collapse All' ? 'Uncollapse All' : 'Collapse All');
 });
+
+//Implementation of Light Mode. Could be handled in a more modern way but it does it's job.
 $('#ModeToggle').change(function(){
     $(document.body).toggleClass('LightModeBody');
     $('.textbox').toggleClass('LightModeTextbox');
@@ -43,6 +46,9 @@ $('#ModeToggle').change(function(){
     $('.widget').toggleClass('LightModeTextbox');
     $('.header_header').toggleClass('LightModeTextbox');
 });
+//All .ajax call functions can be more or less combined into one here, and this will be done at some point.
+//Ajax is used to call the json file it's working with and then pass a specific subset of that information into a DataTable init.
+//DataTables has solved a lot of headaches for this project. ++
 $.ajax({
     url: filename,
     dataType : "json",
@@ -60,6 +66,7 @@ $.ajax({
             ]
         } );
     }});
+//Snippets like these allow for the screen to scroll and follow the expansion caused by collapsing accordion items.
 $("#runningProcessesButton").click(function() {
     $('html, body').animate({
         scrollTop: $("#runningProcesses").offset().top
@@ -190,7 +197,13 @@ $.ajax({
     }});
 
 
-
+//This function broke me as a human being.
+//We do a single entrypoint ajax call to the json file like all other table generations, except we have a situation where we have an unknown amount of browsers, each with
+//an unknown amount of profiles, each with an unknown amount of extensions installed.
+//One part of this is done in lines 1128~ and onwards(as of commit when writing this comment). PHP creates a table element for each of the browser profiles
+//then the code below will follow the same naming convention to linearly populate each appropriate table with it's data.
+//At first I experimented with creating the divs and table dynamically with JS, but datatable would not initialize on a newly created div no matter what I did.
+//This works, and it seems to work great too. But who knows.
 $.ajax({
         async:false,
     url: filename,
@@ -338,6 +351,9 @@ $("#netconTableButton").click(function() {
         scrollTop: $("#netcon").offset().top
     }, );
 });
+
+//Clever little trickery in this function actually where I practically use DataTables render functionality to InnerJoin the InterfaceIndex from one tree in the json
+//to another tree in the json, thus giving me the ability to print out the corresponding name of the NIC that's using a route, instead of just a number.
 $.ajax({
     url: filename,
     dataType : "json",
@@ -415,6 +431,10 @@ $("#driversTableButton").click(function() {
         scrollTop: $("#drivers").offset().top
     }, );
 });
+
+//Don't even ask.
+//Setting the target as the searchbar, sanitizing the inputs into the search bar into lower case, then getting all divs by class of widget into an array and looping
+//through them for each keystroke, setting visibility of matched divs with class widget, searching the text into their h1 children.
 function searchFunction() {
 
     var input, filter, li, i, txtValue, h1;
@@ -436,6 +456,7 @@ function searchFunction() {
     }
 }
 
+//It goes to the top, that's it.
 let topbutton = document.getElementById("btn-back-to-top");
 window.onscroll = function () {
     scrollFunction();
