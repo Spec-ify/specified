@@ -67,8 +67,19 @@
 <div class="widgets_widgets widgets" id="hardware_widgets" data-hide="false">
 <?php
 $dir = "files/";
-$scanned_directory = array_diff(scandir($dir), array('..', '.'));
-
+function scan_dir($dir) {
+    $ignored = array('.', '..', '.svn', '.htaccess'); // -- ignore these file names
+    $files = array(); //----------------------------------- create an empty files array to play with
+    foreach (scandir($dir) as $file) {
+        if ($file[0] === '.') continue; //----------------- ignores all files starting with '.'
+        if (in_array($file, $ignored)) continue; //-------- ignores all files given in $ignored
+        $files[$file] = filemtime($dir . '/' . $file); //-- add to files list
+    }
+    arsort($files); //------------------------------------- sort file values (creation timestamps)
+    $files = array_keys($files); //------------------------ get all files after sorting
+    return ($files) ? $files : false;
+}
+$scanned_directory = scan_dir($dir);
 foreach($scanned_directory as $profile){
     $json_file = "files/".$profile;
     $json = file_get_contents($json_file);

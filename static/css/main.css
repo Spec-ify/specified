@@ -799,3 +799,12 @@ article h1:before,article h2:before {
     margin: auto;
     width:80%;
 }
+#loginForm{
+    background-color: #2e383e;
+    width:20%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}

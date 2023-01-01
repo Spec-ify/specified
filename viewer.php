@@ -67,14 +67,14 @@ function timeConvert($time) {
     $seconds = (int) $parts[2];
 
     // Initialize the string with the number of hours
-    $timeString = "{$hours} hour";
+    $timeString = "{$hours} day";
     if ($hours != 1) {
         $timeString .= 's';
     }
 
     // Add the number of minutes to the string
     if ($minutes > 0 || $seconds > 0) {
-        $timeString .= ", {$minutes} minute";
+        $timeString .= ", {$minutes} hour";
         if ($minutes != 1) {
             $timeString .= 's';
         }
@@ -82,7 +82,7 @@ function timeConvert($time) {
 
     // Add the number of seconds to the string
     if ($seconds > 0) {
-        $timeString .= ", and {$seconds} second";
+        $timeString .= ", and {$seconds} minute";
         if ($seconds != 1) {
             $timeString .= 's';
         }
@@ -100,53 +100,48 @@ $path_array = explode(';', $paths);
 
 
 //PUP check
-$badSoftware = array(
-'Driver Booster*',
-    'iTop',
-    'Driver Easy',
-    'Roblox',
-    'ccleaner',
-    'Malwarebytes',
-    'Wallpaper Engine',
-    'Voxal Voice Changer',
-    'Clownfish Voice Changer',
-    'Voicemod',
-    'Microsoft Office Enterprise 2007',
-    'System Mechanic',
-    'MyCleanPC',
-    'DriverFix',
-    'Reimage Repair',
-    'cFosSpeed',
-    'Browser Assistant',
-    'KMS',
-    'Advanced SystemCare',
-    'AVG',
-    'Avast',
-    'salad',
-    'McAfee',
-    'Citrix',
-    'Norton',
-    'Cleaner',
-    'Kaspersky',
-    'Speedify',
-    'UltraUXThemePatcher'
-);
+$badSoftware = array('Driver Booster', 'iTop', 'Driver Easy', 'Roblox', 'ccleaner', 'Malwarebytes', 'Wallpaper Engine', 'Voxal Voice Changer', 'Clownfish Voice Changer', 'Voicemod', 'Voicemeeter', 'Microsoft Office Enterprise 2007', 'System Mechanic', 'MyCleanPC', 'DriverFix', 'Reimage Repair', 'cFosSpeed', 'Browser Assistant', 'KMS', 'Advanced SystemCare', 'AVG', 'Avast', 'salad', 'McAfee', 'Citrix', 'Norton', 'Cleaner', 'Kaspersky', 'Speedify', 'UltraUXThemePatcher', 'TronScript', 'MyWebSearch.J', 'F0C7', '485E', '8ECAA', '64CB', 'GamePlayLabs', '1DE1', 'I Want This', 'Trojan.Win32.Generic!BT', 'Ocl', '100bao', 'aim', 'expand aim-audio', 'allpeers', 'ants-p2p', 'applejuice', 'ares', 'asf-streaming', 'asproxy', 'axifile', 'azureus', 'bittorrent', 'brightcove', 'bypass', 'bypassthat', 'camfrog', 'cgiproxy', 'circumventor', 'coinhave', 'coinhive', 'coinimp', 'coinnebula', 'coralcdn-user', 'deepminer', 'direct-connect', 'dl-free', 'droidvpn', 'ebuddy', 'emule', 'fasttrack', 'feidian', 'fileguri', 'filemail', 'fileserve', 'filesonic', 'fileswire', 'firephoenix', 'flashget', 'foldera', 'foxy', 'freenet', 'ftp', 'fufox', 'funshion', 'gbridge', 'generic-p2p', 'gizmo', 'glype-proxy', 'gnu-httptunnel', 'gnunet', 'gnutella', 'goboogy', 'google-drive-web', 'google-talk', 'expand gtalk-file-transfer', 'gtunnel', 'guardster', 'hamachi', 'hopster', 'horde', 'hotfile', 'hotline', 'http-proxy', 'http-tunnel', 'httport', 'imesh', 'ip-in-ip', 'irc', 'expand irc-base', 'expand irc-dcc-file-transfer', 'jabber', 'jap', 'jsecoin', 'kazaa', 'kino', 'kproxy', 'kugoo', 'libero-video', 'lotus-notes', 'expand lotus-notes-base', 'manolito', 'meebo', 'expand meebo-file-transfer', 'megashare', 'megashares', 'mineralt', 'msn', 'expand msn-file-transfer', 'mute', 'mydownloader', 'neonet', 'nerohut', 'netlog', 'netmeeting', 'nntp', 'openft', 'packetix-vpn', 'pando', 'peerenabler', 'perfect-dark', 'phproxy', 'pingfu', 'poco', 'privax', 'proxeasy', 'proxono', 'psiphon', 'qdown', 'qq', 'expand qq-file-transfer', 'r-exec', 'r-services', 'rediffbol', 'expand rediffbol-file-transfer', 'sharebase.to', 'smtp', 'expand smtp-base', 'socks', 'socks2http', 'sopcast', 'soribada', 'soulseek', 'ssh-tunnel', 'stickam', 'storage.to', 'stumbleupon', 'suresome', 'swapper', 'tesla', 'thecircle', 'totodisk', 'transferbigfiles', 'trinoo', 'tudou', 'turboupload', 'vnc', 'expand vnc-base', 'vnc-http', 'warez-p2p', 'webdav', 'webmine', 'wickr', 'winmx', 'winny', 'woofiles', 'x11', 'xunlei', 'youku', 'expand youku-base', 'yunpan360', 'expand yunpan360-base', 'zelune', '4shared', '51.com', 'expand 51.com-webdisk', '8x8', 'accellion', 'activesync', 'adobe-connect', 'expand adobe-meeting-file-transfer', 'adobe-connectnow', 'expand adobe-connectnow-file-transfer', 'adrive', 'afreeca', 'aim', 'expand aim-base', 'expand aim-file-transfer', 'aim-express', 'expand aim-express-base', 'aim-mail', 'all-slots-casino', 'amazon-cloud-drive', 'expand amazon-cloud-drive-base', 'expand amazon-cloud-drive-uploading', 'amazon-unbox', 'ameba-now', 'expand ameba-now-base', 'expand ameba-now-posting', 'aol-proxy', 'appcelerator', 'apple-appstore', 'atom', 'att-connect', 'avaya-webalive', 'expand avaya-webalive-file-transfer', 'avoidr', 'aws-workdocs', 'babelgum', 'badongo', 'baidu-hi', 'expand baidu-hi-file-transfer', 'baofeng', 'base-crm', 'bebo', 'expand bebo-posting', 'bigupload', 'bitcoin', 'bittorrent-sync', 'blackberry', 'blog-posting', 'boldchat-logmein', 'bomgar', 'bonpoo', 'boxnet', 'expand boxnet-uploading', 'caihong', 'camo-proxy', 'canvas', 'carbonite', 'expand carbonite-uploading', 'expand carbonite-downloading', 'cgi-irc', 'clip2net', 'cloudshare', 'concur', 'expand concur-base', 'crossloop', 'crypto-loot', 'cyworld', 'daap', 'dailymotion', 'datto-backupify', 'daum', 'expand daum-mail', 'expand daum-cloud', 'daum-touch', 'dialpad', 'diino', 'divshare', 'docstoc', 'expand docstoc-base', 'expand docstoc-uploading', 'dontcensorme', 'dostupest', 'drivehq', 'drop.io', 'dropboks', 'dropbox', 'expand dropbox-base', 'e-signlive', 'easy-share', 'eatlime', 'editgrid', 'egnyte', 'expand egnyte-base', 'elluminate', 'eroom-net', 'eventbrite', 'facebook', 'expand facebook-file-sharing', 'expand facebook-video', 'expand facebook-base', 'expand facebook-apps', 'expand facebook-posting', 'fastmail', 'fetch.io', 'file-host', 'filecatalyst-direct', 'filedropper', 'filer.cx', 'filestack', 'expand filestack-downloading', 'flash', 'flock', 'fluxiom', 'fly-proxy', 'freedome', 'freegate', 'friendvox', 'frozenway', 'fs2you', 'fuze-meeting', 'expand fuze-meeting-file-sharing', 'g.ho.st', 'gadu-gadu', 'genesys', 'expand genesys-base', 'ghostsurf', 'glide', 'gmail', 'expand gmail-base', 'expand gmail-enterprise', 'gmx-mail', 'goagent', 'gogobox', 'google-base', 'google-buzz', 'google-chat', 'google-desktop', 'google-hangouts', 'expand google-hangouts-chat', 'google-talk', 'expand google-talk-base', 'expand gtalk-voice', 'gpass', 'gpass-proxy', 'graboid-video', 'gyao', 'h.323', 'hadoop', 'expand hdfs', 'hangame', 'hola-unblocker', 'homepipe', 'hotmail', 'http-audio', 'http-nsri', 'http-video', 'i2p', 'icmp', 'icmpsh', 'icq', 'ifile.it', 'ifolder', 'ilohamail', 'im-plus', 'imap', 'imgur', 'expand imgur-base', 'imhaha', 'imo', 'instan-t', 'expand instan-t-file-transfer', 'ipfs', 'issuu', 'expand issuu-uploading', 'join-me', 'expand join-me-file-transfer', 'jubii', 'justin.tv', 'jxta', 'kerio-vpn', 'korea-webmail', 'labnol-proxy', 'laconica', 'leapfile', 'limelight', 'live-meeting', 'live-mesh', 'expand live-mesh-base', 'expand live-mesh-sync', 'logmein', 'lotus-sametime', 'lotuslive', 'expand lotuslive-meeting-file-sharing', 'expand lotuslive-file-sharing', 'mail.com', 'mail.ru', 'expand mail.ru-base', 'mail.ru-agent', 'expand mail.ru-agent-file-transfer', 'mailchimp', 'me2day', 'mediafire', 'megaupload', 'mendeley', 'expand mendeley-base', 'expand mendeley-uploading', 'mercurial', 'expand mercurial-base', 'metacafe', 'mgoon', 'mibbit', 'mixi', 'expand mixi-posting', 'mobile-me', 'mogulus', 'ms-exchange', 'ms-groove', 'ms-onedrive', 'expand ms-onedrive-base', 'expand ms-onedrive-downloading', 'ms-rdp', 'ms-update', 'msn', 'expand msn-base', 'expand msn-voice', 'msn2go', 'myspace', 'expand myspace-mail', 'expand myspace-base', 'expand myspace-posting', 'nakido-flag', 'nate-video', 'nateon-im', 'expand nateon-im-base', 'expand nateon-file-transfer', 'naver-ndrive', 'ndmp', 'netease-mail', 'netload', 'niconico-douga', 'nintendo-wfc', 'noteworthy', 'expand noteworthy-base', 'octopz', 'odnoklassniki', 'expand odnoklassniki-base', 'office-live', 'okurin', 'omnidrive', 'opendoor', 'openmeetings', 'openomy', 'opera-mini', 'oridus-nettouch', 'orkut', 'orsiso', 'outblaze-mail', 'outlook-web', 'p10', 'pandora-tv', 'party-poker', 'pastebin', 'expand pastebin-base', 'pichat', 'ping-tunnel', 'pinterest', 'expand pinterest-posting', 'plaxo', 'poker-stars', 'pop3', 'pownce', 'pplive', 'ppstream', 'pptp', 'puffin', 'putlocker', 'qq', 'expand qq-base', 'qq-download', 'qq-mail', 'qqlive', 'qvod', 'radmin', 'rapidshare', 'rdp2tcp', 'reddit', 'expand reddit-posting', 'reduh', 'remobo', 'remoteview', 'ringcentral', 'rlogin', 'roundcube', 'rsh', 'rtmp', 'rtmpe', 'rtmpt', 'ruckus', 'saba-centra-meeting', 'scotty', 'screencast', 'expand screencast-base', 'screenconnect', 'scribd', 'expand scribd-uploading', 'seamless-phenom', 'second-life', 'expand second-life-base', 'secret', 'secure-access', 'secureserver-mail', 'security-kiss', 'sendspace', 'share-p2p', 'sharebox', 'sharefile', 'expand sharefile-base', 'expand sharefile-uploading', 'expand sharefile-downloading', 'showmypc', 'silent-circle', 'simplehelp', 'simplite-msn', 'sina-uc', 'expand sina-uc-web-disk', 'sina-weibo', 'expand sina-weibo-base', 'sip', 'sipviaheader-nat', 'sky-player', 'skydrive', 'expand skydrive-base', 'expand skydrive-uploading', 'sliderocket', 'smtp', 'expand smtp-starttls', 'socialtv', 'sosbackup', 'source-engine', 'spark', 'spotnet', 'sproutsocial', 'squirrelmail', 'ssh', 'ssl', 'stealthnet', 'steganos-vpn', 'sugarsync', 'surrogafier', 'synology-cloudstation', 'synology-dsm', 'tagoo', 'taku-file-bin', 'tcp-over-dns', 'teamup-calendar', 'expand teamup-calendar-base', 'expand teamup-calendar-uploading', 'techinline', 'telenet-webmail', 'tftp', 'thinkfree', 'thwapr', 'expand thwapr-uploading', 'timbuktu', 'tor2web', 'totoexpress', 'tubes', 'tudou-speedup', 'tunnelbear', 'turboshare', 'tvants', 'twig', 'twitch', 'twitter', 'expand twitter-posting', 'expand twitter-uploading', 'expand twitter-messaging', 'txp', 'ultrasurf', 'uploading', 'usejump', 'usermin', 'uusee', 'vagaa', 'veetle', 'vimeo', 'expand vimeo-base', 'vkontakte', 'expand vkontakte-base', 'expand vkontakte-mail', 'vnn', 'vsee', 'vtun', 'vtunnel', 'vyew', 'web-browsing', 'web-crawler', 'web-de-mail', 'webaim', 'webhard', 'webot', 'webqq', 'xdrive', 'yahoo-douga', 'yahoo-im', 'expand yahoo-im-base', 'expand yahoo-voice', 'expand yahoo-file-transfer', 'yandex-mail', 'yoics', 'yoomba', 'your-freedom', 'yourfilehost', 'yousendit', 'expand yousendit-base', 'expand yousendit-uploading', 'youtube', 'expand youtube-base', 'expand youtube-safety-mode', 'expand youtube-uploading', 'expand youtube-streaming', 'zamzar', 'zango', 'zbigz', 'zenbe', 'zoho-im');
 $normalizedArray = array_map('strtolower',$badSoftware);
 // Set up the reference list
-$referenceList = $json_data['System']['InstalledApps'];
-
+$referenceListInstalled = $json_data['System']['InstalledApps'];
+$referenceListRunning = $json_data['System']['RunningProcesses'];
 // Set up the list to check
 $checkList = $badSoftware;
-$pupsfound = array();
+$pupsfoundInstalled = array(
+        ''
+);
+$internalpupsinstalled = array_map('strtolower',$pupsfoundInstalled);
+
+$pupsfoundRunning = array(
+    ''
+);
+$internalpupsrunning = array_map('strtolower',$pupsfoundRunning);
+
 foreach ($normalizedArray as $searchitem) {
-    foreach ($referenceList as $object){
+    foreach ($referenceListInstalled as $object){
     $checkobject = strtolower($object['Name']);
     // Check if the object's name is in the array of names
     if (str_contains( $checkobject,$searchitem)) {
-        // If the name is not in the array, output a message
-        $pupsfound[] = $object['Name'];
-        //echo "Name " . $object['Name'] . " was found in the array of names.\n";
+        // If the name is in the array, see if the name has already been passed into the PUPs found array
+        foreach($internalpupsinstalled as $internalpup){
+            //If not, add it to the pupsfound array
+        if(!str_contains($internalpup,$searchitem)){
+            $pupsfoundInstalled[] = $object['Name'];
+        }
+        }
     }
+    }
+}
+foreach ($normalizedArray as $searchitem) {
+    foreach ($referenceListRunning as $object){
+        $checkobject = strtolower($object['ProcessName']);
+        // Check if the object's name is in the array of names
+        if (str_contains( $checkobject,$searchitem)) {
+            foreach($internalpupsrunning as $internalpup){
+            if(!str_contains($internalpup,$searchitem)){
+                $pupsfoundrunning[] = $object['ProcessName'];
+            }}
+        }
     }
 }
 function bytesToGigabytes($bytes) {
@@ -1050,10 +1045,14 @@ function bytesToGigabytes($bytes) {
                         <li class="browsers_button">Browsers</li>
                     </ul>
                     <div class="metadata-detail-content jsondata">
-                        <table id="pupsTable" class="table">
+                        <table id="pupsTableInstalled" class="table">
                         <?php
-                        foreach($pupsfound as $pup){
+                        foreach($pupsfoundInstalled as $pup){
                             echo '<tr><td>'.$pup.' Found installed</td></tr>';
+                        }
+                        echo '</table><table id="pupsTableRunning" class="table">';
+                        foreach($pupsfoundrunning as $pup){
+                            echo '<tr><td>'.$pup.' Found Running</td></tr>';
                         }
                         ?>
                         </table>
