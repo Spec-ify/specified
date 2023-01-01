@@ -334,6 +334,7 @@ $.ajax({
     dataType : "json",
     success: function(result){
         JsonData = result.Network.NetworkConnections;
+        PIDstack = result.System.RunningProcesses;
         $('#netconTable').DataTable( {
             "autoWidth": false,
             data: JsonData,
@@ -342,7 +343,15 @@ $.ajax({
                 { data: 'LocalPort' },
                 { data: 'RemoteIPAddress' },
                 { data: 'RemotePort' },
-                { data: 'OwningPID' }
+                { data: 'OwningPID',
+                    "render":function(data){
+                        PIDstack.forEach(function(PID){
+                            if(PID.Id == data){
+                                data = PID.ProcessName;
+                            }
+                        });
+                        return data;
+                    }}
             ]
         } );
     }});
