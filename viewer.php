@@ -76,15 +76,23 @@ else{
 }
 //Basic string to time php function to take the generation date and turn it into a usable format.
 $ds=strtotime($json_data['Meta']['GenerationDate']);
+
 function timeConvert($time) {
     // Split the time string into its parts
     $parts = preg_split('/[:.]/', $time);
 
     // Extract the hours, minutes, and seconds
+
     $days = (int) $parts[0];
     $hours = (int) $parts[1];
     $minutes = (int) $parts[2];
     $seconds = (int) $parts[3];
+    if($seconds > 60){
+        $days = 0;
+        $hours = (int) $parts[0];
+        $minutes = (int) $parts[1];
+        $seconds = (int) $parts[2];
+    }
 
     // Initialize the string with the number of days
     $timeString = "{$days} day";
@@ -102,14 +110,14 @@ function timeConvert($time) {
 
     // Add the number of minutes to the string
     if ($seconds > 0) {
-        $timeString .= ", {$minutes} minutes";
+        $timeString .= ", {$minutes} minute";
         if ($minutes != 1) {
             $timeString .= 's';
         }
     }
     // Add the number of seconds to the string
     if ($seconds > 0) {
-        $timeString .= ", and {$seconds} seconds";
+        $timeString .= ", and {$seconds} second";
         if ($seconds != 1) {
             $timeString .= 's';
         }
@@ -166,12 +174,12 @@ foreach ($normalizedArray as $searchitem) {
         if (str_contains( $checkobject,$searchitem)) {
             foreach($internalpupsrunning as $internalpup){
             if(!str_contains($internalpup,$searchitem)){
-                $pupsfoundrunning[] = $object['ProcessName'];
+                $pupsfoundRunning[] = $object['ProcessName'];
             }}
         }
     }
 }
-
+print_r($pupsfoundRunning);
 //XDDDDD
 function bytesToGigabytes($bytes) {
     return $bytes / 1073741824;
@@ -212,6 +220,7 @@ function bytesToGigabytes($bytes) {
             <img src="assets/logo.png" height="25em">
         </a>
         <button type="button" class="btn btn-info" id="CollapseToggle">Collapse All</button>
+        <button type="button" class="btn btn-info" id="CollapseToggleHide">Hide All</button>
         <select title="mappings" id="ModeToggle">
 
             <optgroup
@@ -274,6 +283,7 @@ function bytesToGigabytes($bytes) {
                             ?>
                         </div>
                     </div>
+
 
                     <div class="modal fade " id="ramModal" tabindex="-1" aria-labelledby="ramModal" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
@@ -555,6 +565,11 @@ function bytesToGigabytes($bytes) {
                                             '<tr>
                                                 <td>Boot Mode</td>
                                                 <td>'.$json_data['BasicInfo']['BootMode'].'</td>
+                                            </tr>';
+                                        echo
+                                            '<tr>
+                                                <td>Secure Boot</td>
+                                                <td>'.$json_data['Security']['SecureBootEnabled'].'</td>
                                             </tr>';
                                         echo
                                             '<tr>
@@ -983,6 +998,21 @@ function bytesToGigabytes($bytes) {
                         <li class="browsers_button">Browsers</li>
                     </ul>
                     <div class="metadata-detail-content">
+                        <?php
+                        foreach($json_data['Hardware']['Storage'] as $storage_device){
+                            if($storage_device['SmartData']){
+                                foreach($storage_device['SmartData'] as $smartPoint){
+                                    if (str_contains($smartPoint['Name'], '!')){                                        if($smartPoint['RawValue']!='000000000000'){
+                                            echo '<p>SMART Check : <span>'.$storage_device['DeviceName'].'</span> has <span>'.$smartPoint['RawValue'].' '.$smartPoint['Name'].'</span></p>';
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+                        ?>
+
+
                         <p>The OS is<?php
                             $oscheck = '';
                             if($json_data['BasicInfo']['FriendlyVersion'] == "22H2"){
@@ -1064,6 +1094,7 @@ function bytesToGigabytes($bytes) {
                             ';
                         }
                         ?>
+
                     </div>
                 </div>
                 <div class="textbox metadata-detail" id="pups">
@@ -1080,7 +1111,7 @@ function bytesToGigabytes($bytes) {
                             echo '<tr><td>'.$pup.' Found installed</td></tr>';
                         }
                         echo '</table><table id="pupsTableRunning" class="table">';
-                        foreach($pupsfoundrunning as $pup){
+                        foreach($pupsfoundRunning as $pup){
                             echo '<tr><td>'.$pup.' Found Running</td></tr>';
                         }
                         ?>

@@ -30,13 +30,19 @@ filename = "files/"+document.getElementById('filename').innerText+".json";
 var JsonData;
 
 //Logic for the Collapse button at the top. It simply just toggles the show class on all accordion class divs.
+$('#CollapseToggleHide').hide();
 $('#CollapseToggle').click(function(){
-    $('.accordion-collapse').toggleClass('show');
+    $('#CollapseToggle').hide();
+    $('#CollapseToggleHide').show();
+    $('.accordion-collapse').addClass('show');
 });
-$('#CollapseToggle').click(function(){
-    $('#CollapseToggle').toggleClass('btn-info btn-warning');
-    $(this).text($(this).text() == 'Collapse All' ? 'Uncollapse All' : 'Collapse All');
+
+$('#CollapseToggleHide').click(function(){
+    $('#CollapseToggle').show();
+    $('#CollapseToggleHide').hide();
+    $('.accordion-collapse').removeClass('show');
 });
+
 
 //Implementation of Light Mode. Could be handled in a more modern way but it does it's job.
 $('#ModeToggle').change(function(){
