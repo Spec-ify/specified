@@ -179,7 +179,6 @@ foreach ($normalizedArray as $searchitem) {
         }
     }
 }
-print_r($pupsfoundRunning);
 //XDDDDD
 function bytesToGigabytes($bytes) {
     return $bytes / 1073741824;
