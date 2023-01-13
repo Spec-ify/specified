@@ -140,45 +140,23 @@ $normalizedArray = array_map('strtolower',$badSoftware);
 // Set up the reference list
 $referenceListInstalled = $json_data['System']['InstalledApps'];
 $referenceListRunning = $json_data['System']['RunningProcesses'];
-// Set up the list to check
-$checkList = $badSoftware;
-$pupsfoundInstalled = array(
-        ''
-);
-$internalpupsinstalled = array_map('strtolower',$pupsfoundInstalled);
 
-$pupsfoundRunning = array(
-    ''
-);
-$internalpupsrunning = array_map('strtolower',$pupsfoundRunning);
+$pupsfoundInstalled = array_filter($referenceListInstalled, function ($checkobj) use ($normalizedArray) {
+    foreach ($normalizedArray as $pup) {
+        if (str_contains(strtolower($checkobj['Name']), $pup)) {
+            return $checkobj;
+        }
+    }
+});
 
-foreach ($normalizedArray as $searchitem) {
-    foreach ($referenceListInstalled as $object){
-    $checkobject = strtolower($object['Name']);
-    // Check if the object's name is in the array of names
-    if (str_contains( $checkobject,$searchitem)) {
-        // If the name is in the array, see if the name has already been passed into the PUPs found array
-        foreach($internalpupsinstalled as $internalpup){
-            //If not, add it to the pupsfound array
-        if(!str_contains($internalpup,$searchitem)){
-            $pupsfoundInstalled[] = $object['Name'];
-        }
+$pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use ($normalizedArray){
+    foreach ($normalizedArray as $pup) {
+        if (str_contains(strtolower($checkobj['ProcessName']), $pup)) {
+            return $checkobj;
         }
     }
-    }
-}
-foreach ($normalizedArray as $searchitem) {
-    foreach ($referenceListRunning as $object){
-        $checkobject = strtolower($object['ProcessName']);
-        // Check if the object's name is in the array of names
-        if (str_contains( $checkobject,$searchitem)) {
-            foreach($internalpupsrunning as $internalpup){
-            if(!str_contains($internalpup,$searchitem)){
-                $pupsfoundRunning[] = $object['ProcessName'];
-            }}
-        }
-    }
-}
+});
+
 //XDDDDD
 function bytesToGigabytes($bytes) {
     return $bytes / 1073741824;
@@ -1107,11 +1085,11 @@ function bytesToGigabytes($bytes) {
                         <table id="pupsTableInstalled" class="table">
                         <?php
                         foreach($pupsfoundInstalled as $pup){
-                            echo '<tr><td>'.$pup.' Found installed</td></tr>';
+                            echo '<tr><td>'.$pup['Name'].' Found installed</td></tr>';
                         }
                         echo '</table><table id="pupsTableRunning" class="table">';
                         foreach($pupsfoundRunning as $pup){
-                            echo '<tr><td>'.$pup.' Found Running</td></tr>';
+                            echo '<tr><td>'.$pup['ProcessName'].' Found Running</td></tr>';
                         }
                         ?>
                         </table>
