@@ -215,7 +215,6 @@ $.ajax({
     url: filename,
     dataType : "json",
     success:function(result){
-        debugger;
         JsonData = result.System.BrowserExtensions;
         var Browsers = Object.keys(JsonData);
         Browsers.forEach(function(Browser){
@@ -225,7 +224,6 @@ $.ajax({
                 let BrowserName = "#" + JsonData[Browser].Name + "Profile"+[Profile]+"Table";
                 let BrowserJsonData = result.System.BrowserExtensions[Browser].Profiles[Profile].Extensions;
                 BrowserJsonData = BrowserJsonData.filter(e => e != null);
-                debugger;
                 $(BrowserName).DataTable( {
                     "autoWidth": false,
                     searching: false,
