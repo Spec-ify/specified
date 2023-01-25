@@ -60,6 +60,12 @@ $.ajax({
     dataType : "json",
     success: function(result){
         JsonData = result.System.RunningProcesses;
+        JsonData.forEach(e => {
+            e.WorkingSetReal = e.WorkingSet;
+            const intl = Intl.NumberFormat("en-US");
+            const megaBytes = (e.WorkingSet / Math.pow(2, 20)).toFixed(2);
+            e.WorkingSet = intl.format(megaBytes);
+        });
         $('#runningProcessesTable').DataTable( {
             "autoWidth": false,
             data: JsonData,
@@ -68,7 +74,16 @@ $.ajax({
                 { data: 'ExePath' },
                 { data: 'Id' },
                 { data: 'WorkingSet' },
-                { data: 'CpuPercent' }
+                { data: 'CpuPercent' },
+                { data: 'WorkingSetReal' }
+            ],
+            columnDefs: [
+                { orderData: [5], targets: [4] },
+                {
+                    targets: [5],
+                    searchable: false,
+                    visible: false
+                }
             ]
         } );
     }});

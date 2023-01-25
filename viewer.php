@@ -1297,7 +1297,7 @@ function bytesToGigabytes($bytes) {
                         <th>Name</th>
                         <th>Path</th>
                         <th>PID</th>
-                        <th>RAM</th>
+                        <th>RAM (MB)</th>
                         <th>CPU</th>
                         </thead>
                     </table>
