@@ -215,7 +215,7 @@ $.ajax({
     url: filename,
     dataType : "json",
     success:function(result){
-
+        debugger;
         JsonData = result.System.BrowserExtensions;
         var Browsers = Object.keys(JsonData);
         Browsers.forEach(function(Browser){
@@ -224,7 +224,8 @@ $.ajax({
             Profiles.forEach(function(Profile){
                 let BrowserName = "#" + JsonData[Browser].Name + "Profile"+[Profile]+"Table";
                 let BrowserJsonData = result.System.BrowserExtensions[Browser].Profiles[Profile].Extensions;
-                if($(BrowserName).html().length <= 41){
+                BrowserJsonData = BrowserJsonData.filter(e => e != null);
+                debugger;
                 $(BrowserName).DataTable( {
                     "autoWidth": false,
                     searching: false,
@@ -237,24 +238,6 @@ $.ajax({
                         { data: 'description' }
                     ]
                 } );
-                } else {
-
-                            $(BrowserName).DataTable( {
-                                "autoWidth": false,
-                                searching: false,
-                                ordering:  false,
-                                paging: false,
-                                data: BrowserJsonData,
-                                columns: [
-                                    { data: 'name' },
-                                    { data: 'version' },
-                                    { data: 'description' }
-                                ]
-                            } );
-
-
-
-                }
 
             });
 

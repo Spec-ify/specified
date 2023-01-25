@@ -1208,6 +1208,11 @@ function bytesToGigabytes($bytes) {
                                     echo '
                                         <h2>'.$browser['Name'].' Profile "'.$browser['Profiles'][$profileKey]['name'].'"</h2>
                                         <table id="'.$browser['Name'].'Profile'.$profileKey.'Table" class="table">
+                                        <thead>
+                                        <th>Name</th>
+                                        <th>Version</th>
+                                        <th>Description</th>
+                                        </thead>
                                         </table>';
                                 };
                                 echo '
