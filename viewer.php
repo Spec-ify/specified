@@ -196,8 +196,13 @@ function bytesToGigabytes($bytes) {
         <a class="logo" href="index.html">
             <img src="assets/logo.png" height="25em">
         </a>
+        <div>
         <button type="button" class="btn btn-info" id="CollapseToggle">Collapse All</button>
-        <button type="button" class="btn btn-info" id="CollapseToggleHide">Hide All</button>
+            <button type="button" class="btn btn-info" id="CollapseToggleHide">Hide All</button>
+            <a id="DownloadJSON" href="<?= $json_file ?>" download>
+                <button class="btn btn-info">Download JSON</button>
+            </a>
+        </div>
         <select title="mappings" id="ModeToggle">
 
             <optgroup

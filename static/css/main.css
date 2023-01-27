@@ -115,6 +115,10 @@ header img {
     padding-right: 5px
 }
 
+header > .logo img {
+    padding: 0;
+}
+
 footer {
     color: #888;
     font-size: 10pt;
@@ -807,4 +811,14 @@ article h1:before,article h2:before {
     top: 50%;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+}
+
+/* initial property, will be changed when the button is clicked */
+#CollapseToggleHide {
+    display: none;
+}
+
+#DownloadJSON:hover {
+    text-decoration: none;
+    border-bottom: none;
 }

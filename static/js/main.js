@@ -29,8 +29,6 @@ $('.browsers_button').click(function(){
 filename = "files/"+document.getElementById('filename').innerText+".json";
 var JsonData;
 
-//Logic for the Collapse button at the top. It simply just toggles the show class on all accordion class divs.
-$('#CollapseToggleHide').hide();
 $('#CollapseToggle').click(function(){
     $('#CollapseToggle').hide();
     $('#CollapseToggleHide').show();
