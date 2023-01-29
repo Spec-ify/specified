@@ -822,3 +822,12 @@ article h1:before,article h2:before {
     text-decoration: none;
     border-bottom: none;
 }
+
+.table td, .table th {
+    padding: 0 0.25rem;
+}
+
+.table {
+    margin: 0.5rem;
+    table-layout: auto;
+}
