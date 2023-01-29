@@ -67,6 +67,7 @@ $.ajax({
         $('#runningProcessesTable').DataTable( {
             "autoWidth": false,
             data: JsonData,
+            pageLength: 25,
             columns: [
                 { data: 'ProcessName' },
                 { data: 'ExePath' },
@@ -94,6 +95,7 @@ $("#runningProcessesButton").click(function() {
 $.ajax({
     url: filename,
     dataType : "json",
+    pageLength: 25,
     success: function(result){
         JsonData = result.System.InstalledApps;
         $('#installedAppTable').DataTable( {
@@ -119,6 +121,7 @@ $.ajax({
         $('#servicesTable').DataTable( {
             "autoWidth": false,
             data: JsonData,
+            pageLength: 25,
             columns: [
                 { data: 'Caption' },
                 { data: 'Name' },
@@ -141,6 +144,7 @@ $.ajax({
         $('#tasksTable').DataTable( {
             "autoWidth": false,
             data: JsonData,
+            pageLength: 25,
             columns: [
                 { data: 'Name' },
                 { data: 'Path' },
@@ -272,6 +276,7 @@ $.ajax({
                 searching: false,
                 ordering:  false,
                 paging: false,
+                pageLength: 25,
                 data: PartitionJsonData,
                 columns: [
                     { data: 'PartitionLabel' },
