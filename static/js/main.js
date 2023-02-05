@@ -58,7 +58,7 @@ $.ajax({
     dataType : "json",
     success: function(result){
         JsonData = result.System.RunningProcesses;
-        console.dir(JsonData);
+        //console.dir(JsonData);
         let groupProcesses = {};
         JsonData.forEach(e => {
             const isSystemOrNull = e.ExePath === "Not Found" || e.ExePath === "SYSTEM" || e.ExePath.startsWith(null);
