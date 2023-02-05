@@ -5,3 +5,4 @@ git-deploy/
 test*.json
 
 archive_secret.php
+dumpupload.php

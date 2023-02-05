@@ -58,15 +58,39 @@ $.ajax({
     dataType : "json",
     success: function(result){
         JsonData = result.System.RunningProcesses;
+        console.dir(JsonData);
+        let groupProcesses = {};
         JsonData.forEach(e => {
-            e.WorkingSetReal = e.WorkingSet;
+            const isSystemOrNull = e.ExePath === "Not Found" || e.ExePath === "SYSTEM" || e.ExePath.startsWith(null);
+            const keys = Object.keys(groupProcesses);
+            // the path is not valid if isSystemOrNull is true
+            if (isSystemOrNull) {
+                if (!keys.includes(e.ProcessName)) groupProcesses[e.ProcessName] = [e];
+                else groupProcesses[e.ProcessName].push(e);
+            } else {
+                if (!keys.includes(e.ExePath)) groupProcesses[e.ExePath] = [e];
+                else groupProcesses[e.ExePath].push(e);
+            }
+        });
+        const displayProcesses = Object.values(groupProcesses).flatMap(e => {
+            const count = e.length;
+            const workingSetReal = e.map(p => p.WorkingSet).reduce((acc, cur) => acc + cur);
             const intl = Intl.NumberFormat("en-US");
-            const megaBytes = (e.WorkingSet / Math.pow(2, 20)).toFixed(2);
-            e.WorkingSet = intl.format(megaBytes);
+            const workingSetMegaBytes = (workingSetReal / Math.pow(2, 20)).toFixed(2);
+            const workingSetDisplay = intl.format(workingSetMegaBytes);
+            const cpuPercent = e.map(p => p.CpuPercent).reduce((acc, cur) => acc + cur);
+            return {
+                ProcessName: `${e[0].ProcessName} (${count})`,
+                ExePath: e[0].ExePath,
+                Id: e[0].Id, // We can perhaps make this a list later
+                WorkingSet: workingSetDisplay,
+                CpuPercent: cpuPercent,
+                WorkingSetReal: workingSetReal
+            };
         });
         $('#runningProcessesTable').DataTable( {
             "autoWidth": false,
-            data: JsonData,
+            data: displayProcesses,
             pageLength: 25,
             columns: [
                 { data: 'ProcessName' },
