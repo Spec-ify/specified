@@ -752,8 +752,11 @@ function bytesToGigabytes($bytes) {
 									<h5 class="modal-title" id="ModalLabel">' . $json_data['Hardware']['Storage'][$drive]['DeviceName'] . '</h5>
 									<button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
 								</div>
-								<div class="modal-body">
-									<table class="table">
+								<div class="modal-body">';
+                        if (isset($json_data['Hardware']['Storage'][$drive]['SmartData'])) {
+								echo
+                                    '
+                                        <table class="table">
 										<thead>
 											<tr>
 												<th scope="col">Index</th>
@@ -761,8 +764,9 @@ function bytesToGigabytes($bytes) {
 												<th scope="col">Value</th>
 											</tr>
 										</thead>
-										<tbody>';
-                        if (isset($json_data['Hardware']['Storage'][$drive]['SmartData'])) {
+										<tbody>
+                                    ';
+                        
                             for ($smart = 0; $smart < $smart_amount; $smart++) {
                                 echo
                                     '
@@ -772,11 +776,20 @@ function bytesToGigabytes($bytes) {
 												<td>' . $json_data['Hardware']['Storage'][$drive]['SmartData'][$smart]['RawValue'] . '</td>
 											</tr>';
                             }
-                        }
+
                         echo
                         '
 										</tbody>
 									</table>
+                        ';
+                        } else {
+                            echo
+                            '
+                            <h5>Sorry, no SMART data was found for this device.</h5>
+                            ';
+                        }
+                        echo
+                        '
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
