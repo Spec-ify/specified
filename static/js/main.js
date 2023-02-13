@@ -42,13 +42,47 @@ $('#CollapseToggleHide').click(function(){
 });
 
 
-//Implementation of Light Mode. Could be handled in a more modern way but it does it's job.
+//Themes. Could be handled in a more modern way but it does it's job.
+$oldbody = null;
+$oldtext = null
+
 $('#ModeToggle').change(function(){
-    $(document.body).toggleClass('LightModeBody');
-    $('.textbox').toggleClass('LightModeTextbox');
-    $('.searchbar').toggleClass('LightModeTextbox');
-    $('.widget').toggleClass('LightModeTextbox');
-    $('.header_header').toggleClass('LightModeTextbox');
+
+    $theme = $(this).val();
+
+    if ($theme == "classic" || $oldbody){
+        $(document.body).removeClass($oldbody);
+        $('.textbox').removeClass($oldtext);
+        $('.searchbar').removeClass($oldtext);
+        $('.widget').removeClass($oldtext);
+        $('.header_header').removeClass($oldtext);
+    }
+
+    if (!($theme == "classic")){
+
+        switch($theme){
+
+            case "light":
+                $themebody = "LightModeBody";
+                $themetextbox = "LightModeTextbox";
+                break;
+    
+            case "k9":
+                $themebody = "K9ModeBody";
+                $themetextbox = "K9ModeTextbox";
+                break;
+        }
+
+        $(document.body).addClass($themebody);
+        $('.textbox').addClass($themetextbox);
+        $('.searchbar').addClass($themetextbox);
+        $('.widget').addClass($themetextbox);
+        $('.header_header').addClass($themetextbox);
+
+        $oldbody = $themebody;
+        $oldtext = $themetextbox;
+    }
+  
 });
 //All .ajax call functions can be more or less combined into one here, and this will be done at some point.
 //Ajax is used to call the json file it's working with and then pass a specific subset of that information into a DataTable init.

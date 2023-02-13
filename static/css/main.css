@@ -775,22 +775,42 @@ article h1:before,article h2:before {
     margin-left: auto;
     margin-right: auto;
 }
-
+/* Light Mode */
 .LightModeBody{
     background-color:#ECEFF4!important;
-    color:#252b2d!important;
+    color:#282828!important;
+}
+.LightModeTextbox{
+    background:#282828!important;
+    color:#D8DEE9!important;
+}
+.LightModeTextbox h1{
+    background:#282828!important;
+    color:#D8DEE9!important;
+}
+.LightModeTextbox h2{
+    background:#D8DEE9!important;
+    color:#282828!important;
 }
 
-.LightModeTextbox{
-    background:#D8DEE9!important;
-    color:#252b2d!important;
+/* K9 Mode */
+.K9ModeBody{
+    background-color:#0d1113!important;
+    color:#ddd9d0!important;
 }
-.LightModeTextbox h1{
-    color:#252b2d!important;
+.K9ModeTextbox{
+    background:#181d1e!important;
+    color:#ddd9d0!important;
 }
-.LightModeTextbox h1{
-    color:#252b2d!important;
+.K9ModeTextbox h1{
+    background:#181d1e!important;
+    color:#ddd9d0!important;
 }
+.K9ModeTextbox h2{
+    background:#ddd9d0!important;
+    color:#181d1e!important;
+}
+
 #btn-back-to-top {
     position: fixed;
     bottom: 20px;

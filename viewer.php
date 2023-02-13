@@ -204,11 +204,10 @@ function bytesToGigabytes($bytes) {
             </a>
         </div>
         <select title="mappings" id="ModeToggle">
-
-            <optgroup
-                    label="View">
-                <option value="auto">Dark Mode</option>
-                <option value="none">(WIP)Light Mode</option>
+            <optgroup label="View">
+                <option value="classic">Dark Mode</option>
+                <option value="k9">K9's Dark Mode</option>
+                <option value="light">Light Mode</option>
             </optgroup>
         </select>
 
