@@ -47,7 +47,7 @@ $('#CollapseToggleHide').click(function(){
 $themebody = null;
 $themetextbox = null;
 
-// Call the function so in the future, we can have personalization cookies
+// Call the function to set theme in case of cookie
 change_theme();
 
 // Call the function every time it changes
@@ -86,8 +86,17 @@ function change_theme(){
         // Set the theme
         $(document.body).addClass($themebody);
         $('.textbox, .searchbar, .widget, .header_header').addClass($themetextbox);
+
+        
     }
+
+    var d = new Date();
+    d.setTime(d.getTime() + (1*24*60*60*1000));
+    $expires = "expires=" + d.toUTCString();
+    document.cookie = "theme=" + $theme + "; " + $expires + "; path=/";
+
 }
+
 //All .ajax call functions can be more or less combined into one here, and this will be done at some point.
 //Ajax is used to call the json file it's working with and then pass a specific subset of that information into a DataTable init.
 //DataTables has solved a lot of headaches for this project. ++
