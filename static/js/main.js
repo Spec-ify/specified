@@ -42,25 +42,35 @@ $('#CollapseToggleHide').click(function(){
 });
 
 
-//Themes. Could be handled in a more modern way but it does it's job.
-$oldbody = null;
-$oldtext = null
+//Themes. Could be handled in a better, more efficient way but it does it's job.
+// IMPORTANT: the variables are intialized and set to *something* before running the script
+$themebody = null;
+$themetextbox = null;
 
+// Call the function so in the future, we can have personalization cookies
+change_theme();
+
+// Call the function every time it changes
 $('#ModeToggle').change(function(){
+    change_theme();
+});
 
-    $theme = $(this).val();
+function change_theme(){
+    // Get selection for the switch
+    $theme = $('#ModeToggle').val();
+    
+    // Remove current theme 
+    $(document.body).removeClass($themebody);
+    $('.textbox, .searchbar, .widget, .header_header').removeClass($themetextbox);
 
-    if ($theme == "classic" || $oldbody){
-        $(document.body).removeClass($oldbody);
-        $('.textbox').removeClass($oldtext);
-        $('.searchbar').removeClass($oldtext);
-        $('.widget').removeClass($oldtext);
-        $('.header_header').removeClass($oldtext);
-    }
-
+    // Only set new theme if it's not set to classic
     if (!($theme == "classic")){
 
         switch($theme){
+
+            // Every theme has it's own case that sets $themebody and $themetextbox
+            // To add one, just copy and paste one of the current ones
+            // And replace the strings with the names of the classes in main.css
 
             case "light":
                 $themebody = "LightModeBody";
@@ -73,17 +83,11 @@ $('#ModeToggle').change(function(){
                 break;
         }
 
+        // Set the theme
         $(document.body).addClass($themebody);
-        $('.textbox').addClass($themetextbox);
-        $('.searchbar').addClass($themetextbox);
-        $('.widget').addClass($themetextbox);
-        $('.header_header').addClass($themetextbox);
-
-        $oldbody = $themebody;
-        $oldtext = $themetextbox;
+        $('.textbox, .searchbar, .widget, .header_header').addClass($themetextbox);
     }
-  
-});
+}
 //All .ajax call functions can be more or less combined into one here, and this will be done at some point.
 //Ajax is used to call the json file it's working with and then pass a specific subset of that information into a DataTable init.
 //DataTables has solved a lot of headaches for this project. ++

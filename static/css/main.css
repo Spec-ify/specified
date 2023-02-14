@@ -777,20 +777,20 @@ article h1:before,article h2:before {
 }
 /* Light Mode */
 .LightModeBody{
-    background-color:#ECEFF4!important;
-    color:#282828!important;
+    background-color:#f1f1f2!important;
+    color:#252b2d!important;
 }
 .LightModeTextbox{
-    background:#282828!important;
-    color:#D8DEE9!important;
+    background:#252b2d!important;
+    color:#f1f1f2!important;
 }
 .LightModeTextbox h1{
-    background:#282828!important;
-    color:#D8DEE9!important;
+    background:#252b2d!important;
+    color:#f1f1f2!important;
 }
 .LightModeTextbox h2{
-    background:#D8DEE9!important;
-    color:#282828!important;
+    background:#f1f1f2!important;
+    color:#252b2d!important;
 }
 
 /* K9 Mode */
