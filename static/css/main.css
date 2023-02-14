@@ -775,41 +775,6 @@ article h1:before,article h2:before {
     margin-left: auto;
     margin-right: auto;
 }
-/* Light Mode */
-.LightModeBody{
-    background-color:#f1f1f2!important;
-    color:#252b2d!important;
-}
-.LightModeTextbox{
-    background:#252b2d!important;
-    color:#f1f1f2!important;
-}
-.LightModeTextbox h1{
-    background:#252b2d!important;
-    color:#f1f1f2!important;
-}
-.LightModeTextbox h2{
-    background:#f1f1f2!important;
-    color:#252b2d!important;
-}
-
-/* K9 Mode */
-.K9ModeBody{
-    background-color:#0d1113!important;
-    color:#ddd9d0!important;
-}
-.K9ModeTextbox{
-    background:#181d1e!important;
-    color:#ddd9d0!important;
-}
-.K9ModeTextbox h1{
-    background:#181d1e!important;
-    color:#ddd9d0!important;
-}
-.K9ModeTextbox h2{
-    background:#ddd9d0!important;
-    color:#181d1e!important;
-}
 
 #btn-back-to-top {
     position: fixed;
