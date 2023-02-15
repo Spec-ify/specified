@@ -12,15 +12,6 @@ $test=0;
 $json_data = json_decode($json,true);
 $profile_name = explode(".", explode("/", $json_file)[1])[0];
 
-// Get theme from cookie
-if (isset($_COOKIE['theme'])) {
-    $selected_theme = $_COOKIE['theme'];
-} 
-
-else {
-    $selected_theme = "classic";
-}
-
 //This is done manually currently, but there's hopes to implementing an automated version to return Support/EOL versions of Windows friendly versions.
 //Right now, it's just a string that holds all the EOL version of Windows, and the Friendly version inside the json is being compared against each of the string's
 //positions.
@@ -228,9 +219,9 @@ function bytesToGigabytes($bytes) {
         </div>
         <select title="mappings" id="ModeToggle">
             <optgroup label="View">
-                <option value="classic" <?php if ($selected_theme == "classic") echo "selected"; ?>>Dark Mode</option>
-                <option value="k9" <?php if ($selected_theme == "k9") echo "selected"; ?>>K9's Dark Mode</option>
-                <option value="light" <?php if ($selected_theme == "light") echo "selected"; ?>>Light Mode</option>
+                <option value="classic">Dark Mode</option>
+                <option value="k9">K9's Dark Mode</option>
+                <option value="light">Light Mode</option>
             </optgroup>
         </select>
 

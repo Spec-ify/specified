@@ -41,14 +41,16 @@ $('#CollapseToggleHide').click(function(){
     $('.accordion-collapse').removeClass('show');
 });
 
-
 //Themes. Could be handled in a better, more efficient way but it does it's job.
 // IMPORTANT: the variables are intialized and set to *something* before running the script
-$themebody = null;
-$themetextbox = null;
+let themeBody = null;
+let themeTextBox = null;
 
-// Call the function to set theme in case of cookie
-change_theme();
+const localStorageTheme = window.localStorage.getItem("theme");
+if (localStorageTheme !== null) {
+    $(`#ModeToggle option[value="${localStorageTheme}"]`).attr("selected", "");
+    change_theme();
+}
 
 // Call the function every time it changes
 $('#ModeToggle').change(function(){
@@ -57,44 +59,33 @@ $('#ModeToggle').change(function(){
 
 function change_theme(){
     // Get selection for the switch
-    $theme = $('#ModeToggle').val();
-    
-    // Remove current theme 
-    $(document.body).removeClass($themebody);
-    $('.textbox, .searchbar, .widget, .header_header').removeClass($themetextbox);
+    let theme = $('#ModeToggle').val();
+    let themeables = $('.textbox, .searchbar, .widget, .header_header');
+    let body = $("body");
 
-    // Only set new theme if it's not set to classic
-    if (!($theme == "classic")){
+    // Remove current theme
+    body.removeClass(themeBody);
+    themeables.removeClass(themeTextBox);
 
-        switch($theme){
-
-            // Every theme has it's own case that sets $themebody and $themetextbox
-            // To add one, just copy and paste one of the current ones
-            // And replace the strings with the names of the classes in main.css
-
+    if (theme !== "classic") {
+        switch(theme){
             case "light":
-                $themebody = "LightModeBody";
-                $themetextbox = "LightModeTextbox";
+                themeBody = "LightModeBody";
+                themeTextBox = "LightModeTextbox";
                 break;
-    
+
             case "k9":
-                $themebody = "K9ModeBody";
-                $themetextbox = "K9ModeTextbox";
+                themeBody = "K9ModeBody";
+                themeTextBox = "K9ModeTextbox";
                 break;
         }
 
         // Set the theme
-        $(document.body).addClass($themebody);
-        $('.textbox, .searchbar, .widget, .header_header').addClass($themetextbox);
-
-        
+        body.addClass(themeBody);
+        themeables.addClass(themeTextBox);
     }
 
-    var d = new Date();
-    d.setTime(d.getTime() + (1*24*60*60*1000));
-    $expires = "expires=" + d.toUTCString();
-    document.cookie = "theme=" + $theme + "; " + $expires + "; path=/";
-
+    localStorage.setItem("theme", theme);
 }
 
 //All .ajax call functions can be more or less combined into one here, and this will be done at some point.
