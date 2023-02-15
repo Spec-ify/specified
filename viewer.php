@@ -199,8 +199,8 @@ function bytesToGigabytes($bytes) {
         <div>
             <button type="button" class="btn btn-info" id="CollapseToggle">Expand All</button>
             <button type="button" class="btn btn-info" id="CollapseToggleHide">Collapse All</button>
-            <a id="Download" href="<?= $json_file ?>" download>
-                <button class="btn btn-info">Download JSON</button>
+            <a id="Download" href="<?= $json_file ?>">
+                <button class="btn btn-info">View Raw JSON</button>
             </a>
             <?php
             if (isset($json_data['System']['DumpZip']['Value'])){
