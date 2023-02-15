@@ -203,7 +203,7 @@ function bytesToGigabytes($bytes) {
                 <button class="btn btn-info">Download JSON</button>
             </a>
             <?php
-            if ($json_data['System']['DumpZip']['Value']){
+            if (isset($json_data['System']['DumpZip']['Value'])){
                 $dumplink = $json_data['System']['DumpZip']['Value'];
 
                 echo '<a id="Download" href="'.$dumplink.'">
