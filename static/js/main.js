@@ -42,14 +42,61 @@ $('#CollapseToggleHide').click(function(){
 });
 
 
-//Implementation of Light Mode. Could be handled in a more modern way but it does it's job.
+//Themes. Could be handled in a better, more efficient way but it does it's job.
+// IMPORTANT: the variables are intialized and set to *something* before running the script
+$themebody = null;
+$themetextbox = null;
+
+// Call the function to set theme in case of cookie
+change_theme();
+
+// Call the function every time it changes
 $('#ModeToggle').change(function(){
-    $(document.body).toggleClass('LightModeBody');
-    $('.textbox').toggleClass('LightModeTextbox');
-    $('.searchbar').toggleClass('LightModeTextbox');
-    $('.widget').toggleClass('LightModeTextbox');
-    $('.header_header').toggleClass('LightModeTextbox');
+    change_theme();
 });
+
+function change_theme(){
+    // Get selection for the switch
+    $theme = $('#ModeToggle').val();
+    
+    // Remove current theme 
+    $(document.body).removeClass($themebody);
+    $('.textbox, .searchbar, .widget, .header_header').removeClass($themetextbox);
+
+    // Only set new theme if it's not set to classic
+    if (!($theme == "classic")){
+
+        switch($theme){
+
+            // Every theme has it's own case that sets $themebody and $themetextbox
+            // To add one, just copy and paste one of the current ones
+            // And replace the strings with the names of the classes in main.css
+
+            case "light":
+                $themebody = "LightModeBody";
+                $themetextbox = "LightModeTextbox";
+                break;
+    
+            case "k9":
+                $themebody = "K9ModeBody";
+                $themetextbox = "K9ModeTextbox";
+                break;
+        }
+
+        // Set the theme
+        $(document.body).addClass($themebody);
+        $('.textbox, .searchbar, .widget, .header_header').addClass($themetextbox);
+
+        
+    }
+
+    var d = new Date();
+    d.setTime(d.getTime() + (1*24*60*60*1000));
+    $expires = "expires=" + d.toUTCString();
+    document.cookie = "theme=" + $theme + "; " + $expires + "; path=/";
+
+}
+
 //All .ajax call functions can be more or less combined into one here, and this will be done at some point.
 //Ajax is used to call the json file it's working with and then pass a specific subset of that information into a DataTable init.
 //DataTables has solved a lot of headaches for this project. ++

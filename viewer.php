@@ -12,6 +12,15 @@ $test=0;
 $json_data = json_decode($json,true);
 $profile_name = explode(".", explode("/", $json_file)[1])[0];
 
+// Get theme from cookie
+if (isset($_COOKIE['theme'])) {
+    $selected_theme = $_COOKIE['theme'];
+} 
+
+else {
+    $selected_theme = "classic";
+}
+
 //This is done manually currently, but there's hopes to implementing an automated version to return Support/EOL versions of Windows friendly versions.
 //Right now, it's just a string that holds all the EOL version of Windows, and the Friendly version inside the json is being compared against each of the string's
 //positions.
@@ -175,6 +184,7 @@ function bytesToGigabytes($bytes) {
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.dark.min.css" rel="stylesheet">
     <link href="static/css/main.css" rel="stylesheet">
+    <link href="static/css/themes.css" rel="stylesheet">
     <!--This section is for the discord embed card. Need to expand upon it. -->
     <meta name="og:title" content="<?= $json_data["BasicInfo"]["Hostname"] ?>" />
     <meta name="og:site_name" content="Specify" />
@@ -217,13 +227,13 @@ function bytesToGigabytes($bytes) {
 
         </div>
         <select title="mappings" id="ModeToggle">
-
-            <optgroup
-                    label="View">
-                <option value="auto">Dark Mode</option>
-                <option value="none">(WIP)Light Mode</option>
+            <optgroup label="View">
+                <option value="classic" <?php if ($selected_theme == "classic") echo "selected"; ?>>Dark Mode</option>
+                <option value="k9" <?php if ($selected_theme == "k9") echo "selected"; ?>>K9's Dark Mode</option>
+                <option value="light" <?php if ($selected_theme == "light") echo "selected"; ?>>Light Mode</option>
             </optgroup>
         </select>
+
 
         </span></header><main>
         <div class="specify">
