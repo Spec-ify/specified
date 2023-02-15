@@ -197,11 +197,21 @@ function bytesToGigabytes($bytes) {
             <img src="assets/logo.png" height="25em">
         </a>
         <div>
-        <button type="button" class="btn btn-info" id="CollapseToggle">Expand All</button>
+            <button type="button" class="btn btn-info" id="CollapseToggle">Expand All</button>
             <button type="button" class="btn btn-info" id="CollapseToggleHide">Collapse All</button>
-            <a id="DownloadJSON" href="<?= $json_file ?>" download>
+            <a id="Download" href="<?= $json_file ?>" download>
                 <button class="btn btn-info">Download JSON</button>
             </a>
+            <?php
+            if ($json_data['System']['DumpZip']['Value']){
+                $dumplink = $json_data['System']['DumpZip']['Value'];
+
+                echo '<a id="Download" href="'.$dumplink.'">
+                    <button class="btn btn-info">Download Dumps</button>
+                </a>';
+            }
+            ?>
+
         </div>
         <select title="mappings" id="ModeToggle">
 
