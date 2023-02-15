@@ -206,9 +206,12 @@ function bytesToGigabytes($bytes) {
             if (isset($json_data['System']['DumpZip']['Value'])){
                 $dumplink = $json_data['System']['DumpZip']['Value'];
 
-                echo '<a id="Download" href="'.$dumplink.'">
-                    <button class="btn btn-info">Download Dumps</button>
-                </a>';
+                if (filter_var($dumplink, FILTER_VALIDATE_URL)){
+                    echo '<a id="Download" href="'.$dumplink.'">
+                        <button class="btn btn-info">Download Dumps</button>
+                    </a>';
+                }
+                
             }
             ?>
 
