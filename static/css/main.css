@@ -818,7 +818,7 @@ article h1:before,article h2:before {
     display: none;
 }
 
-#DownloadJSON:hover {
+#Download:hover {
     text-decoration: none;
     border-bottom: none;
 }
