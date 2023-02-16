@@ -1484,6 +1484,8 @@ function bytesToGigabytes($bytes) {
         <span>Massive Shoutout to <a href="https://spark.lucko.me/" target="_blank">Spark</a></span>
     </main>
 </body>
+<!--This should be first to make sure the themes load on time-->
+<script src="static/js/themes.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script
         src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"

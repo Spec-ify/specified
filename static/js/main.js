@@ -41,53 +41,6 @@ $('#CollapseToggleHide').click(function(){
     $('.accordion-collapse').removeClass('show');
 });
 
-//Themes. Could be handled in a better, more efficient way but it does it's job.
-// IMPORTANT: the variables are intialized and set to *something* before running the script
-let themeBody = null;
-let themeTextBox = null;
-
-const localStorageTheme = window.localStorage.getItem("theme");
-if (localStorageTheme !== null) {
-    $(`#ModeToggle option[value="${localStorageTheme}"]`).attr("selected", "");
-    change_theme();
-}
-
-// Call the function every time it changes
-$('#ModeToggle').change(function(){
-    change_theme();
-});
-
-function change_theme(){
-    // Get selection for the switch
-    let theme = $('#ModeToggle').val();
-    let themeables = $('.textbox, .searchbar, .widget, .header_header');
-    let body = $("body");
-
-    // Remove current theme
-    body.removeClass(themeBody);
-    themeables.removeClass(themeTextBox);
-
-    if (theme !== "classic") {
-        switch(theme){
-            case "light":
-                themeBody = "LightModeBody";
-                themeTextBox = "LightModeTextbox";
-                break;
-
-            case "k9":
-                themeBody = "K9ModeBody";
-                themeTextBox = "K9ModeTextbox";
-                break;
-        }
-
-        // Set the theme
-        body.addClass(themeBody);
-        themeables.addClass(themeTextBox);
-    }
-
-    localStorage.setItem("theme", theme);
-}
-
 //All .ajax call functions can be more or less combined into one here, and this will be done at some point.
 //Ajax is used to call the json file it's working with and then pass a specific subset of that information into a DataTable init.
 //DataTables has solved a lot of headaches for this project. ++
