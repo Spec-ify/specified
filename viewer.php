@@ -78,46 +78,45 @@ else{
 $ds=strtotime($json_data['Meta']['GenerationDate']);
 
 function timeConvert($time) {
-    // Split the time string into its parts
-    $parts = preg_split('/[:.]/', $time);
 
-    // Extract the hours, minutes, and seconds
+    $timeString = "";
 
-    $days = (int) $parts[0];
-    $hours = (int) $parts[1];
-    $minutes = (int) $parts[2];
-    $seconds = (int) $parts[3];
-    if($seconds > 60){
-        $days = 0;
-        $hours = (int) $parts[0];
-        $minutes = (int) $parts[1];
-        $seconds = (int) $parts[2];
-    }
+    $days = floor($time / (60 * 60 * 24));
+    $hours = floor(($time % (60 * 60 * 24)) / (60 * 60));
+    $minutes = floor(($time % (60 * 60)) / 60);
+    $seconds = $time % 60;
 
     // Initialize the string with the number of days
-    $timeString = "{$days} day";
-    if ($days != 1) {
-        $timeString .= 's';
+
+    if ($days){
+        $timeString = "{$days} day";
+        if ($days != 1) {
+            $timeString .= 's';
+        }
+        $timeString .= ', ';
     }
+    
 
     // Add the number of hours to the string
-    if ($minutes > 0 || $seconds > 0) {
-        $timeString .= ", {$hours} hour";
+    if ($hours){
+        $timeString .= "{$hours} hour";
         if ($hours != 1) {
             $timeString .= 's';
         }
+        $timeString .= ', ';
     }
 
     // Add the number of minutes to the string
-    if ($seconds > 0) {
-        $timeString .= ", {$minutes} minute";
+    if ($minutes) {
+        $timeString .= "{$minutes} minute";
         if ($minutes != 1) {
             $timeString .= 's';
         }
+        $timeString .= ', ';
     }
     // Add the number of seconds to the string
-    if ($seconds > 0) {
-        $timeString .= ", and {$seconds} second";
+    if ($seconds) {
+        $timeString .= "and {$seconds} second";
         if ($seconds != 1) {
             $timeString .= 's';
         }
