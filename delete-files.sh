@@ -11,7 +11,7 @@ OLD_FILES=$( find $SCRIPT_DIR/files -mindepth 1 -mtime +0 -type f )
 
 for fileName in $OLD_FILES
 do
-  if [ $( grep -q "$fileName" "$HELD_FILES_LIST" ) ]; then
+  if grep -q "$fileName" "$HELD_FILES_LIST"; then
     echo "$fileName held"
   else
     rm $fileName
