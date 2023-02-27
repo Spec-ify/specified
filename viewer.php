@@ -207,6 +207,9 @@ function bytesToGigabytes($bytes) {
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
+<script type="text/javascript"> 
+    var DebugLog = `<?php echo(nl2br($json_data['DebugLogText']));?>`;
+</script>
 <div id="main">
     <!--$-->
     <button
@@ -260,7 +263,7 @@ function bytesToGigabytes($bytes) {
                 <input class="searchbar" type="text" placeholder="Search..." id="searchBarDiv"  onkeyup="searchFunction()">
             </div>
             <div  id="main">
-            <div class="metadata_metadata expanded">
+            <div class="metadata_metadata expanded" id="info">
                 <div class="widgets_widgets widgets" id="hardware_widgets" data-hide="false">
                     <div class="widget widget-cpu hover">
                         <h1>CPU</h1>
@@ -1330,55 +1333,55 @@ function bytesToGigabytes($bytes) {
                         </div>
                     </div>
                 </div>
-            <div>
-                <div class="textbox metadata-detail" id="accordionTablesApps">
-                <div class="accordion">
-                    <h1 class="accordion-header" id="runningProcessesButton">
-                        <button
-                                class="accordion-button"
-                                type="button"
-                                data-mdb-toggle="collapse"
-                                data-mdb-target="#runningProcesses"
-                                aria-expanded="true"
-                                aria-controls="runningProcesses"
-                        >
-                            Running Processes
-                        </button></h1>
-                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="runningProcesses">
-                    <table id="runningProcessesTable" class="table">
-                        <thead>
-                        <th>Name</th>
-                        <th>Path</th>
-                        <th>PID</th>
-                        <th>RAM (MB)</th>
-                        <th>CPU</th>
-                        </thead>
-                    </table>
-                </div>
-                    <h1 class="accordion-header" id="installedAppButton">
-                        <button
-                                class="accordion-button"
-                                type="button"
-                                data-mdb-toggle="collapse"
-                                data-mdb-target="#installedApp"
-                                aria-expanded="true"
-                                aria-controls="installedApp"
-                        >
-                            Installed Apps
-                        </button></h1>
-                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="installedApp">
-                    <table id="installedAppTable" class="table">
-                        <thead>
-                        <th>Name</th>
-                        <th>Version</th>
-                        <th>Install Date</th>
-                        </thead>
-                    </table>
-                </div>
+                <div>
+                    <div class="textbox metadata-detail" id="accordionTablesApps">
+                    <div class="accordion">
+                        <h1 class="accordion-header" id="runningProcessesButton">
+                            <button
+                                    class="accordion-button"
+                                    type="button"
+                                    data-mdb-toggle="collapse"
+                                    data-mdb-target="#runningProcesses"
+                                    aria-expanded="true"
+                                    aria-controls="runningProcesses"
+                            >
+                                Running Processes
+                            </button></h1>
+                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="runningProcesses">
+                        <table id="runningProcessesTable" class="table">
+                            <thead>
+                            <th>Name</th>
+                            <th>Path</th>
+                            <th>PID</th>
+                            <th>RAM (MB)</th>
+                            <th>CPU</th>
+                            </thead>
+                        </table>
+                    </div>
+                        <h1 class="accordion-header" id="installedAppButton">
+                            <button
+                                    class="accordion-button"
+                                    type="button"
+                                    data-mdb-toggle="collapse"
+                                    data-mdb-target="#installedApp"
+                                    aria-expanded="true"
+                                    aria-controls="installedApp"
+                            >
+                                Installed Apps
+                            </button></h1>
+                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="installedApp">
+                        <table id="installedAppTable" class="table">
+                            <thead>
+                            <th>Name</th>
+                            <th>Version</th>
+                            <th>Install Date</th>
+                            </thead>
+                        </table>
+                    </div>
 
+                    </div>
+                    </div>
                 </div>
-                </div>
-            </div>
                 <div>
                     <div class="textbox metadata-detail" id="accordionTablesServices">
                         <div class="accordion">
@@ -1499,14 +1502,14 @@ function bytesToGigabytes($bytes) {
                         </div>
                     </div>
                 </div>
-
-        </div>
+            </div>
         </div>
         <span>Massive Shoutout to <a href="https://spark.lucko.me/" target="_blank">Spark</a></span>
     </main>
 </body>
 <!--This should be first to make sure the themes load on time-->
 <script src="static/js/themes.js"></script>
+<script src="static/js/konami.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script
         src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"
