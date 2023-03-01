@@ -419,29 +419,4 @@ function backToTop() {
 
 // Konami Code - Shows Debug Log
 // KonamiJS Code from https://github.com/georgemandis/konami-js
-function konamitrigger(){
-    var debugdiv = document.createElement('div');
-    debugdiv.innerHTML = `
-        <div class="textbox metadata-detail ` + themeTextBox + `" id="accordionTablesDebug">
-            <div class="accordion">
-                <h1 class="accordion-header" id="debugLogButton">
-                    <button
-                            class="accordion-button"
-                            type="button"
-                            data-mdb-toggle="collapse"
-                            data-mdb-target="#debugLog"
-                            aria-expanded="true"
-                            aria-controls="debugLog">
-                        Debug Log
-                    </button>
-                </h1>
-                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="debugLog">
-                        <p style="font-size: 10pt;">`+ DebugLog +`
-                        </p>
-                </div>
-            </div>
-        </div>
-    `;
-    document.getElementById('info').appendChild(debugdiv);
-}
-const easterEgg = new Konami(() => konamitrigger())
+const easterEgg = new Konami(() => document.getElementById('debugdiv').style.display = 'block')

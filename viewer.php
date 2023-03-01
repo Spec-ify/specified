@@ -207,9 +207,6 @@ function bytesToGigabytes($bytes) {
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
-<script type="text/javascript"> 
-    var DebugLog = `<?php echo(nl2br($json_data['DebugLogText']));?>`;
-</script>
 <div id="main">
     <!--$-->
     <button
@@ -1498,6 +1495,30 @@ function bytesToGigabytes($bytes) {
                                 $hoststext = nl2br($json_data['Network']['HostsFile']);
                                 ?>
                                     <p style="font-size: 10pt;"><?=$hoststext?> </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="debugdiv" style="display: none">
+                    <div class="textbox metadata-detail ` + themeTextBox + `" id="accordionTablesDebug">
+                        <div class="accordion">
+                            <h1 class="accordion-header" id="debugLogButton">
+                                <button
+                                        class="accordion-button"
+                                        type="button"
+                                        data-mdb-toggle="collapse"
+                                        data-mdb-target="#debugLog"
+                                        aria-expanded="true"
+                                        aria-controls="debugLog">
+                                    Debug Log
+                                </button>
+                            </h1>
+                            <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="debugLog">
+                            <?php
+                                $DebugLog = nl2br($json_data['DebugLogText']);
+                                ?>
+                                    <p style="font-size: 10pt;"><?=$DebugLog?>
+                                    </p>
                             </div>
                         </div>
                     </div>
