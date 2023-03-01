@@ -1499,8 +1499,8 @@ function bytesToGigabytes($bytes) {
                         </div>
                     </div>
                 </div>
-                <div id="debugdiv" style="display: none">
-                    <div class="textbox metadata-detail ` + themeTextBox + `" id="accordionTablesDebug">
+                <div id="devdiv" style="display: none">
+                    <div class="textbox metadata-detail" id="accordionTablesDev">
                         <div class="accordion">
                             <h1 class="accordion-header" id="debugLogButton">
                                 <button
@@ -1518,6 +1518,29 @@ function bytesToGigabytes($bytes) {
                                 $DebugLog = nl2br($json_data['DebugLogText']);
                                 ?>
                                     <p style="font-size: 10pt;"><?=$DebugLog?>
+                                    </p>
+                            </div>
+                        </div>
+                        <div class="accordion">
+                            <h1 class="accordion-header" id="issuesLogButton">
+                                <button
+                                        class="accordion-button"
+                                        type="button"
+                                        data-mdb-toggle="collapse"
+                                        data-mdb-target="#issuesLog"
+                                        aria-expanded="true"
+                                        aria-controls="issuesLog">
+                                    Issues
+                                </button>
+                            </h1>
+                            <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="issuesLog">
+                                    <p style="font-size: 10pt;">
+                                    <?php
+                                    $issues = $json_data['Issues'];
+                                    foreach ($issues as $issue){
+                                        echo(nl2br($issue."\n"));
+                                    }
+                                    ?>
                                     </p>
                             </div>
                         </div>

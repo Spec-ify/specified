@@ -419,4 +419,4 @@ function backToTop() {
 
 // Konami Code - Shows Debug Log
 // KonamiJS Code from https://github.com/georgemandis/konami-js
-const easterEgg = new Konami(() => document.getElementById('debugdiv').style.display = 'block')
+const easterEgg = new Konami(() => document.getElementById('devdiv').style.display = 'block')
