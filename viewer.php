@@ -746,6 +746,7 @@ function bytesToGigabytes($bytes) {
                         $current_drive = $drive+1;
                         $drive_size_raw = $json_data['Hardware']['Storage'][$drive]['DiskCapacity'];
                         $drive_free_raw = $json_data['Hardware']['Storage'][$drive]['DiskFree'];
+                        $device_name = $json_data['Hardware']['Storage'][$drive]['DeviceName'];
                         $drive_taken_raw = $drive_size_raw - $drive_free_raw;
                         $drive_size = floor($drive_size_raw)/1073741824;
                         $drive_taken = floor($drive_taken_raw)/1073741824;
@@ -765,9 +766,13 @@ function bytesToGigabytes($bytes) {
                             $flavor_color = $green;
                         }
 
+                        $letters = array_filter(
+                                array_column($json_data['Hardware']['Storage'][$drive]['Partitions'], 'PartitionLabel'));
+                        $lettersString = implode(", ", $letters);
+
                         echo '
 					<div class="widget widget-disk hover" type="button" data-mdb-toggle="modal" data-mdb-target="#driveModal' . $drive . '">
-						<h1>' . $json_data['Hardware']['Storage'][$drive]['DeviceName'] . '</h1>
+						<h1>' . $device_name . '</h1>
 						<div class="widget-values">
 							<div class="widget-value">
 								<div class="widget-single-value">
@@ -784,7 +789,7 @@ function bytesToGigabytes($bytes) {
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title" id="ModalLabel">' . $json_data['Hardware']['Storage'][$drive]['DeviceName'] . '</h5>
+									<h5 class="modal-title" id="ModalLabel">' . $device_name . ' (' . $lettersString . ')' . '</h5>
 									<button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
 								</div>
 								<div class="modal-body">';
