@@ -1112,7 +1112,12 @@ function bytesToGigabytes($bytes) {
                             ';
                         }
                         foreach($json_data['System']['ChoiceRegistryValues'] as $regkey){
-                            if($regkey['Value']!= null && $regkey['Name']!= "NetworkThrottlingIndex"){
+                            if($regkey['Value']!= null && $regkey['Name']!= "NetworkThrottlingIndex" && $regkey['Name']!= "HwSchMode"){
+                                echo '
+                                <p>Registry Value <span>'.$regkey['Name'].'</span> found set, value of <span>'.$regkey['Value'].'</span></p>
+                                ';
+                            }
+                            else if ($regkey['Name']!= "HwSchMode" && $regkey['Value'] = 2){
                                 echo '
                                 <p>Registry Value <span>'.$regkey['Name'].'</span> found set, value of <span>'.$regkey['Value'].'</span></p>
                                 ';
@@ -1452,7 +1457,7 @@ function bytesToGigabytes($bytes) {
                                     <th>Local Port</th>
                                     <th>Remote IP</th>
                                     <th>Remote Port</th>
-                                    <th>PID</th>
+                                    <th>Process Name</th>
                                     </thead>
                                 </table>
                             </div>
