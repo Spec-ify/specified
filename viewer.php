@@ -1117,7 +1117,7 @@ function bytesToGigabytes($bytes) {
                                 <p>Registry Value <span>'.$regkey['Name'].'</span> found set, value of <span>'.$regkey['Value'].'</span></p>
                                 ';
                             }
-                            else if ($regkey['Name']!= "HwSchMode" && $regkey['Value'] = 2){
+                            else if ($regkey['Name'] == "HwSchMode" && $regkey['Value'] == 2){
                                 echo '
                                 <p>Registry Value <span>'.$regkey['Name'].'</span> found set, value of <span>'.$regkey['Value'].'</span></p>
                                 ';
