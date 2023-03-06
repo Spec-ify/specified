@@ -416,3 +416,7 @@ function backToTop() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
 }
+
+// Konami Code - Shows Debug Log
+// KonamiJS Code from https://github.com/georgemandis/konami-js
+const easterEgg = new Konami(() => document.getElementById('devdiv').style.display = 'block')

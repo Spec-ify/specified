@@ -260,7 +260,7 @@ function bytesToGigabytes($bytes) {
                 <input class="searchbar" type="text" placeholder="Search..." id="searchBarDiv"  onkeyup="searchFunction()">
             </div>
             <div  id="main">
-            <div class="metadata_metadata expanded">
+            <div class="metadata_metadata expanded" id="info">
                 <div class="widgets_widgets widgets" id="hardware_widgets" data-hide="false">
                     <div class="widget widget-cpu hover">
                         <h1>CPU</h1>
@@ -746,6 +746,7 @@ function bytesToGigabytes($bytes) {
                         $current_drive = $drive+1;
                         $drive_size_raw = $json_data['Hardware']['Storage'][$drive]['DiskCapacity'];
                         $drive_free_raw = $json_data['Hardware']['Storage'][$drive]['DiskFree'];
+                        $device_name = $json_data['Hardware']['Storage'][$drive]['DeviceName'];
                         $drive_taken_raw = $drive_size_raw - $drive_free_raw;
                         $drive_size = floor($drive_size_raw)/1073741824;
                         $drive_taken = floor($drive_taken_raw)/1073741824;
@@ -765,9 +766,13 @@ function bytesToGigabytes($bytes) {
                             $flavor_color = $green;
                         }
 
+                        $letters = array_filter(
+                                array_column($json_data['Hardware']['Storage'][$drive]['Partitions'], 'PartitionLabel'));
+                        $lettersString = implode(", ", $letters);
+
                         echo '
 					<div class="widget widget-disk hover" type="button" data-mdb-toggle="modal" data-mdb-target="#driveModal' . $drive . '">
-						<h1>' . $json_data['Hardware']['Storage'][$drive]['DeviceName'] . '</h1>
+						<h1>' . $device_name . '</h1>
 						<div class="widget-values">
 							<div class="widget-value">
 								<div class="widget-single-value">
@@ -784,7 +789,7 @@ function bytesToGigabytes($bytes) {
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title" id="ModalLabel">' . $json_data['Hardware']['Storage'][$drive]['DeviceName'] . '</h5>
+									<h5 class="modal-title" id="ModalLabel">' . $device_name . ' (' . $lettersString . ')' . '</h5>
 									<button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
 								</div>
 								<div class="modal-body">';
@@ -1335,55 +1340,55 @@ function bytesToGigabytes($bytes) {
                         </div>
                     </div>
                 </div>
-            <div>
-                <div class="textbox metadata-detail" id="accordionTablesApps">
-                <div class="accordion">
-                    <h1 class="accordion-header" id="runningProcessesButton">
-                        <button
-                                class="accordion-button"
-                                type="button"
-                                data-mdb-toggle="collapse"
-                                data-mdb-target="#runningProcesses"
-                                aria-expanded="true"
-                                aria-controls="runningProcesses"
-                        >
-                            Running Processes
-                        </button></h1>
-                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="runningProcesses">
-                    <table id="runningProcessesTable" class="table">
-                        <thead>
-                        <th>Name</th>
-                        <th>Path</th>
-                        <th>PID</th>
-                        <th>RAM (MB)</th>
-                        <th>CPU</th>
-                        </thead>
-                    </table>
-                </div>
-                    <h1 class="accordion-header" id="installedAppButton">
-                        <button
-                                class="accordion-button"
-                                type="button"
-                                data-mdb-toggle="collapse"
-                                data-mdb-target="#installedApp"
-                                aria-expanded="true"
-                                aria-controls="installedApp"
-                        >
-                            Installed Apps
-                        </button></h1>
-                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="installedApp">
-                    <table id="installedAppTable" class="table">
-                        <thead>
-                        <th>Name</th>
-                        <th>Version</th>
-                        <th>Install Date</th>
-                        </thead>
-                    </table>
-                </div>
+                <div>
+                    <div class="textbox metadata-detail" id="accordionTablesApps">
+                    <div class="accordion">
+                        <h1 class="accordion-header" id="runningProcessesButton">
+                            <button
+                                    class="accordion-button"
+                                    type="button"
+                                    data-mdb-toggle="collapse"
+                                    data-mdb-target="#runningProcesses"
+                                    aria-expanded="true"
+                                    aria-controls="runningProcesses"
+                            >
+                                Running Processes
+                            </button></h1>
+                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="runningProcesses">
+                        <table id="runningProcessesTable" class="table">
+                            <thead>
+                            <th>Name</th>
+                            <th>Path</th>
+                            <th>PID</th>
+                            <th>RAM (MB)</th>
+                            <th>CPU</th>
+                            </thead>
+                        </table>
+                    </div>
+                        <h1 class="accordion-header" id="installedAppButton">
+                            <button
+                                    class="accordion-button"
+                                    type="button"
+                                    data-mdb-toggle="collapse"
+                                    data-mdb-target="#installedApp"
+                                    aria-expanded="true"
+                                    aria-controls="installedApp"
+                            >
+                                Installed Apps
+                            </button></h1>
+                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="installedApp">
+                        <table id="installedAppTable" class="table">
+                            <thead>
+                            <th>Name</th>
+                            <th>Version</th>
+                            <th>Install Date</th>
+                            </thead>
+                        </table>
+                    </div>
 
+                    </div>
+                    </div>
                 </div>
-                </div>
-            </div>
                 <div>
                     <div class="textbox metadata-detail" id="accordionTablesServices">
                         <div class="accordion">
@@ -1504,14 +1509,61 @@ function bytesToGigabytes($bytes) {
                         </div>
                     </div>
                 </div>
-
-        </div>
+                <div id="devdiv" style="display: none">
+                    <div class="textbox metadata-detail" id="accordionTablesDev">
+                        <div class="accordion">
+                            <h1 class="accordion-header" id="debugLogButton">
+                                <button
+                                        class="accordion-button"
+                                        type="button"
+                                        data-mdb-toggle="collapse"
+                                        data-mdb-target="#debugLog"
+                                        aria-expanded="true"
+                                        aria-controls="debugLog">
+                                    Debug Log
+                                </button>
+                            </h1>
+                            <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="debugLog">
+                            <?php
+                                $DebugLog = nl2br($json_data['DebugLogText']);
+                                ?>
+                                    <p style="font-size: 10pt;"><?=$DebugLog?>
+                                    </p>
+                            </div>
+                        </div>
+                        <div class="accordion">
+                            <h1 class="accordion-header" id="issuesLogButton">
+                                <button
+                                        class="accordion-button"
+                                        type="button"
+                                        data-mdb-toggle="collapse"
+                                        data-mdb-target="#issuesLog"
+                                        aria-expanded="true"
+                                        aria-controls="issuesLog">
+                                    Issues
+                                </button>
+                            </h1>
+                            <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="issuesLog">
+                                    <p style="font-size: 10pt;">
+                                    <?php
+                                    $issues = $json_data['Issues'];
+                                    foreach ($issues as $issue){
+                                        echo(nl2br($issue."\n"));
+                                    }
+                                    ?>
+                                    </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <span>Massive Shoutout to <a href="https://spark.lucko.me/" target="_blank">Spark</a></span>
     </main>
 </body>
 <!--This should be first to make sure the themes load on time-->
 <script src="static/js/themes.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/konami@1.6.3/konami.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script
         src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"
