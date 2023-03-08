@@ -623,18 +623,6 @@ function getDriveCapacity ($driveinput){
                                                 <td>Boot State</td>
                                                 <td>'.$json_data['BasicInfo']['BootState'].'</td>
                                             </tr>';
-
-                                        $tpm_status = 'Disabled';
-                                        $tpm_manufacturer = "N/A";
-                                        $tpm_version = "N/A";
-                                        if(is_null($json_data['Security']['Tpm']) || !$json_data['Security']['Tpm']['IsEnabled_InitialValue']){
-                                            
-                                        }
-                                        else{
-                                            $tpm_status ='Enabled';
-                                            $tpm_manufacturer = $json_data['Security']['Tpm']['ManufacturerVersionInfo'].' '.$json_data['Security']['Tpm']['ManufacturerVersion'];
-                                            $tpm_version = $json_data['Security']['Tpm']['SpecVersion'];
-                                        }
                                             
                                         echo
                                             '<tr>
