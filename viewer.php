@@ -182,7 +182,29 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
 //XDDDDD
 function bytesToGigabytes($bytes) {
+    // 1073741824 = 1024 * 1024 * 1024
     return $bytes / 1073741824;
+}
+
+function getDriveUsed ($driveinput){
+    $driveused = 0;
+    foreach ($driveinput['Partitions'] as $partition){
+        $driveused += $partition['PartitionCapacity'] - $partition['PartitionFree'];
+    }
+    return $driveused;
+}
+
+function getDriveFree ($driveinput){
+    $drivefree = $driveinput['DiskCapacity'] - getDriveUsed($driveinput);
+    return $drivefree;
+}
+
+function getDriveCapacity ($driveinput){
+    $partitioncap = 0;
+    foreach ($driveinput['Partitions'] as $partition){
+        $partitioncap += $partition['PartitionCapacity'];
+    }
+    return $partitioncap;
 }
 ?>
 <!doctype html><html lang="en">
@@ -464,6 +486,7 @@ function bytesToGigabytes($bytes) {
                                             <th scope="col">VRAM</th>
                                             <th scope="col">Mode</th>
                                             <th scope="col">Monitor</th>
+                                            <th scope="col">Connection</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -479,6 +502,7 @@ function bytesToGigabytes($bytes) {
                                                 <td>'.$json_data['Hardware']['Monitors'][$monitor]['DedicatedMemory'].'</td>
                                                 <td>'.$json_data['Hardware']['Monitors'][$monitor]['CurrentMode'].'</td>
                                                 <td>'.$json_data['Hardware']['Monitors'][$monitor]['MonitorModel'].'</td>
+                                                <td>'.$json_data['Hardware']['Monitors'][$monitor]['ConnectionType'].'</td>
                                             </tr>';}
                                         ?>
                                         </tbody>
@@ -708,7 +732,7 @@ function bytesToGigabytes($bytes) {
                                                     '.'<td>'.$current_drive['SerialNumber'].'</td>'.'
                                                     '.'<td>'.$current_drive['DiskNumber'].'</td>'.'
                                                     '.'<td>'.floor(bytesToGigabytes($current_drive['DiskCapacity'])).'GB</td>'.'
-                                                    '.'<td>'.floor(bytesToGigabytes($current_drive['DiskFree'])).'GB</td>'.'
+                                                    '.'<td>'.floor(bytesToGigabytes(getDriveFree($current_drive))).'GB</td>'.'
                                                     </tbody>
                                                 </table>
                                                 <h5>Partitions</h5>
@@ -745,11 +769,11 @@ function bytesToGigabytes($bytes) {
                         }
                         $current_drive = $drive+1;
                         $drive_size_raw = $json_data['Hardware']['Storage'][$drive]['DiskCapacity'];
-                        $drive_free_raw = $json_data['Hardware']['Storage'][$drive]['DiskFree'];
+                        $drive_free_raw = getDriveFree($json_data['Hardware']['Storage'][$drive]);
                         $device_name = $json_data['Hardware']['Storage'][$drive]['DeviceName'];
                         $drive_taken_raw = $drive_size_raw - $drive_free_raw;
-                        $drive_size = floor($drive_size_raw)/1073741824;
-                        $drive_taken = floor($drive_taken_raw)/1073741824;
+                        $drive_size = floor(bytesToGigabytes    ($drive_size_raw));
+                        $drive_taken = floor(bytesToGigabytes($drive_taken_raw));
                         if($drive_taken!=0){
                         $drive_percentage = round((float)$drive_taken / (float)$drive_size*100);
                         }
@@ -1096,6 +1120,18 @@ function bytesToGigabytes($bytes) {
                         </p>
                         ';
                         }
+                        foreach ($json_data['Hardware']['Storage'] as $current_drive){
+                            if (!(floor(bytesToGigabytes($current_drive['DiskCapacity'])) == 
+                                    floor(bytesToGigabytes(getDriveCapacity($current_drive))))){
+                                echo '
+                            <p>
+                                Drive <span>'.$current_drive['DeviceName'].'</span> have different capacities.
+                                ('.floor(bytesToGigabytes($current_drive['DiskCapacity'])). " on disk vs. "
+                                .floor(bytesToGigabytes(getDriveCapacity($current_drive))).' on partitions)
+                            </p>
+                            ';
+                            }
+                        }
                         ?>
                         <br>
                         <h4>Rudimentary Registry Checks</h4>
@@ -1112,8 +1148,12 @@ function bytesToGigabytes($bytes) {
                             echo '
                             <p>
                                 There have been <span>'.$json_data['System']['RecentMinidumps'].' Minidumps found</span>
-                            </p>>
-                            
+                            </p>
+                            ';
+                        }
+                        if($json_data['System']['ChoiceRegistryValues'][2]['Value']!=10){
+                            echo '
+                            <p>Network Throttling Index found set at <span>'.$json_data['System']['ChoiceRegistryValues'][2]['Value'].'</span></p>
                             ';
                         }
                         foreach($json_data['System']['ChoiceRegistryValues'] as $regkey){
@@ -1122,11 +1162,6 @@ function bytesToGigabytes($bytes) {
                                 <p>Registry Value <span>'.$regkey['Name'].'</span> found set, value of <span>'.$regkey['Value'].'</span></p>
                                 ';
                             }
-                        }
-                        if($json_data['System']['ChoiceRegistryValues'][2]['Value']!=10){
-                            echo '
-                            <p>Network Throttling Index found set at <span>'.$json_data['System']['ChoiceRegistryValues'][2]['Value'].'</span></p>
-                            ';
                         }
                         ?>
 
