@@ -426,10 +426,16 @@ function getDriveCapacity ($driveinput){
                                             <td><?=$json_data['Hardware']['BiosInfo'][0]['SerialNumber']?></td>
                                         </tr>
                                         <?php
-                                        if($json_data['Security']['Tpm']['IsEnabled_InitialValue']){
-                                            $tpm_status = 'Enabled';}
+                                        $tpm_status = 'Disabled';
+                                        $tpm_manufacturer = "N/A";
+                                        $tpm_version = "N/A";
+                                        if(is_null($json_data['Security']['Tpm']) || !$json_data['Security']['Tpm']['IsEnabled_InitialValue']){
+                                            
+                                        }
                                         else{
-                                            $tpm_status ='Disabled';
+                                            $tpm_status ='Enabled';
+                                            $tpm_manufacturer = $json_data['Security']['Tpm']['ManufacturerVersionInfo'].' '.$json_data['Security']['Tpm']['ManufacturerVersion'];
+                                            $tpm_version = $json_data['Security']['Tpm']['SpecVersion'];
                                         }
 
                                         echo
@@ -441,12 +447,12 @@ function getDriveCapacity ($driveinput){
                                         echo
                                             '<tr>
                                                 <td>Manufacturer Version</td>
-                                                <td>'.$json_data['Security']['Tpm']['ManufacturerVersionInfo'].' '.$json_data['Security']['Tpm']['ManufacturerVersion'].'</td>
+                                                <td>'.$tpm_manufacturer.'</td>
                                             </tr>';
                                         echo
                                             '<tr>
                                                 <td>Version</td>
-                                                <td>'.$json_data['Security']['Tpm']['SpecVersion'].'</td>
+                                                <td>'.$tpm_version.'</td>
                                             </tr>';
                                         ?>
                                         </tbody>
@@ -616,6 +622,34 @@ function getDriveCapacity ($driveinput){
                                             '<tr>
                                                 <td>Boot State</td>
                                                 <td>'.$json_data['BasicInfo']['BootState'].'</td>
+                                            </tr>';
+
+                                        $tpm_status = 'Disabled';
+                                        $tpm_manufacturer = "N/A";
+                                        $tpm_version = "N/A";
+                                        if(is_null($json_data['Security']['Tpm']) || !$json_data['Security']['Tpm']['IsEnabled_InitialValue']){
+                                            
+                                        }
+                                        else{
+                                            $tpm_status ='Enabled';
+                                            $tpm_manufacturer = $json_data['Security']['Tpm']['ManufacturerVersionInfo'].' '.$json_data['Security']['Tpm']['ManufacturerVersion'];
+                                            $tpm_version = $json_data['Security']['Tpm']['SpecVersion'];
+                                        }
+                                            
+                                        echo
+                                            '<tr>
+                                                <td>TPM Status</td>
+                                                <td>'.$tpm_status.'</td>
+                                            </tr>';
+                                        echo
+                                            '<tr>
+                                                <td>Manufacturer Version</td>
+                                                <td>'.$tpm_manufacturer.'</td>
+                                            </tr>';
+                                        echo
+                                            '<tr>
+                                                <td>Version</td>
+                                                <td>'.$tpm_version.'</td>
                                             </tr>';
                                         ?>
                                         </tbody>
