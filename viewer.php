@@ -794,7 +794,7 @@ function getDriveCapacity ($driveinput){
                         $drive_free_raw = getDriveFree($json_data['Hardware']['Storage'][$drive]);
                         $device_name = $json_data['Hardware']['Storage'][$drive]['DeviceName'];
                         $drive_taken_raw = $drive_size_raw - $drive_free_raw;
-                        $drive_size = floor(bytesToGigabytes    ($drive_size_raw));
+                        $drive_size = floor(bytesToGigabytes($drive_size_raw));
                         $drive_taken = floor(bytesToGigabytes($drive_taken_raw));
                         if($drive_taken!=0){
                         $drive_percentage = round((float)$drive_taken / (float)$drive_size*100);
@@ -811,6 +811,10 @@ function getDriveCapacity ($driveinput){
                         elseif($drive_percentage>=0 && $drive_percentage <=49){
                             $flavor_color = $green;
                         }
+                        if (!(floor(bytesToGigabytes($json_data['Hardware']['Storage'][$drive]['DiskCapacity'])) == 
+                                    floor(bytesToGigabytes(getDriveCapacity($json_data['Hardware']['Storage'][$drive]))))){
+                                        $flavor_color = $red;
+                            }
 
                         $letters = array_filter(
                                 array_column($json_data['Hardware']['Storage'][$drive]['Partitions'], 'PartitionLabel'));
@@ -1145,13 +1149,13 @@ function getDriveCapacity ($driveinput){
                         foreach ($json_data['Hardware']['Storage'] as $current_drive){
                             if (!(floor(bytesToGigabytes($current_drive['DiskCapacity'])) == 
                                     floor(bytesToGigabytes(getDriveCapacity($current_drive))))){
-                                echo '
-                            <p>
-                                Drive <span>'.$current_drive['DeviceName'].'</span> have different capacities.
-                                ('.floor(bytesToGigabytes($current_drive['DiskCapacity'])). " on disk vs. "
-                                .floor(bytesToGigabytes(getDriveCapacity($current_drive))).' on partitions)
-                            </p>
-                            ';
+                                    echo '
+                                    <p>
+                                        Drive <span>'.$current_drive['DeviceName'].'</span> have different capacities.
+                                        ('.floor(bytesToGigabytes($current_drive['DiskCapacity'])). " on disk vs. "
+                                        .floor(bytesToGigabytes(getDriveCapacity($current_drive))).' on partitions)
+                                    </p>
+                                    ';
                             }
                         }
                         ?>
