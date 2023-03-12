@@ -1,19 +1,21 @@
 //This is the drag and drop upload handler, I wish it was easier, but it's pretty self-explanatory.
-
+let form = document.querySelector('form');
 //Using the jQ .on methods, we assign a set of instructions to exec at each stage of the drag event.
 $(function() {
 
-    // preventing page from redirecting
+    // Prevent Redirect
     $("html").on("dragover", function(e) {
         e.preventDefault();
         e.stopPropagation();
         $("#dragtext").text("Drop it!");
     });
 
-    $("html").on("drop", function(e) { e.preventDefault(); e.stopPropagation(); });
+    $("html").on("drop", function(e) { 
+        e.preventDefault(); 
+        e.stopPropagation(); 
+    });
 
-    // Drag enter
-    $('#uploadbox').on('dragenter', function (e) {
+    form.addEventListener('dragenter', (e) => {
         e.stopPropagation();
         e.preventDefault();
         $("#dragtext").text("Drop it!");
@@ -21,21 +23,24 @@ $(function() {
     });
 
     // Drag over
-    $('#uploadbox').on('dragover', function (e) {
-        e.stopPropagation();
-        e.preventDefault();
+    form.addEventListener('dragover', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            $("#dragtext").text("Drop it!");
+            $('#uploadbox').addClass("hoverBox");
+        });
 
-    });
-    $('#uploadbox').on('dragleave', function (e) {
-        $("#dragtext").text("You tease");
-        $('#uploadbox').removeClass("hoverBox");
-    });
+    form.addEventListener('dragleave', (e) => {
+            $("#dragtext").text("You tease");
+            $('#uploadbox').removeClass("hoverBox");
+        });
 
     // Drop
     //This used to originally be an ajax call post but then SealsRock figured out a plain old submit will do the trick too, :wicked:
-    $('#uploadbox').on('drop', function (e) {
-        $("#uploadform").submit();
-    });
+    form.addEventListener('drop', (e) => {
+            document.querySelector('input').files = e.dataTransfer.files;
+            $("#uploadform").submit();
+        });
 });
 
 
