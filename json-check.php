@@ -1,21 +1,16 @@
 <?php
-// Doing it this way might break when we do eventually change the JSON Structure. -K9
+// Doing it this way WILL break when we do eventually change the JSON Structure. 
+// This supports down to v1.0, haven't checked if it works with v0.1 or v0.2 
+// but honestly who would use them -K9
 $base = array( 'Version' => NULL, 
                 'Meta' => array ( 
                     'ElapsedTime' => NULL, 
-                    'GenerationDate' => NULL, 
+                    'GenerationDate' => NULL
                     ), 
                 'BasicInfo' => array ( 
                     'Edition' => NULL, 
                     'Version' => NULL, 
-                    'FriendlyVersion' => NULL, 
-                    'InstallDate' => NULL, 
-                    'Uptime' => NULL, 
-                    'Hostname' => NULL, 
-                    'Username' => NULL, 
-                    'Domain' => NULL, 
-                    'BootMode' => NULL, 
-                    'BootState' => NULL, 
+                    'FriendlyVersion' => NULL 
                 ), 
                 'System' => array ( 
                     'UserVariables' => NULL, 
@@ -23,55 +18,24 @@ $base = array( 'Version' => NULL,
                     'RunningProcesses' => NULL, 
                     'Services' => NULL, 
                     'InstalledApps' => NULL, 
-                    'InstalledHotfixes' => NULL, 
-                    'ScheduledTasks' => NULL, 
-                    'WinScheduledTasks' => NULL, 
-                    'StartupTasks' => NULL, 
-                    'PowerProfiles' => NULL, 
-                    'MicroCodes' => NULL, 
-                    'RecentMinidumps' => NULL, 
-                    'DumpZip' => NULL, 
-                    'StaticCoreCount' => NULL, 
-                    'ChoiceRegistryValues' => NULL, 
-                    'UsernameSpecialCharacters' => NULL, 
-                    'OneDriveCommercialPathLength' => NULL, 
-                    'OneDriveCommercialNameLength' => NULL, 
-                    'BrowserExtensions' => NULL, 
-                    'DefaultBrowser' => NULL, 
-                    'PageFile' => NULL, 
+                    'InstalledHotfixes' => NULL 
                 ), 
                 'Hardware' => array ( 
                     'Ram' => NULL, 
                     'Cpu' => NULL, 
-                    'Gpu' => NULL, 
-                    'Motherboard' => NULL, 
-                    'AudioDevices' => NULL, 
-                    'Monitors' => NULL, 
-                    'Drivers' => NULL, 
-                    'Devices' => NULL, 
-                    'BiosInfo' => NULL, 
-                    'Storage' => NULL, 
-                    'Temperatures' => NULL, 
-                    'Batteries' => NULL, 
+                    'Gpu' => NULL
                 ), 
                 'Security' => array ( 
                     'AvList' => NULL, 
                     'FwList' => NULL, 
-                    'UacEnabled' => NULL, 
-                    'SecureBootEnabled' => NULL, 
-                    'UacLevel' => NULL, 
-                    'Tpm' => NULL, 
+                    'Tpm' => NULL
                 ), 
 
                 'Network' => array ( 
                     'Adapters' => NULL, 
-                    'Adapters2' => NULL, 
-                    'Routes' => NULL, 
-                    'NetworkConnections' => NULL, 
                     'HostsFile' => NULL, 
-                    'HostsFileHash' => NULL, 
+                    'HostsFileHash' => NULL
                 ), 
-                'Issues' => NULL, 
-                'DebugLogText' => NULL
+                'Issues' => NULL
             );
 ?>

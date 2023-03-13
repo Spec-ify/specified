@@ -8,6 +8,19 @@
     $file_type = $_FILES['specify']['type'];
     $file_ext=strtolower(end(explode('.',$_FILES['specify']['name'])));
 
+    function check_keys_recursive($arr1, $arr2) {
+        foreach($arr1 as $key => $value) {
+            if(is_array($value) && is_array($arr2[$key])) {
+                if(check_keys_recursive($value, $arr2[$key])) {
+                    return true;
+                }
+            }
+            else if(!(array_key_exists($key, $arr2))) {
+                return true;
+            }
+        }
+    }
+
     $extensions= array("json");
 
 //In the interlink upload, we generate the filename by hashing two strings inside the json.
@@ -25,9 +38,11 @@
     }
     
     $json_data = json_decode(file_get_contents($file_tmp), true);
-    if(!(array_keys($base) == array_keys($json_data))){
-        $errors[]="Malformed JSON, please choose a Specify JSON file";
+
+    if (check_keys_recursive($base, $json_data)) {
+        $errors[] = "Malformed JSON, please choose a Specify JSON file";
     }
+
     $file_name = $randomString.".json";
 
     if(empty($errors)) {
@@ -36,8 +51,11 @@
         http_response_code(303);
         header('Location: '.$pointer);
         echo json_encode(array('redirecturl'=>$pointer));
-
-    }else{
-        print_r($errors);
+    }
+    else{
+        foreach($errors as $error){
+            echo $error."\n";
+        }
         var_dump($_REQUEST);
     }
+?>
