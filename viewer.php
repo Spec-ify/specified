@@ -182,7 +182,29 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
 //XDDDDD
 function bytesToGigabytes($bytes) {
+    // 1073741824 = 1024 * 1024 * 1024
     return $bytes / 1073741824;
+}
+
+function getDriveUsed ($driveinput){
+    $driveused = 0;
+    foreach ($driveinput['Partitions'] as $partition){
+        $driveused += $partition['PartitionCapacity'] - $partition['PartitionFree'];
+    }
+    return $driveused;
+}
+
+function getDriveFree ($driveinput){
+    $drivefree = $driveinput['DiskCapacity'] - getDriveUsed($driveinput);
+    return $drivefree;
+}
+
+function getDriveCapacity ($driveinput){
+    $partitioncap = 0;
+    foreach ($driveinput['Partitions'] as $partition){
+        $partitioncap += $partition['PartitionCapacity'];
+    }
+    return $partitioncap;
 }
 ?>
 <!doctype html><html lang="en">
@@ -404,10 +426,16 @@ function bytesToGigabytes($bytes) {
                                             <td><?=$json_data['Hardware']['BiosInfo'][0]['SerialNumber']?></td>
                                         </tr>
                                         <?php
-                                        if($json_data['Security']['Tpm']['IsEnabled_InitialValue']){
-                                            $tpm_status = 'Enabled';}
+                                        $tpm_status = 'Disabled';
+                                        $tpm_manufacturer = "N/A";
+                                        $tpm_version = "N/A";
+                                        if(is_null($json_data['Security']['Tpm']) || !$json_data['Security']['Tpm']['IsEnabled_InitialValue']){
+                                            
+                                        }
                                         else{
-                                            $tpm_status ='Disabled';
+                                            $tpm_status ='Enabled';
+                                            $tpm_manufacturer = $json_data['Security']['Tpm']['ManufacturerVersionInfo'].' '.$json_data['Security']['Tpm']['ManufacturerVersion'];
+                                            $tpm_version = $json_data['Security']['Tpm']['SpecVersion'];
                                         }
 
                                         echo
@@ -419,12 +447,12 @@ function bytesToGigabytes($bytes) {
                                         echo
                                             '<tr>
                                                 <td>Manufacturer Version</td>
-                                                <td>'.$json_data['Security']['Tpm']['ManufacturerVersionInfo'].' '.$json_data['Security']['Tpm']['ManufacturerVersion'].'</td>
+                                                <td>'.$tpm_manufacturer.'</td>
                                             </tr>';
                                         echo
                                             '<tr>
                                                 <td>Version</td>
-                                                <td>'.$json_data['Security']['Tpm']['SpecVersion'].'</td>
+                                                <td>'.$tpm_version.'</td>
                                             </tr>';
                                         ?>
                                         </tbody>
@@ -464,6 +492,7 @@ function bytesToGigabytes($bytes) {
                                             <th scope="col">VRAM</th>
                                             <th scope="col">Mode</th>
                                             <th scope="col">Monitor</th>
+                                            <th scope="col">Connection</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -479,6 +508,7 @@ function bytesToGigabytes($bytes) {
                                                 <td>'.$json_data['Hardware']['Monitors'][$monitor]['DedicatedMemory'].'</td>
                                                 <td>'.$json_data['Hardware']['Monitors'][$monitor]['CurrentMode'].'</td>
                                                 <td>'.$json_data['Hardware']['Monitors'][$monitor]['MonitorModel'].'</td>
+                                                <td>'.$json_data['Hardware']['Monitors'][$monitor]['ConnectionType'].'</td>
                                             </tr>';}
                                         ?>
                                         </tbody>
@@ -592,6 +622,22 @@ function bytesToGigabytes($bytes) {
                                             '<tr>
                                                 <td>Boot State</td>
                                                 <td>'.$json_data['BasicInfo']['BootState'].'</td>
+                                            </tr>';
+                                            
+                                        echo
+                                            '<tr>
+                                                <td>TPM Status</td>
+                                                <td>'.$tpm_status.'</td>
+                                            </tr>';
+                                        echo
+                                            '<tr>
+                                                <td>Manufacturer Version</td>
+                                                <td>'.$tpm_manufacturer.'</td>
+                                            </tr>';
+                                        echo
+                                            '<tr>
+                                                <td>Version</td>
+                                                <td>'.$tpm_version.'</td>
                                             </tr>';
                                         ?>
                                         </tbody>
@@ -708,7 +754,7 @@ function bytesToGigabytes($bytes) {
                                                     '.'<td>'.$current_drive['SerialNumber'].'</td>'.'
                                                     '.'<td>'.$current_drive['DiskNumber'].'</td>'.'
                                                     '.'<td>'.floor(bytesToGigabytes($current_drive['DiskCapacity'])).'GB</td>'.'
-                                                    '.'<td>'.floor(bytesToGigabytes($current_drive['DiskFree'])).'GB</td>'.'
+                                                    '.'<td>'.floor(bytesToGigabytes(getDriveFree($current_drive))).'GB</td>'.'
                                                     </tbody>
                                                 </table>
                                                 <h5>Partitions</h5>
@@ -745,11 +791,11 @@ function bytesToGigabytes($bytes) {
                         }
                         $current_drive = $drive+1;
                         $drive_size_raw = $json_data['Hardware']['Storage'][$drive]['DiskCapacity'];
-                        $drive_free_raw = $json_data['Hardware']['Storage'][$drive]['DiskFree'];
+                        $drive_free_raw = getDriveFree($json_data['Hardware']['Storage'][$drive]);
                         $device_name = $json_data['Hardware']['Storage'][$drive]['DeviceName'];
                         $drive_taken_raw = $drive_size_raw - $drive_free_raw;
-                        $drive_size = floor($drive_size_raw)/1073741824;
-                        $drive_taken = floor($drive_taken_raw)/1073741824;
+                        $drive_size = floor(bytesToGigabytes($drive_size_raw));
+                        $drive_taken = floor(bytesToGigabytes($drive_taken_raw));
                         if($drive_taken!=0){
                         $drive_percentage = round((float)$drive_taken / (float)$drive_size*100);
                         }
@@ -765,6 +811,10 @@ function bytesToGigabytes($bytes) {
                         elseif($drive_percentage>=0 && $drive_percentage <=49){
                             $flavor_color = $green;
                         }
+                        if (!(floor(bytesToGigabytes($json_data['Hardware']['Storage'][$drive]['DiskCapacity'])) == 
+                                    floor(bytesToGigabytes(getDriveCapacity($json_data['Hardware']['Storage'][$drive]))))){
+                                        $flavor_color = $red;
+                            }
 
                         $letters = array_filter(
                                 array_column($json_data['Hardware']['Storage'][$drive]['Partitions'], 'PartitionLabel'));
@@ -1096,6 +1146,18 @@ function bytesToGigabytes($bytes) {
                         </p>
                         ';
                         }
+                        foreach ($json_data['Hardware']['Storage'] as $current_drive){
+                            if (!(floor(bytesToGigabytes($current_drive['DiskCapacity'])) == 
+                                    floor(bytesToGigabytes(getDriveCapacity($current_drive))))){
+                                    echo '
+                                    <p>
+                                        Drive <span>'.$current_drive['DeviceName'].'</span> have different capacities.
+                                        ('.floor(bytesToGigabytes($current_drive['DiskCapacity'])). " on disk vs. "
+                                        .floor(bytesToGigabytes(getDriveCapacity($current_drive))).' on partitions)
+                                    </p>
+                                    ';
+                            }
+                        }
                         ?>
                         <br>
                         <h4>Rudimentary Registry Checks</h4>
@@ -1112,8 +1174,7 @@ function bytesToGigabytes($bytes) {
                             echo '
                             <p>
                                 There have been <span>'.$json_data['System']['RecentMinidumps'].' Minidumps found</span>
-                            </p>>
-                            
+                            </p>
                             ';
                         }
                         foreach($json_data['System']['ChoiceRegistryValues'] as $regkey){
@@ -1132,6 +1193,18 @@ function bytesToGigabytes($bytes) {
                             echo '
                             <p>Network Throttling Index found set at <span>'.$json_data['System']['ChoiceRegistryValues'][2]['Value'].'</span></p>
                             ';
+                        }
+                        foreach($json_data['System']['ChoiceRegistryValues'] as $regkey){
+                            if($regkey['Value']!= null && $regkey['Name']!= "NetworkThrottlingIndex" && $regkey['Name']!= "HwSchMode"){
+                                echo '
+                                <p>Registry Value <span>'.$regkey['Name'].'</span> found set, value of <span>'.$regkey['Value'].'</span></p>
+                                ';
+                            }
+                            else if ($regkey['Name'] == "HwSchMode" && $regkey['Value'] == 2){
+                                echo '
+                                <p>Registry Value <span>'.$regkey['Name'].'</span> found set, value of <span>'.$regkey['Value'].'</span></p>
+                                ';
+                            }
                         }
                         ?>
 
