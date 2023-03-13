@@ -1177,18 +1177,6 @@ function getDriveCapacity ($driveinput){
                             </p>
                             ';
                         }
-                        foreach($json_data['System']['ChoiceRegistryValues'] as $regkey){
-                            if($regkey['Value']!= null && $regkey['Name']!= "NetworkThrottlingIndex" && $regkey['Name']!= "HwSchMode"){
-                                echo '
-                                <p>Registry Value <span>'.$regkey['Name'].'</span> found set, value of <span>'.$regkey['Value'].'</span></p>
-                                ';
-                            }
-                            else if ($regkey['Name'] == "HwSchMode" && $regkey['Value'] == 2){
-                                echo '
-                                <p>Registry Value <span>'.$regkey['Name'].'</span> found set, value of <span>'.$regkey['Value'].'</span></p>
-                                ';
-                            }
-                        }
                         if($json_data['System']['ChoiceRegistryValues'][2]['Value']!=10){
                             echo '
                             <p>Network Throttling Index found set at <span>'.$json_data['System']['ChoiceRegistryValues'][2]['Value'].'</span></p>
