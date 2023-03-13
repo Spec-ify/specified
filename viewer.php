@@ -134,14 +134,14 @@ $path_array = explode(';', $paths);
 
 
 //PUP check
-$badSoftware = json_decode(file_get_contents('pup-list.json'), true);
+include('pup-list.php');
 // Set up the reference list
 $referenceListInstalled = $json_data['System']['InstalledApps'];
 $referenceListRunning = $json_data['System']['RunningProcesses'];
 
 $pupsfoundInstalled = array();
 foreach ($referenceListInstalled as $installed){
-    foreach ($badSoftware as $pups){
+    foreach ($puplist as $pups){
         preg_match('/\b('.strtolower($pups).')\b/', strtolower($installed['Name']), $matches, PREG_OFFSET_CAPTURE);
         if ($matches){
             array_push($pupsfoundInstalled, $installed['Name']);
@@ -152,7 +152,7 @@ $pupsfoundInstalled = array_unique($pupsfoundInstalled);
 
 $pupsfoundRunning = array();
 foreach ($referenceListRunning as $running){
-    foreach ($badSoftware as $pups){
+    foreach ($puplist as $pups){
         preg_match('/\b('.strtolower($pups).')\b/', strtolower($running['ProcessName']), $matches, PREG_OFFSET_CAPTURE);
         if ($matches){
             array_push($pupsfoundRunning, $running['ProcessName']);
