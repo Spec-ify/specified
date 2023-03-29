@@ -10,7 +10,7 @@ $json_file = $_GET['file'];
 $json = file_get_contents($json_file);
 $test=0;
 $json_data = json_decode($json,true);
-$profile_name = explode(".", explode("/", $json_file)[1])[0];
+$profile_name = pathinfo($json_file, PATHINFO_FILENAME);
 
 //This is done manually currently, but there's hopes to implementing an automated version to return Support/EOL versions of Windows friendly versions.
 //Right now, it's just a string that holds all the EOL version of Windows, and the Friendly version inside the json is being compared against each of the string's
