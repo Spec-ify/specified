@@ -297,33 +297,34 @@ function getDriveCapacity ($driveinput){
                     </div>
                     <div class="widget widget-ram hover" type="button" data-mdb-toggle="modal" data-mdb-target="#ramModal">
                         <h1>RAM</h1>
-                        <div class="widget-values">
+                        <div class="widget-values" style="display: flex; flex-flow: row wrap;">
                             <?php
                             $ram_sticks = count($json_data['Hardware']['Ram']);
                             $ram_stick = 0;
-                            for($ram_stick; $ram_stick<$ram_sticks;$ram_stick++){
+                            for ($ram_stick; $ram_stick < $ram_sticks; $ram_stick++) {
                                 $current_ram_stick = $ram_stick + 1;
-                                if($json_data['Hardware']['Ram'][$ram_stick]['Capacity']!= 0){
-                                    $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity']/1000);
+                                if ($json_data['Hardware']['Ram'][$ram_stick]['Capacity'] != 0) {
+                                    $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity'] / 1000);
+                                    $flex_basis = 100 / ($ram_sticks / 4) . '%';
                                     echo '
-							<div class="widget-value">
-								<div style="color:'.$green. '">'.$ram_size.'GB</div>
-								<div>DIMM'.$current_ram_stick.'</div>
-							</div>';
+                                    <div class="widget-value" style="flex: 1 1 '.$flex_basis.';">
+                                        <div style="color:'.$green.'">'.$ram_size.'GB</div>
+                                        <div>DIMM'.$current_ram_stick.'</div>
+                                    </div>';
+                                } else {
+                                    echo '
+                                    <div class="widget-value" style="flex: 1 1 '.$flex_basis.';">
+                                        <div style="color: rgb(215,27,27);">--</div>
+                                        <div>DIMM' .$current_ram_stick.'</div>
+                                    </div>';
                                 }
-                                else
-                                    echo '
-							<div class="widget-value">
-								<div style="color: rgb(215,27,27);">--</div>
-								<div>DIMM' .$current_ram_stick.'</div>
-							</div>';
+                                if (($current_ram_stick % 4) == 0) {
+                                    echo '<div style="flex-basis: 100%;"></div>';
+                                }
                             }
-
                             ?>
                         </div>
                     </div>
-
-
                     <div class="modal fade " id="ramModal" tabindex="-1" aria-labelledby="ramModal" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -370,7 +371,7 @@ function getDriveCapacity ($driveinput){
                     <div class="widget widget-board hover" type="button" data-mdb-toggle="modal" data-mdb-target="#boardModal">
                         <h1>Motherboard</h1>
                         <div class="widget-values">
-                            <div class="widget-value">
+                            <div class="widget-value" >
                                 <div style="color: <?=$green?>;">
                                     <?=$motherboard?>
                                 </div>
