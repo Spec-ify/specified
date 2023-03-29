@@ -297,7 +297,12 @@ function getDriveCapacity ($driveinput){
                     </div>
                     <div class="widget widget-ram hover" type="button" data-mdb-toggle="modal" data-mdb-target="#ramModal">
                         <h1>RAM</h1>
-                        <div class="widget-values" style="display: flex; flex-flow: row wrap;">
+                        <div class="widget-values" <?php 
+                        if(count($json_data['Hardware']['Ram']) > 4){
+                            echo 'style="display: flex; flex-flow: row wrap;"';
+                            }
+                        ?>
+                        >
                             <?php
                             $ram_sticks = count($json_data['Hardware']['Ram']);
                             $ram_stick = 0;
@@ -318,7 +323,7 @@ function getDriveCapacity ($driveinput){
                                         <div>DIMM' .$current_ram_stick.'</div>
                                     </div>';
                                 }
-                                if (($current_ram_stick % 4) == 0) {
+                                if (count($json_data['Hardware']['Ram']) > 4 && ($current_ram_stick % 4) == 0) {
                                     echo '<div style="flex-basis: 100%;"></div>';
                                 }
                             }
