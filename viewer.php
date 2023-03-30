@@ -1385,7 +1385,7 @@ function getDriveCapacity($driveinput)
                                         </button>
                                     </h1>
                                     <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="runningProcesses">
-                                        <!-- Refer to tables() in main.js -->
+                                        <!-- Refer to tables.js -->
                                     </div>
                                     <h1 class="accordion-header" id="installedAppButton">
                                         <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#installedApp" aria-expanded="true" aria-controls="installedApp">
@@ -1393,7 +1393,7 @@ function getDriveCapacity($driveinput)
                                         </button>
                                     </h1>
                                     <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="installedApp">
-                                        <!-- Refer to tables() in main.js -->
+                                        <!-- Refer to tables.js -->
                                     </div>
 
                                 </div>
@@ -1538,16 +1538,17 @@ function getDriveCapacity($driveinput)
 
 <!--Tables-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- For now, jQuery is required for the animation and general interactivity -->
+<!-- For now, jQuery is required for functionality and interaction -->
 
 <script src="https://cdn.jsdelivr.net/npm/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
 <link href="static/css/tables.css" rel="stylesheet">
 
-<!--UI Stuff-->
+<!--UI Stuff (Animations)-->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 
 <!--Main Code-->
-<script defer="defer" src="static/js/main.js"></script>
+<script type="module" defer="defer" src="static/js/tables.js"></script>
+<script type="module" defer="defer" src="static/js/main.js"></script>
 
 </html>
