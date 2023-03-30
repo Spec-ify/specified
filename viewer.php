@@ -1380,7 +1380,7 @@ function getDriveCapacity($driveinput)
                             <div class="textbox metadata-detail" id="accordionTablesApps">
                                 <div class="accordion">
                                     <h1 class="accordion-header" id="runningProcessesButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#runningProcesses" aria-expanded="true" aria-controls="runningProcesses">
+                                        <button class="accordion-button" onclick="DrawRunProc()" type="button" data-mdb-toggle="collapse" data-mdb-target="#runningProcesses" aria-expanded="true" aria-controls="runningProcesses">
                                             Running Processes
                                         </button>
                                     </h1>
@@ -1388,7 +1388,7 @@ function getDriveCapacity($driveinput)
                                         <!-- Refer to tables.js -->
                                     </div>
                                     <h1 class="accordion-header" id="installedAppButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#installedApp" aria-expanded="true" aria-controls="installedApp">
+                                        <button class="accordion-button" onclick="DrawInstApps()" type="button" data-mdb-toggle="collapse" data-mdb-target="#installedApp" aria-expanded="true" aria-controls="installedApp">
                                             Installed Apps
                                         </button>
                                     </h1>
