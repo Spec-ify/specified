@@ -652,7 +652,7 @@ function getDriveCapacity($driveinput)
                                     </div>
                                 </div>
                             </div>
-                            <div class="widget widget-board hover" type="button" data-mdb-toggle="modal" data-mdb-target="#nicModal">
+                            <div class="widget widget-board hover" type="button" data-mdb-toggle="modal" data-mdb-target="#nicModal" onclick="DrawNICTable()">
                                 <h1>NIC</h1>
                                 <div class="widget-values">
                                     <div class="widget-value">
@@ -682,22 +682,7 @@ function getDriveCapacity($driveinput)
                                             <h5 class="modal-title" id="ModalLabel">System Information</h5>
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <div class="modal-body">
-                                            <table id="nicTable" class="table">
-                                                <thead>
-                                                    <th>#</th>
-                                                    <th>Name</th>
-                                                    <th>MAC</th>
-                                                    <th>Gateway(s)</th>
-                                                    <th>DHCP State</th>
-                                                    <th>DHCP Server</th>
-                                                    <th>DNS Domain</th>
-                                                    <th>DNS Host name</th>
-                                                    <th>DNS IPs</th>
-                                                    <th>IP(s)</th>
-                                                    <th>Subnet</th>
-                                                </thead>
-                                            </table>
+                                        <div class="modal-body" id="nicTable">
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>

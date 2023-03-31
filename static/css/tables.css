@@ -2,7 +2,7 @@
 	position: relative;
 	border: 1px solid #999;
 	background-color: inherit;
-	font-size: 14px;
+	font-size: 12px;
 	text-align: left;
 	overflow: hidden;
 	-webkit-transform: translateZ(0);
@@ -625,13 +625,12 @@
 
 .tabulator-row {
 	position: relative;
-	box-sizing: border-box;
-	max-height: 20px;
+	box-sizing: content-box;
 	background-color: inherit;
 }
 
 .tabulator-row.tabulator-row-even {
-	background-color: inherit;
+	background-color: rgba(255, 255, 255, 0.075);
 }
 
 .tabulator-row.tabulator-selectable:hover {
@@ -704,10 +703,12 @@
 .tabulator-row .tabulator-cell {
 	display: inline-block;
 	position: relative;
-	box-sizing: border-box;
 	padding: 4px;
-	border-right: 1px solid #aaa;
+	border-right: 1px solid #999;
+	max-height: 25px;
+	border-bottom: 1px solid #999;
 	vertical-align: middle;
+	justify-self: center;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;

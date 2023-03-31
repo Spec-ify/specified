@@ -5,6 +5,7 @@ import {
 	SortModule,
 	TooltipModule,
 	PageModule,
+	FormatModule,
 } from "https://cdn.jsdelivr.net/npm/tabulator-tables@5.4.4/dist/js/tabulator_esm.min.js";
 
 Tabulator.registerModule([
@@ -13,6 +14,7 @@ Tabulator.registerModule([
 	SortModule,
 	TooltipModule,
 	PageModule,
+	FormatModule,
 ]);
 
 var pageamount = 20;
@@ -147,43 +149,25 @@ window.DrawInstApps = async function DrawInstApps() {
 	});
 };
 
-function FixDriveData(a) {
-	const btomb = 1048576;
-	a.Partitions.forEach((partition) => {
-		partition.PartitionFree = Math.floor(partition.PartitionFree / btomb);
-		partition.PartitionCapacity = Math.floor(
-			partition.PartitionCapacity / btomb
-		);
-	});
-
-	a.DiskCapacity = Math.floor(a.DiskCapacity / 1073741824);
-	a.DiskFree = Math.floor(a.DiskFree / 1073741824);
-
-	a = [
+// Partition Data
+window.DrawDriveTable = async function DrawDriveTable(a) {
+	var DriveData = json.Hardware.Storage[a];
+	DriveData = [
 		{
-			DeviceName: a.DeviceName,
-			SerialNumber: a.SerialNumber,
-			DiskNumber: a.DiskNumber,
-			DiskCapacity: a.DiskCapacity,
-			DiskFree: a.DiskFree,
-			Partitions: a.Partitions,
+			DeviceName: DriveData.DeviceName,
+			SerialNumber: DriveData.SerialNumber,
+			DiskNumber: DriveData.DiskNumber,
+			DiskCapacity: DriveData.DiskCapacity,
+			DiskFree: DriveData.DiskFree,
+			Partitions: DriveData.Partitions,
 		},
 	];
-
-	return a;
-}
-
-window.DrawDriveTable = async function DrawDriveTable(a) {
-	const DriveData = FixDriveData(json.Hardware.Storage[a]);
 	const div = `#DriveTable${a}`;
 
 	var PartTable = await new Tabulator(div, {
 		data: DriveData, //load row data from array
 		layout: "fitColumns", //fit columns to width of table
 		responsiveLayout: "hide", //hide columns that dont fit on the table
-		pagination: "local", //paginate the data
-		paginationSize: pageamount, //allow 10 rows per page of data
-		paginationButtonCount: 99, // Show all pages
 		paginationCounter: "rows", //display count of paginated rows in footer
 		initialSort: [
 			//set the initial sort order of the data
@@ -193,12 +177,29 @@ window.DrawDriveTable = async function DrawDriveTable(a) {
 			tooltip: true, //show tool tips on cells
 		},
 		columns: [
+			{ title: "#", field: "DiskNumber", width: 50 },
 			{ title: "Name", field: "DeviceName" },
 			{ title: "SN", field: "SerialNumber" },
-			{ title: "#", field: "DiskNumber" },
-			{ title: "Capacity (GB)", field: "DiskCapacity" },
-			{ title: "Free (GB)", field: "DiskFree" },
+			{
+				title: "Capacity (GB)",
+				field: "DiskCapacity",
+				formatter: function (cell) {
+					var calculated = Math.floor(cell.getValue() / 1073741824);
+					return calculated.toLocaleString();
+				},
+				width: 150,
+			},
+			{
+				title: "Free (GB)",
+				field: "DiskFree",
+				formatter: function (cell) {
+					var calculated = Math.floor(cell.getValue() / 1073741824);
+					return calculated.toLocaleString();
+				},
+				width: 150,
+			},
 		],
+
 		rowFormatter: function (row) {
 			//create and style holder elements
 			var holderEl = document.createElement("div");
@@ -207,7 +208,7 @@ window.DrawDriveTable = async function DrawDriveTable(a) {
 			holderEl.style.boxSizing = "border-box";
 			holderEl.style.padding = "10px 30px 10px 10px";
 			holderEl.style.borderTop = "1px solid inherit";
-			holderEl.style.borderBotom = "1px solid inherit";
+			holderEl.style.borderBottom = "1px solid inherit";
 
 			tableEl.style.border = "1px solid inherit";
 
@@ -220,11 +221,69 @@ window.DrawDriveTable = async function DrawDriveTable(a) {
 				data: row.getData().Partitions,
 				columns: [
 					{ title: "Label", field: "PartitionLabel" },
-					{ title: "Capacity (MB)", field: "PartitionCapacity" },
-					{ title: "Free (MB)", field: "PartitionFree" },
+					{
+						title: "Capacity (MB)",
+						field: "PartitionCapacity",
+						formatter: function (cell) {
+							var calculated = Math.floor(
+								cell.getValue() / 1048576
+							);
+							return calculated.toLocaleString();
+						},
+					},
+					{
+						title: "Free (MB)",
+						field: "PartitionFree",
+						formatter: function (cell) {
+							var calculated = Math.floor(
+								cell.getValue() / 1048576
+							);
+							return calculated.toLocaleString();
+						},
+					},
 					{ title: "FS Type", field: "Filesystem" },
 				],
 			});
 		},
 	});
+};
+
+// NIC
+async function DrawNICTable() {
+	var InstApps = await new Tabulator("#nicTable", {
+		data: json.Network.Adapters, //load row data from array
+		layout: "fitColumns", //fit columns to width of table
+		responsiveLayout: "hide", //hide columns that dont fit on the table
+		pagination: "local", //paginate the data
+		paginationSize: pageamount, //allow 10 rows per page of data
+		paginationButtonCount: 99, // Show all pages
+		paginationCounter: "rows", //display count of paginated rows in footer
+		initialSort: [
+			//set the initial sort order of the data
+			{ column: "InterfaceIndex", dir: "asc" },
+		],
+		columnDefaults: {
+			tooltip: true, //show tool tips on cells
+		},
+		columns: [
+			{ title: "#", field: "InterfaceIndex", width: 50 },
+			{ title: "Name", field: "Description", width: 350 },
+			{ title: "MAC", field: "MACAddress" },
+			{ title: "Gateway(s)", field: "DefaultIPGateway" },
+			{ title: "DHCP State", field: "DHCPEnabled", width: 125 },
+			{ title: "DHCP Server", field: "DHCPServer" },
+			{ title: "DNS Domain", field: "DNSDomain" },
+			{ title: "DNS Hostname", field: "DNSHostName" },
+			{ title: "DNS IPs", field: "DNSServerSearchOrder" },
+			{ title: "IP(s)", field: "IPAddress" },
+			{ title: "Subnet", field: "IPSubnet" },
+		],
+	});
+}
+
+// Modal won't load immediately, add delay to rendering
+window.DrawNICTable = function DrawNIC() {
+	setTimeout(() => {
+		DrawNICTable();
+	}, "250");
 };
