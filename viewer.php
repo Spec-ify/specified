@@ -727,6 +727,7 @@ function getDriveCapacity($driveinput)
                                         </div>
                                         <div class="modal-body">
                                             <div class="metadata-detail" id="accordionTablesPartitions">
+                                                <!-- https://tabulator.info/examples/5.4#nested-tables -->
                                                 <?php
                                                 foreach ($json_data['Hardware']['Storage'] as $current_drive) {
                                                     $driveKey = array_search($current_drive, $json_data['Hardware']['Storage']);
@@ -736,41 +737,16 @@ function getDriveCapacity($driveinput)
                                                 <button
                                                         class="accordion-button"
                                                         type="button"
+                                                        onclick="DrawDriveTable(' . $driveKey . ')"
                                                         data-mdb-toggle="collapse"
-                                                        data-mdb-target="#partitionModal' . $driveKey . '"
+                                                        data-mdb-target="#DriveTable' . $driveKey . '"
                                                         aria-expanded="true"
-                                                        aria-controls="partitionModal' . $driveKey . '"
+                                                        aria-controls="DriveTable' . $driveKey . '"
                                                 >
                                                    ' . $current_drive['DeviceName'] . '
                                                 </button></h1>
-                                            <div class="metadata-detail tablebox jsondata accordion-item accordion-collapse collapse storagemodal" id="partitionModal' . $driveKey . '">
-                                                <table id="partitionsTable' . $driveKey . 'Info" class="table">
-                                                    <thead>
-                                                    <th>Name</th>
-                                                    <th>SN</th>
-                                                    <th>#</th>
-                                                    <th>Capacity</th>
-                                                    <th>Free</th>
-                                                    </thead>
-                                                    <tbody>
-                                                    ' . '<td>' . $current_drive['DeviceName'] . '</td>' . '
-                                                    ' . '<td>' . $current_drive['SerialNumber'] . '</td>' . '
-                                                    ' . '<td>' . $current_drive['DiskNumber'] . '</td>' . '
-                                                    ' . '<td>' . floor(bytesToGigabytes($current_drive['DiskCapacity'])) . 'GB</td>' . '
-                                                    ' . '<td>' . floor(bytesToGigabytes(getDriveFree($current_drive))) . 'GB</td>' . '
-                                                    </tbody>
-                                                </table>
-                                                <h5>Partitions</h5>
-                                                <table id="partitionsTable' . $driveKey . '" class="table">
-                                                    <thead>
-                                                    <th>Label</th>
-                                                    <th>Capacity</th>
-                                                    <th>Free</th>
-                                                    <th>FS Type</th>
-                                                    </thead>
-                                                    <tbody>
-                                                    </tbody>
-                                                </table>
+                                            <div class="metadata-detail tablebox jsondata accordion-item accordion-collapse collapse storagemodal"  id="DriveTable' . $driveKey . '">
+                                                
                                             </div>
                                         </div>';
                                                 }
