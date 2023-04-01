@@ -246,7 +246,7 @@ function getDriveCapacity($driveinput)
                 <img src="assets/logo.png" height="25em">
             </a>
             <div>
-                <button type="button" class="btn btn-info" id="CollapseToggle">Expand All</button>
+                <button type="button" class="btn btn-info" onclick="ExpandTables()" id="CollapseToggle">Expand All</button>
                 <button type="button" class="btn btn-info" id="CollapseToggleHide">Collapse All</button>
                 <a id="Download" href="<?= $json_file ?>">
                     <button class="btn btn-info">View Raw JSON</button>
@@ -683,6 +683,7 @@ function getDriveCapacity($driveinput)
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body" id="nicTable">
+                                            <!-- Refer to tables.js -->
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
@@ -712,7 +713,7 @@ function getDriveCapacity($driveinput)
                                         </div>
                                         <div class="modal-body">
                                             <div class="metadata-detail" id="accordionTablesPartitions">
-                                                <!-- https://tabulator.info/examples/5.4#nested-tables -->
+                                                <!-- Refer to tables.js -->
                                                 <?php
                                                 foreach ($json_data['Hardware']['Storage'] as $current_drive) {
                                                     $driveKey = array_search($current_drive, $json_data['Hardware']['Storage']);
@@ -888,7 +889,7 @@ function getDriveCapacity($driveinput)
                                     </div>
                                 </div>
                             </div>
-                            <div class="widget widget-temps hover" type="button" data-mdb-toggle="modal" data-mdb-target="#tempsModal">
+                            <div class="widget widget-temps hover" type="button" onclick="DrawTempsTable()" data-mdb-toggle="modal" data-mdb-target="#tempsModal">
                                 <h1>Temps</h1>
                                 <div class="widget-values">
                                     <div class="widget-value">
@@ -906,14 +907,8 @@ function getDriveCapacity($driveinput)
                                             <h5 class="modal-title" id="ModalLabel">Temps</h5>
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <div class="modal-body">
-                                            <table id="tempTable" class="table">
-                                                <thead>
-                                                    <th>Hardware</th>
-                                                    <th>Sensor</th>
-                                                    <th>Temperature</th>
-                                                </thead>
-                                            </table>
+                                        <div class="modal-body" id="TempsDiv">
+                                            <!-- Refer to tables.js -->
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
@@ -921,7 +916,7 @@ function getDriveCapacity($driveinput)
                                     </div>
                                 </div>
                             </div>
-                            <div class="widget widget-audio hover" type="button" data-mdb-toggle="modal" data-mdb-target="#audioModal">
+                            <div class="widget widget-audio hover" type="button" onclick="DrawADTable()" data-mdb-toggle="modal" data-mdb-target="#audioModal">
                                 <h1>Audio Devices</h1>
                                 <div class="widget-values">
                                     <?php
@@ -946,15 +941,8 @@ function getDriveCapacity($driveinput)
                                             <h5 class="modal-title" id="ModalLabel">Audio Devices</h5>
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <div class="modal-body">
-                                            <table id="audioTable" class="table">
-                                                <thead>
-                                                    <th>Device ID</th>
-                                                    <th>Manufacturer</th>
-                                                    <th>Name</th>
-                                                    <th>Status</th>
-                                                </thead>
-                                            </table>
+                                        <div class="modal-body" id="audioDeviceDiv">
+                                            <!-- Refer to tables.js -->
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
@@ -962,7 +950,7 @@ function getDriveCapacity($driveinput)
                                     </div>
                                 </div>
                             </div>
-                            <div class="widget widget-power hover" type="button" data-mdb-toggle="modal" data-mdb-target="#powerModal">
+                            <div class="widget widget-power hover" onclick="DrawPPBTable()" type="button" data-mdb-toggle="modal" data-mdb-target="#powerModal">
                                 <h1>Power Profile/Battery
                                 </h1>
                                 <div class="widget-values">
@@ -997,7 +985,7 @@ function getDriveCapacity($driveinput)
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal fade " id="powerModal" tabindex="-1" aria-labelledby="powerModal" aria-hidden="true">
+                            <div class="modal fade" id="powerModal" tabindex="-1" aria-labelledby="powerModal" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -1005,24 +993,13 @@ function getDriveCapacity($driveinput)
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <table id="powerTable" class="table">
-                                                <thead>
-                                                    <th>Description</th>
-                                                    <th>Element</th>
-                                                    <th>Instance Path</th>
-                                                    <th>Status</th>
-                                                </thead>
-                                            </table>
+                                            <div id="powerTable">
+                                                <!-- Refer to tables.js -->
+                                            </div>
                                             <h4>Battery</h4>
-                                            <table id="batteryTable" class="table">
-                                                <thead>
-                                                    <th>Name</th>
-                                                    <th>Manufacturer</th>
-                                                    <th>Chemistry</th>
-                                                    <th>Design Capacity</th>
-                                                    <th>Current Full Charge Capacity</th>
-                                                </thead>
-                                            </table>
+                                            <div id="batteryTable">
+                                                <!-- Refer to tables.js -->
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
@@ -1304,190 +1281,155 @@ function getDriveCapacity($driveinput)
                             <div class="textbox metadata-detail" id="accordionTablesDevices">
                                 <div class="accordion">
                                     <h1 class="accordion-header" id="devicesTableButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#devices" aria-expanded="true" aria-controls="devices">
+                                        <button class="accordion-button" type="button" onclick="DrawDevicesTable()" data-mdb-toggle="collapse" data-mdb-target="#devices" aria-expanded="true" aria-controls="devices">
                                             Devices
                                         </button>
                                     </h1>
                                     <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="devices">
-                                        <table id="devicesTable" class="table">
-                                            <thead>
-                                                <th>Description</th>
-                                                <th>Name</th>
-                                                <th>DID</th>
-                                                <th>Status</th>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                    <h1 class="accordion-header" id="driversTableButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#drivers" aria-expanded="true" aria-controls="drivers">
-                                            Drivers
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="drivers">
-                                        <table id="driversTable" class="table">
-                                            <thead>
-                                                <th>Name</th>
-                                                <th>Friendly Name</th>
-                                                <th>Manufacturer</th>
-                                                <th>DID</th>
-                                                <th>Version</th>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="textbox metadata-detail" id="accordionTablesApps">
-                                <div class="accordion">
-                                    <h1 class="accordion-header" id="runningProcessesButton">
-                                        <button class="accordion-button" onclick="DrawRunProc()" type="button" data-mdb-toggle="collapse" data-mdb-target="#runningProcesses" aria-expanded="true" aria-controls="runningProcesses">
-                                            Running Processes
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="runningProcesses">
-                                        <!-- Refer to tables.js -->
-                                    </div>
-                                    <h1 class="accordion-header" id="installedAppButton">
-                                        <button class="accordion-button" onclick="DrawInstApps()" type="button" data-mdb-toggle="collapse" data-mdb-target="#installedApp" aria-expanded="true" aria-controls="installedApp">
-                                            Installed Apps
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="installedApp">
-                                        <!-- Refer to tables.js -->
+                                        <div id="devicesTable">
+                                            <!-- Refer to tables.js -->
+                                        </div>
                                     </div>
 
                                 </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="textbox metadata-detail" id="accordionTablesServices">
-                                <div class="accordion">
-                                    <h1 class="accordion-header" id="servicesTableButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#services" aria-expanded="true" aria-controls="services">
-                                            Services
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="services">
-                                        <table id="servicesTable" class="table">
-                                            <thead>
-                                                <th>Caption</th>
-                                                <th>Name</th>
-                                                <th>Path</th>
-                                                <th>Start Mode</th>
-                                                <th>State</th>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                    <h1 class="accordion-header" id="tasksTableButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#tasks" aria-expanded="true" aria-controls="tasks">
-                                            Tasks
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="tasks">
-                                        <table id="tasksTable" class="table">
-                                            <thead>
-                                                <th>Name</th>
-                                                <th>Path</th>
-                                                <th>State</th>
-                                                <th>Active</th>
-                                                <th>Author</th>
-                                                <th>Triggers</th>
-                                            </thead>
-                                        </table>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="textbox metadata-detail" id="accordionTablesNetwork">
-                                <div class="accordion">
-                                    <h1 class="accordion-header" id="netconTableButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#netcon" aria-expanded="true" aria-controls="netcon">
-                                            Network Connections
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="netcon">
-                                        <table id="netconTable" class="table">
-                                            <thead>
-                                                <th>Local IP</th>
-                                                <th>Local Port</th>
-                                                <th>Remote IP</th>
-                                                <th>Remote Port</th>
-                                                <th>Process Name</th>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                    <h1 class="accordion-header" id="routesTableButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#routes" aria-expanded="true" aria-controls="routes">
-                                            Routes Table
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="routes">
-                                        <table id="routesTable" class="table">
-                                            <thead>
-                                                <th>Route</th>
-                                                <th>Destination</th>
-                                                <th>Interface</th>
-                                                <th>Mask</th>
-                                                <th>Metric</th>
-                                                <th>Next Hop</th>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                    <h1 class="accordion-header" id="hostsTableButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#hosts" aria-expanded="true" aria-controls="hosts">
-                                            Hosts File
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="hosts">
-                                        <?php
-                                        $hoststext = nl2br($json_data['Network']['HostsFile']);
-                                        ?>
-                                        <p style="font-size: 10pt;"><?= $hoststext ?> </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="devdiv" style="display: none">
-                            <div class="textbox metadata-detail" id="accordionTablesDev">
-                                <div class="accordion">
-                                    <h1 class="accordion-header" id="debugLogButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#debugLog" aria-expanded="true" aria-controls="debugLog">
-                                            Debug Log
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="debugLog">
-                                        <?php
-                                        $DebugLog = nl2br($json_data['DebugLogText']);
-                                        ?>
-                                        <p style="font-size: 10pt;"><?= $DebugLog ?>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="accordion">
-                                    <h1 class="accordion-header" id="issuesLogButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#issuesLog" aria-expanded="true" aria-controls="issuesLog">
-                                            Issues
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="issuesLog">
-                                        <p style="font-size: 10pt;">
-                                            <?php
-                                            $issues = $json_data['Issues'];
-                                            foreach ($issues as $issue) {
-                                                echo (nl2br($issue . "\n"));
-                                            }
-                                            ?>
-                                        </p>
+                                <h1 class="accordion-header" id="driversTableButton">
+                                    <button class="accordion-button" type="button" onclick="DrawDriverTable()" data-mdb-toggle="collapse" data-mdb-target="#drivers" aria-expanded="true" aria-controls="drivers">
+                                        Drivers
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="drivers">
+                                    <div id="driversTable">
+                                        <!-- Refer to tables.js -->
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <div class="textbox metadata-detail" id="accordionTablesApps">
+                            <div class="accordion">
+                                <h1 class="accordion-header" id="runningProcessesButton">
+                                    <button class="accordion-button" onclick="DrawRunProc()" type="button" data-mdb-toggle="collapse" data-mdb-target="#runningProcesses" aria-expanded="true" aria-controls="runningProcesses">
+                                        Running Processes
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="runningProcesses">
+                                    <!-- Refer to tables.js -->
+                                </div>
+                                <h1 class="accordion-header" id="installedAppButton">
+                                    <button class="accordion-button" onclick="DrawInstApps()" type="button" data-mdb-toggle="collapse" data-mdb-target="#installedApp" aria-expanded="true" aria-controls="installedApp">
+                                        Installed Apps
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="installedApp">
+                                    <!-- Refer to tables.js -->
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="textbox metadata-detail" id="accordionTablesServices">
+                            <div class="accordion">
+                                <h1 class="accordion-header" id="servicesTableButton">
+                                    <button class="accordion-button" type="button" onclick="DrawServicesTable()" data-mdb-toggle="collapse" data-mdb-target="#services" aria-expanded="true" aria-controls="services">
+                                        Services
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="services">
+                                    <div id="servicesTable">
+                                        <!-- Refer to tables.js -->
+                                    </div>
+                                </div>
+                                <h1 class="accordion-header" id="tasksTableButton">
+                                    <button class="accordion-button" type="button" onclick="DrawTasksTable()" data-mdb-toggle="collapse" data-mdb-target="#tasks" aria-expanded="true" aria-controls="tasks">
+                                        Tasks
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="tasks">
+                                    <div id="tasksTable">
+                                        <!-- Refer to tables.js -->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="textbox metadata-detail" id="accordionTablesNetwork">
+                            <div class="accordion">
+                                <h1 class="accordion-header" id="netconTableButton">
+                                    <button class="accordion-button" type="button" onclick="DrawNetConTable()" data-mdb-toggle="collapse" data-mdb-target="#netcon" aria-expanded="true" aria-controls="netcon">
+                                        Network Connections
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="netcon">
+                                    <div id="netconTable">
+                                        <!-- Refer to tables.js -->
+                                    </div>
+                                </div>
+                                <h1 class="accordion-header" id="routesTableButton">
+                                    <button class="accordion-button" type="button" onclick="DrawRoutesTable()" data-mdb-toggle="collapse" data-mdb-target="#routes" aria-expanded="true" aria-controls="routes">
+                                        Routes Table
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="routes">
+                                    <div id="routesTable">
+                                        <!-- Refer to tables.js -->
+                                    </div>
+                                </div>
+                                <h1 class="accordion-header" id="hostsTableButton">
+                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#hosts" aria-expanded="true" aria-controls="hosts">
+                                        Hosts File
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="hosts">
+                                    <?php
+                                    $hoststext = nl2br($json_data['Network']['HostsFile']);
+                                    ?>
+                                    <p style="font-size: 10pt;"><?= $hoststext ?> </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="devdiv" style="display: none">
+                        <div class="textbox metadata-detail" id="accordionTablesDev">
+                            <div class="accordion">
+                                <h1 class="accordion-header" id="debugLogButton">
+                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#debugLog" aria-expanded="true" aria-controls="debugLog">
+                                        Debug Log
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="debugLog">
+                                    <?php
+                                    $DebugLog = nl2br($json_data['DebugLogText']);
+                                    ?>
+                                    <p style="font-size: 10pt;"><?= $DebugLog ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="accordion">
+                                <h1 class="accordion-header" id="issuesLogButton">
+                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#issuesLog" aria-expanded="true" aria-controls="issuesLog">
+                                        Issues
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="issuesLog">
+                                    <p style="font-size: 10pt;">
+                                        <?php
+                                        $issues = $json_data['Issues'];
+                                        foreach ($issues as $issue) {
+                                            echo (nl2br($issue . "\n"));
+                                        }
+                                        ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <span>Massive Shoutout to <a href="https://spark.lucko.me/" target="_blank">Spark</a></span>
+            </div>
+            <span>Massive Shoutout to <a href="https://spark.lucko.me/" target="_blank">Spark</a></span>
         </main>
 </body>
 
@@ -1498,8 +1440,6 @@ function getDriveCapacity($driveinput)
 <script src="https://cdn.jsdelivr.net/npm/konami@1.6.3/konami.min.js"></script>
 
 <!--Tables-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- For now, jQuery is required for functionality and interaction -->
 
 <script src="https://cdn.jsdelivr.net/npm/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
 <link href="static/css/tables.css" rel="stylesheet">
