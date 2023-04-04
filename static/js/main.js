@@ -1,31 +1,21 @@
 //These are very rudimentary ways of implementing quick pagination of elements without needing any complicated setups.
-document
-	.getElementsByClassName(".notes_button")
-	.addEventListener("click", () => {
-		showtab("#notes");
-	});
 
-document
-	.getElementsByClassName(".pups_button")
-	.addEventListener("click", () => {
-		showtab("#pups");
-	});
+// Really bad code - K97i
+// Thanks K9 - K97i
 
-document
-	.getElementsByClassName(".variables_button")
-	.addEventListener("click", () => {
-		showtab("#variables");
-	});
+var buttonlist = document.getElementsByTagName("li");
 
-document
-	.getElementsByClassName(".browsers_button")
-	.addEventListener("click", () => {
-		showtab("#browsers");
+for (let i in buttonlist) {
+	console.log(buttonlist[i]);
+	if (!(typeof buttonlist[i] === "object")) continue;
+	buttonlist[i].addEventListener("click", () => {
+		showtab(buttonlist[i].firstChild.nodeValue.toLowerCase());
 	});
+}
 
 function showtab(seltab) {
 	// List of all tabs
-	const tabs = ["#pups", "#notes", "#variables", "#browsers"];
+	const tabs = ["pups", "notes", "variables", "browsers"];
 	// Removes selected tab
 	const hiddentabs = tabs.filter((val) => val !== seltab);
 	for (const tab in hiddentabs) {
@@ -34,48 +24,40 @@ function showtab(seltab) {
 	document.getElementById(seltab).style.display = "block";
 }
 
-document.getElementById("#CollapseToggle").addEventListener("click", () => {
-	document.getElementById("#CollapseToggle").style.display = "none";
-	document.getElementById("#CollapseToggleHide").style.display = "block";
-	document.getElementsByClassName("accordion-collapse").classList.add("show");
+// This is extremely jank, but it works! - K9
+document.getElementById("CollapseToggle").addEventListener("click", () => {
+	document.getElementById("CollapseToggle").style.display = "none";
+	document.getElementById("CollapseToggleHide").style.display = "inline";
+	var accordions = document.getElementsByClassName("accordion-collapse");
+
+	for (var i = 0; i < accordions.length; i++) {
+		accordions[i].className = accordions[i].className + " show";
+	}
 });
 
-document.getElementById("#CollapseToggleHide").addEventListener("click", () => {
-	document.getElementById("#CollapseToggle").style.display = "block";
-	document.getElementById("#CollapseToggleHide").style.display = "none";
-	document.getElementsByClassName("accordion-collapse").classList.add("show");
+// Double it and give it to the next person
+document.getElementById("CollapseToggleHide").addEventListener("click", () => {
+	document.getElementById("CollapseToggle").style.display = "inline";
+	document.getElementById("CollapseToggleHide").style.display = "none";
+	var accordions = document.getElementsByClassName("accordion-collapse");
+
+	for (var i = 0; i < accordions.length; i++) {
+		accordions[i].className = accordions[i].className.replace(" show", "");
+	}
 });
 
 //Snippets like these allow for the screen to scroll and follow the expansion caused by collapsing accordion items.
 
-document.getElementById("#devicesTableButton").addEventListener("click", () => {
-	document.getElementById("#devices").scrollIntoView({
+document.getElementById("devicesTableButton").addEventListener("click", () => {
+	document.getElementById("devices").scrollIntoView({
 		behavior: "smooth",
 		block: "start",
 		inline: "nearest",
 	});
 });
 
-document.getElementById("#driversTableButton").addEventListener("click", () => {
-	document.getElementById("#drivers").scrollIntoView({
-		behavior: "smooth",
-		block: "start",
-		inline: "nearest",
-	});
-});
-
-document
-	.getElementById("#runningProcessesButton")
-	.addEventListener("click", () => {
-		document.getElementById("#runningProcesses").scrollIntoView({
-			behavior: "smooth",
-			block: "start",
-			inline: "nearest",
-		});
-	});
-
-document.getElementById("#installedAppButton").addEventListener("click", () => {
-	document.getElementById("#installedApp").scrollIntoView({
+document.getElementById("driversTableButton").addEventListener("click", () => {
+	document.getElementById("drivers").scrollIntoView({
 		behavior: "smooth",
 		block: "start",
 		inline: "nearest",
@@ -83,33 +65,49 @@ document.getElementById("#installedAppButton").addEventListener("click", () => {
 });
 
 document
-	.getElementById("#servicesTableButton")
+	.getElementById("runningProcessesButton")
 	.addEventListener("click", () => {
-		document.getElementById("#services").scrollIntoView({
+		document.getElementById("runningProcesses").scrollIntoView({
 			behavior: "smooth",
 			block: "start",
 			inline: "nearest",
 		});
 	});
 
-document.getElementById("#tasksTableButton").addEventListener("click", () => {
-	document.getElementById("#tasks").scrollIntoView({
+document.getElementById("installedAppButton").addEventListener("click", () => {
+	document.getElementById("installedApp").scrollIntoView({
 		behavior: "smooth",
 		block: "start",
 		inline: "nearest",
 	});
 });
 
-document.getElementById("#netconTableButton").addEventListener("click", () => {
-	document.getElementById("#netcon").scrollIntoView({
+document.getElementById("servicesTableButton").addEventListener("click", () => {
+	document.getElementById("services").scrollIntoView({
 		behavior: "smooth",
 		block: "start",
 		inline: "nearest",
 	});
 });
 
-document.getElementById("#routesTableButton").addEventListener("click", () => {
-	document.getElementById("#routes").scrollIntoView({
+document.getElementById("tasksTableButton").addEventListener("click", () => {
+	document.getElementById("tasks").scrollIntoView({
+		behavior: "smooth",
+		block: "start",
+		inline: "nearest",
+	});
+});
+
+document.getElementById("netconTableButton").addEventListener("click", () => {
+	document.getElementById("netcon").scrollIntoView({
+		behavior: "smooth",
+		block: "start",
+		inline: "nearest",
+	});
+});
+
+document.getElementById("routesTableButton").addEventListener("click", () => {
+	document.getElementById("routes").scrollIntoView({
 		behavior: "smooth",
 		block: "start",
 		inline: "nearest",
@@ -119,7 +117,7 @@ document.getElementById("#routesTableButton").addEventListener("click", () => {
 //Don't even ask.
 //Setting the target as the searchbar, sanitizing the inputs into the search bar into lower case, then getting all divs by class of widget into an array and looping
 //through them for each keystroke, setting visibility of matched divs with class widget, searching the text into their h1 children.
-function searchFunction() {
+window.searchFunction = function searchFunction() {
 	var input, filter, li, i, txtValue, h1;
 	input = document.getElementById("searchBarDiv");
 	filter = input.value.toUpperCase();
@@ -137,7 +135,7 @@ function searchFunction() {
 			li[i].style.display = "none";
 		}
 	}
-}
+};
 
 //It goes to the top, that's it.
 let topbutton = document.getElementById("btn-back-to-top");
