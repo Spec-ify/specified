@@ -1436,20 +1436,18 @@ function getDriveCapacity($driveinput)
 <!--This should be first to make sure the themes load on time-->
 <script src="static/js/themes.js"></script>
 
-<!--Konami Code-->
+<!--Konami Code for Debug Stuff-->
 <script src="https://cdn.jsdelivr.net/npm/konami@1.6.3/konami.min.js"></script>
 
-<!--Tables-->
-
-<script src="https://cdn.jsdelivr.net/npm/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
+<!--Table Rendering-->
+<script type="module" defer="defer" src="static/js/tables.js"></script>
 <link href="static/css/tables.css" rel="stylesheet">
 
 <!--UI Stuff (Animations)-->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 
-<!--Main Code-->
-<script type="module" defer="defer" src="static/js/tables.js"></script>
+<!--Interactivity-->
 <script type="module" defer="defer" src="static/js/main.js"></script>
 
 </html>

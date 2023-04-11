@@ -1,12 +1,9 @@
-//These are very rudimentary ways of implementing quick pagination of elements without needing any complicated setups.
-
 // Really bad code - K97i
 // Thanks K9 - K97i
 
 var buttonlist = document.getElementsByTagName("li");
 
 for (let i in buttonlist) {
-	console.log(buttonlist[i]);
 	if (!(typeof buttonlist[i] === "object")) continue;
 	buttonlist[i].addEventListener("click", () => {
 		showtab(buttonlist[i].firstChild.nodeValue.toLowerCase());

@@ -41,7 +41,12 @@ It's janky, it's definitely inefficient, but it's the one that works.
 
 */
 
-var pageamount = 20;
+Tabulator.defaultOptions.layout = "fitColumns"; // fit columns to width of table
+Tabulator.defaultOptions.responsiveLayout = "hide"; // hide columns that dont fit on the table
+Tabulator.defaultOptions.pagination = "local"; // paginate the data
+Tabulator.defaultOptions.paginationSize = 20; // how many rows are shown
+Tabulator.defaultOptions.paginationButtonCount = 99; // show all pages
+Tabulator.defaultOptions.paginationCounter = "rows"; // display count of paginated rows in footer
 
 // Get profile name from DOM
 const filename =
@@ -87,9 +92,6 @@ window.DrawDriveTable = async function DrawDriveTable(a) {
 
 	var PartTable = await new Tabulator(div, {
 		data: DriveData, //load row data from array
-		layout: "fitColumns", //fit columns to width of table
-		responsiveLayout: "hide", //hide columns that dont fit on the table
-		paginationCounter: "rows", //display count of paginated rows in footer
 		initialSort: [
 			//set the initial sort order of the data
 			{ column: "Name", dir: "asc" },
@@ -138,7 +140,6 @@ window.DrawDriveTable = async function DrawDriveTable(a) {
 			row.getElement().appendChild(holderEl);
 
 			var subTable = new Tabulator(tableEl, {
-				layout: "fitColumns",
 				data: row.getData().Partitions,
 				columns: [
 					{ title: "Label", field: "PartitionLabel" },
@@ -173,12 +174,6 @@ window.DrawDriveTable = async function DrawDriveTable(a) {
 async function DrawNICTable() {
 	var NICTable = await new Tabulator("#nicTable", {
 		data: json.Network.Adapters, //load row data from array
-		layout: "fitColumns", //fit columns to width of table
-		responsiveLayout: "hide", //hide columns that dont fit on the table
-		pagination: "local", //paginate the data
-		paginationSize: pageamount, //allow 10 rows per page of data
-		paginationButtonCount: 99, // Show all pages
-		paginationCounter: "rows", //display count of paginated rows in footer
 		initialSort: [
 			//set the initial sort order of the data
 			{ column: "InterfaceIndex", dir: "asc" },
@@ -212,12 +207,6 @@ window.DrawNICTable = function DrawNIC() {
 async function DrawTempsTable() {
 	var TempsTable = await new Tabulator("#TempsDiv", {
 		data: json.Hardware.Temperatures, //load row data from array
-		layout: "fitColumns", //fit columns to width of table
-		responsiveLayout: "hide", //hide columns that dont fit on the table
-		pagination: "local", //paginate the data
-		paginationSize: pageamount, //allow 10 rows per page of data
-		paginationButtonCount: 99, // Show all pages
-		paginationCounter: "rows", //display count of paginated rows in footer
 		initialSort: [
 			//set the initial sort order of the data
 			{ column: "Hardware", dir: "asc" },
@@ -243,12 +232,6 @@ window.DrawTempsTable = function DrawTemps() {
 async function DrawADTable() {
 	var AudioDev = await new Tabulator("#audioDeviceDiv", {
 		data: json.Hardware.AudioDevices, //load row data from array
-		layout: "fitColumns", //fit columns to width of table
-		responsiveLayout: "hide", //hide columns that dont fit on the table
-		pagination: "local", //paginate the data
-		paginationSize: pageamount, //allow 10 rows per page of data
-		paginationButtonCount: 99, // Show all pages
-		paginationCounter: "rows", //display count of paginated rows in footer
 		initialSort: [
 			//set the initial sort order of the data
 			{ column: "Status", dir: "asc" },
@@ -275,12 +258,6 @@ window.DrawADTable = function DrawAD() {
 async function DrawPPBTable() {
 	var PowerProfile = await new Tabulator("#powerTable", {
 		data: json.System.PowerProfiles, //load row data from array
-		layout: "fitColumns", //fit columns to width of table
-		responsiveLayout: "hide", //hide columns that dont fit on the table
-		pagination: "local", //paginate the data
-		paginationSize: pageamount, //allow 10 rows per page of data
-		paginationButtonCount: 99, // Show all pages
-		paginationCounter: "rows", //display count of paginated rows in footer
 		initialSort: [
 			//set the initial sort order of the data
 			{ column: "IsActive", dir: "asc" },
@@ -361,12 +338,6 @@ function ExpandSectionTables() {
 window.DrawDevicesTable = async function DrawDevicesTable() {
 	var DevicesTable = await new Tabulator("#devicesTable", {
 		data: json.Hardware.Devices, //load row data from array
-		layout: "fitColumns", //fit columns to width of table
-		responsiveLayout: "hide", //hide columns that dont fit on the table
-		pagination: "local", //paginate the data
-		paginationSize: pageamount, //allow 10 rows per page of data
-		paginationButtonCount: 99, // Show all pages
-		paginationCounter: "rows", //display count of paginated rows in footer
 		initialSort: [
 			//set the initial sort order of the data
 			{ column: "Status", dir: "desc" },
@@ -388,12 +359,6 @@ window.DrawDevicesTable = async function DrawDevicesTable() {
 window.DrawDriverTable = async function DrawDriverTable() {
 	var DevicesTable = await new Tabulator("#driversTable", {
 		data: json.Hardware.Drivers, //load row data from array
-		layout: "fitColumns", //fit columns to width of table
-		responsiveLayout: "hide", //hide columns that dont fit on the table
-		pagination: "local", //paginate the data
-		paginationSize: pageamount, //allow 10 rows per page of data
-		paginationButtonCount: 99, // Show all pages
-		paginationCounter: "rows", //display count of paginated rows in footer
 		initialSort: [
 			//set the initial sort order of the data
 			{ column: "DeviceName", dir: "desc" },
@@ -456,12 +421,6 @@ window.DrawRunProc = async function DrawRunProc() {
 
 	var RunnProc = await new Tabulator("#runningProcesses", {
 		data: displayProcesses, //load row data from array
-		layout: "fitColumns", //fit columns to width of table
-		responsiveLayout: "hide", //hide columns that dont fit on the table
-		pagination: "local", //paginate the data
-		paginationSize: pageamount, //allow 10 rows per page of data
-		paginationButtonCount: 99, // Show all pages
-		paginationCounter: "rows", //display count of paginated rows in footer
 		initialSort: [
 			//set the initial sort order of the data
 			{ column: "ProcessName", dir: "asc" },
@@ -503,12 +462,6 @@ window.DrawRunProc = async function DrawRunProc() {
 window.DrawInstApps = async function DrawInstApps() {
 	var InstApps = await new Tabulator("#installedApp", {
 		data: json.System.InstalledApps, //load row data from array
-		layout: "fitColumns", //fit columns to width of table
-		responsiveLayout: "hide", //hide columns that dont fit on the table
-		pagination: "local", //paginate the data
-		paginationSize: pageamount, //allow 10 rows per page of data
-		paginationButtonCount: 99, // Show all pages
-		paginationCounter: "rows", //display count of paginated rows in footer
 		initialSort: [
 			//set the initial sort order of the data
 			{ column: "Name", dir: "asc" },
@@ -538,12 +491,6 @@ window.DrawInstApps = async function DrawInstApps() {
 window.DrawServicesTable = async function DrawServicesTable() {
 	var ServicesTable = await new Tabulator("#servicesTable", {
 		data: json.System.Services, //load row data from array
-		layout: "fitColumns", //fit columns to width of table
-		responsiveLayout: "hide", //hide columns that dont fit on the table
-		pagination: "local", //paginate the data
-		paginationSize: pageamount, //allow 10 rows per page of data
-		paginationButtonCount: 99, // Show all pages
-		paginationCounter: "rows", //display count of paginated rows in footer
 		initialSort: [
 			//set the initial sort order of the data
 			{ column: "State", dir: "desc" },
@@ -565,12 +512,6 @@ window.DrawServicesTable = async function DrawServicesTable() {
 window.DrawTasksTable = async function DrawTasksTable() {
 	var TasksTable = await new Tabulator("#tasksTable", {
 		data: json.System.ScheduledTasks, //load row data from array
-		layout: "fitColumns", //fit columns to width of table
-		responsiveLayout: "hide", //hide columns that dont fit on the table
-		pagination: "local", //paginate the data
-		paginationSize: pageamount, //allow 10 rows per page of data
-		paginationButtonCount: 99, // Show all pages
-		paginationCounter: "rows", //display count of paginated rows in footer
 		initialSort: [
 			//set the initial sort order of the data
 			{ column: "State", dir: "desc" },
@@ -593,12 +534,6 @@ window.DrawTasksTable = async function DrawTasksTable() {
 window.DrawNetConTable = async function DrawNetConTable() {
 	var NetCon = await new Tabulator("#netconTable", {
 		data: json.Network.NetworkConnections, //load row data from array
-		layout: "fitColumns", //fit columns to width of table
-		responsiveLayout: "hide", //hide columns that dont fit on the table
-		pagination: "local", //paginate the data
-		paginationSize: pageamount, //allow 10 rows per page of data
-		paginationButtonCount: 99, // Show all pages
-		paginationCounter: "rows", //display count of paginated rows in footer
 		initialSort: [
 			//set the initial sort order of the data
 			{ column: "LocalIPAddress", dir: "desc" },
@@ -633,15 +568,9 @@ window.DrawNetConTable = async function DrawNetConTable() {
 window.DrawRoutesTable = async function DrawRoutesTable() {
 	var NetCon = await new Tabulator("#routesTable", {
 		data: json.Network.Routes, //load row data from array
-		layout: "fitColumns", //fit columns to width of table
-		responsiveLayout: "hide", //hide columns that dont fit on the table
-		pagination: "local", //paginate the data
-		paginationSize: pageamount, //allow 10 rows per page of data
-		paginationButtonCount: 99, // Show all pages
-		paginationCounter: "rows", //display count of paginated rows in footer
 		initialSort: [
 			//set the initial sort order of the data
-			{ column: "State", dir: "desc" },
+			{ column: "Destination", dir: "desc" },
 		],
 		columnDefaults: {
 			tooltip: true, //show tool tips on cells
