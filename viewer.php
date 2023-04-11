@@ -682,6 +682,14 @@ function getDriveCapacity($driveinput)
                                             <h5 class="modal-title" id="ModalLabel">System Information</h5>
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
+
+                                        <div id="nicOptions" style="margin: 0.25em; margin-left: auto; margin-right: auto;">
+                                            <div id="nicSearch" style="font-size: 10pt;">
+                                                Search:
+                                                <input id="nicFilter" type="text" style="background-color: #353535;">
+                                            </div>
+                                        </div>
+
                                         <div class="modal-body" id="nicTable">
                                             <!-- Refer to tables.js -->
                                         </div>
@@ -1286,6 +1294,13 @@ function getDriveCapacity($driveinput)
                                         </button>
                                     </h1>
                                     <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="devices">
+                                        <div id="devicesOptions" style="margin-bottom: 0.35em; margin-left: 0.20em; ">
+                                            <div id="devicesSearch" style="font-size: 10pt;">
+                                                Search:
+                                                <input id="devicesFilter" type="text">
+                                            </div>
+                                        </div>
+
                                         <div id="devicesTable">
                                             <!-- Refer to tables.js -->
                                         </div>
@@ -1298,6 +1313,13 @@ function getDriveCapacity($driveinput)
                                     </button>
                                 </h1>
                                 <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="drivers">
+                                    <div id="driversOptions" style="margin-bottom: 0.35em; margin-left: 0.20em; ">
+                                        <div id="driversSearch" style="font-size: 10pt;">
+                                            Search:
+                                            <input id="driversFilter" type="text">
+                                        </div>
+                                    </div>
+
                                     <div id="driversTable">
                                         <!-- Refer to tables.js -->
                                     </div>
@@ -1314,15 +1336,32 @@ function getDriveCapacity($driveinput)
                                     </button>
                                 </h1>
                                 <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="runningProcesses">
-                                    <!-- Refer to tables.js -->
+                                    <div id="runProcOptions" style="margin-bottom: 0.35em; margin-left: 0.20em; ">
+                                        <div id="runProcSearch" style="font-size: 10pt;">
+                                            Search:
+                                            <input id="runProcFilter" type="text">
+                                        </div>
+                                    </div>
+                                    <div id="runProcTable">
+                                        <!-- Refer to tables.js -->
+                                    </div>
                                 </div>
+
                                 <h1 class="accordion-header" id="installedAppButton">
                                     <button class="accordion-button" onclick="DrawInstApps()" type="button" data-mdb-toggle="collapse" data-mdb-target="#installedApp" aria-expanded="true" aria-controls="installedApp">
                                         Installed Apps
                                     </button>
                                 </h1>
                                 <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="installedApp">
-                                    <!-- Refer to tables.js -->
+                                    <div id="instAppsOptions" style="margin-bottom: 0.35em; margin-left: 0.20em; ">
+                                        <div id="instAppsSearch" style="font-size: 10pt;">
+                                            Search:
+                                            <input id="instAppsFilter" type="text">
+                                        </div>
+                                    </div>
+                                    <div id="instAppsTable">
+                                        <!-- Refer to tables.js -->
+                                    </div>
                                 </div>
 
                             </div>
@@ -1337,6 +1376,13 @@ function getDriveCapacity($driveinput)
                                     </button>
                                 </h1>
                                 <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="services">
+                                    <div id="servicesOptions" style="margin-bottom: 0.35em; margin-left: 0.20em; ">
+                                        <div id="servicesSearch" style="font-size: 10pt;">
+                                            Search:
+                                            <input id="servicesFilter" type="text">
+                                        </div>
+                                    </div>
+
                                     <div id="servicesTable">
                                         <!-- Refer to tables.js -->
                                     </div>
@@ -1347,6 +1393,13 @@ function getDriveCapacity($driveinput)
                                     </button>
                                 </h1>
                                 <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="tasks">
+                                    <div id="tasksOptions" style="margin-bottom: 0.35em; margin-left: 0.20em; ">
+                                        <div id="tasksSearch" style="font-size: 10pt;">
+                                            Search:
+                                            <input id="tasksFilter" type="text">
+                                        </div>
+                                    </div>
+
                                     <div id="tasksTable">
                                         <!-- Refer to tables.js -->
                                     </div>
@@ -1364,6 +1417,13 @@ function getDriveCapacity($driveinput)
                                     </button>
                                 </h1>
                                 <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="netcon">
+                                    <div id="netconOptions" style="margin-bottom: 0.35em; margin-left: 0.20em; ">
+                                        <div id="netconSearch" style="font-size: 10pt;">
+                                            Search:
+                                            <input id="netconFilter" type="text">
+                                        </div>
+                                    </div>
+
                                     <div id="netconTable">
                                         <!-- Refer to tables.js -->
                                     </div>
@@ -1374,6 +1434,13 @@ function getDriveCapacity($driveinput)
                                     </button>
                                 </h1>
                                 <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="routes">
+                                    <div id="routesOptions" style="margin-bottom: 0.35em; margin-left: 0.20em; ">
+                                        <div id="routesSearch" style="font-size: 10pt;">
+                                            Search:
+                                            <input id="routesFilter" type="text">
+                                        </div>
+                                    </div>
+
                                     <div id="routesTable">
                                         <!-- Refer to tables.js -->
                                     </div>

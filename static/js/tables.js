@@ -17,17 +17,6 @@ Tabulator.registerModule([
 	FormatModule,
 ]);
 
-/*
-
-=========== TO DO ===========
-
-Features:
-Search (Filtering / https://tabulator.info/docs/5.4/filter)
-	- Create a Div and Append an input on it
-		- If we do this, it would repeatedly create the Div unless we add a check for it 
-
-*/
-
 /* 
 
 =========== K9's Note ===========
@@ -43,8 +32,9 @@ It's janky, it's definitely inefficient, but it's the one that works.
 
 Tabulator.defaultOptions.layout = "fitColumns"; // fit columns to width of table
 Tabulator.defaultOptions.responsiveLayout = "hide"; // hide columns that dont fit on the table
-Tabulator.defaultOptions.pagination = "local"; // paginate the data
+Tabulator.defaultOptions.pagination = true; // paginate the data
 Tabulator.defaultOptions.paginationSize = 20; // how many rows are shown
+Tabulator.defaultOptions.paginationSizeSelector = [10, 20, 50, 100];
 Tabulator.defaultOptions.paginationButtonCount = 99; // show all pages
 Tabulator.defaultOptions.paginationCounter = "rows"; // display count of paginated rows in footer
 
@@ -66,6 +56,8 @@ Partition Data differs because the tables are in accordions,
 like the sections, so we could just do it like them. 
 
 */
+
+var renderdelay = 250;
 
 function ExpandModalTables() {
 	// Draw Drive Tables require the drive key
@@ -92,6 +84,7 @@ window.DrawDriveTable = async function DrawDriveTable(a) {
 
 	var PartTable = await new Tabulator(div, {
 		data: DriveData, //load row data from array
+		paginationSizeSelector: false,
 		initialSort: [
 			//set the initial sort order of the data
 			{ column: "Name", dir: "asc" },
@@ -141,6 +134,7 @@ window.DrawDriveTable = async function DrawDriveTable(a) {
 
 			var subTable = new Tabulator(tableEl, {
 				data: row.getData().Partitions,
+				paginationSizeSelector: false,
 				columns: [
 					{ title: "Label", field: "PartitionLabel" },
 					{
@@ -195,12 +189,30 @@ async function DrawNICTable() {
 			{ title: "Subnet", field: "IPSubnet" },
 		],
 	});
+
+	document.getElementById("nicFilter").addEventListener("keyup", () => {
+		var key = document.getElementById("nicFilter").value;
+		NICTable.setFilter([
+			[
+				{ field: "Description", type: "like", value: key },
+				{ field: "MACAddress", type: "like", value: key },
+				{ field: "DefaultIPGateway", type: "like", value: key },
+				{ field: "DHCPEnabled", type: "like", value: key },
+				{ field: "DHCPServer", type: "like", value: key },
+				{ field: "DNSDomain", type: "like", value: key },
+				{ field: "DNSHostName", type: "like", value: key },
+				{ field: "DNSServerSearchOrder", type: "like", value: key },
+				{ field: "IPAddress", type: "like", value: key },
+				{ field: "IPSubnet", type: "like", value: key },
+			],
+		]);
+	});
 }
 
 window.DrawNICTable = function DrawNIC() {
 	setTimeout(() => {
 		DrawNICTable();
-	}, "250");
+	}, renderdelay);
 };
 
 // Temps
@@ -225,7 +237,7 @@ async function DrawTempsTable() {
 window.DrawTempsTable = function DrawTemps() {
 	setTimeout(() => {
 		DrawTempsTable();
-	}, "250");
+	}, renderdelay);
 };
 
 // Audio Devices
@@ -251,13 +263,14 @@ async function DrawADTable() {
 window.DrawADTable = function DrawAD() {
 	setTimeout(() => {
 		DrawADTable();
-	}, "250");
+	}, renderdelay);
 };
 
 // Power Profiles - Batteries
 async function DrawPPBTable() {
 	var PowerProfile = await new Tabulator("#powerTable", {
 		data: json.System.PowerProfiles, //load row data from array
+		paginationSizeSelector: false,
 		initialSort: [
 			//set the initial sort order of the data
 			{ column: "IsActive", dir: "asc" },
@@ -275,12 +288,7 @@ async function DrawPPBTable() {
 
 	var Batteries = await new Tabulator("#batteryTable", {
 		data: json.Hardware.Batteries, //load row data from array
-		layout: "fitColumns", //fit columns to width of table
-		responsiveLayout: "hide", //hide columns that dont fit on the table
-		pagination: "local", //paginate the data
-		paginationSize: pageamount, //allow 10 rows per page of data
-		paginationButtonCount: 99, // Show all pages
-		paginationCounter: "rows", //display count of paginated rows in footer
+		paginationSizeSelector: false,
 		initialSort: [
 			//set the initial sort order of the data
 			{ column: "Manufacturer", dir: "asc" },
@@ -310,7 +318,7 @@ async function DrawPPBTable() {
 window.DrawPPBTable = function DrawPPB() {
 	setTimeout(() => {
 		DrawPPBTable();
-	}, "250");
+	}, renderdelay);
 };
 
 /*
@@ -353,11 +361,23 @@ window.DrawDevicesTable = async function DrawDevicesTable() {
 			{ title: "DID", field: "DeviceID" },
 		],
 	});
+
+	document.getElementById("devicesFilter").addEventListener("keyup", () => {
+		var key = document.getElementById("devicesFilter").value;
+		DevicesTable.setFilter([
+			[
+				{ field: "Status", type: "like", value: key },
+				{ field: "Description", type: "like", value: key },
+				{ field: "Name", type: "like", value: key },
+				{ field: "DID", type: "like", value: key },
+			],
+		]);
+	});
 };
 
 // Drivers
 window.DrawDriverTable = async function DrawDriverTable() {
-	var DevicesTable = await new Tabulator("#driversTable", {
+	var DriversTable = await new Tabulator("#driversTable", {
 		data: json.Hardware.Drivers, //load row data from array
 		initialSort: [
 			//set the initial sort order of the data
@@ -373,6 +393,19 @@ window.DrawDriverTable = async function DrawDriverTable() {
 			{ title: "DID", field: "DeviceID" },
 			{ title: "Version", field: "DriverVersion" },
 		],
+	});
+
+	document.getElementById("driversFilter").addEventListener("keyup", () => {
+		var key = document.getElementById("driversFilter").value;
+		DriversTable.setFilter([
+			[
+				{ field: "DeviceName", type: "like", value: key },
+				{ field: "FriendlyName", type: "like", value: key },
+				{ field: "Manufacturer", type: "like", value: key },
+				{ field: "DeviceID", type: "like", value: key },
+				{ field: "DriverVersion", type: "like", value: key },
+			],
+		]);
 	});
 };
 
@@ -419,7 +452,7 @@ window.DrawRunProc = async function DrawRunProc() {
 		};
 	});
 
-	var RunnProc = await new Tabulator("#runningProcesses", {
+	var RunProc = await new Tabulator("#runProcTable", {
 		data: displayProcesses, //load row data from array
 		initialSort: [
 			//set the initial sort order of the data
@@ -456,11 +489,22 @@ window.DrawRunProc = async function DrawRunProc() {
 			},
 		],
 	});
+
+	document.getElementById("runProcFilter").addEventListener("keyup", () => {
+		var key = document.getElementById("runProcFilter").value;
+		RunProc.setFilter([
+			[
+				{ field: "Id", type: "like", value: key },
+				{ field: "ProcessName", type: "like", value: key },
+				{ field: "ExePath", type: "like", value: key },
+			],
+		]);
+	});
 };
 
 // Installed Apps
 window.DrawInstApps = async function DrawInstApps() {
-	var InstApps = await new Tabulator("#installedApp", {
+	var InstApps = await new Tabulator("#instAppsTable", {
 		data: json.System.InstalledApps, //load row data from array
 		initialSort: [
 			//set the initial sort order of the data
@@ -485,6 +529,17 @@ window.DrawInstApps = async function DrawInstApps() {
 			},
 		],
 	});
+
+	document.getElementById("instAppsFilter").addEventListener("keyup", () => {
+		var key = document.getElementById("instAppsFilter").value;
+		InstApps.setFilter([
+			[
+				{ field: "Name", type: "like", value: key },
+				{ field: "Version", type: "like", value: key },
+				{ field: "InstallDate", type: "like", value: key },
+			],
+		]);
+	});
 };
 
 // Services
@@ -505,6 +560,19 @@ window.DrawServicesTable = async function DrawServicesTable() {
 			{ title: "Name", field: "Name", width: 360 },
 			{ title: "Path", field: "PathName" },
 		],
+	});
+
+	document.getElementById("servicesFilter").addEventListener("keyup", () => {
+		var key = document.getElementById("servicesFilter").value;
+		ServicesTable.setFilter([
+			[
+				{ field: "State", type: "like", value: key },
+				{ field: "Start Mode", type: "like", value: key },
+				{ field: "Caption", type: "like", value: key },
+				{ field: "Name", type: "like", value: key },
+				{ field: "Path", type: "like", value: key },
+			],
+		]);
 	});
 };
 
@@ -527,6 +595,20 @@ window.DrawTasksTable = async function DrawTasksTable() {
 			{ title: "Author", field: "Author" },
 			{ title: "Triggers", field: "TriggerTypes" },
 		],
+	});
+
+	document.getElementById("tasksFilter").addEventListener("keyup", () => {
+		var key = document.getElementById("tasksFilter").value;
+		TasksTable.setFilter([
+			[
+				{ field: "State", type: "like", value: key },
+				{ field: "IsActive", type: "like", value: key },
+				{ field: "Name", type: "like", value: key },
+				{ field: "Path", type: "like", value: key },
+				{ field: "Author", type: "like", value: key },
+				{ field: "TriggerTypes", type: "like", value: key },
+			],
+		]);
 	});
 };
 
@@ -562,11 +644,25 @@ window.DrawNetConTable = async function DrawNetConTable() {
 			},
 		],
 	});
+
+	document.getElementById("netconFilter").addEventListener("keyup", () => {
+		var key = document.getElementById("netconFilter").value;
+		NetCon.setFilter([
+			[
+				{ field: "LocalIPAddress", type: "like", value: key },
+				{ field: "LocalPort", type: "like", value: key },
+				{ field: "RemoteIPAddress", type: "like", value: key },
+				{ field: "RemotePort", type: "like", value: key },
+				{ field: "OwningPID", type: "like", value: key },
+				// This would only filter using the data before the formatter
+			],
+		]);
+	});
 };
 
 // Routes
 window.DrawRoutesTable = async function DrawRoutesTable() {
-	var NetCon = await new Tabulator("#routesTable", {
+	var Routes = await new Tabulator("#routesTable", {
 		data: json.Network.Routes, //load row data from array
 		initialSort: [
 			//set the initial sort order of the data
@@ -596,6 +692,23 @@ window.DrawRoutesTable = async function DrawRoutesTable() {
 			{ title: "Metric", field: "Metric1" },
 			{ title: "Next Hop", field: "NextHop" },
 		],
+	});
+
+	document.getElementById("routesFilter").addEventListener("keyup", () => {
+		var key = document.getElementById("routesFilter").value;
+		NetCon.setFilter([
+			[
+				{ field: "Description", type: "like", value: key },
+				{ field: "Destination", type: "like", value: key },
+
+				{ field: "InterfaceIndex", type: "like", value: key },
+				// This would only filter using the data before the formatter
+
+				{ field: "Mask", type: "like", value: key },
+				{ field: "Metric1", type: "like", value: key },
+				{ field: "NextHop", type: "like", value: key },
+			],
+		]);
 	});
 };
 
