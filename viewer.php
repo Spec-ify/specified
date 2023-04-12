@@ -686,7 +686,7 @@ function getDriveCapacity($driveinput)
                                         <div id="nicOptions" style="margin: 0.25em; margin-left: auto; margin-right: auto;">
                                             <div id="nicSearch" style="font-size: 10pt;">
                                                 Search:
-                                                <input id="nicFilter" type="text" style="background-color: #353535;">
+                                                <input class="filterbox" id="nicFilter" type="text" style="background-color: #353535;">
                                             </div>
                                         </div>
 
@@ -1297,7 +1297,7 @@ function getDriveCapacity($driveinput)
                                         <div id="devicesOptions" style="margin-bottom: 0.35em; margin-left: 0.20em; ">
                                             <div id="devicesSearch" style="font-size: 10pt;">
                                                 Search:
-                                                <input id="devicesFilter" type="text">
+                                                <input class="filterbox" id="devicesFilter" type="text">
                                             </div>
                                         </div>
 
@@ -1316,7 +1316,7 @@ function getDriveCapacity($driveinput)
                                     <div id="driversOptions" style="margin-bottom: 0.35em; margin-left: 0.20em; ">
                                         <div id="driversSearch" style="font-size: 10pt;">
                                             Search:
-                                            <input id="driversFilter" type="text">
+                                            <input class="filterbox" id="driversFilter" type="text">
                                         </div>
                                     </div>
 
@@ -1339,7 +1339,7 @@ function getDriveCapacity($driveinput)
                                     <div id="runProcOptions" style="margin-bottom: 0.35em; margin-left: 0.20em; ">
                                         <div id="runProcSearch" style="font-size: 10pt;">
                                             Search:
-                                            <input id="runProcFilter" type="text">
+                                            <input class="filterbox" id="runProcFilter" type="text">
                                         </div>
                                     </div>
                                     <div id="runProcTable">
@@ -1356,7 +1356,7 @@ function getDriveCapacity($driveinput)
                                     <div id="instAppsOptions" style="margin-bottom: 0.35em; margin-left: 0.20em; ">
                                         <div id="instAppsSearch" style="font-size: 10pt;">
                                             Search:
-                                            <input id="instAppsFilter" type="text">
+                                            <input class="filterbox" id="instAppsFilter" type="text">
                                         </div>
                                     </div>
                                     <div id="instAppsTable">
@@ -1379,7 +1379,7 @@ function getDriveCapacity($driveinput)
                                     <div id="servicesOptions" style="margin-bottom: 0.35em; margin-left: 0.20em; ">
                                         <div id="servicesSearch" style="font-size: 10pt;">
                                             Search:
-                                            <input id="servicesFilter" type="text">
+                                            <input class="filterbox" id="servicesFilter" type="text">
                                         </div>
                                     </div>
 
@@ -1396,7 +1396,7 @@ function getDriveCapacity($driveinput)
                                     <div id="tasksOptions" style="margin-bottom: 0.35em; margin-left: 0.20em; ">
                                         <div id="tasksSearch" style="font-size: 10pt;">
                                             Search:
-                                            <input id="tasksFilter" type="text">
+                                            <input class="filterbox" id="tasksFilter" type="text">
                                         </div>
                                     </div>
 
@@ -1420,7 +1420,7 @@ function getDriveCapacity($driveinput)
                                     <div id="netconOptions" style="margin-bottom: 0.35em; margin-left: 0.20em; ">
                                         <div id="netconSearch" style="font-size: 10pt;">
                                             Search:
-                                            <input id="netconFilter" type="text">
+                                            <input class="filterbox" id="netconFilter" type="text">
                                         </div>
                                     </div>
 
@@ -1437,7 +1437,7 @@ function getDriveCapacity($driveinput)
                                     <div id="routesOptions" style="margin-bottom: 0.35em; margin-left: 0.20em; ">
                                         <div id="routesSearch" style="font-size: 10pt;">
                                             Search:
-                                            <input id="routesFilter" type="text">
+                                            <input class="filterbox" id="routesFilter" type="text">
                                         </div>
                                     </div>
 
@@ -1511,8 +1511,8 @@ function getDriveCapacity($driveinput)
 <link href="static/css/tables.css" rel="stylesheet">
 
 <!--UI Stuff (Animations)-->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mdb-ui-kit@6.2.0/js/mdb.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <!--Interactivity-->
 <script type="module" defer="defer" src="static/js/main.js"></script>

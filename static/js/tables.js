@@ -438,7 +438,6 @@ window.DrawRunProc = async function DrawRunProc() {
 		const workingSetMegaBytes = (workingSetReal / Math.pow(2, 20)).toFixed(
 			2
 		);
-		const workingSetDisplay = intl.format(workingSetMegaBytes);
 		const cpuPercent = e
 			.map((p) => p.CpuPercent)
 			.reduce((acc, cur) => acc + cur);
@@ -446,9 +445,8 @@ window.DrawRunProc = async function DrawRunProc() {
 			ProcessName: `${e[0].ProcessName} (${count})`,
 			ExePath: e[0].ExePath,
 			Id: e[0].Id, // We can perhaps make this a list later
-			WorkingSet: workingSetDisplay,
 			CpuPercent: cpuPercent,
-			WorkingSetReal: workingSetReal,
+			WorkingSetReal: workingSetMegaBytes,
 		};
 	});
 
@@ -479,8 +477,11 @@ window.DrawRunProc = async function DrawRunProc() {
 			},
 			{
 				title: "RAM (MB)",
-				field: "WorkingSet",
+				field: "WorkingSetReal",
 				width: 100,
+				formatter: function (cell) {
+					return cell.getValue().toLocaleString("en-US");
+				},
 			},
 			{
 				title: "CPU",
