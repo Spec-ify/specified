@@ -80,7 +80,7 @@ window.DrawDriveTable = async function DrawDriveTable(a) {
 			Partitions: DriveData.Partitions,
 		},
 	];
-	const div = `#DriveTable${a}`;
+	var div = `#DriveTable${a}`;
 
 	var PartTable = await new Tabulator(div, {
 		data: DriveData, //load row data from array
@@ -162,6 +162,32 @@ window.DrawDriveTable = async function DrawDriveTable(a) {
 			});
 		},
 	});
+};
+
+async function DrawSmartTable(a) {
+	var div = `#SmartTable${a}`;
+
+	var SmartTable = await new Tabulator(div, {
+		data: json.Hardware.Storage[a].SmartData, //load row data from array
+		initialSort: [
+			//set the initial sort order of the data
+			{ column: "Id", dir: "asc" },
+		],
+		columnDefaults: {
+			tooltip: true, //show tool tips on cells
+		},
+		columns: [
+			{ title: "Index", field: "Id", width: 100 },
+			{ title: "Name", field: "Name" },
+			{ title: "Value", field: "RawValue", width: 150 },
+		],
+	});
+}
+
+window.DrawSmart = function DrawSmart(a) {
+	setTimeout(() => {
+		DrawSmartTable(a);
+	}, renderdelay);
 };
 
 // NIC

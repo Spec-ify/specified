@@ -792,7 +792,11 @@ function getDriveCapacity($driveinput)
                                 $lettersString = implode(", ", $letters);
 
                                 echo '
-					<div class="widget widget-disk hover" type="button" data-mdb-toggle="modal" data-mdb-target="#driveModal' . $drive . '">
+					<div class="widget widget-disk hover" type="button"';
+                                if (isset($json_data['Hardware']['Storage'][$drive]['SmartData'])) {
+                                    echo 'onclick="DrawSmart(' . $drive . ')"';
+                                }
+                                echo '  data-mdb-toggle="modal" data-mdb-target="#driveModal' . $drive . '">
 						<h1>' . $device_name . '</h1>
 						<div class="widget-values">
 							<div class="widget-value">
@@ -807,7 +811,7 @@ function getDriveCapacity($driveinput)
 						</div>
 					</div>
 					<div class="modal fade" id="driveModal' . $drive . '" tabindex="-1" aria-labelledby="driveModal" aria-hidden="true">
-						<div class="modal-dialog">
+						<div class="modal-dialog modal-lg">
 							<div class="modal-content">
 								<div class="modal-header">
 									<h5 class="modal-title" id="ModalLabel">' . $device_name . ' (' . $lettersString . ')' . '</h5>
@@ -815,34 +819,8 @@ function getDriveCapacity($driveinput)
 								</div>
 								<div class="modal-body">';
                                 if (isset($json_data['Hardware']['Storage'][$drive]['SmartData'])) {
-                                    echo
-                                    '
-                                        <table class="table">
-										<thead>
-											<tr>
-												<th scope="col">Index</th>
-												<th scope="col">Name</th>
-												<th scope="col">Value</th>
-											</tr>
-										</thead>
-										<tbody>
-                                    ';
-
-                                    for ($smart = 0; $smart < $smart_amount; $smart++) {
-                                        echo
-                                        '
-											<tr>
-												<th scope="row">' . $json_data['Hardware']['Storage'][$drive]['SmartData'][$smart]['Id'] . '</th>
-												<td>' . $json_data['Hardware']['Storage'][$drive]['SmartData'][$smart]['Name'] . '</td>
-												<td>' . $json_data['Hardware']['Storage'][$drive]['SmartData'][$smart]['RawValue'] . '</td>
-											</tr>';
-                                    }
-
-                                    echo
-                                    '
-										</tbody>
-									</table>
-                        ';
+                                    echo '<div id="SmartTable' . $drive . '">
+                                        </div>';
                                 } else {
                                     echo
                                     '
