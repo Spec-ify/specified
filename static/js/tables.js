@@ -553,6 +553,11 @@ window.DrawInstApps = async function DrawInstApps() {
 			{
 				title: "Install Date",
 				field: "InstallDate",
+				formatter: function (cell) {
+					var raw = cell.getValue();
+					if (raw == null) return null;
+					return new Date(raw * 1000).toLocaleDateString("en-US");
+				},
 			},
 		],
 	});
