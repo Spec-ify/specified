@@ -27,6 +27,21 @@ if ($eol == true) {
 
 //The lines below are for the loop that calculates total RAM/CPU used.
 //CPU doesn't work right now because we are not able to efficiently get the CPU usage of each running process.
+$working_set = 0;
+$cpu_percent = 0;
+$process_count = count($json_data['System']['RunningProcesses']);
+$i = 0;
+
+
+for ($i == 0; $i < $process_count; $i++) {
+    $working_set = $working_set + $json_data['System']['RunningProcesses'][$i]['WorkingSet'];
+}
+$i = 0;
+for ($i == 0; $i < $process_count; $i++) {
+    $cpu_percent = $cpu_percent + $json_data['System']['RunningProcesses'][$i]['WorkingSet'];
+}
+$ram_used = number_format($working_set / 1073741824, 2, '.', '');
+
 
 //Some generic color inserts. I know I could have used a smarter CSS alternative, but call me old fashioned.
 $green = '#A3BE8C';
@@ -802,8 +817,8 @@ function getDriveCapacity($driveinput)
                                 } elseif ($drive_percentage >= 0 && $drive_percentage <= 49) {
                                     $flavor_color = $green;
                                 }
-                                if (!(floor(bytesToGigabytes($json_data['Hardware']['Storage'][$drive]['DiskCapacity'])) ==
-                                    floor(bytesToGigabytes(getDriveCapacity($json_data['Hardware']['Storage'][$drive]))))) {
+                                if (abs(floor(bytesToGigabytes($json_data['Hardware']['Storage'][$drive]['DiskCapacity'])) -
+                                    floor(bytesToGigabytes(getDriveCapacity($json_data['Hardware']['Storage'][$drive])))) > 1) {
                                     $flavor_color = $red;
                                 }
 
@@ -1133,8 +1148,8 @@ function getDriveCapacity($driveinput)
                         ';
                                 }
                                 foreach ($json_data['Hardware']['Storage'] as $current_drive) {
-                                    if (!(floor(bytesToGigabytes($current_drive['DiskCapacity'])) ==
-                                        floor(bytesToGigabytes(getDriveCapacity($current_drive))))) {
+                                    if (abs((floor(bytesToGigabytes($current_drive['DiskCapacity'])) -
+                                        floor(bytesToGigabytes(getDriveCapacity($current_drive))))) > 1) {
                                         echo '
                                     <p>
                                         Drive <span>' . $current_drive['DeviceName'] . '</span> have different capacities.
