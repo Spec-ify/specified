@@ -49,9 +49,9 @@ async function dataTables() {
 		data: displayProcesses,
 		pageLength: 25,
 		columns: [
+			{ data: "Id" },
 			{ data: "ProcessName" },
 			{ data: "ExePath" },
-			{ data: "Id" },
 			{ data: "WorkingSet" },
 			{ data: "CpuPercent" },
 			{ data: "WorkingSetReal" },
@@ -81,11 +81,11 @@ async function dataTables() {
 		data: json.System.Services,
 		pageLength: 25,
 		columns: [
+			{ data: "State" },
 			{ data: "Caption" },
 			{ data: "Name" },
 			{ data: "PathName" },
 			{ data: "StartMode" },
-			{ data: "State" },
 		],
 	});
 
@@ -94,10 +94,10 @@ async function dataTables() {
 		data: json.System.ScheduledTasks,
 		pageLength: 25,
 		columns: [
-			{ data: "Name" },
-			{ data: "Path" },
 			{ data: "State" },
 			{ data: "IsActive" },
+			{ data: "Name" },
+			{ data: "Path" },
 			{ data: "Author" },
 			{ data: "TriggerTypes" },
 		],
@@ -294,10 +294,10 @@ async function dataTables() {
 		autoWidth: false,
 		data: json.Hardware.Devices,
 		columns: [
+			{ data: "Status" },
 			{ data: "Description" },
 			{ data: "Name" },
 			{ data: "DeviceID" },
-			{ data: "Status" },
 		],
 	});
 

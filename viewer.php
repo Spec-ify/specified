@@ -1347,10 +1347,10 @@ function getDriveCapacity($driveinput)
                                     <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="devices">
                                         <table id="devicesTable" class="table">
                                             <thead>
+                                                <th>Status</th>
                                                 <th>Description</th>
                                                 <th>Name</th>
                                                 <th>DID</th>
-                                                <th>Status</th>
                                             </thead>
                                         </table>
                                     </div>
@@ -1384,9 +1384,9 @@ function getDriveCapacity($driveinput)
                                     <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="runningProcesses">
                                         <table id="runningProcessesTable" class="table">
                                             <thead>
+                                                <th>PID</th>
                                                 <th>Name</th>
                                                 <th>Path</th>
-                                                <th>PID</th>
                                                 <th>RAM (MB)</th>
                                                 <th>CPU</th>
                                             </thead>
@@ -1421,11 +1421,11 @@ function getDriveCapacity($driveinput)
                                     <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="services">
                                         <table id="servicesTable" class="table">
                                             <thead>
+                                                <th>State</th>
                                                 <th>Caption</th>
                                                 <th>Name</th>
                                                 <th>Path</th>
                                                 <th>Start Mode</th>
-                                                <th>State</th>
                                             </thead>
                                         </table>
                                     </div>
@@ -1437,10 +1437,10 @@ function getDriveCapacity($driveinput)
                                     <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="tasks">
                                         <table id="tasksTable" class="table">
                                             <thead>
-                                                <th>Name</th>
-                                                <th>Path</th>
                                                 <th>State</th>
                                                 <th>Active</th>
+                                                <th>Name</th>
+                                                <th>Path</th>
                                                 <th>Author</th>
                                                 <th>Triggers</th>
                                             </thead>
