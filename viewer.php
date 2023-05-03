@@ -219,10 +219,7 @@ function getDriveCapacity($driveinput)
     <meta charset="utf-8" />
     <title>Specified</title>
     <meta content="width=device-width,initial-scale=1" name="viewport" />
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" />
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.dark.min.css" rel="stylesheet">
     <link href="static/css/main.css" rel="stylesheet">
@@ -1356,10 +1353,10 @@ function getDriveCapacity($driveinput)
                                     <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="devices">
                                         <table id="devicesTable" class="table">
                                             <thead>
+                                                <th>Status</th>
                                                 <th>Description</th>
                                                 <th>Name</th>
                                                 <th>DID</th>
-                                                <th>Status</th>
                                             </thead>
                                         </table>
                                     </div>
@@ -1393,9 +1390,9 @@ function getDriveCapacity($driveinput)
                                     <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="runningProcesses">
                                         <table id="runningProcessesTable" class="table">
                                             <thead>
+                                                <th>PID</th>
                                                 <th>Name</th>
                                                 <th>Path</th>
-                                                <th>PID</th>
                                                 <th>RAM (MB)</th>
                                                 <th>CPU</th>
                                             </thead>
@@ -1430,11 +1427,11 @@ function getDriveCapacity($driveinput)
                                     <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="services">
                                         <table id="servicesTable" class="table">
                                             <thead>
+                                                <th>State</th>
                                                 <th>Caption</th>
                                                 <th>Name</th>
                                                 <th>Path</th>
                                                 <th>Start Mode</th>
-                                                <th>State</th>
                                             </thead>
                                         </table>
                                     </div>
@@ -1446,10 +1443,10 @@ function getDriveCapacity($driveinput)
                                     <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="tasks">
                                         <table id="tasksTable" class="table">
                                             <thead>
-                                                <th>Name</th>
-                                                <th>Path</th>
                                                 <th>State</th>
                                                 <th>Active</th>
+                                                <th>Name</th>
+                                                <th>Path</th>
                                                 <th>Author</th>
                                                 <th>Triggers</th>
                                             </thead>
@@ -1549,13 +1546,22 @@ function getDriveCapacity($driveinput)
                 <span>Massive Shoutout to <a href="https://spark.lucko.me/" target="_blank">Spark</a></span>
         </main>
 </body>
+
 <!--This should be first to make sure the themes load on time-->
 <script src="static/js/themes.js"></script>
+
+<!--Konami Code for Dev Stuff-->
 <script src="https://cdn.jsdelivr.net/npm/konami@1.6.3/konami.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+<!--Table Rendering-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.slim.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/sc-2.0.7/datatables.min.js"></script>
+
+<!--UI Stuff-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js" type="text/javascript"></script>
+
+<!--Main Scripts-->
+<script defer="defer" src="static/js/tables.js"></script>
 <script defer="defer" src="static/js/main.js"></script>
 
 </html>
