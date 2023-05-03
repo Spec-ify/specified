@@ -1,29 +1,27 @@
 //These are very rudimentary ways of implementing quick pagination of elements without needing any complicated setups.
-$(".pups_button").click(function () {
-	$("#notes").hide();
-	$("#variables").hide();
-	$("#browsers").hide();
-	$("#pups").show();
-});
-
-$(".notes_button").click(function () {
-	$("#pups").hide();
-	$("#variables").hide();
-	$("#browsers").hide();
-	$("#notes").show();
-});
-$(".variables_button").click(function () {
-	$("#pups").hide();
-	$("#notes").hide();
-	$("#browsers").hide();
-	$("#variables").show();
-});
-$(".browsers_button").click(function () {
-	$("#pups").hide();
-	$("#notes").hide();
-	$("#variables").hide();
-	$("#browsers").show();
-});
+$(".notes_button").click(() => showtab("#notes"));
+$(".pups_button").click(() => showtab("#pups"));
+$(".variables_button").click(() => showtab("#variables"));
+$(".browsers_button").click(() => showtab("#browsers"));
+$(".startup_button").click(() => showtab("#startup"));
+$(".updates_button").click(() => showtab("#updates"));
+function showtab(seltab) {
+	// List of all tabs
+	const tabs = [
+		"#pups",
+		"#notes",
+		"#variables",
+		"#browsers",
+		"#startup",
+		"#updates",
+	];
+	// Removes selected tab
+	const hiddentabs = tabs.filter((val) => val !== seltab);
+	for (const tab in hiddentabs) {
+		$(hiddentabs[tab]).hide();
+	}
+	$(seltab).show();
+}
 
 $("#CollapseToggle").click(function () {
 	$("#CollapseToggle").hide();

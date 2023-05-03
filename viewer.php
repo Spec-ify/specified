@@ -12,18 +12,66 @@ $test = 0;
 $json_data = json_decode($json, true);
 $profile_name = pathinfo($json_file, PATHINFO_FILENAME);
 
-//This is done manually currently, but there's hopes to implementing an automated version to return Support/EOL versions of Windows friendly versions.
-//Right now, it's just a string that holds all the EOL version of Windows, and the Friendly version inside the json is being compared against each of the string's
-//positions.
-$eollist = '21H1 20H2 2004 1909 1903 1809 1803 1709 1703 1607 1511 1507';
-$eol = false;
-if (strpos($eollist, $json_data['BasicInfo']['FriendlyVersion']) == true) {
-    $eol = true;
+//Some generic color inserts. I know I could have used a smarter CSS alternative, but call me old fashioned.
+$green = '#A3BE8C';
+$yellow = 'rgb(235, 203, 139)';
+$red = 'rgb(191, 97, 106)';
+$amd = 'rgb(215,27,27)';
+$intel = 'rgb(8,110,224)';
+
+// Grabs data from endoflife.date's api and checks it
+
+$eoldata = json_decode(file_get_contents('https://endoflife.date/api/windows.json'), true);
+$validversions = '';
+$latestver = '';
+$found10 = false;
+$found11 = false;
+
+// Set Latest Version
+foreach ($eoldata as $eolitem) {
+    // Windows 10
+    if (strpos($eolitem['cycle'], '(W)') !== false && strpos($eolitem['cycle'], '10,') !== false && $found10 == false) {
+        $latestver = $latestver . $eolitem['latest'] . ' ';
+        $found10 = true;
+    }
+
+    // Windows 11
+    if (strpos($eolitem['cycle'], '(W)') !== false && strpos($eolitem['cycle'], '11,') !== false && $found11 == false) {
+        $latestver = $latestver . $eolitem['latest'] . ' ';
+        $found11 = true;
+    }
+
+    // Break out of loop
+    if ($found10 == true && $found11 == true) {
+        break;
+    }
 }
+
+foreach ($eoldata as $eolitem) {
+    if (strpos($eolitem['cycle'], '(W)') == true && strtotime($eolitem['support']) > time()) {
+        $validversions = $validversions . $eolitem['latest'] . ' ';
+    }
+}
+
+// EOL
 $eoltext = '';
-if ($eol == true) {
+if (strpos($validversions, $json_data['BasicInfo']['Version']) !== false) {
+    $eoltext = "Not EOL";
+    $eolcolor = $green;
+} else {
     $eoltext = "EOL";
-} else $eoltext = "Not EOL";
+    $eolcolor = $red;
+}
+
+// Up-to-Date-ness
+$oscheck = '';
+if (strpos($latestver, $json_data['BasicInfo']['Version']) !== false) {
+    $oscheck = 'Up-to-date';
+    $oscolor = $green;
+} else {
+    $oscheck = 'Not Up-to-Date';
+    $oscolor = $red;
+}
 
 //The lines below are for the loop that calculates total RAM/CPU used.
 //CPU doesn't work right now because we are not able to efficiently get the CPU usage of each running process.
@@ -41,14 +89,6 @@ for ($i == 0; $i < $process_count; $i++) {
     $cpu_percent = $cpu_percent + $json_data['System']['RunningProcesses'][$i]['WorkingSet'];
 }
 $ram_used = number_format($working_set / 1073741824, 2, '.', '');
-
-
-//Some generic color inserts. I know I could have used a smarter CSS alternative, but call me old fashioned.
-$green = '#A3BE8C';
-$yellow = 'rgb(235, 203, 139)';
-$red = 'rgb(191, 97, 106)';
-$amd = 'rgb(215,27,27)';
-$intel = 'rgb(8,110,224)';
 
 //Don't ask me why this is an old fashioned for loop, I got carried away.
 //Getting the total amount of RAM in the system.
@@ -260,7 +300,7 @@ function getDriveCapacity($driveinput)
                 ?>
 
             </div>
-            <select title="mappings" id="ModeToggle">
+            <select title="mappings" id="ModeToggle" style="width: 12em;">
                 <optgroup label="View">
                     <option value="classic">Dark Mode</option>
                     <option value="k9">K9's Dark Mode</option>
@@ -733,6 +773,10 @@ function getDriveCapacity($driveinput)
                                                 <?php
                                                 foreach ($json_data['Hardware']['Storage'] as $current_drive) {
                                                     $driveKey = array_search($current_drive, $json_data['Hardware']['Storage']);
+                                                    $partletters = array_filter(
+                                                        array_column($json_data['Hardware']['Storage'][$driveKey]['Partitions'], 'PartitionLabel')
+                                                    );
+                                                    $partlettersString = implode(", ", $partletters);
                                                     echo '
                                         <div class="accordion">
                                             <h1 class="accordion-header" id="partitionsTableButton' . $driveKey . '">
@@ -744,7 +788,7 @@ function getDriveCapacity($driveinput)
                                                         aria-expanded="true"
                                                         aria-controls="partitionModal' . $driveKey . '"
                                                 >
-                                                   ' . $current_drive['DeviceName'] . '
+                                                   ' . $current_drive['DeviceName'] . ' (' . $partlettersString . ')
                                                 </button></h1>
                                             <div class="metadata-detail tablebox jsondata accordion-item accordion-collapse collapse storagemodal" id="partitionModal' . $driveKey . '">
                                                 <table id="partitionsTable' . $driveKey . 'Info" class="table">
@@ -815,7 +859,7 @@ function getDriveCapacity($driveinput)
                                     $flavor_color = $green;
                                 }
                                 if (abs(floor(bytesToGigabytes($json_data['Hardware']['Storage'][$drive]['DiskCapacity'])) -
-                                    floor(bytesToGigabytes(getDriveCapacity($json_data['Hardware']['Storage'][$drive])))) > 1) {
+                                    floor(bytesToGigabytes(getDriveCapacity($json_data['Hardware']['Storage'][$drive])))) > 5) {
                                     $flavor_color = $red;
                                 }
 
@@ -826,7 +870,7 @@ function getDriveCapacity($driveinput)
 
                                 echo '
 					<div class="widget widget-disk hover" type="button" data-mdb-toggle="modal" data-mdb-target="#driveModal' . $drive . '">
-						<h1>' . $device_name . '</h1>
+						<h1>' . $device_name . ' (' . $lettersString . ')</h1>
 						<div class="widget-values">
 							<div class="widget-value">
 								<div class="widget-single-value">
@@ -1047,6 +1091,7 @@ function getDriveCapacity($driveinput)
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
+                                            <h4>Power Profiles</h4>
                                             <table id="powerTable" class="table">
                                                 <thead>
                                                     <th>Description</th>
@@ -1054,7 +1099,7 @@ function getDriveCapacity($driveinput)
                                                     <th>Instance Path</th>
                                                     <th>Status</th>
                                                 </thead>
-                                            </table>
+                                            </table> <br>
                                             <h4>Battery</h4>
                                             <table id="batteryTable" class="table">
                                                 <thead>
@@ -1073,136 +1118,163 @@ function getDriveCapacity($driveinput)
                                 </div>
                             </div>
                         </div>
-                        <div class="textbox metadata-detail" id="notes">
+                        <div class="textbox metadata-detail tabbed-info">
                             <ul class="metadata-detail-controls">
-                                <li class="selected">Notes</li>
+                                <li class="notes_button">Notes</li>
                                 <li class="pups_button">PUPs</li>
                                 <li class="variables_button">Variables</li>
                                 <li class="browsers_button">Browsers</li>
+                                <li class="startup_button">Startup Tasks</li>
+                                <li class="updates_button">Windows Updates</li>
                             </ul>
-                            <div class="metadata-detail-content">
+                            <div class="metadata-detail-content jsondata" id="notes">
+                                <!-- OS Version -->
+
+                                <h4 style="margin:5px; color:#ffffff66">General Notes</h4>
+
                                 <?php
-                                foreach ($json_data['Hardware']['Storage'] as $storage_device) {
-                                    if ($storage_device['SmartData']) {
-                                        foreach ($storage_device['SmartData'] as $smartPoint) {
-                                            if (str_contains($smartPoint['Name'], '!')) {
-                                                if ($smartPoint['RawValue'] != '000000000000') {
-                                                    echo '<p>SMART Check : <span>' . $storage_device['DeviceName'] . '</span> has <span>' . $smartPoint['RawValue'] . ' ' . $smartPoint['Name'] . '</span></p>';
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+
+                                if (($eolcolor == $red && $oscolor == $green) || ($eolcolor == $green && $oscolor == $red)) $osenglish = 'but';
+                                else $osenglish = 'and';
+
                                 ?>
 
-
-                                <p>The OS is<?php
-                                            $oscheck = '';
-                                            if ($json_data['BasicInfo']['FriendlyVersion'] == "22H2") {
-                                                $oscheck = 'Up-to-date';
-                                            } else $oscheck = 'Not Up-to-Date';
-
-                                            ?>
-                                    <span><?= $oscheck ?></span> running version "<span><?= $json_data['BasicInfo']['FriendlyVersion'] ?></span>".
-                                </p>
-                                <p>The OS is currently <span><?= $eoltext ?></span>.
-
-                                </p>
-                                <p>The detected AV is "<span><?= $json_data['Security']['AvList'][0] ?></span>".
-
+                                <p>The OS is
+                                    <span style="color:<?= $eolcolor ?>"><?= $eoltext ?></span>
+                                    <?= $osenglish ?>
+                                    <span style="color:<?= $oscolor ?>"><?= $oscheck ?></span>.
+                                    <span>(version <?= $json_data['BasicInfo']['FriendlyVersion'] ?>)</span>
                                 </p>
 
-                                <p>The process was created by Specify
-                                    <span>
-                                        <?= $json_data['Version'] ?>
-                                    </span>
-                                </p>
-
-                                <p>The current computer uptime is
+                                <p>The current uptime is
                                     <span>
                                         <?= $test_time ?>.
                                     </span>
                                 </p>
-                                <p>Specify was running for
-                                    <span>
-                                        <?= $json_data['Meta']['ElapsedTime'] . "ms" ?>
-                                    </span>.
-                                </p>
+
                                 <?php
                                 if ($json_data['System']['UsernameSpecialCharacters'] == true) {
                                     echo '
-                        <p>
-                            Username found with <span>Special Characters</span>
-                        </p>
-                        ';
+                                    <p>
+                                        Username found with <span>Special Characters</span>
+                                    </p>
+                                    ';
                                 }
                                 if ($json_data['System']['OneDriveCommercialPathLength'] != null) {
                                     echo '
-                        <p>
-                            OneDrive Path Length : <span>' . $json_data['System']['OneDriveCommercialPathLength'] . '</span>
-                            OneDrive Name Length : <span>' . $json_data['System']['OneDriveCommercialNameLength'] . '</span>
-                        </p>
-                        ';
-                                }
-                                foreach ($json_data['Hardware']['Storage'] as $current_drive) {
-                                    if (abs((floor(bytesToGigabytes($current_drive['DiskCapacity'])) -
-                                        floor(bytesToGigabytes(getDriveCapacity($current_drive))))) > 1) {
-                                        echo '
                                     <p>
-                                        Drive <span>' . $current_drive['DeviceName'] . '</span> have different capacities.
-                                        (' . floor(bytesToGigabytes($current_drive['DiskCapacity'])) . " on disk vs. "
-                                            . floor(bytesToGigabytes(getDriveCapacity($current_drive))) . ' on partitions)
+                                        OneDrive Path Length : <span>' . $json_data['System']['OneDriveCommercialPathLength'] . '</span>
+                                        OneDrive Name Length : <span>' . $json_data['System']['OneDriveCommercialNameLength'] . '</span>
                                     </p>
                                     ';
-                                    }
+                                }
+
+                                if (sizeof($json_data['Security']['AvList']) == 1) {
+                                    $av = $json_data["Security"]["AvList"][0];
+                                    echo "<p>The currently installed AV is <span>{$av}</span></p>";
+                                } else {
+                                    $avs = implode(',', array_map(function ($i) {
+                                        return ' ' . $i;
+                                    }, $json_data['Security']['AvList']));
+                                    echo "<p>The currently installed AVs are <span>{$avs}</span></p>";
                                 }
                                 ?>
                                 <br>
-                                <h4>Rudimentary Registry Checks</h4>
-                                <br>
+
                                 <?php
+
+                                $drivehtml = '';
+                                $drive = 0;
+
+                                foreach ($json_data['Hardware']['Storage'] as $storage_device) {
+
+                                    $drivemodal = 'data-mdb-target="#driveModal' . $drive . '"';
+                                    $partitionmodal = 'data-mdb-target="#partitionsModal"';
+
+                                    $letters = array_filter(
+                                        array_column($json_data['Hardware']['Storage'][$drive]['Partitions'], 'PartitionLabel')
+                                    );
+                                    $lettersString = implode(", ", $letters);
+
+                                    if ($storage_device['SmartData']) {
+                                        foreach ($storage_device['SmartData'] as $smartPoint) {
+                                            if (str_contains($smartPoint['Name'], '!')) {
+                                                if ($smartPoint['RawValue'] != '000000000000') {
+                                                    $drivehtml = $drivehtml . '<p><span class="drivespan" data-mdb-toggle="modal" type="button" ' . $drivemodal . '>'
+                                                        . $storage_device['DeviceName'] . ' (' . $lettersString . ') </span> has <span>'
+                                                        . $smartPoint['RawValue'] . ' ' . $smartPoint['Name'] . '</span></p>';
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if (abs((floor(bytesToGigabytes($storage_device['DiskCapacity'])) -
+                                        floor(bytesToGigabytes(getDriveCapacity($storage_device))))) > 5) {
+                                        $drivehtml = $drivehtml .  '
+                                                <p>
+                                                    <span>' . $storage_device['DeviceName'] . ' (' . $lettersString . ') </span> has differing capacities.
+                                                    (' . floor(bytesToGigabytes($storage_device['DiskCapacity'])) . " on disk vs. "
+                                            . floor(bytesToGigabytes(getDriveCapacity($storage_device))) . ' on partitions)
+                                                </p>
+                                                ';
+                                    }
+                                    $drive += 1;
+                                }
+
+                                if (!empty($drivehtml)) {
+                                    $drivehtml = '<h4 style="margin:5px; color:#ffffff66">Drive / SMART Notes</h4>' . $drivehtml;
+                                    echo $drivehtml;
+                                }
+
+                                ?>
+
+                                <br>
+
+                                <?php
+                                $reghtml = "";
+
                                 if ($json_data['System']['StaticCoreCount'] != false) {
-                                    echo '
+                                    $reghtml = $reghtml . '
                             <p>
                                 <span>Static Core Count</span> found set.
                             </p>
                             ';
                                 }
+
                                 if ($json_data['System']['RecentMinidumps'] != 0) {
-                                    echo '
+                                    $reghtml = $reghtml . '
                             <p>
                                 There have been <span>' . $json_data['System']['RecentMinidumps'] . ' Minidumps found</span>
                             </p>
                             ';
                                 }
+
                                 if ($json_data['System']['ChoiceRegistryValues'][2]['Value'] != 10) {
-                                    echo '
+                                    $reghtml = $reghtml . '
                             <p>Network Throttling Index found set at <span>' . $json_data['System']['ChoiceRegistryValues'][2]['Value'] . '</span></p>
                             ';
                                 }
+
                                 foreach ($json_data['System']['ChoiceRegistryValues'] as $regkey) {
                                     if ($regkey['Value'] != null && $regkey['Name'] != "NetworkThrottlingIndex" && $regkey['Name'] != "HwSchMode") {
-                                        echo '
+                                        $reghtml = $reghtml . '
                                 <p>Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span></p>
                                 ';
                                     } else if ($regkey['Name'] == "HwSchMode" && $regkey['Value'] == 2) {
-                                        echo '
+                                        $reghtml = $reghtml . '
                                 <p>Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span></p>
                                 ';
                                     }
                                 }
+
+                                if (!empty($reghtml)) {
+                                    $reghtml = '<h4 style="margin:5px; color:#ffffff66">Notable Registry Changes</h4>' . $reghtml;
+                                    echo $reghtml;
+                                }
                                 ?>
 
                             </div>
-                        </div>
-                        <div class="textbox metadata-detail" id="pups">
-                            <ul class="metadata-detail-controls">
-                                <li class="notes_button">Notes</li>
-                                <li class="selected">PUPs</li>
-                                <li class="variables_button">Variables</li>
-                                <li class="browsers_button">Browsers</li>
-                            </ul>
-                            <div class="metadata-detail-content jsondata">
+                            <div class="metadata-detail-content jsondata" id="pups">
                                 <table id="pupsTableInstalled" class="table">
                                     <?php
                                     foreach ($pupsfoundInstalled as $pup) {
@@ -1215,15 +1287,7 @@ function getDriveCapacity($driveinput)
                                     ?>
                                 </table>
                             </div>
-                        </div>
-                        <div class="textbox metadata-detail" id="variables">
-                            <ul class="metadata-detail-controls">
-                                <li class="notes_button">Notes</li>
-                                <li class="pups_button">PUPs</li>
-                                <li class="selected">Variables</li>
-                                <li class="browsers_button">Browsers</li>
-                            </ul>
-                            <div class="metadata-detail-content jsondata">
+                            <div class="metadata-detail-content jsondata" id="variables">
                                 <table id="variables_table" class="table">
                                     <thead>
                                         <th>Field</th>
@@ -1231,7 +1295,7 @@ function getDriveCapacity($driveinput)
                                     </thead>
                                     <tbody>
                                         <?php
-                                        echo '<h1>User Variables</h1>';
+                                        echo '<h4>User Variables</h4>';
                                         $uservar_keys = array_keys($json_data['System']['UserVariables']);
                                         foreach ($uservar_keys as $uservar) {
                                             if ($uservar != "Path") {
@@ -1255,7 +1319,7 @@ function getDriveCapacity($driveinput)
                                     </thead>
                                     <tbody>
                                         <?php
-                                        echo '<h1>System Variables</h1>';
+                                        echo '<h4>System Variables</h4>';
                                         $uservar_keys = array_keys($json_data['System']['SystemVariables']);
                                         foreach ($uservar_keys as $uservar) {
                                             if ($uservar != "Path") {
@@ -1265,15 +1329,7 @@ function getDriveCapacity($driveinput)
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                        <div class="textbox metadata-detail" id="browsers">
-                            <ul class="metadata-detail-controls">
-                                <li class="notes_button">Notes</li>
-                                <li class="pups_button">PUPs</li>
-                                <li class="variables_button">Variables</li>
-                                <li class="selected">Browsers</li>
-                            </ul>
-                            <div class="metadata-detail-content jsondata">
+                            <div class="metadata-detail-content jsondata" id="browsers">
                                 <div class="widgets_widgets widgets">
 
                                     <?php
@@ -1341,209 +1397,246 @@ function getDriveCapacity($driveinput)
                                     ?>
                                 </div>
                             </div>
-                        </div>
-                        <div>
-                            <div class="textbox metadata-detail" id="accordionTablesDevices">
-                                <div class="accordion">
-                                    <h1 class="accordion-header" id="devicesTableButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#devices" aria-expanded="true" aria-controls="devices">
-                                            Devices
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="devices">
-                                        <table id="devicesTable" class="table">
-                                            <thead>
-                                                <th>Status</th>
-                                                <th>Description</th>
-                                                <th>Name</th>
-                                                <th>DID</th>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                    <h1 class="accordion-header" id="driversTableButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#drivers" aria-expanded="true" aria-controls="drivers">
-                                            Drivers
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="drivers">
-                                        <table id="driversTable" class="table">
-                                            <thead>
-                                                <th>Name</th>
-                                                <th>Friendly Name</th>
-                                                <th>Manufacturer</th>
-                                                <th>DID</th>
-                                                <th>Version</th>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="textbox metadata-detail" id="accordionTablesApps">
-                                <div class="accordion">
-                                    <h1 class="accordion-header" id="runningProcessesButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#runningProcesses" aria-expanded="true" aria-controls="runningProcesses">
-                                            Running Processes
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="runningProcesses">
-                                        <table id="runningProcessesTable" class="table">
-                                            <thead>
-                                                <th>PID</th>
-                                                <th>Name</th>
-                                                <th>Path</th>
-                                                <th>RAM (MB)</th>
-                                                <th>CPU</th>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                    <h1 class="accordion-header" id="installedAppButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#installedApp" aria-expanded="true" aria-controls="installedApp">
-                                            Installed Apps
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="installedApp">
-                                        <table id="installedAppTable" class="table">
-                                            <thead>
-                                                <th>Name</th>
-                                                <th>Version</th>
-                                                <th>Install Date</th>
-                                            </thead>
-                                        </table>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="textbox metadata-detail" id="accordionTablesServices">
-                                <div class="accordion">
-                                    <h1 class="accordion-header" id="servicesTableButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#services" aria-expanded="true" aria-controls="services">
-                                            Services
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="services">
-                                        <table id="servicesTable" class="table">
-                                            <thead>
-                                                <th>State</th>
-                                                <th>Caption</th>
-                                                <th>Name</th>
-                                                <th>Path</th>
-                                                <th>Start Mode</th>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                    <h1 class="accordion-header" id="tasksTableButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#tasks" aria-expanded="true" aria-controls="tasks">
-                                            Tasks
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="tasks">
-                                        <table id="tasksTable" class="table">
-                                            <thead>
-                                                <th>State</th>
-                                                <th>Active</th>
-                                                <th>Name</th>
-                                                <th>Path</th>
-                                                <th>Author</th>
-                                                <th>Triggers</th>
-                                            </thead>
-                                        </table>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="textbox metadata-detail" id="accordionTablesNetwork">
-                                <div class="accordion">
-                                    <h1 class="accordion-header" id="netconTableButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#netcon" aria-expanded="true" aria-controls="netcon">
-                                            Network Connections
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="netcon">
-                                        <table id="netconTable" class="table">
-                                            <thead>
-                                                <th>Local IP</th>
-                                                <th>Local Port</th>
-                                                <th>Remote IP</th>
-                                                <th>Remote Port</th>
-                                                <th>Process Name</th>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                    <h1 class="accordion-header" id="routesTableButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#routes" aria-expanded="true" aria-controls="routes">
-                                            Routes Table
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="routes">
-                                        <table id="routesTable" class="table">
-                                            <thead>
-                                                <th>Route</th>
-                                                <th>Destination</th>
-                                                <th>Interface</th>
-                                                <th>Mask</th>
-                                                <th>Metric</th>
-                                                <th>Next Hop</th>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                    <h1 class="accordion-header" id="hostsTableButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#hosts" aria-expanded="true" aria-controls="hosts">
-                                            Hosts File
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="hosts">
+                            <div class="metadata-detail-content jsondata" id="startup">
+                                <table id="startup_table" class="table">
+                                    <thead>
+                                        <th>App Name</th>
+                                        <th>App Path</th>
+                                        <th>Timestamp</th>
+                                    </thead>
+                                    <tbody>
                                         <?php
-                                        $hoststext = nl2br($json_data['Network']['HostsFile']);
+                                        foreach ($json_data['System']['StartupTasks'] as $task) {
+                                            echo '<tr>
+                                                <td>' . $task['AppName'] . '</td>' .
+                                                '<td>' . $task['ImagePath'] . '</td>' .
+                                                '<td>' . $task['Timestamp'] . '</td>' .
+                                                '</tr>';
+                                        }
                                         ?>
-                                        <p style="font-size: 10pt;"><?= $hoststext ?> </p>
-                                    </div>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="metadata-detail-content jsondata" id="updates">
+                                <table id="updates_table" class="table">
+                                    <thead>
+                                        <th>Update</th>
+                                        <th>Install Date</th>
+                                    </thead>
+                                    <?php
+                                    foreach ($json_data['System']['InstalledHotfixes'] as $update) {
+                                        echo '<tr>
+                                                <td>' . $update['HotFixID'] . '</td>' .
+                                            '<td>' . $update['InstalledOn'] . '</td>' .
+                                            '</tr>';
+                                    }
+                                    ?>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="textbox metadata-detail" id="accordionTablesDevices">
+                            <div class="accordion">
+                                <h1 class="accordion-header" id="devicesTableButton">
+                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#devices" aria-expanded="true" aria-controls="devices">
+                                        Devices
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="devices">
+                                    <table id="devicesTable" class="table">
+                                        <thead>
+                                            <th>Status</th>
+                                            <th>Description</th>
+                                            <th>Name</th>
+                                            <th>DID</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <h1 class="accordion-header" id="driversTableButton">
+                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#drivers" aria-expanded="true" aria-controls="drivers">
+                                        Drivers
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="drivers">
+                                    <table id="driversTable" class="table">
+                                        <thead>
+                                            <th>Name</th>
+                                            <th>Friendly Name</th>
+                                            <th>Manufacturer</th>
+                                            <th>DID</th>
+                                            <th>Version</th>
+                                        </thead>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <div id="devdiv" style="display: none">
-                            <div class="textbox metadata-detail" id="accordionTablesDev">
-                                <div class="accordion">
-                                    <h1 class="accordion-header" id="debugLogButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#debugLog" aria-expanded="true" aria-controls="debugLog">
-                                            Debug Log
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="debugLog">
-                                        <?php
-                                        $DebugLog = nl2br($json_data['DebugLogText']);
-                                        ?>
-                                        <p style="font-size: 10pt;"><?= $DebugLog ?>
-                                        </p>
-                                    </div>
+                    </div>
+                    <div>
+                        <div class="textbox metadata-detail" id="accordionTablesApps">
+                            <div class="accordion">
+                                <h1 class="accordion-header" id="runningProcessesButton">
+                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#runningProcesses" aria-expanded="true" aria-controls="runningProcesses">
+                                        Running Processes
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="runningProcesses">
+                                    <table id="runningProcessesTable" class="table">
+                                        <thead>
+                                            <th>PID</th>
+                                            <th>Name</th>
+                                            <th>Path</th>
+                                            <th>RAM (MB)</th>
+                                            <th>CPU</th>
+                                        </thead>
+                                    </table>
                                 </div>
-                                <div class="accordion">
-                                    <h1 class="accordion-header" id="issuesLogButton">
-                                        <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#issuesLog" aria-expanded="true" aria-controls="issuesLog">
-                                            Issues
-                                        </button>
-                                    </h1>
-                                    <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="issuesLog">
-                                        <p style="font-size: 10pt;">
-                                            <?php
-                                            $issues = $json_data['Issues'];
-                                            foreach ($issues as $issue) {
-                                                echo (nl2br($issue . "\n"));
-                                            }
-                                            ?>
-                                        </p>
-                                    </div>
+                                <h1 class="accordion-header" id="installedAppButton">
+                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#installedApp" aria-expanded="true" aria-controls="installedApp">
+                                        Installed Apps
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="installedApp">
+                                    <table id="installedAppTable" class="table">
+                                        <thead>
+                                            <th>Name</th>
+                                            <th>Version</th>
+                                            <th>Install Date</th>
+                                        </thead>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="textbox metadata-detail" id="accordionTablesServices">
+                            <div class="accordion">
+                                <h1 class="accordion-header" id="servicesTableButton">
+                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#services" aria-expanded="true" aria-controls="services">
+                                        Services
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="services">
+                                    <table id="servicesTable" class="table">
+                                        <thead>
+                                            <th>State</th>
+                                            <th>Caption</th>
+                                            <th>Name</th>
+                                            <th>Path</th>
+                                            <th>Start Mode</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <h1 class="accordion-header" id="tasksTableButton">
+                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#tasks" aria-expanded="true" aria-controls="tasks">
+                                        Tasks
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="tasks">
+                                    <table id="tasksTable" class="table">
+                                        <thead>
+                                            <th>State</th>
+                                            <th>Active</th>
+                                            <th>Name</th>
+                                            <th>Path</th>
+                                            <th>Author</th>
+                                            <th>Triggers</th>
+                                        </thead>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="textbox metadata-detail" id="accordionTablesNetwork">
+                            <div class="accordion">
+                                <h1 class="accordion-header" id="netconTableButton">
+                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#netcon" aria-expanded="true" aria-controls="netcon">
+                                        Network Connections
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="netcon">
+                                    <table id="netconTable" class="table">
+                                        <thead>
+                                            <th>Local IP</th>
+                                            <th>Local Port</th>
+                                            <th>Remote IP</th>
+                                            <th>Remote Port</th>
+                                            <th>Process Name</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <h1 class="accordion-header" id="routesTableButton">
+                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#routes" aria-expanded="true" aria-controls="routes">
+                                        Routes Table
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="routes">
+                                    <table id="routesTable" class="table">
+                                        <thead>
+                                            <th>Route</th>
+                                            <th>Destination</th>
+                                            <th>Interface</th>
+                                            <th>Mask</th>
+                                            <th>Metric</th>
+                                            <th>Next Hop</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <h1 class="accordion-header" id="hostsTableButton">
+                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#hosts" aria-expanded="true" aria-controls="hosts">
+                                        Hosts File
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="hosts">
+                                    <?php
+                                    $hoststext = nl2br($json_data['Network']['HostsFile']);
+                                    ?>
+                                    <p style="font-size: 10pt;"><?= $hoststext ?> </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="devdiv" style="display: none">
+                        <div class="textbox metadata-detail" id="accordionTablesDev">
+                            <div class="accordion">
+                                <h1 class="accordion-header" id="debugLogButton">
+                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#debugLog" aria-expanded="true" aria-controls="debugLog">
+                                        Debug Log
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="debugLog">
+                                    <?php
+                                    $DebugLog = nl2br($json_data['DebugLogText']);
+                                    ?>
+                                    <p style="font-size: 10pt;"><?= $DebugLog ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="accordion">
+                                <h1 class="accordion-header" id="issuesLogButton">
+                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#issuesLog" aria-expanded="true" aria-controls="issuesLog">
+                                        Issues
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="issuesLog">
+                                    <p style="font-size: 10pt;">
+                                        <?php
+                                        $issues = $json_data['Issues'];
+                                        foreach ($issues as $issue) {
+                                            echo (nl2br($issue . "\n"));
+                                        }
+                                        ?>
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <span>Massive Shoutout to <a href="https://spark.lucko.me/" target="_blank">Spark</a></span>
+            </div>
+            <span>Massive Shoutout to <a href="https://spark.lucko.me/" target="_blank">Spark</a></span>
         </main>
 </body>
 

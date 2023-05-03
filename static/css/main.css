@@ -396,6 +396,10 @@ article h2:before {
 	border-radius: 6px;
 }
 
+.tabbed-info {
+	padding: 24px;
+}
+
 .link {
 	background-color: #252b2d;
 	border-radius: 15px;
@@ -784,6 +788,10 @@ article h2:before {
 	border-color: #5e81ac;
 }
 
+.drivespan:hover {
+	color: #ffffffbf !important;
+}
+
 #pups {
 	display: none;
 }
@@ -791,6 +799,12 @@ article h2:before {
 	display: none;
 }
 #browsers {
+	display: none;
+}
+#startup {
+	display: none;
+}
+#updates {
 	display: none;
 }
 .jsondata table {
