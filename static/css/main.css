@@ -152,6 +152,11 @@ article h2:before {
 	content: "# ";
 }
 
+optgroup {
+	width: auto;
+	font-style: normal;
+}
+
 .homepage-header > div {
 	display: flex;
 	flex-grow: 1;
@@ -827,7 +832,12 @@ article h2:before {
 	bottom: 20px;
 	right: 20px;
 	z-index: 999;
-	display: none;
+	
+	opacity: 0;
+	visibility: hidden;
+
+	transition: opacity 0.1s ease-in;
+  	will-change: opacity, visibility;
 }
 
 #archive {

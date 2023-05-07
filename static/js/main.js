@@ -159,9 +159,13 @@ function scrollFunction() {
 		document.body.scrollTop > 20 ||
 		document.documentElement.scrollTop > 20
 	) {
-		topbutton.style.display = "block";
+		topbutton.style.opacity = 1;
+		topbutton.style.visibility = "visible";
 	} else {
-		topbutton.style.display = "none";
+		topbutton.style.opacity = 0;
+		setTimeout(() => {
+			topbutton.style.visibility = "hidden";
+		}, "100");
 	}
 }
 topbutton.addEventListener("click", backToTop);

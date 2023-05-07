@@ -91,7 +91,7 @@ foreach($scanned_directory as $profile){
     $json_file = "files/".$profile;
     $json = file_get_contents($json_file);
     $json_data = json_decode($json,true);
-    $profile_name = explode(".", explode("/", $json_file)[1])[0];
+    $profile_name = pathinfo($json_file, PATHINFO_FILENAME);
     $ds=strtotime($json_data['Meta']['GenerationDate']);
     echo '<a href="profile/'.$profile_name.'" target="_blank"><div class="widget hover"><div >
   <div class="card-body">
