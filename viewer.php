@@ -129,7 +129,9 @@ function timeConvert($time)
     // Initialize the string with the number of days
 
     if ($days) {
-        $timeString = "{$days} day";
+        $timeString = '<span';
+        if ($days > 3) $timeString .= ' style="color:#BF616A;"';
+        $timeString .= '>' . $days . ' day';
         if ($days != 1) {
             $timeString .= 's';
         }
@@ -139,7 +141,7 @@ function timeConvert($time)
 
     // Add the number of hours to the string
     if ($hours) {
-        $timeString .= "{$hours} hour";
+        $timeString .= $hours . ' hour';
         if ($hours != 1) {
             $timeString .= 's';
         }
@@ -148,17 +150,18 @@ function timeConvert($time)
 
     // Add the number of minutes to the string
     if ($minutes) {
-        $timeString .= "{$minutes} minute";
+        $timeString .= $minutes . ' minute';
         if ($minutes != 1) {
             $timeString .= 's';
         }
         $timeString .= ', ';
     }
-    // Add the number of seconds to the string
+    // Add the number of seconds to the string A3BE8C
     if ($seconds) {
-        $timeString .= "and {$seconds} second";
+        if ($days || $hours || $minutes) $timeString .= 'and ';
+        $timeString .= $seconds . ' second';
         if ($seconds != 1) {
-            $timeString .= 's';
+            $timeString .= 's</span>';
         }
     }
 
@@ -1147,29 +1150,16 @@ function getDriveCapacity($driveinput)
                                 </p>
 
                                 <p>The current uptime is
-                                    <span>
-                                        <?= $test_time ?>.
-                                    </span>
+                                    <?= $test_time ?>.
                                 </p>
 
                                 <?php
-                                if ($json_data['System']['UsernameSpecialCharacters'] == true) {
-                                    echo '
-                                    <p>
-                                        Username found with <span>Special Characters</span>
-                                    </p>
-                                    ';
-                                }
-                                if ($json_data['System']['OneDriveCommercialPathLength'] != null) {
-                                    echo '
-                                    <p>
-                                        OneDrive Path Length : <span>' . $json_data['System']['OneDriveCommercialPathLength'] . '</span>
-                                        OneDrive Name Length : <span>' . $json_data['System']['OneDriveCommercialNameLength'] . '</span>
-                                    </p>
-                                    ';
-                                }
 
-                                if (sizeof($json_data['Security']['AvList']) == 1) {
+
+
+                                if (empty($json_data['Security']['AvList'])) {
+                                    echo '<p style="color:' . $red . '">No AVs found!</p>';
+                                } elseif (sizeof($json_data['Security']['AvList']) == 1) {
                                     $av = $json_data["Security"]["AvList"][0];
                                     echo "<p>The currently installed AV is <span>{$av}</span></p>";
                                 } else {
@@ -1178,6 +1168,38 @@ function getDriveCapacity($driveinput)
                                     }, $json_data['Security']['AvList']));
                                     echo "<p>The currently installed AVs are <span>{$avs}</span></p>";
                                 }
+
+                                $noteshtml = '';
+
+                                if ($json_data['System']['UsernameSpecialCharacters'] == true) {
+                                    $noteshtml .= '
+                                    <p>
+                                        Username found with <span>Special Characters</span>
+                                    </p>
+                                    ';
+                                }
+                                if ($json_data['System']['OneDriveCommercialPathLength'] != null) {
+                                    $noteshtml .= '
+                                    <p>
+                                        OneDrive Path Length : <span>' . $json_data['System']['OneDriveCommercialPathLength'] . '</span>
+                                        OneDrive Name Length : <span>' . $json_data['System']['OneDriveCommercialNameLength'] . '</span>
+                                    </p>
+                                    ';
+                                }
+
+                                if ($json_data['System']['RecentMinidumps'] != 0) {
+                                    $noteshtml .= '
+                                    <p>
+                                        There have been <span style="color:' . $red . '">' . $json_data['System']['RecentMinidumps'] . '</span> Minidumps found
+                                    </p>
+                                    ';
+                                }
+
+                                if (!empty($noteshtml)) {
+                                    $noteshtml = '<br>' . $noteshtml;
+                                    echo $noteshtml;
+                                }
+
                                 ?>
                                 <br>
 
@@ -1200,7 +1222,7 @@ function getDriveCapacity($driveinput)
                                         foreach ($storage_device['SmartData'] as $smartPoint) {
                                             if (str_contains($smartPoint['Name'], '!')) {
                                                 if ($smartPoint['RawValue'] != '000000000000') {
-                                                    $drivehtml = $drivehtml . '<p><span class="drivespan" data-mdb-toggle="modal" type="button" ' . $drivemodal . '>'
+                                                    $drivehtml .= '<p><span class="drivespan" data-mdb-toggle="modal" type="button" ' . $drivemodal . '>'
                                                         . $storage_device['DeviceName'] . ' (' . $lettersString . ') </span> has <span>'
                                                         . $smartPoint['RawValue'] . ' ' . $smartPoint['Name'] . '</span></p>';
                                                 }
@@ -1210,7 +1232,7 @@ function getDriveCapacity($driveinput)
 
                                     if (abs((floor(bytesToGigabytes($storage_device['DiskCapacity'])) -
                                         floor(bytesToGigabytes(getDriveCapacity($storage_device))))) > 5) {
-                                        $drivehtml = $drivehtml .  '
+                                        $drivehtml .=  '
                                                 <p>
                                                     <span>' . $storage_device['DeviceName'] . ' (' . $lettersString . ') </span> has differing capacities.
                                                     (' . floor(bytesToGigabytes($storage_device['DiskCapacity'])) . " on disk vs. "
@@ -1234,34 +1256,26 @@ function getDriveCapacity($driveinput)
                                 $reghtml = "";
 
                                 if ($json_data['System']['StaticCoreCount'] != false) {
-                                    $reghtml = $reghtml . '
+                                    $reghtml .= '
                             <p>
                                 <span>Static Core Count</span> found set.
                             </p>
                             ';
                                 }
 
-                                if ($json_data['System']['RecentMinidumps'] != 0) {
-                                    $reghtml = $reghtml . '
-                            <p>
-                                There have been <span>' . $json_data['System']['RecentMinidumps'] . ' Minidumps found</span>
-                            </p>
-                            ';
-                                }
-
                                 if ($json_data['System']['ChoiceRegistryValues'][2]['Value'] != 10) {
-                                    $reghtml = $reghtml . '
+                                    $reghtml .= '
                             <p>Network Throttling Index found set at <span>' . $json_data['System']['ChoiceRegistryValues'][2]['Value'] . '</span></p>
                             ';
                                 }
 
                                 foreach ($json_data['System']['ChoiceRegistryValues'] as $regkey) {
                                     if ($regkey['Value'] != null && $regkey['Name'] != "NetworkThrottlingIndex" && $regkey['Name'] != "HwSchMode") {
-                                        $reghtml = $reghtml . '
+                                        $reghtml .= '
                                 <p>Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span></p>
                                 ';
                                     } else if ($regkey['Name'] == "HwSchMode" && $regkey['Value'] == 2) {
-                                        $reghtml = $reghtml . '
+                                        $reghtml .= '
                                 <p>Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span></p>
                                 ';
                                     }
