@@ -1257,27 +1257,29 @@ function getDriveCapacity($driveinput)
 
                                 if ($json_data['System']['StaticCoreCount'] != false) {
                                     $reghtml .= '
-                            <p>
-                                <span>Static Core Count</span> found set.
-                            </p>
-                            ';
+                                    <p>
+                                        <span>Static Core Count</span> found set.
+                                    </p>';
                                 }
 
                                 if ($json_data['System']['ChoiceRegistryValues'][2]['Value'] != 10) {
                                     $reghtml .= '
-                            <p>Network Throttling Index found set at <span>' . $json_data['System']['ChoiceRegistryValues'][2]['Value'] . '</span></p>
-                            ';
+                                    <p>
+                                        Network Throttling Index found set at <span>' . $json_data['System']['ChoiceRegistryValues'][2]['Value'] . '</span>
+                                    </p>';
                                 }
 
                                 foreach ($json_data['System']['ChoiceRegistryValues'] as $regkey) {
                                     if ($regkey['Value'] != null && $regkey['Name'] != "NetworkThrottlingIndex" && $regkey['Name'] != "HwSchMode") {
                                         $reghtml .= '
-                                <p>Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span></p>
-                                ';
+                                        <p>
+                                        Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
+                                        </p>';
                                     } else if ($regkey['Name'] == "HwSchMode" && $regkey['Value'] == 2) {
                                         $reghtml .= '
-                                <p>Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span></p>
-                                ';
+                                        <p>
+                                        Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
+                                        </p>';
                                     }
                                 }
 
@@ -1289,17 +1291,41 @@ function getDriveCapacity($driveinput)
 
                             </div>
                             <div class="metadata-detail-content jsondata" id="pups">
-                                <table id="pupsTableInstalled" class="table">
-                                    <?php
+                                <?php
+                                $puphtml = '';
+
+                                if (!empty($pupsfoundInstalled)) {
+
+                                    $puphtml .= '<h4>PUPS found Installed</h4>';
+
+                                    $puphtml .= '<table id="pupsTableInstalled" class="table">';
+
                                     foreach ($pupsfoundInstalled as $pup) {
-                                        echo '<tr><td>' . $pup . ' Found installed</td></tr>';
+                                        $puphtml .= '<tr><td>' . $pup . ' Found installed</td></tr>';
                                     }
-                                    echo '</table><table id="pupsTableRunning" class="table">';
+
+                                    $puphtml .= '</table>';
+                                }
+
+                                if (!empty($pupsfoundRunning)) {
+
+                                    $puphtml .= '<h4>PUPS found Running</h4>';
+
+                                    $puphtml .= '<table id="pupsTableRunning" class="table">';
+
                                     foreach ($pupsfoundRunning as $pup) {
-                                        echo '<tr><td>' . $pup . ' Found Running</td></tr>';
+                                        $puphtml .= '<tr><td>' . $pup . ' Found Running</td></tr>';
                                     }
-                                    ?>
-                                </table>
+
+                                    $puphtml .= '</table>';
+                                }
+
+                                if (!empty($puphtml)) {
+                                    echo $puphtml;
+                                } else {
+                                    echo '<h4>No PUPs found, yay!</h4>';
+                                }
+                                ?>
                             </div>
                             <div class="metadata-detail-content jsondata" id="variables">
                                 <table id="variables_table" class="table">
