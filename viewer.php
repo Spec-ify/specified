@@ -1196,6 +1196,20 @@ function getDriveCapacity($driveinput)
                                     ';
                                 }
 
+                                        if (!empty($json_data['Hardware']['Batteries'])) {
+                                            foreach ($json_data['Hardware']['Batteries'] as $battery) {
+                                                $cap = floatval($battery["Remaining_Life_Percentage"]);
+                                                if ($cap < 80) {
+                                                    $designcap = $battery['Design_Capacity'] / 1000;
+                                                    $currentcap = $battery['Full_Charge_Capacity'] / 1000;
+                                                    $noteshtml .= "
+                                            <p>
+                                                Battery <span>{$battery['Name']}</span> has a diminished capacity! (Designed for {$designcap} Wh, currently {$currentcap} Wh)
+                                            </p>";
+                                                }
+                                            }
+                                        }
+
                                 if (!empty($noteshtml)) {
                                     $noteshtml = '<br>' . $noteshtml;
                                     echo $noteshtml;
