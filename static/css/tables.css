@@ -12,41 +12,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 */
 
-table {
-	border: 1px #595959 solid;
-	border-radius: 5px;
-	border-collapse: collapse;
-}
-
-.table td,
-.table th {
-	font-size: 10pt;
-	font-weight: normal;
-	padding: 0.125rem 0.25rem;
-	border: 1px #595959 solid;
-}
-
-.jsondata table {
-	background: none;
-}
-
-.table {
-	table-layout: auto;
-}
-
-.dataTables_info {
-	font-size: 10pt;
-	padding-left: 0.5rem;
-}
-
-.dataTables_length {
-	margin-bottom: 0.5rem;
-}
-
-.dataTables_filter {
-	float: right;
-}
-
 table.dataTable thead > tr > th.sorting,
 table.dataTable thead > tr > th.sorting_asc,
 table.dataTable thead > tr > th.sorting_desc {
