@@ -1,4 +1,5 @@
-[
+<?php 
+$puplist = [
     "Driver Booster",
     "iTop",
     "Driver Easy",
@@ -622,3 +623,4 @@
     "monectserver",
     "remote"
   ]
+?>
