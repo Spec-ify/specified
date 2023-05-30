@@ -1234,7 +1234,6 @@ function getDriveCapacity($driveinput)
                                 }
 
                                 ?>
-                                <br>
 
                                 <?php
 
@@ -1277,13 +1276,11 @@ function getDriveCapacity($driveinput)
                                 }
 
                                 if (!empty($drivehtml)) {
-                                    $drivehtml = '<h4 style="margin:5px; color:#ffffff66">Drive / SMART Notes</h4>' . $drivehtml;
+                                    $drivehtml = '<br> <h4 style="margin:5px; color:#ffffff66">Drive / SMART Notes</h4>' . $drivehtml;
                                     echo $drivehtml;
                                 }
 
                                 ?>
-
-                                <br>
 
                                 <?php
                                 $reghtml = "";
@@ -1317,7 +1314,7 @@ function getDriveCapacity($driveinput)
                                 }
 
                                 if (!empty($reghtml)) {
-                                    $reghtml = '<h4 style="margin:5px; color:#ffffff66">Notable Registry Changes</h4>' . $reghtml;
+                                    $reghtml = '<br> <h4 style="margin:5px; color:#ffffff66">Notable Registry Changes</h4>' . $reghtml;
                                     echo $reghtml;
                                 }
                                 ?>
