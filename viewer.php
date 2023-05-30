@@ -77,17 +77,12 @@ if (strpos($latestver, $json_data['BasicInfo']['Version']) !== false) {
 //CPU doesn't work right now because we are not able to efficiently get the CPU usage of each running process.
 $working_set = 0;
 $cpu_percent = 0;
-$process_count = count($json_data['System']['RunningProcesses']);
-$i = 0;
 
+foreach ($json_data['System']['RunningProcesses'] as $process) {
+    $working_set += $process['WorkingSet']; // RAM
+    $cpu_percent += $process['WorkingSet']; // CPU
+}
 
-for ($i == 0; $i < $process_count; $i++) {
-    $working_set = $working_set + $json_data['System']['RunningProcesses'][$i]['WorkingSet'];
-}
-$i = 0;
-for ($i == 0; $i < $process_count; $i++) {
-    $cpu_percent = $cpu_percent + $json_data['System']['RunningProcesses'][$i]['WorkingSet'];
-}
 $ram_used = number_format($working_set / 1073741824, 2, '.', '');
 
 //Don't ask me why this is an old fashioned for loop, I got carried away.
@@ -95,6 +90,7 @@ $ram_used = number_format($working_set / 1073741824, 2, '.', '');
 $total_ram = 0;
 $ram_sticks = count($json_data['Hardware']['Ram']);
 $ram_stick = 0;
+
 for ($ram_stick == 0; $ram_stick < $ram_sticks; $ram_stick++) {
     if ($json_data['Hardware']['Ram'][$ram_stick]['Capacity'] != 0) {
         $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity'] / 1000);
@@ -704,16 +700,36 @@ function getDriveCapacity($driveinput)
                                 <div class="widget-values">
                                     <div class="widget-value">
                                         <div style="color: <?= $green ?>;">
+
                                             <?php
-                                            $current_adapter = 0;
-                                            $exit = false;
-                                            $adapter_count = count($json_data['Network']['Adapters2']);
-                                            for ($current_adapter; $current_adapter < $adapter_count; $current_adapter++) {
-                                                if ($json_data['Network']['Adapters2'][$current_adapter]['ConnectorPresent'] && $exit == false) {
-                                                    echo $json_data['Network']['Adapters2'][$current_adapter]['InterfaceDescription'];
-                                                    $exit = true;
+                                            $adapter = "";
+                                            $specversion = preg_replace("/[^0-9]/", "", $json_data['Version']);
+
+                                            if ((int)$specversion >= 113) {
+                                                foreach ($json_data['Network']['Adapters'] as $adapter) {
+                                                    if ($adapter['PhysicalAdapter'] == true && isset($adapter['DHCPLeaseExpires'])) {
+                                                        $adapter = $adapter['Description'];
+                                                        break;
+                                                    }
                                                 };
-                                            };
+
+                                                if ($adapter == "") {
+                                                    foreach ($json_data['Network']['Adapters'] as $adapter) {
+                                                        if ($adapter['PhysicalAdapter'] == true) {
+                                                            $adapter = $adapter['Description'];
+                                                            break;
+                                                        }
+                                                    };
+                                                }
+                                            } else {
+                                                foreach ($json_data['Network']['Adapters2'] as $nicold) {
+                                                    if ($nicold['ConnectorPresent']) {
+                                                        $adapter = $nicold['InterfaceDescription'];
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            echo $adapter;
 
                                             ?>
 
@@ -1196,19 +1212,21 @@ function getDriveCapacity($driveinput)
                                     ';
                                 }
 
-                                        if (!empty($json_data['Hardware']['Batteries'])) {
-                                            foreach ($json_data['Hardware']['Batteries'] as $battery) {
-                                                $cap = floatval($battery["Remaining_Life_Percentage"]);
-                                                if ($cap < 80) {
-                                                    $designcap = $battery['Design_Capacity'] / 1000;
-                                                    $currentcap = $battery['Full_Charge_Capacity'] / 1000;
-                                                    $noteshtml .= "
+                                if (!empty($json_data['Hardware']['Batteries'])) {
+                                    foreach ($json_data['Hardware']['Batteries'] as $battery) {
+                                        $cap = floatval($battery["Remaining_Life_Percentage"]);
+                                        if (
+                                            $cap < 70
+                                        ) {
+                                            $designcap = $battery['Design_Capacity'] / 1000;
+                                            $currentcap = $battery['Full_Charge_Capacity'] / 1000;
+                                            $noteshtml .= "
                                             <p>
                                                 Battery <span>{$battery['Name']}</span> has a diminished capacity! (Designed for {$designcap} Wh, currently {$currentcap} Wh)
                                             </p>";
-                                                }
-                                            }
                                         }
+                                    }
+                                }
 
                                 if (!empty($noteshtml)) {
                                     $noteshtml = '<br>' . $noteshtml;
@@ -1216,7 +1234,6 @@ function getDriveCapacity($driveinput)
                                 }
 
                                 ?>
-                                <br>
 
                                 <?php
 
@@ -1259,13 +1276,11 @@ function getDriveCapacity($driveinput)
                                 }
 
                                 if (!empty($drivehtml)) {
-                                    $drivehtml = '<h4 style="margin:5px; color:#ffffff66">Drive / SMART Notes</h4>' . $drivehtml;
+                                    $drivehtml = '<br> <h4 style="margin:5px; color:#ffffff66">Drive / SMART Notes</h4>' . $drivehtml;
                                     echo $drivehtml;
                                 }
 
                                 ?>
-
-                                <br>
 
                                 <?php
                                 $reghtml = "";
@@ -1299,7 +1314,7 @@ function getDriveCapacity($driveinput)
                                 }
 
                                 if (!empty($reghtml)) {
-                                    $reghtml = '<h4 style="margin:5px; color:#ffffff66">Notable Registry Changes</h4>' . $reghtml;
+                                    $reghtml = '<br> <h4 style="margin:5px; color:#ffffff66">Notable Registry Changes</h4>' . $reghtml;
                                     echo $reghtml;
                                 }
                                 ?>
