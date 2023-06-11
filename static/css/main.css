@@ -863,7 +863,7 @@ article h2:before {
 }
 
 .even {
-	background-color: #ffffff08;
+	background-color: #ffffff07;
 }
 
 .previous {
@@ -905,6 +905,16 @@ table {
 
 .table {
 	table-layout: auto;
+}
+
+.nic {
+	width: 50%;
+	display: inline-block;
+	margin: auto;
+}
+
+.nic td:not(:first-child){
+	width: 100%;
 }
 
 .dataTables_info {

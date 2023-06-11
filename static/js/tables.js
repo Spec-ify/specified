@@ -45,12 +45,7 @@ async function dataTables() {
 				WorkingSetReal: workingSetReal,
 			};
 		});
-	} catch (e) {
-		console.log("Failed to access Running Processes. Is it blank?");
-		console.log(e.name + ": " + e.message);
-	}
 
-	try {
 		$("#runningProcessesTable").DataTable({
 			autoWidth: false,
 			data: displayProcesses,
@@ -73,7 +68,7 @@ async function dataTables() {
 			],
 		});
 	} catch (e) {
-		console.log("Failed making Running Processes DataTable!");
+		console.log("Failed making Running Processes DataTable. Is it blank?");
 		console.log(e.name + ": " + e.message);
 	}
 
@@ -126,29 +121,6 @@ async function dataTables() {
 		});
 	} catch (e) {
 		console.log("Failed making Tasks DataTable");
-		console.log(e.name + ": " + e.message);
-	}
-
-	try {
-		$("#nicTable").DataTable({
-			autoWidth: false,
-			data: json.Network.Adapters,
-			columns: [
-				{ data: "InterfaceIndex" },
-				{ data: "Description" },
-				{ data: "MACAddress" },
-				{ data: "DefaultIPGateway" },
-				{ data: "DHCPEnabled" },
-				{ data: "DHCPServer" },
-				{ data: "DNSDomain" },
-				{ data: "DNSHostName" },
-				{ data: "DNSServerSearchOrder" },
-				{ data: "IPAddress" },
-				{ data: "IPSubnet" },
-			],
-		});
-	} catch (e) {
-		console.log("Failed making NIC DataTable");
 		console.log(e.name + ": " + e.message);
 	}
 
