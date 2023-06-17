@@ -1932,12 +1932,11 @@ function getDriveCapacity($driveinput)
 <script src="static/js/themes.js"></script>
 
 <!--Konami Code for Dev Stuff-->
-<script src="https://cdn.jsdelivr.net/npm/konami@1.6.3/konami.min.js"></script>
+<script defer="defer" src="static/js/konami.js"></script>
 
 <!--Table Rendering-->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.slim.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/sc-2.0.7/datatables.min.js"></script>
-
 
 <!--UI Stuff-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js" type="text/javascript"></script>
