@@ -16,28 +16,31 @@ function change_theme(){
     // Get selection for the switch
     let theme = document.querySelector('#ModeToggle').value;
     let themeables = document.querySelectorAll('.textbox, .searchbar, .widget, .header_header');
+    let html = document.getElementsByTagName("HTML")[0];
 
-    // Remove current theme
-    document.body.classList.remove(themeBody);
-    themeables.forEach(e => e.classList.remove(themeTextBox));
+	// Remove current theme
+	document.body.classList.remove(themeBody);
+	html.classList.remove(themeBody);
+	themeables.forEach((e) => e.classList.remove(themeTextBox));
 
-    if (theme !== "classic") {
-        switch(theme){
-            case "light":
-                themeBody = "LightModeBody";
-                themeTextBox = "LightModeTextbox";
-                break;
+	if (theme !== "classic") {
+		switch (theme) {
+			case "light":
+				themeBody = "LightModeBody";
+				themeTextBox = "LightModeTextbox";
+				break;
 
-            case "k9":
-                themeBody = "K9ModeBody";
-                themeTextBox = "K9ModeTextbox";
-                break;
-        }
+			case "k9":
+				themeBody = "K9ModeBody";
+				themeTextBox = "K9ModeTextbox";
+				break;
+		}
 
-        // Set the theme
-        document.body.classList.add(themeBody);
-        themeables.forEach(e => e.classList.add(themeTextBox));
-    }
+		// Set the theme
+		document.body.classList.add(themeBody);
+		html.classList.add(themeBody);
+		themeables.forEach((e) => e.classList.add(themeTextBox));
+	}
 
     localStorage.setItem("theme", theme);
 }

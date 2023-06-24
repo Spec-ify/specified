@@ -788,25 +788,197 @@ function getDriveCapacity($driveinput)
                                 <div class="modal-dialog modal-fullscreen">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="ModalLabel">System Information</h5>
+                                            <h5 class="modal-title" id="ModalLabel">NIC Information</h5>
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <table id="nicTable" class="table">
-                                                <thead>
-                                                    <th>#</th>
-                                                    <th>Name</th>
-                                                    <th>MAC</th>
-                                                    <th>Gateway(s)</th>
-                                                    <th>DHCP State</th>
-                                                    <th>DHCP Server</th>
-                                                    <th>DNS Domain</th>
-                                                    <th>DNS Host name</th>
-                                                    <th>DNS IPs</th>
-                                                    <th>IP(s)</th>
-                                                    <th>Subnet</th>
-                                                </thead>
-                                            </table>
+
+                                            <?php
+
+                                            foreach ($json_data["Network"]["Adapters"] as $nic) {
+                                                $table = '';
+                                                $gateways = '';
+                                                $dnsIPs = '';
+                                                $dnsSuffixes = '';
+                                                $ips = '';
+                                                $subnets = '';
+
+                                                if (is_array($nic["DefaultIPGateway"])) {
+                                                    foreach ($nic["DefaultIPGateway"] as $gateway) {
+                                                        $gateways .= $gateway . ' ';
+                                                    }
+                                                }
+
+                                                if (is_array($nic["DNSServerSearchOrder"])) {
+                                                    foreach ($nic["DNSServerSearchOrder"] as $dnsIP) {
+                                                        $dnsIPs .= $dnsIP . ' ';
+                                                    }
+                                                }
+
+                                                if (is_array($nic["DNSDomainSuffixSearchOrder"])) {
+                                                    foreach ($nic["DNSDomainSuffixSearchOrder"] as $dnsSuffix) {
+                                                        $dnsSuffixes .= $dnsSuffix . ' ';
+                                                    }
+                                                }
+
+                                                if (is_array($nic["IPAddress"])) {
+                                                    foreach ($nic["IPAddress"] as $ip) {
+                                                        $ips .= $ip . ' ';
+                                                    }
+                                                }
+
+                                                if (is_array($nic["IPSubnet"])) {
+                                                    foreach ($nic["IPSubnet"] as $subnet) {
+                                                        $subnets .= $subnet . ' ';
+                                                    }
+                                                }
+
+                                                $table = '<table class="table nic">
+                                                            <tr>
+                                                                <td>#</td>
+                                                                <td>' . $nic["InterfaceIndex"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Name</td>
+                                                                <td>' . $nic["Description"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>MAC</td>
+                                                                <td>' . $nic["MACAddress"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Gateway(s)</td>
+                                                                <td>' . $gateways . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>DHCP State</td>
+                                                                <td>' . $nic["DHCPEnabled"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>DHCP Lease Expiry</td>
+                                                                <td>' . $nic["DHCPLeaseExpires"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>DHCP Lease Obtained</td>
+                                                                <td>' . $nic["DHCPLeaseObtained"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>DHCP Server</td>
+                                                                <td>' . $nic["DHCPServer"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>DNS Domain</td>
+                                                                <td>' . $nic["DNSDomain"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>DNS Hostname</td>
+                                                                <td>' . $nic["DNSHostName"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>DNS IPs</td>
+                                                                <td>' . $dnsIPs . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>DNS Suffixes</td>
+                                                                <td>' . $dnsSuffixes . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>IP Enabled?</td>
+                                                                <td>' . $nic["IPEnabled"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>IP(s)</td>
+                                                                <td>' . $ips . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Subnet</td>
+                                                                <td>' . $subnets . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Physical Adapter?</td>
+                                                                <td>' . $nic["PhysicalAdapter"] . '</td>
+                                                            </tr>
+                                                        ';
+
+                                                if (isset($nic["LinkSpeed"])) {
+                                                    $table .= '
+                                                            <tr>
+                                                                <td>Link Speed</td>
+                                                                <td>' . $nic["LinkSpeed"] . '</td>
+                                                            </tr>
+                                                    ';
+                                                }
+
+                                                if ($nic["PhysicalAdapter"] == true) {
+                                                    $table .= '
+                                                            <tr>
+                                                                <td>Full Duplex?</td>
+                                                                <td>' . $nic["FullDuplex"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Media Connection State</td>
+                                                                <td>' . $nic["MediaConnectionState"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Media Duplex State</td>
+                                                                <td>' . $nic["MediaDuplexState"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>MTU Size</td>
+                                                                <td>' . $nic["MtuSize"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Name</td>
+                                                                <td>' . $nic["Name"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Operational Status</td>
+                                                                <td>' . $nic["OperationalStatusDownMediaDisconnected"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Permanent Address</td>
+                                                                <td>' . $nic["PermanentAddress"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Promiscuous Mode</td>
+                                                                <td>' . $nic["PromiscuousMode"] . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>State</td>
+                                                                <td>' . $nic["State"] . '</td>
+                                                            </tr>
+                                                    ';
+                                                }
+
+                                                $table .= '</table>';
+                                                echo $table;
+                                            }
+
+                                            ?>
+
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
@@ -1760,10 +1932,10 @@ function getDriveCapacity($driveinput)
 <script src="static/js/themes.js"></script>
 
 <!--Konami Code for Dev Stuff-->
-<script src="https://cdn.jsdelivr.net/npm/konami@1.6.3/konami.min.js"></script>
+<script defer="defer" src="static/js/konami.js"></script>
 
 <!--Table Rendering-->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.slim.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/sc-2.0.7/datatables.min.js"></script>
 
 <!--UI Stuff-->
