@@ -22,7 +22,17 @@ function showtab(seltab) {
 	}
 	$(seltab).show();
 }
+const viewmodetoggle = localStorage.getItem("viewmode");
+const blackblanket = document.querySelector('#blanket');
+let urlsubr = new URLSearchParams(window.location.search);
+let profilepath = urlsubr.get('file');
 
+$(function() {
+    if(viewmodetoggle=="gesp"){
+        blackblanket.style.transition='opacity 0.2s';
+        window.location.replace("gesp-mode.php?file="+profilepath);
+    }
+});
 $("#CollapseToggle").click(function () {
 	$("#CollapseToggle").hide();
 	$("#CollapseToggleHide").show();
@@ -179,3 +189,14 @@ function backToTop() {
 const easterEgg = new Konami(
 	() => (document.getElementById("devdiv").style.display = "block")
 );
+
+$('#gesptoggle').click(() => {
+    localStorage.clear();
+    localStorage.setItem('viewmode', 'gesp');
+})
+$('#spectoggle').click(() => {
+    console.log('click');
+    window.localStorage.removeItem('viewmode');
+})
+
+

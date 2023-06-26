@@ -929,3 +929,14 @@ table {
 .dataTables_filter {
 	float: right;
 }
+
+#blanket{
+    display:none;
+    width:100%;
+    height:100%;
+    position:fixed;
+    top:0px;
+    left:0px;
+    z-index:9999;
+    background-color:black;
+}

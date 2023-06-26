@@ -273,6 +273,7 @@ function getDriveCapacity($driveinput)
 
 <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="blanket"></div>
     <div id="main">
         <!--$-->
         <button type="button" class="btn btn-info btn-floating btn-lg" id="btn-back-to-top">
@@ -287,6 +288,9 @@ function getDriveCapacity($driveinput)
                 <button type="button" class="btn btn-info" id="CollapseToggleHide">Collapse All</button>
                 <a id="Download" href="<?= $json_file ?>">
                     <button class="btn btn-info">View Raw JSON</button>
+                </a>
+                <a id="gesptoggle" href="gesp-mode.php?file=files/<?= $profile_name ?>.json">
+                    <button class="btn btn-info">GESP Mode</button>
                 </a>
                 <?php
                 if (isset($json_data['System']['DumpZip'])) {
