@@ -25,12 +25,12 @@ function showtab(seltab) {
 const viewmodetoggle = localStorage.getItem("viewmode");
 const blackblanket = document.querySelector('#blanket');
 let urlsubr = new URLSearchParams(window.location.search);
-const profile = document.getElementById("filename").innerText;
+console.log(PROFILE_NAME);
 
 $(function() {
     if(viewmodetoggle==="gesp"){
         blackblanket.style.transition='opacity 0.2s';
-        window.location.replace("/gesp-mode/" + profile);
+        window.location.replace("/gesp-mode/" + PROFILE_NAME);
     }
 });
 $("#CollapseToggle").click(function () {
@@ -194,6 +194,6 @@ $('#gesptoggle').click(() => {
     localStorage.setItem('viewmode', 'gesp');
 })
 $('#spectoggle').click(() => {
-    console.log('click');
+    //console.log('click');
     window.localStorage.removeItem('viewmode');
 })

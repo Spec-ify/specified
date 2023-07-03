@@ -2,7 +2,7 @@
 //Checking if the file requested via GET exists. If not, we send to a custom 404.
 if(!file_exists($_GET['file'])){
     http_response_code(404);
-    header("Location: 404.html");
+    include('404.html');
     die();
 }
 //Opening the file that comes after profile/ via GET and then parsing it with json_decode to get a usable variable with the json info back.
@@ -101,9 +101,13 @@ tr:nth-child(even) {
     max-width:600px;
 }
 </style>
+    <script>
+        window.PROFILE_NAME = <?= $profile_name ?>;
+    </script>
     <!--This should be first to make sure the themes load on time-->
     <script src="static/js/themes.js"></script>
     <script defer="defer" src="static/js/redir.js"></script>
+</head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <a id="spectoggle" href="/profile/<?= $profile_name ?>">

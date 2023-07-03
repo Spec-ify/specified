@@ -269,6 +269,10 @@ function getDriveCapacity($driveinput)
     <meta name="og:site_name" content="Specify" />
     <meta name="og:description" content="Generated on <?= $json_data["Meta"]["GenerationDate"] ?>" />
     <meta name="og:type" content="data.specify_result" />
+
+    <script>
+        window.PROFILE_NAME = <?= $profile_name ?>;
+    </script>
 </head>
 
 <body>

@@ -1,9 +1,5 @@
-//We get the filename by probing the php print of the filename and adding the full path and filetype to it.
-const filename =
-	"files/" + document.getElementById("filename").innerText + ".json";
-
 async function dataTables() {
-	const json = await (await fetch(filename)).json();
+	const json = await (await fetch(PROFILE_NAME)).json();
 
 	try {
 		let groupProcesses = {};
@@ -370,7 +366,7 @@ async function dataTables() {
 dataTables();
 
 async function errorcheck() {
-	const json = await (await fetch(filename)).json();
+	const json = await (await fetch(PROFILE_NAME)).json();
 	let errors = 0;
 	for (let key in json) {
 		key = json[key];
