@@ -106,7 +106,7 @@ tr:nth-child(even) {
     <script defer="defer" src="static/js/redir.js"></script>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
-<a id="spectoggle" href="viewer.php?file=files/<?= $profile_name ?>.json">
+<a id="spectoggle" href="/profile/<?= $profile_name ?>">
     <button class="btn btn-info">Specify Mode</button>
 </a>
 <pre>

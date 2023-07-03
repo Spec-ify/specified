@@ -25,12 +25,12 @@ function showtab(seltab) {
 const viewmodetoggle = localStorage.getItem("viewmode");
 const blackblanket = document.querySelector('#blanket');
 let urlsubr = new URLSearchParams(window.location.search);
-let profilepath = urlsubr.get('file');
+const profile = document.getElementById("filename").innerText;
 
 $(function() {
-    if(viewmodetoggle=="gesp"){
+    if(viewmodetoggle==="gesp"){
         blackblanket.style.transition='opacity 0.2s';
-        window.location.replace("gesp-mode.php?file="+profilepath);
+        window.location.replace("/gesp-mode/" + profile);
     }
 });
 $("#CollapseToggle").click(function () {
@@ -191,12 +191,9 @@ const easterEgg = new Konami(
 );
 
 $('#gesptoggle').click(() => {
-    localStorage.clear();
     localStorage.setItem('viewmode', 'gesp');
 })
 $('#spectoggle').click(() => {
     console.log('click');
     window.localStorage.removeItem('viewmode');
 })
-
-

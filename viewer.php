@@ -289,7 +289,7 @@ function getDriveCapacity($driveinput)
                 <a id="Download" href="<?= $json_file ?>">
                     <button class="btn btn-info">View Raw JSON</button>
                 </a>
-                <a id="gesptoggle" href="gesp-mode.php?file=files/<?= $profile_name ?>.json">
+                <a id="gesptoggle" href="/gesp-mode/<?= $profile_name ?>">
                     <button class="btn btn-info">GESP Mode</button>
                 </a>
                 <?php
