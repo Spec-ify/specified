@@ -271,7 +271,7 @@ function getDriveCapacity($driveinput)
     <meta name="og:type" content="data.specify_result" />
 
     <script>
-        window.PROFILE_NAME = <?= $profile_name ?>;
+        window.PROFILE_NAME = "<?= $profile_name ?>";
     </script>
 </head>
 

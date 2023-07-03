@@ -102,10 +102,8 @@ tr:nth-child(even) {
 }
 </style>
     <script>
-        window.PROFILE_NAME = <?= $profile_name ?>;
+        window.PROFILE_NAME = "<?= $profile_name ?>";
     </script>
-    <!--This should be first to make sure the themes load on time-->
-    <script src="static/js/themes.js"></script>
     <script defer="defer" src="static/js/redir.js"></script>
 </head>
 <body>

@@ -1,5 +1,7 @@
+const filename = `files/${PROFILE_NAME}.json`;
+
 async function dataTables() {
-	const json = await (await fetch(PROFILE_NAME)).json();
+	const json = await (await fetch(filename)).json();
 
 	try {
 		let groupProcesses = {};
@@ -366,7 +368,7 @@ async function dataTables() {
 dataTables();
 
 async function errorcheck() {
-	const json = await (await fetch(PROFILE_NAME)).json();
+	const json = await (await fetch(filename)).json();
 	let errors = 0;
 	for (let key in json) {
 		key = json[key];
