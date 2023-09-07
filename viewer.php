@@ -941,7 +941,7 @@ function getDriveCapacity($driveinput)
 
                                                             <tr>
                                                                 <td>Media Connection State</td>
-                                                                <td>' . $nic["MediaConnectionState"] . '</td>
+                                                                <td>' . $nic["MediaConnectState"] . '</td>
                                                             </tr>
 
                                                             <tr>
