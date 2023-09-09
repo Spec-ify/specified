@@ -932,7 +932,7 @@ function getDriveCapacity($driveinput)
                                                     ';
                                                 }
 
-                                                if ($nic["PhysicalAdapter"] == true) {
+                                                if (isset($nic["PhysicalAdapter"]) && $nic["PhysicalAdapter"]) {
                                                     $table .= '
                                                             <tr>
                                                                 <td>Full Duplex?</td>
