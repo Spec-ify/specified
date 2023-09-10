@@ -27,21 +27,27 @@ include('pup-list.php');
 $referenceListInstalled = $json_data['System']['InstalledApps'];
 $referenceListRunning = $json_data['System']['RunningProcesses'];
 
-$pupsfoundInstalled = array_filter($referenceListInstalled, function ($checkobj) use ($puplist) {
-    foreach ($puplist as $pup) {
-        if (str_contains(strtolower($checkobj['Name']), $pup)) {
-            return $checkobj;
+$pupsfoundInstalled = array();
+foreach ($referenceListInstalled as $installed) {
+    foreach ($puplist as $pups) {
+        preg_match('/\b(' . strtolower($pups) . ')\b/', strtolower($installed['Name']), $matches, PREG_OFFSET_CAPTURE);
+        if ($matches) {
+            array_push($pupsfoundInstalled, $installed['Name']);
         }
     }
-});
+}
+$pupsfoundInstalled = array_unique($pupsfoundInstalled);
 
-$pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use ($normalizedArray){
-    foreach ($normalizedArray as $pup) {
-        if (str_contains(strtolower($checkobj['ProcessName']), $pup)) {
-            return $checkobj;
+$pupsfoundRunning = array();
+foreach ($referenceListRunning as $running) {
+    foreach ($puplist as $pups) {
+        preg_match('/\b(' . strtolower($pups) . ')\b/', strtolower($running['ProcessName']), $matches, PREG_OFFSET_CAPTURE);
+        if ($matches) {
+            array_push($pupsfoundRunning, $running['ProcessName']);
         }
     }
-});
+}
+$pupsfoundRunning = array_unique($pupsfoundRunning);
 ?>
 <!DOCTYPE html>
 <html>
@@ -149,6 +155,14 @@ Boot state: <?=$json_data['BasicInfo']['BootState']?>
 if($json_data['System']['StaticCoreCount']!=false){
     echo '<span>Static Core Count</span> found set.<br>';
 }
+
+$hostFileHash = hash('ripemd160', $json_data['Network']['HostsFile']);
+$hostFileCheck = "4fbad385eddbc2bdc1fa9ff6d270e994f8c32c5f" !== $hostFileHash;
+
+if ($hostFileCheck) {
+    echo 'Hosts file has been modified from stock, it has been appended to bottom of this page';
+}
+
 if($json_data['System']['RecentMinidumps']!=0){
     echo 'There have been <span>'.$json_data['System']['RecentMinidumps'].' Minidumps found</span><br>';
 }
@@ -163,10 +177,10 @@ if($json_data['System']['ChoiceRegistryValues'][2]['Value']!=10){
 ?></p>
 <?php
     foreach($pupsfoundInstalled as $pup){
-        echo '<tr><td>'.$pup['Name'].' Found installed</td></tr><br>';
+        echo '<tr><td>'.$pup.' Found installed</td></tr><br>';
     }
     foreach($pupsfoundRunning as $pup){
-        echo '<tr><td>'.$pup['ProcessName'].' Found Running</td></tr><br>';
+        echo '<tr><td>'.$pup.' Found Running</td></tr><br>';
     }
     ?>
 <a name="top"></a>
@@ -1090,6 +1104,17 @@ Total RAM usage: WIP
     ?>
 
     </table>
+
+<?php 
+
+if ($hostFileCheck){
+    echo "<h2 id='HostFile'> Host File</h2> Hash (ripemd160): "
+    . $hostFileHash
+    . "<br><br>"
+    . $json_data['Network']['HostsFile'];
+}
+
+?>
 
 <h2 id='RunTime'>Runtime</h2>
 
