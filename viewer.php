@@ -1560,11 +1560,30 @@ function getDriveCapacity($driveinput)
                                     }
                                 }
 
+                                foreach ($json_data['Hardware']['Storage'] as $disk) {
+                                    foreach ($disk['Partitions'] as $partNum => $part) {
+                                        if (isset($part['DirtyBitSet']) && $part['DirtyBitSet']) {
+                                            if (empty($part['PartitionLetter'])) {
+                                                $noteshtml .= "
+                                                <p>
+                                                    Dirty bit set on <span>partition $partNum ({$disk['DeviceName']})</span>
+                                                </p>
+                                                ";
+                                            } else {
+                                                $noteshtml .= "
+                                                <p>
+                                                    Dirty bit set on <span>{$part['PartitionLetter']} ({$disk['DeviceName']})</span>
+                                                </p>
+                                                ";
+                                            }
+                                        }
+                                    }
+                                }
+
                                 if (!empty($noteshtml)) {
                                     $noteshtml = '<br>' . $noteshtml;
                                     echo $noteshtml;
                                 }
-
                                 ?>
 
                                 <?php
