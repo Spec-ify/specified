@@ -940,3 +940,11 @@ table {
     z-index:9999;
     background-color:black;
 }
+
+.modal-column {
+    float: left;
+}
+
+.modal-column:not(:first-of-type) {
+    margin-left: 1rem;
+}

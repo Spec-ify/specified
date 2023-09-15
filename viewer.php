@@ -533,10 +533,45 @@ function getDriveCapacity($driveinput)
                                                     ?>
                                                 </tbody>
                                             </table>
+                                            <div style="display: none;" id="board-info-more-info">
+                                                <table class="table">
+                                                    <tbody>
+                                                    <?php
+                                                    foreach ($json_data['Hardware']['BiosInfo'][0] as $key => $value) {
+                                                        if ($key == 'BiosCharacteristics') {
+                                                            echo '
+                                                            <tr>
+                                                                <td>' . $key . '</td>
+                                                                <td>' . implode(', ', $value) . '</td>
+                                                            </tr>
+                                                            ';
+                                                            continue;
+                                                        }
+                                                        if ($key == 'BIOSVersion') {
+                                                            echo '
+                                                            <tr>
+                                                                <td>' . $key . '</td>
+                                                                <td>' . implode('<br/>', $value) . '</td>
+                                                            </tr>
+                                                            ';
+                                                            continue;
+                                                        }
 
+                                                        echo "
+                                                        <tr>
+                                                            <td>$key</td>
+                                                            <td>$value</td>
+                                                        </tr>
+                                                        ";
+                                                    }
+                                                    ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-secondary" id="board-info-more-info-button">More Info</button>
+                                            <button type="button" class="btn btn-secondary" id="board-info-close" data-mdb-dismiss="modal">Close</button>
                                         </div>
                                     </div>
                                 </div>
