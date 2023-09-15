@@ -346,7 +346,7 @@ function getDriveCapacity($driveinput)
                                 </div>
                             </div>
                             <div class="widget widget-ram hover" type="button" data-mdb-toggle="modal" data-mdb-target="#ramModal">
-                                <h1>RAM</h1>
+                                <h1>Memory</h1>
                                 <div class="widget-values" <?php
                                                             if (count($json_data['Hardware']['Ram']) > 4) {
                                                                 echo 'style="display: flex; flex-flow: row wrap;"';
@@ -383,10 +383,11 @@ function getDriveCapacity($driveinput)
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="ModalLabel">RAM info</h5>
+                                            <h5 class="modal-title" id="ModalLabel">Memory info</h5>
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
+                                            <h5>Physical Memory</h5>
                                             <table class="table">
                                                 <thead>
                                                     <tr>
@@ -414,6 +415,27 @@ function getDriveCapacity($driveinput)
                                             </tr>';
                                                     }
                                                     ?>
+                                                </tbody>
+                                            </table>
+                                            <h5>Pagefile</h5>
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>File Path</td>
+                                                        <td> <?= $json_data['System']['PageFile']['Caption'] ?> </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Allocated Base Size</td>
+                                                        <td> <?= $json_data['System']['PageFile']['AllocatedBaseSize'] ?> MB</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Current Usage</td>
+                                                        <td> <?= $json_data['System']['PageFile']['CurrentUsage'] ?> MB</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Peak Usage</td>
+                                                        <td> <?= $json_data['System']['PageFile']['PeakUsage'] ?> MB</td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -500,12 +522,12 @@ function getDriveCapacity($driveinput)
                                             </tr>';
                                                     echo
                                                     '<tr>
-                                                <td>Manufacturer Version</td>
+                                                <td>TPM Manufacturer</td>
                                                 <td>' . $tpm_manufacturer . '</td>
                                             </tr>';
                                                     echo
                                                     '<tr>
-                                                <td>Version</td>
+                                                <td>TPM Version</td>
                                                 <td>' . $tpm_version . '</td>
                                             </tr>';
                                                     ?>
