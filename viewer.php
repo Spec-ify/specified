@@ -173,7 +173,7 @@ $path_array = explode(';', $paths);
 
 
 //PUP check
-include('pup-list.php');
+include('lists.php');
 // Set up the reference list
 $referenceListInstalled = $json_data['System']['InstalledApps'];
 $referenceListRunning = $json_data['System']['RunningProcesses'];
@@ -539,10 +539,16 @@ function getDriveCapacity($driveinput)
                                                     <?php
                                                     foreach ($json_data['Hardware']['BiosInfo'][0] as $key => $value) {
                                                         if ($key == 'BiosCharacteristics') {
+                                                            $bcStringList = [];
+                                                            foreach ($value as $characteristic) {
+                                                                if (isset($biosCharacteristics[$characteristic])) {
+                                                                    $bcStringList[] = $biosCharacteristics[$characteristic];
+                                                                }
+                                                            }
                                                             echo '
                                                             <tr>
                                                                 <td>' . $key . '</td>
-                                                                <td>' . implode(', ', $value) . '</td>
+                                                                <td>' . implode('<br/>', $bcStringList) . '</td>
                                                             </tr>
                                                             ';
                                                             continue;
