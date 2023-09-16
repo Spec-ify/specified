@@ -173,7 +173,7 @@ $path_array = explode(';', $paths);
 
 
 //PUP check
-include('pup-list.php');
+include('lists.php');
 // Set up the reference list
 $referenceListInstalled = $json_data['System']['InstalledApps'];
 $referenceListRunning = $json_data['System']['RunningProcesses'];
@@ -334,7 +334,7 @@ function getDriveCapacity($driveinput)
                 <div id="main">
                     <div class="metadata_metadata expanded" id="info">
                         <div class="widgets_widgets widgets" id="hardware_widgets" data-hide="false">
-                            <div class="widget widget-cpu hover">
+                            <div class="widget widget-cpu hover" type="button" data-mdb-toggle="modal" data-mdb-target="#cpuModal">
                                 <h1>CPU</h1>
                                 <div class="widget-values">
                                     <div class="widget-value">
@@ -345,8 +345,51 @@ function getDriveCapacity($driveinput)
                                     </div>
                                 </div>
                             </div>
+                            <div class="modal fade " id="cpuModal" tabindex="-1" aria-labelledby="cpuModal" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="ModalLabel">CPU info</h5>
+                                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Name</td>
+                                                        <td><?= $json_data['Hardware']['Cpu']['Name'] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Manufacturer</td>
+                                                        <td><?= $json_data['Hardware']['Cpu']['Manufacturer'] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Socket Designation</td>
+                                                        <td><?= $json_data['Hardware']['Cpu']['SocketDesignation'] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Current Clock Speed</td>
+                                                        <td><?= $json_data['Hardware']['Cpu']['CurrentClockSpeed'] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td># of Enabled Cores</td>
+                                                        <td><?= $json_data['Hardware']['Cpu']['NumberOfEnabledCore'] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Thread Count</td>
+                                                        <td><?= $json_data['Hardware']['Cpu']['ThreadCount'] ?></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="widget widget-ram hover" type="button" data-mdb-toggle="modal" data-mdb-target="#ramModal">
-                                <h1>RAM</h1>
+                                <h1>Memory</h1>
                                 <div class="widget-values" <?php
                                                             if (count($json_data['Hardware']['Ram']) > 4) {
                                                                 echo 'style="display: flex; flex-flow: row wrap;"';
@@ -383,10 +426,11 @@ function getDriveCapacity($driveinput)
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="ModalLabel">RAM info</h5>
+                                            <h5 class="modal-title" id="ModalLabel">Memory info</h5>
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
+                                            <h5>Physical Memory</h5>
                                             <table class="table">
                                                 <thead>
                                                     <tr>
@@ -416,6 +460,27 @@ function getDriveCapacity($driveinput)
                                                     ?>
                                                 </tbody>
                                             </table>
+                                            <h5>Pagefile</h5>
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>File Path</td>
+                                                        <td> <?= $json_data['System']['PageFile']['Caption'] ?> </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Allocated Base Size</td>
+                                                        <td> <?= $json_data['System']['PageFile']['AllocatedBaseSize'] ?> MB</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Current Usage</td>
+                                                        <td> <?= $json_data['System']['PageFile']['CurrentUsage'] ?> MB</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Peak Usage</td>
+                                                        <td> <?= $json_data['System']['PageFile']['PeakUsage'] ?> MB</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
@@ -441,7 +506,7 @@ function getDriveCapacity($driveinput)
                                 </div>
                             </div>
                             <div class="modal fade" id="boardModal" tabindex="-1" aria-labelledby="boardModal" aria-hidden="true">
-                                <div class="modal-dialog">
+                                <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="ModalLabel">Board Information</h5>
@@ -500,21 +565,62 @@ function getDriveCapacity($driveinput)
                                             </tr>';
                                                     echo
                                                     '<tr>
-                                                <td>Manufacturer Version</td>
+                                                <td>TPM Manufacturer</td>
                                                 <td>' . $tpm_manufacturer . '</td>
                                             </tr>';
                                                     echo
                                                     '<tr>
-                                                <td>Version</td>
+                                                <td>TPM Version</td>
                                                 <td>' . $tpm_version . '</td>
                                             </tr>';
                                                     ?>
                                                 </tbody>
                                             </table>
+                                            <div style="display: none;" id="board-info-more-info">
+                                                <table class="table">
+                                                    <tbody>
+                                                    <?php
+                                                    foreach ($json_data['Hardware']['BiosInfo'][0] as $key => $value) {
+                                                        if ($key == 'BiosCharacteristics') {
+                                                            $bcStringList = [];
+                                                            foreach ($value as $characteristic) {
+                                                                if (isset($biosCharacteristics[$characteristic])) {
+                                                                    $bcStringList[] = $biosCharacteristics[$characteristic];
+                                                                }
+                                                            }
+                                                            echo '
+                                                            <tr>
+                                                                <td>' . $key . '</td>
+                                                                <td>' . implode('<br/>', $bcStringList) . '</td>
+                                                            </tr>
+                                                            ';
+                                                            continue;
+                                                        }
+                                                        if ($key == 'BIOSVersion') {
+                                                            echo '
+                                                            <tr>
+                                                                <td>' . $key . '</td>
+                                                                <td>' . implode('<br/>', $value) . '</td>
+                                                            </tr>
+                                                            ';
+                                                            continue;
+                                                        }
 
+                                                        echo "
+                                                        <tr>
+                                                            <td>$key</td>
+                                                            <td>$value</td>
+                                                        </tr>
+                                                        ";
+                                                    }
+                                                    ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-secondary" id="board-info-more-info-button">More Info</button>
+                                            <button type="button" class="btn btn-secondary" id="board-info-close" data-mdb-dismiss="modal">Close</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1459,11 +1565,30 @@ function getDriveCapacity($driveinput)
                                     }
                                 }
 
+                                foreach ($json_data['Hardware']['Storage'] as $disk) {
+                                    foreach ($disk['Partitions'] as $partNum => $part) {
+                                        if (isset($part['DirtyBitSet']) && $part['DirtyBitSet']) {
+                                            if (empty($part['PartitionLetter'])) {
+                                                $noteshtml .= "
+                                                <p>
+                                                    Dirty bit set on <span>partition $partNum ({$disk['DeviceName']})</span>
+                                                </p>
+                                                ";
+                                            } else {
+                                                $noteshtml .= "
+                                                <p>
+                                                    Dirty bit set on <span>{$part['PartitionLetter']} ({$disk['DeviceName']})</span>
+                                                </p>
+                                                ";
+                                            }
+                                        }
+                                    }
+                                }
+
                                 if (!empty($noteshtml)) {
                                     $noteshtml = '<br>' . $noteshtml;
                                     echo $noteshtml;
                                 }
-
                                 ?>
 
                                 <?php

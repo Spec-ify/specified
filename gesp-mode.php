@@ -22,7 +22,7 @@ function timeConvert($time) {
 }
 $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
 //PUP check
-include('pup-list.php');
+include('lists.php');
 // Set up the reference list
 $referenceListInstalled = $json_data['System']['InstalledApps'];
 $referenceListRunning = $json_data['System']['RunningProcesses'];

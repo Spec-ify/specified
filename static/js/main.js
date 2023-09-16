@@ -27,6 +27,16 @@ const blackblanket = document.querySelector('#blanket');
 let urlsubr = new URLSearchParams(window.location.search);
 console.log(PROFILE_NAME);
 
+document.querySelector("#board-info-more-info-button").addEventListener("click", () => {
+    document.querySelector("#board-info-more-info").style.display = "block";
+    document.querySelector("#board-info-more-info-button").style.display = "none";
+});
+
+document.querySelector("#board-info-close").addEventListener("click", () => {
+   document.querySelector("#board-info-more-info").style.display = "none";
+   document.querySelector("#board-info-more-info-button").style.display = "inline-block";
+});
+
 $(function() {
     if(viewmodetoggle==="gesp"){
         blackblanket.style.transition='opacity 0.2s';
