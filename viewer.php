@@ -1503,9 +1503,6 @@ function getDriveCapacity($driveinput)
                                 </p>
 
                                 <?php
-
-
-
                                 if (empty($json_data['Security']['AvList'])) {
                                     echo '<p style="color:' . $red . '">No AVs found!</p>';
                                 } elseif (sizeof($json_data['Security']['AvList']) == 1) {
@@ -1540,6 +1537,14 @@ function getDriveCapacity($driveinput)
                                     $noteshtml .= '
                                     <p>
                                         There have been <span style="color:' . $red . '">' . $json_data['System']['RecentMinidumps'] . '</span> Minidumps found
+                                    </p>
+                                    ';
+                                }
+
+                                if ("4fbad385eddbc2bdc1fa9ff6d270e994f8c32c5f" !== hash('ripemd160', $json_data['Network']['HostsFile'])) {
+                                    $noteshtml .= '
+                                    <p>
+                                        Hosts file has been modified from stock
                                     </p>
                                     ';
                                 }
@@ -1643,23 +1648,29 @@ function getDriveCapacity($driveinput)
                                     </p>';
                                 }
 
-                                if ($json_data['System']['ChoiceRegistryValues'][2]['Value'] != 10) {
+                                if (
+                                    $json_data['System']['ChoiceRegistryValues'][2]['Value'] != null    // If set
+                                    && $json_data['System']['ChoiceRegistryValues'][2]['Value'] != 10   // If not default
+                                ) {
                                     $reghtml .= '
                                     <p>
-                                        Network Throttling Index found set at <span>' . $json_data['System']['ChoiceRegistryValues'][2]['Value'] . '</span>
+                                        Network Throttling Index found set to <span>' . $json_data['System']['ChoiceRegistryValues'][2]['Value'] . '</span>
                                     </p>';
                                 }
 
                                 foreach ($json_data['System']['ChoiceRegistryValues'] as $regkey) {
-                                    if ($regkey['Value'] != null && $regkey['Name'] != "NetworkThrottlingIndex" && $regkey['Name'] != "HwSchMode") {
+                                    $excludelist = $regkey['Name'] != "NetworkThrottlingIndex"      // NetworkThrottlingIndex handled above foreach
+                                        && $regkey['Name'] != "HwSchMode";                          // Special Value
+
+                                    if ($regkey['Value'] !== null && $excludelist) {
                                         $reghtml .= '
                                         <p>
-                                        Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
+                                            Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
                                         </p>';
                                     } else if ($regkey['Name'] == "HwSchMode" && $regkey['Value'] == 2) {
                                         $reghtml .= '
                                         <p>
-                                        Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
+                                            Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
                                         </p>';
                                     }
                                 }
