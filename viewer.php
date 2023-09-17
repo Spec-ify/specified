@@ -532,9 +532,12 @@ function getDriveCapacity($driveinput)
 
                                                         // Use the DateTime class to parse the date string
                                                         $datetime = DateTime::createFromFormat('YmdHis.uO', $biosdate);
-
-                                                        // Format the date using the desired MMDDYYYY format
-                                                        $formattedbiosdate = $datetime->format('m/d/Y');
+                                                        if (!$datetime) { // the one provided by the bios wasn't valid
+                                                            // Format the date using the desired MMDDYYYY format
+                                                            $formattedbiosdate = $datetime->format('m/d/Y');
+                                                        } else {
+                                                            $formattedbiosdate = "unknown";
+                                                        }
                                                         ?>
                                                         <td><?= $formattedbiosdate ?></td>
                                                     </tr>
