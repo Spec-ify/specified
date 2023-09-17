@@ -1205,13 +1205,13 @@ function getDriveCapacity($driveinput)
                                     $fs_display = $part['Filesystem'] ?? 'Unknown';
 
                                     echo '
-                                    <div class="progress progress-bar partition-one-bar" style="width: '. floor($part_size / $drive_size_raw * 100) . '%;">
+                                    <div class="progress progress-bar partition-one-bar" style="width: '. $part_size / $drive_size_raw * 100 . '%;">
                                         <span class="partition-bar-label">
                                             ' . $part_display /* this will already have <br/> if not empty */ . '
                                             ' . $fs_display . '<br/>
                                             ' . "$part_taken / $part_size MB Used" . '
                                         </span>
-                                        <div class="progress-bar partition-space-bar" style="width: ' . floor($part_taken / $part_size * 100) . '%;"></div>
+                                        <div class="progress-bar partition-space-bar" style="width: ' . $part_taken / $part_size * 100 . '%;"></div>
                                     </div>
                                     ';
                                 }
