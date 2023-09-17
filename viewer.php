@@ -1541,12 +1541,10 @@ function getDriveCapacity($driveinput)
                                     ';
                                 }
 
-                                $noteshtml .= hash('sha256', $json_data['Network']['HostsFile']);
-                                $noteshtml .= '<br>';
-                                $noteshtml .= $json_data['Network']['HostsFileHash'];
+                                $hostFileHash = hash('ripemd160', $json_data['Network']['HostsFile']);
+                                $hostFileCheck = "4fbad385eddbc2bdc1fa9ff6d270e994f8c32c5f" !== $hostFileHash; // Pre-calculated Hash
 
-
-                                if ($json_data['Network']['HostsFileHash'] !== hash('sha256', $json_data['Network']['HostsFile'])) {
+                                if ($hostFileCheck) {
                                     $noteshtml .= '
                                     <p>
                                         Hosts file has been modified from stock
