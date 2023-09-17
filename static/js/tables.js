@@ -200,41 +200,6 @@ async function dataTables() {
 	}
 
 	try {
-		var Drives = Object.keys(json.Hardware.Storage);
-		Drives.forEach(function (Drive) {
-			let DriveModal = "#partitionsTable" + Drive;
-			let PartitionJsonData = json.Hardware.Storage[Drive].Partitions;
-			$(DriveModal).DataTable({
-				autoWidth: false,
-				searching: false,
-				ordering: false,
-				paging: false,
-				pageLength: 25,
-				data: PartitionJsonData,
-				columns: [
-					{ data: "PartitionLabel" },
-					{
-						data: "PartitionCapacity",
-						render: function (data, row) {
-							return Math.floor(data / 1048576) + " MB";
-						},
-					},
-					{
-						data: "PartitionFree",
-						render: function (data, row) {
-							return Math.floor(data / 1048576) + " MB";
-						},
-					},
-					{ data: "Filesystem" },
-				],
-			});
-		});
-	} catch (e) {
-		console.log("Failed making Drive DataTable");
-		console.log(e.name + ": " + e.message);
-	}
-
-	try {
 		$("#audioTable").DataTable({
 			autoWidth: false,
 			searching: false,

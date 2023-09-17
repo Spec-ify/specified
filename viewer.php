@@ -226,6 +226,11 @@ function bytesToGigabytes($bytes)
     return $bytes / 1073741824;
 }
 
+function bytesToMegabytes($bytes) {
+    // 1073741824 = 1024 * 1024
+    return $bytes / 1048576;
+}
+
 function getDriveUsed($driveinput)
 {
     $driveused = 0;
@@ -1103,98 +1108,14 @@ function getDriveCapacity($driveinput)
 
                         </div>
                         <div class="widgets_widgets widgets" id="storage_widgets" data-hide="false">
-                            <div class="widget widget-temps hover" type="button" data-mdb-toggle="modal" data-mdb-target="#partitionsModal">
-                                <h1>Partitions</h1>
-                                <div class="widget-values">
-                                    <div class="widget-value">
-                                        <div>
-                                            All partitions
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal fade " id="partitionsModal" tabindex="-1" aria-labelledby="partitionsModal" aria-hidden="true">
-                                <div class="modal-dialog modal-xl">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="ModalLabel">Partitions and Drive information</h5>
-                                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="metadata-detail" id="accordionTablesPartitions">
-                                                <?php
-                                                foreach ($json_data['Hardware']['Storage'] as $current_drive) {
-                                                    $driveKey = array_search($current_drive, $json_data['Hardware']['Storage']);
-                                                    $partletters = array_filter(
-                                                        array_column($json_data['Hardware']['Storage'][$driveKey]['Partitions'], 'PartitionLabel')
-                                                    );
-                                                    $partlettersString = implode(", ", $partletters);
-                                                    echo '
-                                        <div class="accordion">
-                                            <h1 class="accordion-header" id="partitionsTableButton' . $driveKey . '">
-                                                <button
-                                                        class="accordion-button"
-                                                        type="button"
-                                                        data-mdb-toggle="collapse"
-                                                        data-mdb-target="#partitionModal' . $driveKey . '"
-                                                        aria-expanded="true"
-                                                        aria-controls="partitionModal' . $driveKey . '"
-                                                >
-                                                   ' . $current_drive['DeviceName'] . ' (' . $partlettersString . ')
-                                                </button></h1>
-                                            <div class="metadata-detail tablebox jsondata accordion-item accordion-collapse collapse storagemodal" id="partitionModal' . $driveKey . '">
-                                                <table id="partitionsTable' . $driveKey . 'Info" class="table">
-                                                    <thead>
-                                                    <th>Name</th>
-                                                    <th>SN</th>
-                                                    <th>#</th>
-                                                    <th>Capacity</th>
-                                                    <th>Free</th>
-                                                    </thead>
-                                                    <tbody>
-                                                    ' . '<td>' . $current_drive['DeviceName'] . '</td>' . '
-                                                    ' . '<td>' . $current_drive['SerialNumber'] . '</td>' . '
-                                                    ' . '<td>' . $current_drive['DiskNumber'] . '</td>' . '
-                                                    ' . '<td>' . floor(bytesToGigabytes($current_drive['DiskCapacity'])) . 'GB</td>' . '
-                                                    ' . '<td>' . floor(bytesToGigabytes(getDriveFree($current_drive))) . 'GB</td>' . '
-                                                    </tbody>
-                                                </table>
-                                                <h5>Partitions</h5>
-                                                <table id="partitionsTable' . $driveKey . '" class="table">
-                                                    <thead>
-                                                    <th>Label</th>
-                                                    <th>Capacity</th>
-                                                    <th>Free</th>
-                                                    <th>FS Type</th>
-                                                    </thead>
-                                                    <tbody>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>';
-                                                }
-                                                ?>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <?php
                             $drives_amount = count($json_data['Hardware']['Storage']);
-                            $drive = 0;
-                            $smart = 0;
+                            $driveKey = 0;
 
-                            for ($drive = 0; $drive < $drives_amount; $drive++) {
-                                if (is_countable($json_data['Hardware']['Storage'][$drive]['SmartData'])) {
-                                    $smart_amount = count($json_data['Hardware']['Storage'][$drive]['SmartData']);
-                                }
-                                $current_drive = $drive + 1;
-                                $drive_size_raw = $json_data['Hardware']['Storage'][$drive]['DiskCapacity'];
-                                $drive_free_raw = getDriveFree($json_data['Hardware']['Storage'][$drive]);
-                                $device_name = $json_data['Hardware']['Storage'][$drive]['DeviceName'];
+                            foreach ($json_data['Hardware']['Storage'] as $driveKey => $drive) {
+                                $drive_size_raw = $drive['DiskCapacity'];
+                                $drive_free_raw = getDriveFree($drive);
+                                $device_name = $drive['DeviceName'];
                                 $drive_taken_raw = $drive_size_raw - $drive_free_raw;
                                 $drive_size = floor(bytesToGigabytes($drive_size_raw));
                                 $drive_taken = floor(bytesToGigabytes($drive_taken_raw));
@@ -1210,19 +1131,20 @@ function getDriveCapacity($driveinput)
                                 } elseif ($drive_percentage >= 0 && $drive_percentage <= 49) {
                                     $flavor_color = $green;
                                 }
-                                if (abs(floor(bytesToGigabytes($json_data['Hardware']['Storage'][$drive]['DiskCapacity'])) -
-                                    floor(bytesToGigabytes(getDriveCapacity($json_data['Hardware']['Storage'][$drive])))) > 5) {
+                                if (abs(floor(bytesToGigabytes($drive['DiskCapacity'])) -
+                                    floor(bytesToGigabytes(getDriveCapacity($drive)))) > 5) {
                                     $flavor_color = $red;
                                 }
 
                                 $letters = array_filter(
-                                    array_column($json_data['Hardware']['Storage'][$drive]['Partitions'], 'PartitionLabel')
+                                    array_column($drive['Partitions'], 'PartitionLetter')
                                 );
                                 $lettersString = implode(", ", $letters);
+                                $lettersStringDisplay = empty($lettersString) ? '' : "($lettersString)";
 
                                 echo '
-					<div class="widget widget-disk hover" type="button" data-mdb-toggle="modal" data-mdb-target="#driveModal' . $drive . '">
-						<h1>' . $device_name . ' (' . $lettersString . ')</h1>
+					<div class="widget widget-disk hover" type="button" data-mdb-toggle="modal" data-mdb-target="#driveModal' . $driveKey . '">
+						<h1>' . $device_name . ' ' . $lettersStringDisplay . '</h1>
 						<div class="widget-values">
 							<div class="widget-value">
 								<div class="widget-single-value">
@@ -1235,43 +1157,154 @@ function getDriveCapacity($driveinput)
 							</div>
 						</div>
 					</div>
-					<div class="modal fade" id="driveModal' . $drive . '" tabindex="-1" aria-labelledby="driveModal" aria-hidden="true">
-						<div class="modal-dialog">
+					<div class="modal fade" id="driveModal' . $driveKey . '" tabindex="-1" aria-labelledby="driveModal" aria-hidden="true">
+						<div class="modal-dialog modal-xl">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title" id="ModalLabel">' . $device_name . ' (' . $lettersString . ')' . '</h5>
+									<h5 class="modal-title" id="ModalLabel">' . $device_name . ' ' . $lettersStringDisplay . '</h5>
 									<button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
 								</div>
-								<div class="modal-body">';
-                                if (isset($json_data['Hardware']['Storage'][$drive]['SmartData'])) {
+								<div class="modal-body">
+                                    <table class="table">
+                                        <thead>
+                                        <th>Name</th>
+                                        <th>SN</th>
+                                        <th>#</th>
+                                        <th>Capacity</th>
+                                        <th>Free</th>
+                                        </thead>
+                                        <tbody>
+                                        ' . '<td>' . $drive['DeviceName'] . '</td>' . '
+                                        ' . '<td>' . $drive['SerialNumber'] . '</td>' . '
+                                        ' . '<td>' . $drive['DiskNumber'] . '</td>' . '
+                                        ' . '<td>' . floor(bytesToGigabytes($drive['DiskCapacity'])) . 'GB</td>' . '
+                                        ' . '<td>' . floor(bytesToGigabytes(getDriveFree($drive))) . 'GB</td>' . '
+                                        </tbody>
+                                    </table>
+                                    <h5>Partitions</h5>
+                                    <div class="progress partition-whole-bar">
+                                ';
+
+                                foreach ($drive['Partitions'] as $part) {
+                                    $part_size = $part['PartitionCapacity'];
+                                    $part_taken = $part_size - $part['PartitionFree'];
+                                    $part_display = "";
+                                    if (!empty($part['PartitionLabel'])) {
+                                        $part_display .= $part['PartitionLabel'];
+                                        if (isset($part['PartitionLetter'])) {
+                                            $part_display .= " ({$part['PartitionLetter']})";
+                                        }
+                                    } else if (isset($part['PartitionLetter'])) { // and not partition label
+                                        $part_display = $part['PartitionLetter'];
+                                    }
+                                    if (!empty($part_display))
+                                        $part_display .= '<br/>';
+                                    $fs_display = $part['Filesystem'] ?? 'Unknown';
+
+                                    echo '
+                                    <div class="progress progress-bar partition-one-bar" style="width: '. floor($part_size / $drive_size_raw * 100) . '%;">
+                                        <span class="partition-bar-label">
+                                            ' . $part_display /* this will already have <br/> if not empty */ . '
+                                            ' . $fs_display . '<br/>
+                                            ' . "$part_taken / $part_size MB Used" . '
+                                        </span>
+                                        <div class="progress-bar partition-space-bar" style="width: ' . floor($part_taken / $part_size * 100) . '%;"></div>
+                                    </div>
+                                    ';
+                                }
+
+                                echo '
+                                    </div>
+                                    <table class="table">
+                                        <thead>
+                                            <th>Label</th>
+                                            <th>Letter</th>
+                                            <th>Capacity</th>
+                                            <th>Free</th>
+                                            <th>FS Type</th>
+                                            <th>CfgMgr Error Code</th>
+                                            <th>Last Error Code</th>
+                                            <th>Dirty Bit</th>
+                                        </thead>
+                                        <tbody>
+                                        ';
+                                foreach ($drive['Partitions'] as $part) {
+                                    echo '
+                                    <tr>
+                                        <td>' . $part['PartitionLabel'] . '</td>
+                                        <td>' . $part['PartitionLetter'] . '</td>
+                                        <td>' . bytesToMegabytes($part['PartitionCapacity']) . ' MB</td>
+                                        <td>' . floor(bytesToMegabytes($part['PartitionFree'])) . ' MB</td>
+                                        <td>' . $part['Filesystem'] . '</td>
+                                        <td>' . $part['CfgMgrErrorCode'] . '</td>
+                                        <td>' . $part['LastErrorCode'] . '</td>
+                                        <td>' . $part['DirtyBitSet'] . '</td>
+                                    </tr>
+                                    ';
+                                }
+                                echo '
+                                        </tbody>
+                                    </table>
+                                <h5>SMART</h5>
+								';
+                                if (isset($drive['SmartData'])) {
                                     echo
                                     '
+                                    <div class="smart-table-wrapper">
                                         <table class="table">
-										<thead>
-											<tr>
-												<th scope="col">Index</th>
-												<th scope="col">Name</th>
-												<th scope="col">Value</th>
-											</tr>
-										</thead>
-										<tbody>
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Index</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
                                     ';
 
-                                    for ($smart = 0; $smart < $smart_amount; $smart++) {
+                                    // two SMART chunks for 2 columns of table
+                                    list($smart1, $smart2) = array_chunk($drive['SmartData'], ceil(count($drive['SmartData']) / 2));
+
+                                    foreach ($smart1 as $smartEntry) {
                                         echo
                                         '
 											<tr>
-												<th scope="row">' . $json_data['Hardware']['Storage'][$drive]['SmartData'][$smart]['Id'] . '</th>
-												<td>' . $json_data['Hardware']['Storage'][$drive]['SmartData'][$smart]['Name'] . '</td>
-												<td>' . $json_data['Hardware']['Storage'][$drive]['SmartData'][$smart]['RawValue'] . '</td>
+												<th scope="row">' . $smartEntry['Id'] . '</th>
+												<td>' . $smartEntry['Name'] . '</td>
+												<td>' . $smartEntry['RawValue'] . '</td>
+											</tr>';
+                                    }
+
+                                    echo '
+                                            </tbody>
+                                        </table>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Index</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                    ';
+
+                                    foreach ($smart2 as $smartEntry) {
+                                        echo
+                                            '
+											<tr>
+												<th scope="row">' . $smartEntry['Id'] . '</th>
+												<td>' . $smartEntry['Name'] . '</td>
+												<td>' . $smartEntry['RawValue'] . '</td>
 											</tr>';
                                     }
 
                                     echo
                                     '
-										</tbody>
-									</table>
-                        ';
+                                            </tbody>
+                                        </table>
+									</div>
+                                    ';
                                 } else {
                                     echo
                                     '
@@ -1594,15 +1627,15 @@ function getDriveCapacity($driveinput)
                                 <?php
 
                                 $drivehtml = '';
-                                $drive = 0;
+                                $driveKey = 0;
 
                                 foreach ($json_data['Hardware']['Storage'] as $storage_device) {
 
-                                    $drivemodal = 'data-mdb-target="#driveModal' . $drive . '"';
+                                    $drivemodal = 'data-mdb-target="#driveModal' . $driveKey . '"';
                                     $partitionmodal = 'data-mdb-target="#partitionsModal"';
 
                                     $letters = array_filter(
-                                        array_column($json_data['Hardware']['Storage'][$drive]['Partitions'], 'PartitionLabel')
+                                        array_column($json_data['Hardware']['Storage'][$driveKey]['Partitions'], 'PartitionLabel')
                                     );
                                     $lettersString = implode(", ", $letters);
 
@@ -1628,7 +1661,7 @@ function getDriveCapacity($driveinput)
                                                 </p>
                                                 ';
                                     }
-                                    $drive += 1;
+                                    $driveKey += 1;
                                 }
 
                                 if (!empty($drivehtml)) {

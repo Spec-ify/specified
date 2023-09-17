@@ -948,3 +948,33 @@ table {
 .modal-column:not(:first-of-type) {
     margin-left: 1rem;
 }
+
+.smart-table-wrapper {
+    display: flex;
+    gap: 1rem;
+}
+
+.partition-whole-bar {
+    height: 64px;
+    background-color: inherit;
+    border: 2px #595959 solid;
+    margin-bottom: 0.5rem;
+}
+
+.partition-one-bar {
+    background-color: inherit;
+    border-right: 2px #595959 solid;
+    position: relative;
+    height: 100%;
+}
+
+.partition-space-bar {
+    height: 100%;
+    background-color: hsl(0, 0%, 20%);
+}
+
+.partition-bar-label {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
