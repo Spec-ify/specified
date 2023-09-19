@@ -1033,7 +1033,7 @@ function getDriveCapacity($driveinput)
 
                                                             <tr>
                                                                 <td>Physical Adapter?</td>
-                                                                <td>' . $nic["PhysicalAdapter"] ?? "unknown" . '</td>
+                                                                <td>' . ($nic['PhysicalAdapter'] ?? 'unknown') . '</td>
                                                             </tr>
                                                         ';
 
