@@ -1577,7 +1577,10 @@ function getDriveCapacity($driveinput)
                                     ';
                                 }
 
-                                if ("4fbad385eddbc2bdc1fa9ff6d270e994f8c32c5f" !== hash('ripemd160', $json_data['Network']['HostsFile'])) {
+                                $hostFileHash = hash('ripemd160', $json_data['Network']['HostsFile']);
+                                $hostFileCheck = "4fbad385eddbc2bdc1fa9ff6d270e994f8c32c5f" !== $hostFileHash; // Pre-calculated Hash
+
+                                if ($hostFileCheck) {
                                     $noteshtml .= '
                                     <p>
                                         Hosts file has been modified from stock
@@ -1686,7 +1689,7 @@ function getDriveCapacity($driveinput)
 
                                 if (
                                     $json_data['System']['ChoiceRegistryValues'][2]['Value'] != null    // If set
-                                    && $json_data['System']['ChoiceRegistryValues'][2]['Value'] != 10   // If not default
+                                    && $json_data['System']['ChoiceRegistryValues'][2]['Value'] != 10   // and not default
                                 ) {
                                     $reghtml .= '
                                     <p>
@@ -1695,10 +1698,15 @@ function getDriveCapacity($driveinput)
                                 }
 
                                 foreach ($json_data['System']['ChoiceRegistryValues'] as $regkey) {
-                                    $excludelist = $regkey['Name'] != "NetworkThrottlingIndex"      // NetworkThrottlingIndex handled above foreach
-                                        && $regkey['Name'] != "HwSchMode";                          // Special Value
 
-                                    if ($regkey['Value'] !== null && $excludelist) {
+                                    $excludelist = ["NetworkThrottlingIndex",       // NetworkThrottlingIndex handled above foreach
+                                                    "HwSchMode",                    // Special Value
+                                                    "DisableAntiSpyware",           // Key exists in Windows by default
+                                                    "DisableAntiVirus",             // Ditto
+                                                    "PassiveMode",                  // Ditto
+                                                ];
+
+                                    if ($regkey['Value'] !== null && in_array($regkey["Name"], $excludelist)) {
                                         $reghtml .= '
                                         <p>
                                             Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
@@ -1708,7 +1716,14 @@ function getDriveCapacity($driveinput)
                                         <p>
                                             Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
                                         </p>';
-                                    }
+                                    } else if (in_array($regkey["Name"], ["DisableAntiSpyware", "DisableAntiVirus", "PassiveMode"])
+                                        && $regkey['Value'] !== null                // If set
+                                        && $regkey['Value'] !== 0) {                // and not default
+                                        $reghtml .= '
+                                        <p>
+                                            Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
+                                        </p>';
+                                        }
                                 }
 
                                 if (!empty($reghtml)) {
