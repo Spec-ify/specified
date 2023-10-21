@@ -1706,7 +1706,7 @@ function getDriveCapacity($driveinput)
                                                     "PassiveMode",                  // Ditto
                                                 ];
 
-                                    if ($regkey['Value'] !== null && in_array($regkey["Name"], $excludelist)) {
+                                    if ($regkey['Value'] !== null && !in_array($regkey["Name"], $excludelist)) {
                                         $reghtml .= '
                                         <p>
                                             Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
