@@ -31,7 +31,8 @@ $found11 = false;
 foreach ($eoldata as $eolitem) {
     // Windows 10
     if (!$eolitem['lts'] 
-        && !strpos($eolitem['cycle'], '-w') 
+        && !str_contains($eolitem['cycle'], '-e')
+        && !str_contains($eolitem['cycle'], '-w')
         && str_contains($eolitem['cycle'], '10') 
         && $found10 === false) {
         $latestver = $latestver . $eolitem['latest'] . ' ';
@@ -39,8 +40,9 @@ foreach ($eoldata as $eolitem) {
     }
 
     // Windows 11
-    if (!$eolitem['lts'] 
-        && !strpos($eolitem['cycle'], '-w') 
+    if (!$eolitem['lts']
+        && !str_contains($eolitem['cycle'], '-e')
+        && !str_contains($eolitem['cycle'], '-w')
         && str_contains($eolitem['cycle'], '11') 
         && $found11 == false) {
         $latestver = $latestver . $eolitem['latest'] . ' ';
@@ -55,7 +57,8 @@ foreach ($eoldata as $eolitem) {
 
 foreach ($eoldata as $eolitem) {
     if (!$eolitem['lts']
-        && strpos($eolitem['cycle'], '-e') == false 
+        && !str_contains($eolitem['cycle'], '-e')
+        && !str_contains($eolitem['cycle'], '-w')
         && strtotime($eolitem['support']) > time()) {
         $validversions = $validversions . $eolitem['latest'] . ' ';
     }
