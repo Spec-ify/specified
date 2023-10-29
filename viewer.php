@@ -30,13 +30,21 @@ $found11 = false;
 // Set Latest Version
 foreach ($eoldata as $eolitem) {
     // Windows 10
-    if (strpos($eolitem['cycle'], '(W)') !== false && strpos($eolitem['cycle'], '10,') !== false && $found10 == false) {
+    if (!$eolitem['lts'] 
+        && !str_contains($eolitem['cycle'], '-e')
+        && !str_contains($eolitem['cycle'], '-w')
+        && str_contains($eolitem['cycle'], '10') 
+        && $found10 === false) {
         $latestver = $latestver . $eolitem['latest'] . ' ';
         $found10 = true;
     }
 
     // Windows 11
-    if (strpos($eolitem['cycle'], '(W)') !== false && strpos($eolitem['cycle'], '11,') !== false && $found11 == false) {
+    if (!$eolitem['lts']
+        && !str_contains($eolitem['cycle'], '-e')
+        && !str_contains($eolitem['cycle'], '-w')
+        && str_contains($eolitem['cycle'], '11') 
+        && $found11 == false) {
         $latestver = $latestver . $eolitem['latest'] . ' ';
         $found11 = true;
     }
@@ -48,7 +56,10 @@ foreach ($eoldata as $eolitem) {
 }
 
 foreach ($eoldata as $eolitem) {
-    if (strpos($eolitem['cycle'], '(W)') == true && strtotime($eolitem['support']) > time()) {
+    if (!$eolitem['lts']
+        && !str_contains($eolitem['cycle'], '-e')
+        && !str_contains($eolitem['cycle'], '-w')
+        && strtotime($eolitem['support']) > time()) {
         $validversions = $validversions . $eolitem['latest'] . ' ';
     }
 }
@@ -1706,7 +1717,7 @@ function getDriveCapacity($driveinput)
                                                     "PassiveMode",                  // Ditto
                                                 ];
 
-                                    if ($regkey['Value'] !== null && in_array($regkey["Name"], $excludelist)) {
+                                    if ($regkey['Value'] !== null && !in_array($regkey["Name"], $excludelist)) {
                                         $reghtml .= '
                                         <p>
                                             Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
