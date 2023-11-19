@@ -2106,23 +2106,6 @@ function getDriveCapacity($driveinput)
                                     </p>
                                 </div>
                             </div>
-                            <div class="accordion">
-                                <h1 class="accordion-header" id="issuesLogButton">
-                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#issuesLog" aria-expanded="true" aria-controls="issuesLog">
-                                        Issues
-                                    </button>
-                                </h1>
-                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="issuesLog">
-                                    <p style="font-size: 10pt;">
-                                        <?php
-                                        $issues = $json_data['Issues'];
-                                        foreach ($issues as $issue) {
-                                            echo (nl2br($issue . "\n"));
-                                        }
-                                        ?>
-                                    </p>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
