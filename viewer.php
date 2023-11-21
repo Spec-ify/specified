@@ -1049,7 +1049,7 @@ function getDriveCapacity($driveinput)
                                                     $table .= '
                                                             <tr>
                                                                 <td>Link Speed</td>
-                                                                <td>' . $nic["LinkSpeed"] . '</td>
+                                                                <td>' . round($nic["LinkSpeed"] * 0.00001) . 'Mbps </td>
                                                             </tr>
                                                     ';
                                                 }
