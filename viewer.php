@@ -1697,16 +1697,6 @@ function getDriveCapacity($driveinput)
                                     </p>';
                                 }
 
-                                if (
-                                    $json_data['System']['ChoiceRegistryValues'][2]['Value'] != null    // If set
-                                    && $json_data['System']['ChoiceRegistryValues'][2]['Value'] != 10   // and not default
-                                ) {
-                                    $reghtml .= '
-                                    <p>
-                                        Network Throttling Index found set to <span>' . $json_data['System']['ChoiceRegistryValues'][2]['Value'] . '</span>
-                                    </p>';
-                                }
-
                                 foreach ($json_data['System']['ChoiceRegistryValues'] as $regkey) {
 
                                     if (!in_array($regkey['Value'], $defaultRegKeys[$regkey['Name']])){
@@ -1715,7 +1705,7 @@ function getDriveCapacity($driveinput)
                                                 Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
                                             </p>';
                                     }
-                                    
+
                                 }
 
                                 if (!empty($reghtml)) {
