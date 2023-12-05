@@ -1688,6 +1688,8 @@ function getDriveCapacity($driveinput)
                                 ?>
 
                                 <?php
+                                include("regkeys.php");
+                                
                                 $reghtml = "";
 
                                 if ($json_data['System']['StaticCoreCount'] != false) {
@@ -1697,43 +1699,15 @@ function getDriveCapacity($driveinput)
                                     </p>';
                                 }
 
-                                if (
-                                    $json_data['System']['ChoiceRegistryValues'][2]['Value'] != null    // If set
-                                    && $json_data['System']['ChoiceRegistryValues'][2]['Value'] != 10   // and not default
-                                ) {
-                                    $reghtml .= '
-                                    <p>
-                                        Network Throttling Index found set to <span>' . $json_data['System']['ChoiceRegistryValues'][2]['Value'] . '</span>
-                                    </p>';
-                                }
-
                                 foreach ($json_data['System']['ChoiceRegistryValues'] as $regkey) {
 
-                                    $excludelist = ["NetworkThrottlingIndex",       // NetworkThrottlingIndex handled above foreach
-                                                    "HwSchMode",                    // Special Value
-                                                    "DisableAntiSpyware",           // Key exists in Windows by default
-                                                    "DisableAntiVirus",             // Ditto
-                                                    "PassiveMode",                  // Ditto
-                                                ];
+                                    if (!in_array($regkey['Value'], $defaultRegKeys[$regkey['Name']])){
+                                        $reghtml .= '
+                                            <p>
+                                                Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
+                                            </p>';
+                                    }
 
-                                    if ($regkey['Value'] !== null && !in_array($regkey["Name"], $excludelist)) {
-                                        $reghtml .= '
-                                        <p>
-                                            Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
-                                        </p>';
-                                    } else if ($regkey['Name'] == "HwSchMode" && $regkey['Value'] == 2) {
-                                        $reghtml .= '
-                                        <p>
-                                            Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
-                                        </p>';
-                                    } else if (in_array($regkey["Name"], ["DisableAntiSpyware", "DisableAntiVirus", "PassiveMode"])
-                                        && $regkey['Value'] !== null                // If set
-                                        && $regkey['Value'] !== 0) {                // and not default
-                                        $reghtml .= '
-                                        <p>
-                                            Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
-                                        </p>';
-                                        }
                                 }
 
                                 if (!empty($reghtml)) {
