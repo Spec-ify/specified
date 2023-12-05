@@ -1130,7 +1130,8 @@ function getDriveCapacity($driveinput)
                                 $drive_taken_raw = $drive_size_raw - $drive_free_raw;
                                 $drive_size = floor(bytesToGigabytes($drive_size_raw));
                                 $drive_taken = floor(bytesToGigabytes($drive_taken_raw));
-                                if ($drive_taken != 0) {
+                                // the drive size can sometimes be z ero if the drive is failing
+                                if ($drive_taken != 0 && $drive_size != 0) {
                                     $drive_percentage = round((float)$drive_taken / (float)$drive_size * 100);
                                 } else $drive_percentage = 0;
                                 $flavor_color = '';
@@ -1212,8 +1213,9 @@ function getDriveCapacity($driveinput)
                                         $part_display .= '<br/>';
                                     $fs_display = $part['Filesystem'] ?? 'Unknown';
 
+                                    // The "drive size + 1" is a terrible fix for division by 0 errors
                                     echo '
-                                    <div class="progress progress-bar partition-one-bar" style="width: '. $part_size / $drive_size_raw * 100 . '%;">
+                                    <div class="progress progress-bar partition-one-bar" style="width: '. $part_size / ($drive_size_raw + 1) * 100 . '%;">
                                         <span class="partition-bar-label">
                                             ' . $part_display /* this will already have <br/> if not empty */ . '
                                             ' . $fs_display . '<br/>
