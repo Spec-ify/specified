@@ -659,3 +659,30 @@ $biosCharacteristics = [
     30 => "CGA/Mono Video Services are supported.",
     31 => "NEC PC-98."
 ];
+
+$defaultRegKeys = [
+    "TdrLevel" => [3],
+    "NonBestEffortLimit" => [20],
+    "NetworkThrottlingIndex" => [10],
+    "EnableSuperfetch" => [null],
+    "DisableAntiVirus" => [0],
+    "DisableAntiSpyware" => [0],
+    "PUAProtection" => [0],
+    "PassiveMode" => [0],
+    "DontReportInfectionInformation" => [1],
+    "Disabled" => [0],
+    "AllowUpgradesWithUnsupportedTPMOrCPU" => [null],
+    "HwSchMode" => [1],
+    "UseWUServer" => [1],
+    "NoAutoUpdate" => [0],
+    "HiberbootEnabled" => [1],    // side note, probably should be disabled cause bugs but eh its default
+    "AuditBoot" => [1],
+    "AllowBuildPreview" => [2],
+    "BypassCPUCheck" => [null],
+    "BypassStorageCheck" => [null],
+    "BypassRAMCheck" => [null],
+    "BypassTPMCheck" => [null],
+    "BypassSecureBootCheck" => [null],
+    "SV2" => [null],
+    "Win32PrioritySeparation" => [2],
+];

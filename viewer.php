@@ -1688,8 +1688,6 @@ function getDriveCapacity($driveinput)
                                 ?>
 
                                 <?php
-                                include("regkeys.php");
-                                
                                 $reghtml = "";
 
                                 if ($json_data['System']['StaticCoreCount'] != false) {
@@ -1701,7 +1699,7 @@ function getDriveCapacity($driveinput)
 
                                 foreach ($json_data['System']['ChoiceRegistryValues'] as $regkey) {
 
-                                    if (!in_array($regkey['Value'], $defaultRegKeys[$regkey['Name']])){
+                                    if ($regkey['Value'] && !in_array($regkey['Value'], $defaultRegKeys[$regkey['Name']])){
                                         $reghtml .= '
                                             <p>
                                                 Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
