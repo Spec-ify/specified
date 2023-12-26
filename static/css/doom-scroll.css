@@ -9,6 +9,19 @@
     --file-color: hsl(0, 0%, 50%);
 }
 
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #202020;
+        --fg-color: #fefefe;
+
+        --progress-bar-filled: hsl(0, 0%, 30%);
+        --progress-bar-unfilled: hsl(0, 0%, 10%);
+        --progress-bar-color: var(--fg-color);
+        --table-alternate-color: hsl(0, 0%, 10%);
+        --file-color: hsl(0, 0%, 50%);
+    }
+}
+
 :root {
     color: var(--fg-color);
     background-color: var(--bg-color);

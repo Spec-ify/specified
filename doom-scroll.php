@@ -1261,11 +1261,13 @@
 </table>
 
 <h1>Hosts File</h1>
-<pre class="file"><code><?php
-            $lines = explode("\n", $json_data['Network']['HostsFile']);
-            foreach ($lines as $line) {
-                echo "<span>$line</span>";
-            }
-        ?></code></pre>
+<?php
+    echo '<pre class="file"><code>';
+    $lines = explode("\n", $json_data['Network']['HostsFile']);
+    foreach ($lines as $line) {
+        echo "<span>$line</span>";
+    }
+    echo '</code></pre>';
+?>
 </body>
 </html>
