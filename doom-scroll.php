@@ -244,7 +244,7 @@
      * @param string[][] $arr
      * @param string[] $cols
      */
-    function array_table_iter(array $arr, array $cols, $transform = null): string
+    function array_table_iter(?array $arr, array $cols, $transform = null): string
     {
         $res = "";
         foreach ($arr as $row) {
