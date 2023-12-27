@@ -13,13 +13,6 @@
     $json_data = json_decode($json, true);
     $profile_name = pathinfo($json_file, PATHINFO_FILENAME);
 
-    //Some generic color inserts. I know I could have used a smarter CSS alternative, but call me old fashioned.
-    $green = '#A3BE8C';
-    $yellow = 'rgb(235, 203, 139)';
-    $red = 'rgb(191, 97, 106)';
-    $amd = 'rgb(215,27,27)';
-    $intel = 'rgb(8,110,224)';
-
     // Grabs data from endoflife.date's api and checks it
 
     $eoldata = json_decode(file_get_contents('https://endoflife.date/api/windows.json'), true);
@@ -60,26 +53,6 @@
             && strtotime($eolitem['support']) > time()) {
             $validversions = $validversions . $eolitem['latest'] . ' ';
         }
-    }
-
-    // EOL
-    $eoltext = '';
-    if (strpos($validversions, $json_data['BasicInfo']['Version']) !== false) {
-        $eoltext = "Not EOL";
-        $eolcolor = $green;
-    } else {
-        $eoltext = "EOL";
-        $eolcolor = $red;
-    }
-
-    // Up-to-Date-ness
-    $oscheck = '';
-    if (strpos($latestver, $json_data['BasicInfo']['Version']) !== false) {
-        $oscheck = 'Up-to-date';
-        $oscolor = $green;
-    } else {
-        $oscheck = 'Not Up-to-Date';
-        $oscolor = $red;
     }
 
     //The lines below are for the loop that calculates total RAM/CPU used.
@@ -135,7 +108,7 @@
 
         if ($days) {
             $timeString = '<span';
-            if ($days > 3) $timeString .= ' style="color:#BF616A;"';
+            if ($days > 3) $timeString .= ' class="red"';
             $timeString .= '>' . $days . ' day';
             if ($days != 1) {
                 $timeString .= 's';
@@ -188,27 +161,27 @@
     $referenceListInstalled = $json_data['System']['InstalledApps'];
     $referenceListRunning = $json_data['System']['RunningProcesses'];
 
-    $pupsfoundInstalled = array();
+    $pupsFoundInstalled = array();
     foreach ($referenceListInstalled as $installed) {
         foreach ($puplist as $pups) {
             preg_match('/\b(' . strtolower($pups) . ')\b/', strtolower($installed['Name']), $matches, PREG_OFFSET_CAPTURE);
             if ($matches) {
-                array_push($pupsfoundInstalled, $installed['Name']);
+                array_push($pupsFoundInstalled, $installed['Name']);
             }
         }
     }
-    $pupsfoundInstalled = array_unique($pupsfoundInstalled);
+    $pupsFoundInstalled = array_unique($pupsFoundInstalled);
 
-    $pupsfoundRunning = array();
+    $pupsFoundRunning = array();
     foreach ($referenceListRunning as $running) {
         foreach ($puplist as $pups) {
             preg_match('/\b(' . strtolower($pups) . ')\b/', strtolower($running['ProcessName']), $matches, PREG_OFFSET_CAPTURE);
             if ($matches) {
-                array_push($pupsfoundRunning, $running['ProcessName']);
+                array_push($pupsFoundRunning, $running['ProcessName']);
             }
         }
     }
-    $pupsfoundRunning = array_unique($pupsfoundRunning);
+    $pupsFoundRunning = array_unique($pupsFoundRunning);
 
     // Old PUP Filter
     /*
@@ -313,10 +286,17 @@
     <script defer src="static/js/doom-scroll.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.slim.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/sc-2.0.7/datatables.min.js"></script>
+    <script src="static/js/konami.js"></script>
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
-
+<nav>
+    <ul id="navlist">
+        <li id="nav-top-link"><a href="#top">Back To Top</a></li>
+    </ul>
+</nav>
+<main>
+<span class="linnker" id="top"></span>
 <h1>Profile Information</h1>
 <table>
     <thead></thead>
@@ -339,6 +319,210 @@
         </tr>
     </tbody>
 </table>
+
+<h1>General Notes</h1>
+<?php
+    // There will always be an uptime and eol/up-to-date note, so we don't need a placeholder like we do with PUPs
+
+    // EOL
+    $eoltext = '';
+    if (strpos($validversions, $json_data['BasicInfo']['Version']) !== false) {
+        $eoltext = "Not EOL";
+        $eolcolor = "green";
+    } else {
+        $eoltext = "EOL";
+        $eolcolor = "red";
+    }
+
+    // Up-to-Date-ness
+    $oscheck = '';
+    if (strpos($latestver, $json_data['BasicInfo']['Version']) !== false) {
+        $oscheck = 'Up-to-date';
+        $oscolor = "green";
+    } else {
+        $oscheck = 'Not Up-to-Date';
+        $oscolor = "red";
+    }
+
+    if (($eolcolor == "red" && $oscolor == "green")
+        || ($eolcolor == "green" && $oscolor == "red")) $osenglish = 'but';
+    else $osenglish = 'and';
+?>
+<ul id="notes">
+    <li><span><?= $ram_used_percent ?>%</span> (<?= $ram_used ?> / <?= $total_ram ?> GB) of the system's RAM is being used.</li>
+    <li>The OS is
+        <span class="<?= $eolcolor ?>"><?= $eoltext ?></span>
+        <?= $osenglish ?>
+        <span class="<?= $oscolor ?>"><?= $oscheck ?></span>.
+        <span>(version <?= $json_data['BasicInfo']['FriendlyVersion'] ?>)</span>
+    </li>
+    <li>The current uptime is <?= $test_time ?>.</li>
+    <?php
+        if (empty($json_data['Security']['AvList'])) {
+            echo '
+    <li class="red">No AVs found!</li>
+            ';
+        } elseif (sizeof($json_data['Security']['AvList']) == 1) {
+            $av = $json_data["Security"]["AvList"][0];
+            echo "
+    <li>The currently installed AV is <span>{$av}</span></li>
+                ";
+        } else {
+            $avs = implode(',', array_map(function ($i) {
+                return ' ' . $i;
+            }, $json_data['Security']['AvList']));
+            echo "
+    <li>The currently installed AVs are <span>{$avs}</span></li>
+                ";
+        }
+
+        if ($json_data['System']['UsernameSpecialCharacters'] == true) {
+            echo '
+    <li>
+        Username found with <span>Special Characters</span>
+    </li>
+            ';
+        }
+        if ($json_data['System']['OneDriveCommercialPathLength'] != null) {
+            echo '
+    <li>
+        OneDrive Path Length : <span>' . $json_data['System']['OneDriveCommercialPathLength'] . '</span>
+        OneDrive Name Length : <span>' . $json_data['System']['OneDriveCommercialNameLength'] . '</span>
+    </li>
+                ';
+        }
+
+        if ($json_data['System']['RecentMinidumps'] != 0) {
+            // TODO: add link to download minidumps
+            echo '
+    <li>
+        There have been <span class="red">' . $json_data['System']['RecentMinidumps'] . '</span> Minidumps found
+    </li>
+            ';
+        }
+
+        $hostFileHash = hash('ripemd160', $json_data['Network']['HostsFile']);
+        $hostFileCheck = "4fbad385eddbc2bdc1fa9ff6d270e994f8c32c5f" !== $hostFileHash; // Pre-calculated Hash
+
+        if ($hostFileCheck) {
+            echo '
+    <li>
+        Hosts file has been modified from stock
+    </li>
+            ';
+        }
+
+        if (!empty($json_data['Hardware']['Batteries'])) {
+            foreach ($json_data['Hardware']['Batteries'] as $battery) {
+                $cap = floatval($battery["Remaining_Life_Percentage"]);
+                if (
+                    $cap < 70
+                ) {
+                    $designcap = $battery['Design_Capacity'] / 1000;
+                    $currentcap = $battery['Full_Charge_Capacity'] / 1000;
+                    echo "
+    <li>
+        Battery <span>{$battery['Name']}</span> has a diminished capacity (Designed for {$designcap} Wh, currently {$currentcap} Wh)
+    </li>
+                    ";
+                }
+            }
+        }
+
+        foreach ($json_data['Hardware']['Storage'] as $disk) {
+            foreach ($disk['Partitions'] as $partNum => $part) {
+                if (isset($part['DirtyBitSet']) && $part['DirtyBitSet']) {
+                    if (empty($part['PartitionLetter'])) {
+                        echo "
+    <li>
+        Dirty bit set on <span>partition $partNum ({$disk['DeviceName']})</span>
+    </li>
+                        ";
+                    } else {
+                        echo "
+    <li>
+        Dirty bit set on <span>{$part['PartitionLetter']} ({$disk['DeviceName']})</span>
+    </li>
+                        ";
+                    }
+                }
+            }
+        }
+
+    $drivehtml = '';
+    $driveKey = 0;
+
+        foreach ($json_data['Hardware']['Storage'] as $storage_device) {
+            $letters = array_filter(
+                array_column($json_data['Hardware']['Storage'][$driveKey]['Partitions'], 'PartitionLabel')
+            );
+            $lettersString = implode(", ", $letters);
+
+            if ($storage_device['SmartData']) {
+                foreach ($storage_device['SmartData'] as $smartPoint) {
+                    if (str_contains($smartPoint['Name'], '!')) {
+                        if ($smartPoint['RawValue'] != '000000000000') {
+                            echo "
+    <li>
+        <span class='drivespan'>{$storage_device['DeviceName']} ($lettersString)</span> has 
+        <span class='yellow'>{$smartPoint['RawValue']} {$smartPoint['Name']}</span>
+    </li>
+                        ";
+                        }
+                    }
+                }
+            }
+
+            if (abs((floor(bytesToGigabytes($storage_device['DiskCapacity'])) -
+                    floor(bytesToGigabytes(getDriveCapacity($storage_device))))) > 5) {
+                $onDisk = floor(bytesToGigabytes($storage_device['DiskCapacity']));
+                $onParts = floor(bytesToGigabytes(getDriveCapacity($storage_device)));
+                echo  "
+    <li>
+        <span>{$storage_device['DeviceName']} ($lettersString) </span> has differing capacities.
+        ($onDisk on disk vs. $onParts on partitions)
+    </li>
+            ";
+            }
+            $driveKey += 1;
+        }
+
+        $reghtml = "";
+
+    if ($json_data['System']['StaticCoreCount'] != false) {
+        echo '
+    <li>
+        <span>Static Core Count</span> found set.
+    </li>
+        ';
+    }
+
+    foreach ($json_data['System']['ChoiceRegistryValues'] as $regkey) {
+
+        if ($regkey['Value'] && !in_array($regkey['Value'], $defaultRegKeys[$regkey['Name']])) {
+            echo '
+    <li>
+        Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
+    </li>
+                ';
+        }
+    }
+?>
+</ul>
+
+<h1>PUPs</h1>
+<?php if (!$pupsFoundInstalled && !$pupsFoundRunning) echo "No PUPs detected" ?>
+<ul>
+    <?php
+        foreach ($pupsFoundInstalled as $pup) {
+            echo "<li>$pup found installed</li>";
+        }
+
+        foreach ($pupsFoundRunning as $pup) {
+            echo "<li>$pup found running</li>";
+        }
+    ?>
+</ul>
 
 <h1>OS Information</h1>
 <table>
@@ -445,14 +629,15 @@
             for ($ram_stick; $ram_stick < $ram_sticks; $ram_stick++) {
                 $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity']);
                 $ram_speed = $json_data['Hardware']['Ram'][$ram_stick]['ConfiguredSpeed'];
-                echo
-                    '<tr>
-                                                <td>' . $json_data['Hardware']['Ram'][$ram_stick]['DeviceLocation'] . '</td>
-                                                <td>' . $json_data['Hardware']['Ram'][$ram_stick]['Manufacturer'] . '</td>
-                                                <td>' . $json_data['Hardware']['Ram'][$ram_stick]['PartNumber'] . '</td>
-                                                <td>' . $ram_speed . 'MHz</td>
-                                                <td>' . $ram_size . 'MB</td>
-                                            </tr>';
+                echo '
+        <tr>
+            <td>' . $json_data['Hardware']['Ram'][$ram_stick]['DeviceLocation'] . '</td>
+            <td>' . $json_data['Hardware']['Ram'][$ram_stick]['Manufacturer'] . '</td>
+            <td>' . $json_data['Hardware']['Ram'][$ram_stick]['PartNumber'] . '</td>
+            <td>' . $ram_speed . 'MHz</td>
+            <td>' . $ram_size . 'MB</td>
+        </tr>
+                ';
             }
         ?>
     </tbody>
@@ -601,6 +786,16 @@
     </tbody>
 </table>
 
+<h2>Temperatures</h2>
+<table id="temps-table">
+    <thead>
+        <th>Hardware</th>
+        <th>Sensor</th>
+        <th>Temperature (&deg;C)</th>
+    </thead>
+    <tbody><?= array_table_iter($json_data['Hardware']['Temperatures'], ['Hardware', 'SensorName', 'SensorValue']) ?></tbody>
+</table>
+
 <h2>SMBIOS Information</h2>
 <table>
     <tbody>
@@ -684,7 +879,7 @@
         }
 
         echo '
-<h2>' . $nic["Description"] . ' </h2>
+<h2 class="item-header">' . $nic["Description"] . ' </h2>
 <table class="table nic">
     <tr>
         <td>Name</td>
@@ -844,19 +1039,6 @@
         if ($drive_taken != 0 && $drive_size != 0) {
             $drive_percentage = round((float)$drive_taken / (float)$drive_size * 100);
         } else $drive_percentage = 0;
-        $flavor_color = '';
-
-        if ($drive_percentage >= 80) {
-            $flavor_color = $red;
-        } elseif ($drive_percentage >= 50 && $drive_percentage <= 79) {
-            $flavor_color = $yellow;
-        } elseif ($drive_percentage >= 0 && $drive_percentage <= 49) {
-            $flavor_color = $green;
-        }
-        if (abs(floor(bytesToGigabytes($drive['DiskCapacity'])) -
-                floor(bytesToGigabytes(getDriveCapacity($drive)))) > 5) {
-            $flavor_color = $red;
-        }
 
         $letters = array_filter(
             array_column($drive['Partitions'], 'PartitionLetter')
@@ -865,7 +1047,7 @@
         $lettersStringDisplay = empty($lettersString) ? '' : "($lettersString)";
 
         echo '
-    <h2>' . $drive['DeviceName'] . '</h2>
+    <h2 class="item-header">' . $drive['DeviceName'] . '</h2>
     <table class="table">
         <thead>
         <th>Name</th>
@@ -977,15 +1159,6 @@
         echo '</div>';
     }
 ?>
-<h1>Temperatures</h1>
-<table id="temps-table">
-    <thead>
-        <th>Hardware</th>
-        <th>Sensor</th>
-        <th>Temperature (&deg;C)</th>
-    </thead>
-    <tbody><?= array_table_iter($json_data['Hardware']['Temperatures'], ['Hardware', 'SensorName', 'SensorValue']) ?></tbody>
-</table>
 
 <h1>Audio Devices</h1>
 <table>
@@ -1106,7 +1279,7 @@
         foreach ($browser['Profiles'] as $profile):
             $profile_key = array_search($profile, $browser['Profiles']);
             ?>
-            <h2><?= $browser['Name'] ?> Profile
+            <h2 class="item-header"><?= $browser['Name'] ?> Profile
                 "<?= $profile['name'] /* This is lowercase in the json for some reason */ ?>"</h2>
             <table>
                 <thead>
@@ -1269,5 +1442,18 @@
     }
     echo '</code></pre>';
 ?>
+
+<div id="debug-log">
+    <h1>Debug Log</h1>
+    <?php
+        echo '<pre class="file"><code>';
+        $lines = explode("\r\n", $json_data['DebugLogText']);
+        foreach ($lines as $line) {
+            echo "<span>$line</span>";
+        }
+        echo '</code></pre>';
+    ?>
+</div>
+</main>
 </body>
 </html>

@@ -1,3 +1,50 @@
+/**
+ * This function contains extremely hacky hacks.
+ *  (a) To avoid scrolling horizontally to the heading when you click on it
+ *      (making the nav bar not visible), we add a dummy span (.linker) which
+ *      is fixed to the left which actually has the id you want to jump to.
+ *  (b) We add two spaces on h2's to give indents to them. This makes it appear
+ *      nested, but it is terrible.
+ */
+function createLinks(selector) {
+    // this exists to avoid duplicates
+    let headings = {};
+
+    document.querySelectorAll(selector).forEach(e => {
+        if (e.offsetParent === null) return; // checks if the element is visible
+        const kebab = e.innerText.toLowerCase().split(" ").join("-")
+            .replace(/[^a-zA-Z0-9-_]/g, '');
+        let num = 1;
+        while (Object.hasOwn(headings, `${kebab}-${num}`))
+            num++;
+        const slug = `${kebab}-${num}`;
+        headings[slug] = e.innerText;
+
+        const linker = document.createElement("span");
+        linker.classList.add("linker");
+        linker.id = slug;
+        e.prepend(linker);
+
+        const li = document.createElement("li");
+        const link = document.createElement("a");
+        // TODO: get rid of this abomination
+        link.innerHTML = e.tagName === "H2" ? `&nbsp;&nbsp;${e.innerText}` : e.innerText;
+        link.style.width = "100%";
+        link.href = `#${slug}`;
+        li.appendChild(link);
+        document.querySelector("#navlist").appendChild(li);
+    });
+}
+// there are just too many network adapters/disks lol
+// the .item-header class applies to dynamic headers (i.e. extensions, disks, network adapters, etc.)
+createLinks("h1, h2:not(.item-header)");
+
+// show the debug log when the konami code is pressed
+new Konami(() => {
+    document.querySelector("#debug-log").style.display = "block";
+    createLinks("#debug-log h1");
+});
+
 // jQuery is needed just for data tables, avoid using elsewhere
 $("#temps-table").DataTable({
     paging: false,
@@ -113,15 +160,3 @@ $("#routes-table").DataTable({
         console.log(e.name + ": " + e.message);
     }
 })();
-
-window.headings = {};
-document.querySelectorAll("h1, h2, h3").forEach(e => {
-    const kebab = e.innerText.toLowerCase().split(" ").join("-")
-        .replace(/[^a-zA-Z0-9-_]/g, '');
-    let num = 1;
-    while (Object.hasOwn(headings, `${kebab}-${num}`))
-        num++;
-    const slug = `${kebab}-${num}`;
-    e.id = slug;
-    headings[slug] = e.innerText;
-});
