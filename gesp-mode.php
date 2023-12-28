@@ -160,19 +160,16 @@ $hostFileHash = hash('ripemd160', $json_data['Network']['HostsFile']);
 $hostFileCheck = "4fbad385eddbc2bdc1fa9ff6d270e994f8c32c5f" !== $hostFileHash;
 
 if ($hostFileCheck) {
-    echo 'Hosts file has been modified from stock, it has been appended to bottom of this page';
+    echo 'Hosts file has been modified from stock, it has been appended to bottom of this page<br>';
 }
 
 if($json_data['System']['RecentMinidumps']!=0){
     echo 'There have been <span>'.$json_data['System']['RecentMinidumps'].' Minidumps found</span><br>';
 }
-foreach($json_data['System']['ChoiceRegistryValues'] as $regkey){
-    if($regkey['Value']!= null && $regkey['Name']!= "NetworkThrottlingIndex"){
-        echo 'Registry Value <span>'.$regkey['Name'].'</span> found set, value of <span>'.$regkey['Value'].'</span><br>';
+foreach ($json_data['System']['ChoiceRegistryValues'] as $regkey) {
+    if ($regkey['Value'] && !in_array($regkey['Value'], $defaultRegKeys[$regkey['Name']])){
+        echo 'Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span><br>';
     }
-}
-if($json_data['System']['ChoiceRegistryValues'][2]['Value']!=10){
-    echo 'Network Throttling Index found set at <span>'.$json_data['System']['ChoiceRegistryValues'][2]['Value'].'</span><br>';
 }
 ?></p>
 <?php
