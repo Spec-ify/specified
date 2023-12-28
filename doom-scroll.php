@@ -1121,7 +1121,7 @@
                 <td>' . $part['PartitionLabel'] . '</td>
                 <td>' . $part['PartitionLetter'] . '</td>
                 <td>' . floor(bytesToMegabytes($part['PartitionCapacity'])) . ' MB</td>
-                <td>' . bytesToMegabytes($part['PartitionFree']) . ' MB</td>
+                <td>' . floor(bytesToMegabytes($part['PartitionFree'])) . ' MB</td>
                 <td>' . $part['Filesystem'] . '</td>
                 <td>' . $part['CfgMgrErrorCode'] . '</td>
                 <td>' . $part['LastErrorCode'] . '</td>
