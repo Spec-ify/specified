@@ -1246,7 +1246,7 @@ function getDriveCapacity($driveinput)
                                     <tr>
                                         <td>' . $part['PartitionLabel'] . '</td>
                                         <td>' . $part['PartitionLetter'] . '</td>
-                                        <td>' . bytesToMegabytes($part['PartitionCapacity']) . ' MB</td>
+                                        <td>' . floor(bytesToMegabytes($part['PartitionCapacity'])) . ' MB</td>
                                         <td>' . floor(bytesToMegabytes($part['PartitionFree'])) . ' MB</td>
                                         <td>' . $part['Filesystem'] . '</td>
                                         <td>' . $part['CfgMgrErrorCode'] . '</td>
