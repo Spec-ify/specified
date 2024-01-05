@@ -66,14 +66,16 @@ main {
 }
 
 nav {
+    position: sticky;
+    top: 0;
+    max-height: 100vh;
+    overflow-y: auto;
     border-right: 1px solid var(--line-color);
     padding-right: 1rem;
     flex: 0 0 auto;
 }
 
 #navlist {
-    position: sticky;
-    top: 0;
     margin-top: 0; /* We make it margin instead of padding so that it doesn't slide down when scrolling */
     padding-top: 1rem;
     font-size: 16px;
