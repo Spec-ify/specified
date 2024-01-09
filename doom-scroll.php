@@ -70,7 +70,7 @@
     //Don't ask me why this is an old fashioned for loop, I got carried away.
     //Getting the total amount of RAM in the system.
     $total_ram = 0;
-    $ram_sticks = count($json_data['Hardware']['Ram']);
+    $ram_sticks = safe_count($json_data['Hardware']['Ram']);
     $ram_stick = 0;
 
     for ($ram_stick == 0; $ram_stick < $ram_sticks; $ram_stick++) {
@@ -237,6 +237,14 @@
             $partitioncap += $partition['PartitionCapacity'];
         }
         return $partitioncap;
+    }
+
+    function safe_count(arr): int {
+        if (is_countable($thing)) {
+            return count($arr);
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -624,7 +632,7 @@
     </thead>
     <tbody>
         <?php
-            $ram_sticks = count($json_data['Hardware']['Ram']);
+            $ram_sticks = safe_count($json_data['Hardware']['Ram']);
             $ram_stick = 0;
             for ($ram_stick; $ram_stick < $ram_sticks; $ram_stick++) {
                 $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity']);
@@ -1025,7 +1033,7 @@
 
 <h1>Storage</h1>
 <?php
-    $drives_amount = count($json_data['Hardware']['Storage']);
+    $drives_amount = safe_count($json_data['Hardware']['Storage']);
     $driveKey = 0;
 
     foreach ($json_data['Hardware']['Storage'] as $driveKey => $drive) {
