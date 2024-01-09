@@ -240,7 +240,7 @@
     }
 
     function safe_count($arr): int {
-        if (is_countable($thing)) {
+        if (is_countable($arr)) {
             return count($arr);
         } else {
             return 0;
