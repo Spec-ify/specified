@@ -239,7 +239,7 @@
         return $partitioncap;
     }
 
-    function safe_count(arr): int {
+    function safe_count($arr): int {
         if (is_countable($thing)) {
             return count($arr);
         } else {
