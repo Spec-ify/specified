@@ -276,15 +276,7 @@ async function dataTables() {
 				{ data: "Description" },
 				{ data: "Destination" },
 				{
-					data: "InterfaceIndex",
-					render: function (data) {
-						json.Network.Adapters.forEach(function (Interface) {
-							if (Interface.InterfaceIndex == data) {
-								data = Interface.Description;
-							}
-						});
-						return data;
-					},
+					data: "InterfaceIndex"
 				},
 				{ data: "Mask" },
 				{ data: "Metric1" },
@@ -297,11 +289,21 @@ async function dataTables() {
 	}
 
 	try {
+        json.Hardware.Devices.map(row => {
+           if (row.Status === "Error") {
+               row.Status = `Error (${row.ConfigManagerErrorCode})`;
+           }
+
+           return row;
+        });
+
 		$("#devicesTable").DataTable({
 			autoWidth: false,
 			data: json.Hardware.Devices,
 			columns: [
-				{ data: "Status" },
+				{
+                    data: "Status"
+                },
 				{ data: "Description" },
 				{ data: "Name" },
 				{ data: "DeviceID" },

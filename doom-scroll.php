@@ -13,6 +13,8 @@
     $json_data = json_decode($json, true);
     $profile_name = pathinfo($json_file, PATHINFO_FILENAME);
 
+    include('common.php');
+
     // Grabs data from endoflife.date's api and checks it
 
     $eoldata = json_decode(file_get_contents('https://endoflife.date/api/windows.json'), true);
@@ -93,59 +95,6 @@
     }
     //Basic string to time php function to take the generation date and turn it into a usable format.
     $ds = strtotime($json_data['Meta']['GenerationDate']);
-
-    function timeConvert($time)
-    {
-
-        $timeString = "";
-
-        $days = floor($time / (60 * 60 * 24));
-        $hours = floor(($time % (60 * 60 * 24)) / (60 * 60));
-        $minutes = floor(($time % (60 * 60)) / 60);
-        $seconds = $time % 60;
-
-        // Initialize the string with the number of days
-
-        if ($days) {
-            $timeString = '<span';
-            if ($days > 3) $timeString .= ' class="red"';
-            $timeString .= '>' . $days . ' day';
-            if ($days != 1) {
-                $timeString .= 's';
-            }
-            $timeString .= ', ';
-        }
-
-
-        // Add the number of hours to the string
-        if ($hours) {
-            $timeString .= $hours . ' hour';
-            if ($hours != 1) {
-                $timeString .= 's';
-            }
-            $timeString .= ', ';
-        }
-
-        // Add the number of minutes to the string
-        if ($minutes) {
-            $timeString .= $minutes . ' minute';
-            if ($minutes != 1) {
-                $timeString .= 's';
-            }
-            $timeString .= ', ';
-        }
-        // Add the number of seconds to the string A3BE8C
-        if ($seconds) {
-            if ($days || $hours || $minutes) $timeString .= 'and ';
-            $timeString .= $seconds . ' second';
-            if ($seconds != 1) {
-                $timeString .= 's</span>';
-            }
-        }
-
-        return $timeString;
-    }
-
     $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
 
     //Uservar paths split function
@@ -201,51 +150,6 @@
         }
     });
     */
-
-    //XDDDDD
-    function bytesToGigabytes($bytes)
-    {
-        // 1073741824 = 1024 * 1024 * 1024
-        return $bytes / 1073741824;
-    }
-
-    function bytesToMegabytes($bytes)
-    {
-        // 1073741824 = 1024 * 1024
-        return $bytes / 1048576;
-    }
-
-    function getDriveUsed($driveinput)
-    {
-        $driveused = 0;
-        foreach ($driveinput['Partitions'] as $partition) {
-            $driveused += $partition['PartitionCapacity'] - $partition['PartitionFree'];
-        }
-        return $driveused;
-    }
-
-    function getDriveFree($driveinput)
-    {
-        $drivefree = $driveinput['DiskCapacity'] - getDriveUsed($driveinput);
-        return $drivefree;
-    }
-
-    function getDriveCapacity($driveinput)
-    {
-        $partitioncap = 0;
-        foreach ($driveinput['Partitions'] as $partition) {
-            $partitioncap += $partition['PartitionCapacity'];
-        }
-        return $partitioncap;
-    }
-
-    function safe_count($arr): int {
-        if (is_countable($arr)) {
-            return count($arr);
-        } else {
-            return 0;
-        }
-    }
 
     /**
      * Return table layout for a data array
@@ -1313,7 +1217,15 @@
         <th>DID</th>
     </thead>
     <tbody>
-        <?= array_table_iter($json_data['Hardware']['Devices'], ['Status', 'Name', 'Description', 'DeviceID']) ?>
+        <?= array_table_iter(
+            $json_data['Hardware']['Devices'],
+            ['Status', 'Name', 'Description', 'DeviceID'],
+            function(&$row) {
+                if ($row['Status'] === 'Error') {
+                    $row['Status'] = "Error ({$row['ConfigManagerErrorCode']})";
+                }
+            }
+        ) ?>
     </tbody>
 </table>
 

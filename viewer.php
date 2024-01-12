@@ -8,9 +8,10 @@ if (!file_exists($_GET['file'])) {
 //Opening the file that comes after profile/ via GET and then parsing it with json_decode to get a usable variable with the json info back.
 $json_file = $_GET['file'];
 $json = file_get_contents($json_file);
-$test = 0;
 $json_data = json_decode($json, true);
 $profile_name = pathinfo($json_file, PATHINFO_FILENAME);
+
+include('common.php');
 
 //Some generic color inserts. I know I could have used a smarter CSS alternative, but call me old fashioned.
 $green = '#A3BE8C';
@@ -96,13 +97,13 @@ $ram_used = number_format($working_set / 1073741824, 2, '.', '');
 //Don't ask me why this is an old fashioned for loop, I got carried away.
 //Getting the total amount of RAM in the system.
 $total_ram = 0;
-$ram_sticks = count($json_data['Hardware']['Ram']);
-$ram_stick = 0;
+$ram_sticks = safe_count($json_data['Hardware']['Ram']);
 
-for ($ram_stick == 0; $ram_stick < $ram_sticks; $ram_stick++) {
-    if ($json_data['Hardware']['Ram'][$ram_stick]['Capacity'] != 0) {
-        $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity'] / 1000);
-        $total_ram = $total_ram + $ram_size;
+foreach ($json_data['Hardware']['Ram'] as $stick) {
+    $capacity = $stick['Capacity'];
+    if ($capacity != 0) {
+        $ram_size = floor($stick['Capacity'] / 1000);
+        $total_ram += $ram_size;
     }
 }
 //Calculating how much of it is used
@@ -119,58 +120,6 @@ if (str_contains($json_data['Hardware']['Cpu']['Name'], 'AMD')) {
 }
 //Basic string to time php function to take the generation date and turn it into a usable format.
 $ds = strtotime($json_data['Meta']['GenerationDate']);
-
-function timeConvert($time)
-{
-
-    $timeString = "";
-
-    $days = floor($time / (60 * 60 * 24));
-    $hours = floor(($time % (60 * 60 * 24)) / (60 * 60));
-    $minutes = floor(($time % (60 * 60)) / 60);
-    $seconds = $time % 60;
-
-    // Initialize the string with the number of days
-
-    if ($days) {
-        $timeString = '<span';
-        if ($days > 3) $timeString .= ' style="color:#BF616A;"';
-        $timeString .= '>' . $days . ' day';
-        if ($days != 1) {
-            $timeString .= 's';
-        }
-        $timeString .= ', ';
-    }
-
-
-    // Add the number of hours to the string
-    if ($hours) {
-        $timeString .= $hours . ' hour';
-        if ($hours != 1) {
-            $timeString .= 's';
-        }
-        $timeString .= ', ';
-    }
-
-    // Add the number of minutes to the string
-    if ($minutes) {
-        $timeString .= $minutes . ' minute';
-        if ($minutes != 1) {
-            $timeString .= 's';
-        }
-        $timeString .= ', ';
-    }
-    // Add the number of seconds to the string A3BE8C
-    if ($seconds) {
-        if ($days || $hours || $minutes) $timeString .= 'and ';
-        $timeString .= $seconds . ' second';
-        if ($seconds != 1) {
-            $timeString .= 's</span>';
-        }
-    }
-
-    return $timeString;
-}
 $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
 
 //Uservar paths split function
@@ -226,42 +175,6 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
     }
 });
 */
-
-//XDDDDD
-function bytesToGigabytes($bytes)
-{
-    // 1073741824 = 1024 * 1024 * 1024
-    return $bytes / 1073741824;
-}
-
-function bytesToMegabytes($bytes) {
-    // 1073741824 = 1024 * 1024
-    return $bytes / 1048576;
-}
-
-function getDriveUsed($driveinput)
-{
-    $driveused = 0;
-    foreach ($driveinput['Partitions'] as $partition) {
-        $driveused += $partition['PartitionCapacity'] - $partition['PartitionFree'];
-    }
-    return $driveused;
-}
-
-function getDriveFree($driveinput)
-{
-    $drivefree = $driveinput['DiskCapacity'] - getDriveUsed($driveinput);
-    return $drivefree;
-}
-
-function getDriveCapacity($driveinput)
-{
-    $partitioncap = 0;
-    foreach ($driveinput['Partitions'] as $partition) {
-        $partitioncap += $partition['PartitionCapacity'];
-    }
-    return $partitioncap;
-}
 ?>
 <!doctype html>
 <html lang="en">
@@ -404,12 +317,12 @@ function getDriveCapacity($driveinput)
                             <div class="widget widget-ram hover" type="button" data-mdb-toggle="modal" data-mdb-target="#ramModal">
                                 <h1>Memory</h1>
                                 <div class="widget-values" <?php
-                                                            if (count($json_data['Hardware']['Ram']) > 4) {
+                                                            if (safe_count($json_data['Hardware']['Ram']) > 4) {
                                                                 echo 'style="display: flex; flex-flow: row wrap;"';
                                                             }
                                                             ?>>
                                     <?php
-                                    $ram_sticks = count($json_data['Hardware']['Ram']);
+                                    $ram_sticks = safe_count($json_data['Hardware']['Ram']);
                                     $ram_stick = 0;
                                     for ($ram_stick; $ram_stick < $ram_sticks; $ram_stick++) {
                                         $current_ram_stick = $ram_stick + 1;
@@ -428,7 +341,7 @@ function getDriveCapacity($driveinput)
                                         <div>DIMM' . $current_ram_stick . '</div>
                                     </div>';
                                         }
-                                        if (count($json_data['Hardware']['Ram']) > 4 && ($current_ram_stick % 4) == 0) {
+                                        if (safe_count($json_data['Hardware']['Ram']) > 4 && ($current_ram_stick % 4) == 0) {
                                             echo '<div style="flex-basis: 100%;"></div>';
                                         }
                                     }
@@ -456,7 +369,7 @@ function getDriveCapacity($driveinput)
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                    $ram_sticks = count($json_data['Hardware']['Ram']);
+                                                    $ram_sticks = safe_count($json_data['Hardware']['Ram']);
                                                     $ram_stick = 0;
                                                     for ($ram_stick; $ram_stick < $ram_sticks; $ram_stick++) {
                                                         $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity']);
@@ -1120,7 +1033,7 @@ function getDriveCapacity($driveinput)
                         </div>
                         <div class="widgets_widgets widgets" id="storage_widgets" data-hide="false">
                             <?php
-                            $drives_amount = count($json_data['Hardware']['Storage']);
+                            $drives_amount = safe_count($json_data['Hardware']['Storage']);
                             $driveKey = 0;
 
                             foreach ($json_data['Hardware']['Storage'] as $driveKey => $drive) {
@@ -1276,7 +1189,7 @@ function getDriveCapacity($driveinput)
                                     ';
 
                                     // two SMART chunks for 2 columns of table
-                                    list($smart1, $smart2) = array_chunk($drive['SmartData'], ceil(count($drive['SmartData']) / 2));
+                                    list($smart1, $smart2) = array_chunk($drive['SmartData'], ceil(safe_count($drive['SmartData']) / 2));
 
                                     foreach ($smart1 as $smartEntry) {
                                         echo
@@ -1455,7 +1368,7 @@ function getDriveCapacity($driveinput)
 
                                             <?php
                                             if ($json_data['System']['PowerProfiles']) {
-                                                $profile_count = count($json_data['System']['PowerProfiles']);
+                                                $profile_count = safe_count($json_data['System']['PowerProfiles']);
                                                 $profile_color = '';
                                                 $current_profile = '';
                                                 if ($profile_count != 0) {
