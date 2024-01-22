@@ -36,6 +36,6 @@ $base = array( 'Version' => NULL,
                     'HostsFile' => NULL, 
                     'HostsFileHash' => NULL
                 ), 
-                'Issues' => NULL
+                'DebugLogText' => NULL
             );
 ?>
