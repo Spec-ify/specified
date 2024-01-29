@@ -45,7 +45,19 @@ function safe_count($arr): int {
     if (is_countable($arr)) {
         return count($arr);
     } else {
+        $bt = debug_backtrace();
+        trigger_error("safe_count called on null in {$bt['file']} on line {$bt['line']}", E_USER_NOTICE);
         return 0;
+    }
+}
+
+function safe_implode(string $separator, $arr): string {
+    if (is_array($arr)) {
+        return implode($separator, $arr);
+    } else {
+        $bt = debug_backtrace()[0];
+        trigger_error("safe_implode called on null in {$bt['file']} on line {$bt['line']}", E_USER_NOTICE);
+        return '';
     }
 }
 

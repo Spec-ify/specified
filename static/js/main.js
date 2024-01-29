@@ -40,7 +40,9 @@ document.querySelector("#board-info-close").addEventListener("click", () => {
 $(function() {
     if(viewmodetoggle==="gesp"){
         blackblanket.style.transition='opacity 0.2s';
-        window.location.replace("/gesp-mode/" + PROFILE_NAME);
+        const url = new URL(window.location);
+        url.searchParams.append("view", "gesp-mode");
+        window.location = url.toString();
     }
 });
 $("#CollapseToggle").click(function () {

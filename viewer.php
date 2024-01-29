@@ -1,4 +1,16 @@
 <?php
+$view = $_GET['view'];
+if ($view === "gesp-mode") {
+    include('gesp-mode.php');
+    die;
+}
+if ($view === "doom-scroll") {
+    include('doom-scroll.php');
+    die;
+}
+
+echo $_SERVER['REQUEST_URI'];
+
 //Checking if the file requested via GET exists. If not, we send to a custom 404.
 if (!file_exists($_GET['file'])) {
     http_response_code(404);
@@ -219,7 +231,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                 <a id="Download" href="<?= $json_file ?>">
                     <button class="btn btn-info">View Raw JSON</button>
                 </a>
-                <a id="gesptoggle" href="/gesp-mode/<?= $profile_name ?>">
+                <a id="gesptoggle" href="<?= $profile_name ?>?view=gesp-mode">
                     <button class="btn btn-info">GESP Mode</button>
                 </a>
                 <?php
