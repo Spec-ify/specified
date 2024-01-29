@@ -209,3 +209,15 @@ $('#spectoggle').click(() => {
     //console.log('click');
     window.localStorage.removeItem('viewmode');
 })
+
+
+// populate the cpu info table with stuff from hwapi
+(async () => {
+	/**
+	 * @type string
+	 */
+	const cpuName = (await fetch(`./${PROFILE_NAME}.json`)).json()['Hardware']['Cpu']['Name'];
+	
+	const hwapiResponse = (await fetch("http://spec-ify.com/api/cpus", {method: "GET", body: {name: cpuName}})).json();
+	console.log(hwapiResponse);
+})

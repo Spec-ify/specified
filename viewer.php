@@ -318,6 +318,13 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                                 </tbody>
                                             </table>
                                         </div>
+                                        <div class="modal-body">
+                                            <!-- This content is populated javascript side -->
+                                            <h6 class="modal-title" id="cpuInfoTitle">Database results for: ...</h6>
+                                            <tbody id="fetchedCpuInfo">
+
+                                            </tbody>
+                                        </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
                                         </div>
