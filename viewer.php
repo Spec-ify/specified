@@ -9,8 +9,6 @@ if ($view === "doom-scroll") {
     die;
 }
 
-echo $_SERVER['REQUEST_URI'];
-
 //Checking if the file requested via GET exists. If not, we send to a custom 404.
 if (!file_exists($_GET['file'])) {
     http_response_code(404);
