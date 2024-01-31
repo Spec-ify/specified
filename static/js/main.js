@@ -45,6 +45,17 @@ $(function() {
         window.location = url.toString();
     }
 });
+
+// MUST be function(e) not arrow function because using this
+document.querySelector("#ViewToggle").onchange = function(e) {
+    let value = this.value;
+    this.selectedIndex = 0;
+    const url = new URL(window.location);
+    url.searchParams.append("view", value);
+    window.location = url.toString();
+
+}
+
 $("#CollapseToggle").click(function () {
 	$("#CollapseToggle").hide();
 	$("#CollapseToggleHide").show();

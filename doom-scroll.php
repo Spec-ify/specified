@@ -165,7 +165,6 @@
         }
         return $res;
     }
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -198,11 +197,12 @@
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <nav>
     <ul id="navlist">
+        <li><a href="<?= http_strip_query_param($_SERVER['REQUEST_URI'], 'view') ?>">Specify View</a></li>
         <li id="nav-top-link"><a href="#top">Back To Top</a></li>
     </ul>
 </nav>
 <main>
-<span class="linnker" id="top"></span>
+<span class="linker" id="top"></span>
 <h1>Profile Information</h1>
 <table>
     <thead></thead>

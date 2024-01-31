@@ -36,7 +36,7 @@ function createLinks(selector) {
     });
 }
 // there are just too many network adapters/disks lol
-// the .item-header class applies to dynamic headers (i.e. extensions, disks, network adapters, etc.)
+// the .item-header class should be added to dynamic headers (i.e. extensions, disks, network adapters, etc.)
 createLinks("h1, h2:not(.item-header)");
 
 // show the debug log when the konami code is pressed

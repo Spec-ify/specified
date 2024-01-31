@@ -112,3 +112,17 @@ function timeConvert($time)
 
     return $timeString;
 }
+
+// https://maxchadwick.xyz/blog/stripping-a-query-parameter-from-a-url-in-php
+function http_strip_query_param($url, $param)
+{
+    $pieces = parse_url($url);
+    $query = [];
+    if ($pieces['query']) {
+        parse_str($pieces['query'], $query);
+        unset($query[$param]);
+        $pieces['query'] = http_build_query($query);
+    }
+
+    return $pieces['path'] . '?' . $pieces['query'];
+}

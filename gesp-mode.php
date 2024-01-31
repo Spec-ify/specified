@@ -12,7 +12,10 @@ $test=0;
 $json_data = json_decode($json,true);
 $profile_name = explode(".", explode("/", $json_file)[1])[0];
 
-function timeConvert($time) {
+include('common.php');
+
+// named this way to avoid conflicting with common.php
+function gespTimeConvert($time) {
     $days = floor($time/86400);
     $hours = floor(($time % 86400)/3600);
     $minutes = floor(($time%3600)/60);
@@ -20,7 +23,7 @@ function timeConvert($time) {
     return sprintf("%d days, %02d:%02d:%02d",$days,$hours,$minutes,$seconds);
 
 }
-$test_time = timeConvert($json_data['BasicInfo']['Uptime']);
+$test_time = gespTimeConvert($json_data['BasicInfo']['Uptime']);
 //PUP check
 include('lists.php');
 // Set up the reference list
@@ -113,7 +116,7 @@ tr:nth-child(even) {
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
-<a id="spectoggle" href="/profile/<?= $profile_name ?>">
+<a id="spectoggle" href="<?= http_strip_query_param($_SERVER['REQUEST_URI'], 'view') ?>">
     <button class="btn btn-info">Specify Mode</button>
 </a>
 <pre>
