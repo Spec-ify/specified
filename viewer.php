@@ -243,9 +243,9 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
             </div>
             <div>
                 <select id="ViewToggle" style="width: 12em;">
-                    <option selected hidden>Select Mode</option>
+                    <option selected hidden>Select View</option>
                     <option value="doom-scroll">Doom Scroll</option>
-                    <option value="gesp-mode">GESP Mode</option>
+                    <option value="gesp-mode">Legacy View</option>
                 </select>
                 <select title="mappings" id="ModeToggle" style="width: 12em;">
                     <optgroup label="Theme">
