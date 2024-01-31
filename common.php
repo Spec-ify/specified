@@ -124,5 +124,5 @@ function http_strip_query_param($url, $param)
         $pieces['query'] = http_build_query($query);
     }
 
-    return $pieces['path'] . '?' . $pieces['query'];
+    return $pieces['path'] . ($pieces['query'] ? '?' : '') . $pieces['query'];
 }
