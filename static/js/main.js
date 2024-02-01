@@ -41,6 +41,16 @@ document.querySelector("#board-info-close").addEventListener("click", () => {
         "inline-block";
 });
 
+document.querySelector("#cpuCloseButton").addEventListener("click", () => {
+    document.querySelector("#cpuMoreInfoButton").style.display = "";
+    document.querySelector("#cpuInfoTable").style.display="none";
+});
+
+document.querySelector("#cpuMoreInfoButton").addEventListener("click", () => {
+    document.querySelector("#cpuMoreInfoButton").style.display = "none";
+    document.querySelector("#cpuInfoTable").style.display="";
+})
+
 $(function () {
     if (viewmodetoggle === "gesp") {
         blackblanket.style.transition = "opacity 0.2s";
