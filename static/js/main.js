@@ -242,17 +242,38 @@ $("#spectoggle").click(() => {
      */
     const cpuName = report["Hardware"]["Cpu"]["Name"];
 
-    const response = await (
-        await fetch(
-            `https://spec-ify.com/api/cpus/?name=${encodeURIComponent(
-                cpuName
-            )}`,
-            {
-                method: "GET",
-                mode: "cors",
-            }
-        )
-    ).json();
+    let response;
+    if (window.location.host.startsWith("localhost")) {
+        console.info("Trying local server for hwapi");
+        try {
+            response = await (
+                await fetch(
+                    `http://localhost:3000/api/cpus/?name=${encodeURIComponent(
+                        cpuName
+                    )}`,
+                    {
+                        method: "GET",
+                        mode: "cors",
+                    }
+                )
+            ).json();
+        } catch (e) {
+            console.warn("Could not connect to local hwapi instance, falling back to spec-ify.com");
+        }
+    }
+    if (!response) {
+        response = await (
+            await fetch(
+                `https://spec-ify.com/api/cpus/?name=${encodeURIComponent(
+                    cpuName
+                )}`,
+                {
+                    method: "GET",
+                    mode: "cors",
+                }
+            )
+        ).json();
+    }
     const titleElement = document.getElementById("cpuInfoTitle");
     const cpuTable = document.getElementById("fetchedCpuInfo");
     // update the title element to reflect the name fetched from the database
