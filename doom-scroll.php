@@ -516,6 +516,11 @@
         </tr>
     </tbody>
 </table>
+<h3 id="hwapi-header">Database Results</h3>
+<p id="hwapi-status"></p>
+<table>
+    <tbody id="hwapi-body"></tbody>
+</table>
 
 <h2>RAM</h2>
 <table>
