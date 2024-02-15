@@ -3,6 +3,7 @@ let form = document.querySelector("#uploadform");
 let html = document.querySelector("html");
 let text = document.querySelector("#dragtext");
 let box = document.querySelector("#uploadbox");
+let input = document.querySelector("#input-file-now");
 
 // Prevent Redirect
 html.addEventListener("dragover", (e) => {
@@ -46,6 +47,10 @@ form.addEventListener("dragleave", (e) => {
 // Selects the input box, sets the files, and submits it
 form.addEventListener("drop", (e) => {
 	text.textContent = "Thanks! :D";
-	document.querySelector("#input-file-now").files = e.dataTransfer.files;
-	document.querySelector("#uploadform").submit();
+	input.files = e.dataTransfer.files;
+	form.submit();
+});
+
+input.addEventListener("change", () => {
+   form.submit();
 });
