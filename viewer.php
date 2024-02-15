@@ -192,7 +192,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
 <head>
     <meta charset="utf-8" />
-    <title>Specified</title>
+    <title>Profile <?= $profile_name ?> | Specified</title>
     <meta content="width=device-width,initial-scale=1" name="viewport" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
