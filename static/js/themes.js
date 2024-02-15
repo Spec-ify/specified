@@ -15,7 +15,7 @@ document.querySelector('#ModeToggle').onchange = change_theme;
 function change_theme(){
     // Get selection for the switch
     let theme = document.querySelector('#ModeToggle').value;
-    let themeables = document.querySelectorAll('.textbox, .searchbar, .widget, .header_header');
+    let themeables = document.querySelectorAll('.textbox, .searchbar, .widget, #header_header');
     let html = document.getElementsByTagName("HTML")[0];
 
 	// Remove current theme

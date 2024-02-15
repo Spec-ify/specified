@@ -87,12 +87,6 @@
     //Trimming the motherboard manufacturer string after the first space.
     $motherboard = strtok($json_data['Hardware']['Motherboard']['Manufacturer'], " ");
 
-    //Little bit of cheeky coloring for the CPU based on what it's name contains.
-    if (str_contains($json_data['Hardware']['Cpu']['Name'], 'AMD')) {
-        $cpu_color = $amd;
-    } else {
-        $cpu_color = $intel;
-    }
     //Basic string to time php function to take the generation date and turn it into a usable format.
     $ds = strtotime($json_data['Meta']['GenerationDate']);
     $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
@@ -171,7 +165,6 @@
         }
         return $res;
     }
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -204,11 +197,12 @@
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <nav>
     <ul id="navlist">
+        <li><a href="<?= http_strip_query_param($_SERVER['REQUEST_URI'], 'view') ?>">Specify View</a></li>
         <li id="nav-top-link"><a href="#top">Back To Top</a></li>
     </ul>
 </nav>
 <main>
-<span class="linnker" id="top"></span>
+<span class="linker" id="top"></span>
 <h1>Profile Information</h1>
 <table>
     <thead></thead>
@@ -522,6 +516,11 @@
         </tr>
     </tbody>
 </table>
+<h3 id="hwapi-header">Database Results</h3>
+<p id="hwapi-status"></p>
+<table>
+    <tbody id="hwapi-body"></tbody>
+</table>
 
 <h2>RAM</h2>
 <table>
@@ -753,43 +752,6 @@
 <?php
 
     foreach ($json_data["Network"]["Adapters"] as $nic) {
-        $table = '';
-        $gateways = '';
-        $dnsIPs = '';
-        $dnsSuffixes = '';
-        $ips = '';
-        $subnets = '';
-
-        if (is_array($nic["DefaultIPGateway"])) {
-            foreach ($nic["DefaultIPGateway"] as $gateway) {
-                $gateways .= $gateway . ' ';
-            }
-        }
-
-        if (is_array($nic["DNSServerSearchOrder"])) {
-            foreach ($nic["DNSServerSearchOrder"] as $dnsIP) {
-                $dnsIPs .= $dnsIP . ' ';
-            }
-        }
-
-        if (is_array($nic["DNSDomainSuffixSearchOrder"])) {
-            foreach ($nic["DNSDomainSuffixSearchOrder"] as $dnsSuffix) {
-                $dnsSuffixes .= $dnsSuffix . ' ';
-            }
-        }
-
-        if (is_array($nic["IPAddress"])) {
-            foreach ($nic["IPAddress"] as $ip) {
-                $ips .= $ip . ' ';
-            }
-        }
-
-        if (is_array($nic["IPSubnet"])) {
-            foreach ($nic["IPSubnet"] as $subnet) {
-                $subnets .= $subnet . ' ';
-            }
-        }
-
         echo '
 <h2 class="item-header">' . $nic["Description"] . ' </h2>
 <table class="table nic">
@@ -808,7 +770,7 @@
 
     <tr>
         <td>Gateway(s)</td>
-        <td>' . $gateways . '</td>
+        <td>' . safe_implode('<br/>', $nic["DefaultIPGateway"]) . '</td>
     </tr>
 
     <tr>
@@ -840,15 +802,15 @@
         <td>DNS Hostname</td>
         <td>' . $nic["DNSHostName"] . '</td>
     </tr>
-
+        
     <tr>
-        <td>DNS IPs</td>
-        <td>' . $dnsIPs . '</td>
+        <td>DNS Servers IPv6</td>
+        <td>' . safe_implode('<br/>', $nic['DNSIPV6']) . '</td>
     </tr>
 
     <tr>
         <td>DNS Suffixes</td>
-        <td>' . $dnsSuffixes . '</td>
+        <td>' . safe_implode('<br/>', $nic['DNSDomainSuffixSearchOrder']) . '</td>
     </tr>
 
     <tr>
@@ -858,12 +820,12 @@
 
     <tr>
         <td>IP(s)</td>
-        <td>' . $ips . '</td>
+        <td>' . safe_implode('<br/>', $nic['IPAddress']) . '</td>
     </tr>
 
     <tr>
         <td>Subnet</td>
-        <td>' . $subnets . '</td>
+        <td>' . safe_implode('<br/>', $nic['IPSubnet']) . '</td>
     </tr>
 
     <tr>
@@ -883,6 +845,16 @@
 
         if (isset($nic["PhysicalAdapter"]) && $nic["PhysicalAdapter"]) {
             echo '
+    <tr>
+        <td>Static DNS Servers?</td>
+        <td>' . $nic['DNSIsStatic'] ? 'Yes' : 'No' . '</td>
+    </tr>
+
+    <tr>
+        <td>DNS Servers IPv4</td>
+        <td>' . safe_implode('<br/>', $nic['DNSServerSearchOrder']) . '</td>
+    </tr>
+    
     <tr>
         <td>Full Duplex?</td>
         <td>' . $nic["FullDuplex"] . '</td>
@@ -910,7 +882,7 @@
 
     <tr>
         <td>Operational Status</td>
-        <td>' . $nic["OperationalStatusDownMediaDisconnected"] . '</td>
+        <td>' . ($nic["OperationalStatusDownMediaDisconnected"] ? 'Down - Media Disconnected' : '') . '</td>
     </tr>
 
     <tr>

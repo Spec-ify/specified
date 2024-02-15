@@ -45,7 +45,19 @@ function safe_count($arr): int {
     if (is_countable($arr)) {
         return count($arr);
     } else {
+        $bt = debug_backtrace();
+        trigger_error("safe_count called on null in {$bt['file']} on line {$bt['line']}", E_USER_NOTICE);
         return 0;
+    }
+}
+
+function safe_implode(string $separator, $arr): string {
+    if (is_array($arr)) {
+        return implode($separator, $arr);
+    } else {
+        $bt = debug_backtrace()[0];
+        trigger_error("safe_implode called on null in {$bt['file']} on line {$bt['line']}", E_USER_NOTICE);
+        return '';
     }
 }
 
@@ -99,4 +111,18 @@ function timeConvert($time)
     }
 
     return $timeString;
+}
+
+// https://maxchadwick.xyz/blog/stripping-a-query-parameter-from-a-url-in-php
+function http_strip_query_param($url, $param)
+{
+    $pieces = parse_url($url);
+    $query = [];
+    if ($pieces['query']) {
+        parse_str($pieces['query'], $query);
+        unset($query[$param]);
+        $pieces['query'] = http_build_query($query);
+    }
+
+    return $pieces['path'] . ($pieces['query'] ? '?' : '') . $pieces['query'];
 }

@@ -36,7 +36,7 @@ function createLinks(selector) {
     });
 }
 // there are just too many network adapters/disks lol
-// the .item-header class applies to dynamic headers (i.e. extensions, disks, network adapters, etc.)
+// the .item-header class should be added to dynamic headers (i.e. extensions, disks, network adapters, etc.)
 createLinks("h1, h2:not(.item-header)");
 
 // show the debug log when the konami code is pressed
@@ -159,4 +159,60 @@ $("#routes-table").DataTable({
         console.log("Failed making Running Processes DataTable. Is it blank?");
         console.log(e.name + ": " + e.message);
     }
+
+    // The hwapi request call currently takes >1s. It doesn't matter that much, but I am doing this in js so the page load
+    // is a little faster.
+
+    /**
+     * @type string
+     */
+    const cpuName = json["Hardware"]["Cpu"]["Name"];
+    const statusSpan = document.querySelector("#hwapi-status");
+
+    let response;
+    if (window.location.host.startsWith("localhost")) {
+        console.info("Trying local server for hwapi");
+        try {
+            response = await (
+                await fetch(
+                    `http://localhost:3000/api/cpus/?name=${encodeURIComponent(
+                        cpuName
+                    )}`,
+                    {
+                        method: "GET",
+                        mode: "cors",
+                    }
+                )
+            ).json();
+        } catch (e) {
+            statusSpan.innerHTML = "Could not connect to local hwapi instance, falling back to spec-ify.com";
+        }
+    }
+    if (!response) {
+        response = await (
+            await fetch(
+                `https://spec-ify.com/api/cpus/?name=${encodeURIComponent(
+                    cpuName
+                )}`,
+                {
+                    method: "GET",
+                    mode: "cors",
+                }
+            )
+        ).json();
+    }
+
+    if (!response || !response.name) {
+        statusSpan.textContent = "Could not get database results";
+    }
+    const cpuTable = document.getElementById("fetchedCpuInfo");
+    // update the title element to reflect the name fetched from the database
+    document.querySelector("#hwapi-header").textContent += ` for ${response.name}`;
+    let tableContents = "";
+    // add new elements to the table for every kv in the database
+    for (const [key, value] of Object.entries(response.attributes)) {
+        tableContents += `<tr><td>${key}</td><td>${value}</td></tr>`;
+    }
+    // cpuTable.innerHTML = tableContents;
+    document.getElementById("hwapi-body").innerHTML = tableContents;
 })();

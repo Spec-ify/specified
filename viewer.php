@@ -1,4 +1,14 @@
 <?php
+$view = $_GET['view'];
+if ($view === "gesp-mode") {
+    include('gesp-mode.php');
+    die;
+}
+if ($view === "doom-scroll") {
+    include('doom-scroll.php');
+    die;
+}
+
 //Checking if the file requested via GET exists. If not, we send to a custom 404.
 if (!file_exists($_GET['file'])) {
     http_response_code(404);
@@ -209,18 +219,15 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
         <button type="button" class="btn btn-info btn-floating btn-lg" id="btn-back-to-top">
             <i class="fas fa-arrow-up"></i>
         </button>
-        <header class="header_header">
+        <header id="header_header">
             <a class="logo" href="index.html">
                 <img src="assets/logo.png" height="25em">
             </a>
-            <div>
+            <div id="header_buttons">
                 <button type="button" class="btn btn-info" id="CollapseToggle">Expand All</button>
                 <button type="button" class="btn btn-info" id="CollapseToggleHide">Collapse All</button>
                 <a id="Download" href="<?= $json_file ?>">
                     <button class="btn btn-info">View Raw JSON</button>
-                </a>
-                <a id="gesptoggle" href="/gesp-mode/<?= $profile_name ?>">
-                    <button class="btn btn-info">GESP Mode</button>
                 </a>
                 <?php
                 if (isset($json_data['System']['DumpZip'])) {
@@ -234,16 +241,20 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                 ?>
 
             </div>
-            <select title="mappings" id="ModeToggle" style="width: 12em;">
-                <optgroup label="View">
-                    <option value="classic">Dark Mode</option>
-                    <option value="k9">K9's Dark Mode</option>
-                    <option value="light">Light Mode</option>
-                </optgroup>
-            </select>
-
-
-            </span>
+            <div>
+                <select id="ViewToggle" style="width: 12em;">
+                    <option selected hidden>Select View</option>
+                    <option value="doom-scroll">Doom Scroll</option>
+                    <option value="gesp-mode">Legacy View</option>
+                </select>
+                <select title="mappings" id="ModeToggle" style="width: 12em;">
+                    <optgroup label="Theme">
+                        <option value="classic">Dark Mode</option>
+                        <option value="k9">K9's Dark Mode</option>
+                        <option value="light">Light Mode</option>
+                    </optgroup>
+                </select>
+            </div>
         </header>
         <main>
             <div class="specify">
@@ -308,8 +319,18 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                                 </tbody>
                                             </table>
                                         </div>
+                                        <div class="modal-body" id="cpuInfoTable" style="display:none;">
+                                            <!-- This content is populated javascript side -->
+                                            <h6 class="modal-title" id="cpuInfoTitle">Database results for: ...</h6>
+                                            <table class="table">
+                                                <tbody id="fetchedCpuInfo">
+
+                                                </tbody>
+                                            </table>
+                                        </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-secondary" id="cpuMoreInfoButton">More Info</button>
+                                            <button type="button" class="btn btn-secondary" id="cpuCloseButton" data-mdb-dismiss="modal">Close</button>
                                         </div>
                                     </div>
                                 </div>
