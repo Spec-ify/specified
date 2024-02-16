@@ -57,7 +57,10 @@ $pupsfoundRunning = array_unique($pupsfoundRunning);
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="shortcut icon" href="favicon.ico" />
+<link rel="shortcut icon" href="assets/specify-glass-dynamic.svg" />
+<link rel="shortcut icon" href="assets/specify-glass-dynamic.svg" />
+<link rel="icon" href="assets/specify-glass-black-256x256.png" media="(prefers-color-scheme light)" />
+<link rel="icon" href="assets/specify-glass-black-256x256.png" media="(prefers-color-scheme dark)" />
 <style>
 * {
     font-family: verdana !important;

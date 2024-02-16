@@ -172,7 +172,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Profile <?= $profile_name ?> | Specified</title>
-    <link rel="shortcut icon" href="favicon.ico" />
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
     <link
         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
@@ -180,11 +180,16 @@
     <link href="static/css/doom-scroll.css" rel="stylesheet">
     <link href="static/css/tables.css" rel="stylesheet">
     <link href="static/css/themes.css" rel="stylesheet">
+
     <!--This section is for the discord embed card. Need to expand upon it. -->
     <meta name="og:title" content="<?= $json_data["BasicInfo"]["Hostname"] ?>"/>
     <meta name="og:site_name" content="Specify"/>
     <meta name="og:description" content="Generated on <?= $json_data["Meta"]["GenerationDate"] ?>"/>
     <meta name="og:type" content="data.specify_result"/>
+
+    <link rel="shortcut icon" href="assets/specify-glass-dynamic.svg" />
+    <link rel="icon" href="assets/specify-glass-black-256x256.png" media="(prefers-color-scheme light)" />
+    <link rel="icon" href="assets/specify-glass-black-256x256.png" media="(prefers-color-scheme dark)" />
 
     <script>
         window.PROFILE_NAME = "<?= $profile_name ?>";
