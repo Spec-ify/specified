@@ -51,11 +51,6 @@ $("#temps-table").DataTable({
     searching: false,
     info: false
 });
-$("#devices-table").DataTable({
-    paging: false,
-    searching: false,
-    info: false
-});
 $("#drivers-table").DataTable({
     paging: false,
     searching: false,
@@ -86,6 +81,53 @@ $("#routes-table").DataTable({
     searching: false,
     info: false
 });
+
+let hwapi_local = true;
+
+/**
+ * This is extracted into its own function because we need to call localhost instead of spec-ify.com if there is a
+ * hwapi dev server currently running.
+ *
+ * The path does not start with a slash.
+ */
+async function call_hwapi(path, fallbackCallack = () => {}) {
+    let rawResponse;
+    if (window.location.host.startsWith("localhost") && hwapi_local) {
+        console.info("Trying local server for hwapi");
+
+        try {
+            rawResponse = await fetch(
+                `http://localhost:3000/${path}`,
+                {
+                    method: "GET",
+                    mode: "cors",
+                }
+            );
+        } catch (e) {
+            fallbackCallack();
+            console.warn("Hwapi dev server not online, falling back to spec-ify.com");
+            hwapi_local = false;
+        }
+    }
+    if (!rawResponse) {
+        rawResponse = await fetch(
+            `https://spec-ify.com/${path}`,
+            {
+                method: "GET",
+                mode: "cors",
+            }
+        );
+    }
+
+    try {
+        return await rawResponse.json();
+    } catch (e) {
+        if (rawResponse.status !== 404) // prevent error spam
+            console.error("Could not parse json from hwapi!");
+
+        return {};
+    }
+}
 
 // The processes data table contains functionality that I am too lazy to implement in PHP, so it remains in JavaScript
 (async () => {
@@ -160,47 +202,19 @@ $("#routes-table").DataTable({
         console.log(e.name + ": " + e.message);
     }
 
-    // The hwapi request call currently takes >1s. It doesn't matter that much, but I am doing this in js so the page load
+    // The hwapi request calls currently takes >1s. It doesn't matter that much, but I am doing this in js so the page load
     // is a little faster.
-
     /**
      * @type string
      */
     const cpuName = json["Hardware"]["Cpu"]["Name"];
     const statusSpan = document.querySelector("#hwapi-status");
 
-    let response;
-    if (window.location.host.startsWith("localhost")) {
-        console.info("Trying local server for hwapi");
-        try {
-            response = await (
-                await fetch(
-                    `http://localhost:3000/api/cpus/?name=${encodeURIComponent(
-                        cpuName
-                    )}`,
-                    {
-                        method: "GET",
-                        mode: "cors",
-                    }
-                )
-            ).json();
-        } catch (e) {
-            statusSpan.innerHTML = "Could not connect to local hwapi instance, falling back to spec-ify.com";
-        }
-    }
-    if (!response) {
-        response = await (
-            await fetch(
-                `https://spec-ify.com/api/cpus/?name=${encodeURIComponent(
-                    cpuName
-                )}`,
-                {
-                    method: "GET",
-                    mode: "cors",
-                }
-            )
-        ).json();
-    }
+    const response = await call_hwapi(`api/cpus/?name=${encodeURIComponent(
+        cpuName
+    )}`, () => {
+        statusSpan.innerHTML = "Could not connect to local hwapi instance, falling back to spec-ify.com";
+    });
 
     if (!response || !response.name) {
         statusSpan.textContent = "Could not get database results";
@@ -215,4 +229,40 @@ $("#routes-table").DataTable({
     }
     // cpuTable.innerHTML = tableContents;
     document.getElementById("hwapi-body").innerHTML = tableContents;
+
+    // go through all the devices. Here we are trusting the order of array_table_iter in php to be the same
+    document.querySelectorAll("#devices-table tbody tr").forEach((tr, index) => {
+        const jsonDevice = json["Hardware"]["Devices"][index];
+        if (jsonDevice.DeviceID.startsWith("USB")) {
+            // can't use await in a querySelector forEach :(
+            call_hwapi(`api/usbs/?identifier=${encodeURIComponent(jsonDevice.DeviceID)}`).then(response => {
+               if (response) {
+                   const vendor = document.createElement("td");
+                   vendor.innerText = response.vendor || "";
+                   tr.appendChild(vendor);
+                   const device = document.createElement("td");
+                   device.innerText = response.device || "";
+                   tr.appendChild(device);
+                   const subsystem = document.createElement("td");
+                   tr.appendChild(subsystem);
+               }
+            });
+        }
+        if (jsonDevice.DeviceID.startsWith("PCI")) {
+            // can't use await in a querySelector forEach :(
+            call_hwapi(`api/pcie/?identifier=${encodeURIComponent(jsonDevice.DeviceID)}`).then(response => {
+                if (response) {
+                    const vendor = document.createElement("td");
+                    vendor.innerText = response.vendor || "";
+                    tr.appendChild(vendor);
+                    const device = document.createElement("td");
+                    device.innerText = response.device || "";
+                    tr.appendChild(device);
+                    const subsystem = document.createElement("td");
+                    subsystem.innerText = response.subsystem || "";
+                    tr.appendChild(subsystem);
+                }
+            });
+        }
+    })
 })();
