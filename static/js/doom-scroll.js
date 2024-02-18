@@ -41,10 +41,12 @@ createLinks("h1, h2:not(.item-header)");
 
 document.querySelector("#nav-collapse-link").onclick = () => {
     document.querySelector("nav").classList.add("nav-collapsed");
+    return false;
 }
 
 document.querySelector("#nav-expand").onclick = () => {
     document.querySelector("nav").classList.remove("nav-collapsed");
+    return false;
 }
 
 // show the debug log when the konami code is pressed
