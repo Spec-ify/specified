@@ -159,7 +159,7 @@
             }
             $res .= '<tr>';
             foreach ($cols as $col) {
-                $res .= '<td>' . $row[$col] . '</td>';
+                $res .= '<td>' . ($row[$col] ?? '') . '</td>';
             }
             $res .= '</tr>';
         }

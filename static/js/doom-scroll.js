@@ -82,17 +82,28 @@ $("#routes-table").DataTable({
     info: false
 });
 
-let hwapi_local = true;
+let hwapiLocal = true;
 
 /**
  * This is extracted into its own function because we need to call localhost instead of spec-ify.com if there is a
  * hwapi dev server currently running.
  *
- * The path does not start with a slash.
+ * The path should not start with a slash.
  */
 async function call_hwapi(path, fallbackCallack = () => {}) {
+    // https://stackoverflow.com/a/57949518
+    const isLocalhost = Boolean(
+        window.location.hostname === 'localhost' ||
+        // [::1] is the IPv6 localhost address.
+        window.location.hostname === '[::1]' ||
+        // 127.0.0.1/8 is considered localhost for IPv4.
+        window.location.hostname.match(
+            /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+        )
+    );
+
     let rawResponse;
-    if (window.location.host.startsWith("localhost") && hwapi_local) {
+    if (isLocalhost && hwapiLocal) {
         console.info("Trying local server for hwapi");
 
         try {
@@ -106,7 +117,7 @@ async function call_hwapi(path, fallbackCallack = () => {}) {
         } catch (e) {
             fallbackCallack();
             console.warn("Hwapi dev server not online, falling back to spec-ify.com");
-            hwapi_local = false;
+            hwapiLocal = false;
         }
     }
     if (!rawResponse) {
