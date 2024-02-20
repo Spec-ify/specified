@@ -556,7 +556,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                                             echo '
                                                             <tr>
                                                                 <td>' . $key . '</td>
-                                                                <td>' . implode('<br/>', $value) . '</td>
+                                                                <td>' . safe_implode('<br/>', $value) . '</td>
                                                             </tr>
                                                             ';
                                                             continue;
