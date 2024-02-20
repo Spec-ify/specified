@@ -1,5 +1,5 @@
 <?php
-$view = $_GET['view'];
+$view = $_GET['view'] ?? '';
 if ($view === "gesp-mode") {
     include('gesp-mode.php');
     die;
@@ -552,7 +552,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                                             ';
                                                             continue;
                                                         }
-                                                        if ($key == 'BIOSVersion') {
+                                                        if ($key == 'BIOSVersion' || $key == 'ListOfLanguages') {
                                                             echo '
                                                             <tr>
                                                                 <td>' . $key . '</td>
@@ -1572,6 +1572,12 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                             }
                                         }
                                     }
+                                }
+
+                                if ($json_data['Meta']['ElapsedTime'] > 20000) {
+                                    $noteshtml .= '
+                                        <p>Specify runtime is over 20s.</p>
+                                    ';
                                 }
 
                                 if (!empty($noteshtml)) {

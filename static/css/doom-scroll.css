@@ -75,6 +75,25 @@ nav {
     flex: 0 0 auto;
 }
 
+#nav-expand {
+    display: none;
+}
+
+nav.nav-collapsed #navlist {
+    display: none;
+}
+
+nav.nav-collapsed #nav-expand {
+    display: block;
+    position: relative;
+    left: 50%;
+    cursor: pointer;
+}
+
+#nav-collapse-link {
+    margin-bottom: 0.5rem;
+}
+
 #navlist {
     margin-top: 0; /* We make it margin instead of padding so that it doesn't slide down when scrolling */
     padding-top: 1rem;
@@ -92,10 +111,6 @@ nav a {
     color: var(--link-color);
     display: block;
     width: 100%;
-}
-
-#nav-top-link {
-    margin-bottom: 0.5rem;
 }
 
 /* this is just an empty element that ensures when you click on a heading, it scrolls to the left */

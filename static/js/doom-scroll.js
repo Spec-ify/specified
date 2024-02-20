@@ -39,6 +39,16 @@ function createLinks(selector) {
 // the .item-header class should be added to dynamic headers (i.e. extensions, disks, network adapters, etc.)
 createLinks("h1, h2:not(.item-header)");
 
+document.querySelector("#nav-collapse-link").onclick = () => {
+    document.querySelector("nav").classList.add("nav-collapsed");
+    return false;
+}
+
+document.querySelector("#nav-expand").onclick = () => {
+    document.querySelector("nav").classList.remove("nav-collapsed");
+    return false;
+}
+
 // show the debug log when the konami code is pressed
 new Konami(() => {
     document.querySelector("#debug-log").style.display = "block";

@@ -153,6 +153,7 @@
     function array_table_iter(?array $arr, array $cols, $transform = null): string
     {
         $res = "";
+        if (!$arr) return '';
         foreach ($arr as $row) {
             if ($transform) {
                 $transform($row);
@@ -202,9 +203,11 @@
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <nav>
+    <span id="nav-expand"><a href="#">&gt;&gt;</a></span>
     <ul id="navlist">
         <li><a href="<?= http_strip_query_param($_SERVER['REQUEST_URI'], 'view') ?>">Specify View</a></li>
         <li id="nav-top-link"><a href="#top">Back To Top</a></li>
+        <li id="nav-collapse-link"><a href="#">Collapse Sidebar</a></li>
     </ul>
 </nav>
 <main>
@@ -418,6 +421,12 @@
     </li>
                 ';
         }
+    }
+
+    if ($json_data['Meta']['ElapsedTime'] > 20000) {
+        echo '
+    <li>Specify runtime is over 20s.</li>
+            ';
     }
 ?>
 </ul>
@@ -733,7 +742,7 @@
                     ';
                     continue;
                 }
-                if ($key == 'BIOSVersion') {
+                if ($key == 'BIOSVersion' || $key == 'ListOfLanguages') {
                     echo '
         <tr>
             <td>' . $key . '</td>
