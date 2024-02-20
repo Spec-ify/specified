@@ -153,6 +153,7 @@
     function array_table_iter(?array $arr, array $cols, $transform = null): string
     {
         $res = "";
+        if (!$arr) return '';
         foreach ($arr as $row) {
             if ($transform) {
                 $transform($row);
@@ -420,6 +421,12 @@
     </li>
                 ';
         }
+    }
+
+    if ($json_data['Meta']['ElapsedTime'] > 20000) {
+        echo '
+    <li>Specify runtime is over 20s.</li>
+            ';
     }
 ?>
 </ul>
@@ -735,7 +742,7 @@
                     ';
                     continue;
                 }
-                if ($key == 'BIOSVersion') {
+                if ($key == 'BIOSVersion' || $key == 'ListOfLanguages') {
                     echo '
         <tr>
             <td>' . $key . '</td>
