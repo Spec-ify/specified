@@ -160,7 +160,7 @@
             }
             $res .= '<tr>';
             foreach ($cols as $col) {
-                $res .= '<td>' . ($row[$col] ?? '') . '</td>';
+                $res .= '<td>' . $row[$col] . '</td>';
             }
             $res .= '</tr>';
         }
@@ -1202,9 +1202,6 @@
         <th>Name</th>
         <th>Description</th>
         <th>DID</th>
-        <th>Vendor (Database)</th>
-        <th>Device (Database)</th>
-        <th>PCIe Subsystem (Database)</th>
     </thead>
     <tbody>
         <?= array_table_iter(
