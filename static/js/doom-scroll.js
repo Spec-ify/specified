@@ -100,7 +100,7 @@ let hwapiLocal = true;
  *
  * The path should not start with a slash.
  */
-async function call_hwapi(path, fallbackCallack = () => {}) {
+async function call_hwapi(path, payload, fallbackCallack = () => {}) {
     // https://stackoverflow.com/a/57949518
     const isLocalhost = Boolean(
         window.location.hostname === 'localhost' ||
@@ -117,13 +117,31 @@ async function call_hwapi(path, fallbackCallack = () => {}) {
         console.info("Trying local server for hwapi");
 
         try {
-            rawResponse = await fetch(
-                `http://localhost:3000/${path}`,
-                {
-                    method: "GET",
-                    mode: "cors",
-                }
-            );
+            if (payload) {
+                rawResponse = await fetch(
+                    `http://localhost:3000/${path}`,
+                    {
+                        method: "POST",
+                        mode: "cors",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    },
+                );
+            } else {
+                rawResponse = await fetch(
+                    `http://localhost:3000/${path}`,
+                    {
+                        method: "GET",
+                        mode: "cors",
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    },
+                );
+            }
         } catch (e) {
             fallbackCallack();
             console.warn("Hwapi dev server not online, falling back to spec-ify.com");
@@ -131,13 +149,31 @@ async function call_hwapi(path, fallbackCallack = () => {}) {
         }
     }
     if (!rawResponse) {
-        rawResponse = await fetch(
-            `https://spec-ify.com/${path}`,
-            {
-                method: "GET",
-                mode: "cors",
-            }
-        );
+        if (payload) {
+            rawResponse = await fetch(
+                `https://spec-ify.com/${path}`,
+                {
+                    method: "POST",
+                    mode: "cors",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                },
+            );
+        } else {
+            rawResponse = await fetch(
+                `https://spec-ify.com/${path}`,
+                {
+                    method: "GET",
+                    mode: "cors",
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                },
+            );
+        }
     }
 
     try {
@@ -231,32 +267,36 @@ async function call_hwapi(path, fallbackCallack = () => {}) {
     const cpuName = json["Hardware"]["Cpu"]["Name"];
     const statusSpan = document.querySelector("#hwapi-status");
 
-    const response = await call_hwapi(`api/cpus/?name=${encodeURIComponent(
+    const cpuResponse = await call_hwapi(`api/cpus/?name=${encodeURIComponent(
         cpuName
-    )}`, () => {
+    )}`, null, () => {
         statusSpan.innerHTML = "Could not connect to local hwapi instance, falling back to spec-ify.com";
     });
 
-    if (!response || !response.name) {
+    if (!cpuResponse || !cpuResponse.name) {
         statusSpan.textContent = "Could not get database results";
     }
     const cpuTable = document.getElementById("fetchedCpuInfo");
     // update the title element to reflect the name fetched from the database
-    document.querySelector("#hwapi-header").textContent += ` for ${response.name}`;
+    document.querySelector("#hwapi-header").textContent += ` for ${cpuResponse.name}`;
     let tableContents = "";
     // add new elements to the table for every kv in the database
-    for (const [key, value] of Object.entries(response.attributes)) {
+    for (const [key, value] of Object.entries(cpuResponse.attributes)) {
         tableContents += `<tr><td>${key}</td><td>${value}</td></tr>`;
     }
     // cpuTable.innerHTML = tableContents;
     document.getElementById("hwapi-body").innerHTML = tableContents;
 
-    // go through all the devices. Here we are trusting the order of array_table_iter in php to be the same
+    let usbDevices = {};
+    let pcieDevices = {};
+
+    // go through all the devices and build an array to
     document.querySelectorAll("#devices-table tbody tr").forEach((tr, index) => {
         const jsonDevice = json["Hardware"]["Devices"][index];
         if (jsonDevice.DeviceID.startsWith("USB")) {
+            usbDevices[index] = jsonDevice["DeviceID"];
             // can't use await in a querySelector forEach :(
-            call_hwapi(`api/usbs/?identifier=${encodeURIComponent(jsonDevice.DeviceID)}`).then(response => {
+/*            call_hwapi(`api/usbs/?identifier=${encodeURIComponent(jsonDevice.DeviceID)}`, null).then(response => {
                if (response) {
                    const vendor = document.createElement("td");
                    vendor.innerText = response.vendor || "";
@@ -267,11 +307,12 @@ async function call_hwapi(path, fallbackCallack = () => {}) {
                    const subsystem = document.createElement("td");
                    tr.appendChild(subsystem);
                }
-            });
+            });*/
         }
         if (jsonDevice.DeviceID.startsWith("PCI")) {
+            pcieDevices[index] = jsonDevice["DeviceID"];
             // can't use await in a querySelector forEach :(
-            call_hwapi(`api/pcie/?identifier=${encodeURIComponent(jsonDevice.DeviceID)}`).then(response => {
+/*            call_hwapi(`api/pcie/?identifier=${encodeURIComponent(jsonDevice.DeviceID)}`, null).then(response => {
                 if (response) {
                     const vendor = document.createElement("td");
                     vendor.innerText = response.vendor || "";
@@ -283,7 +324,44 @@ async function call_hwapi(path, fallbackCallack = () => {}) {
                     subsystem.innerText = response.subsystem || "";
                     tr.appendChild(subsystem);
                 }
-            });
+            });*/
         }
     })
+
+    const usbIndexes = Object.keys(usbDevices);
+    const usbValues = Object.values(usbDevices);
+    const usbResponse = await call_hwapi('api/usbs/', usbValues);
+    for (let ai = 0; ai < usbValues.length; ai++) {
+        const tr = document.querySelectorAll("#devices-table tbody tr")[usbIndexes[ai]];
+        if (usbResponse[ai]) {
+            const response = usbResponse[ai];
+            const vendor = document.createElement("td");
+            vendor.innerText = response.vendor || "";
+            tr.appendChild(vendor);
+            const device = document.createElement("td");
+            device.innerText = response.device || "";
+            tr.appendChild(device);
+            const subsystem = document.createElement("td");
+            tr.appendChild(subsystem);
+        }
+    }
+
+    const pcieIndexes = Object.keys(pcieDevices);
+    const pcieValues = Object.values(pcieDevices);
+    const pcieResponse = await call_hwapi('api/pcie/', pcieValues);
+    for (let ai = 0; ai < pcieValues.length; ai++) {
+        const tr = document.querySelectorAll("#devices-table tbody tr")[pcieIndexes[ai]];
+        if (pcieResponse[ai]) {
+            const response = pcieResponse[ai];
+            const vendor = document.createElement("td");
+            vendor.innerText = response.vendor || "";
+            tr.appendChild(vendor);
+            const device = document.createElement("td");
+            device.innerText = response.device || "";
+            tr.appendChild(device);
+            const subsystem = document.createElement("td");
+            subsystem.innerText = response.subsystem || "";
+            tr.appendChild(subsystem);
+        }
+    }
 })();
