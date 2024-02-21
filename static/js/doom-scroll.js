@@ -333,9 +333,10 @@ async function call_hwapi(path, payload, fallbackCallack = () => {}) {
     const pcieIndexes = Object.keys(pcieDevices);
     const pcieValues = Object.values(pcieDevices);
 
-    const usbResponse = call_hwapi('api/usbs/', usbValues);
-    const pcieResponse = call_hwapi('api/pcie/', pcieValues);
-    await Promise.all([usbResponse, pcieResponse]);
+    const usbResponsePromise = call_hwapi('api/usbs/', usbValues);
+    const pcieResponsePromise = call_hwapi('api/pcie/', pcieValues);
+    const [usbResponse, pcieResponse] = await Promise.all([usbResponsePromise, pcieResponsePromise]);
+    console.log(usbResponse, pcieResponse);
 
     for (let ai = 0; ai < usbValues.length; ai++) {
         const tr = document.querySelectorAll("#devices-table tbody tr")[usbIndexes[ai]];
