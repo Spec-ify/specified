@@ -84,9 +84,6 @@
     //Calculating how much of it is used
     $ram_used_percent = round((float)$ram_used / (float)$total_ram * 100);
 
-    //Trimming the motherboard manufacturer string after the first space.
-    $motherboard = strtok($json_data['Hardware']['Motherboard']['Manufacturer'], " ");
-
     //Basic string to time php function to take the generation date and turn it into a usable format.
     $ds = strtotime($json_data['Meta']['GenerationDate']);
     $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
@@ -597,7 +594,15 @@
     </thead>
     <tbody>
         <tr>
-            <td>Manufacturer</td>
+            <td>Motherboard Product</td>
+            <td><?= strtok($json_data['Hardware']['Motherboard']['Manufacturer'], " ") ?> <?= $json_data['Hardware']['Motherboard']['Product'] ?></td>
+        </tr>
+        <tr>
+            <td>Motherboard Manufacturer</td>
+            <td><?=$json_data['Hardware']['Motherboard']['Manufacturer']?></td>
+        </tr>
+        <tr>
+            <td>BIOS Manufacturer</td>
             <td><?= $json_data['Hardware']['BiosInfo'][0]['Manufacturer'] ?></td>
         </tr>
         <tr>
