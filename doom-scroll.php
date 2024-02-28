@@ -1201,6 +1201,7 @@
 ?>
 
 <h1>Devices</h1>
+<p id="devices-sort-warning">Table will not be sortable until database lookups finish</p>
 <table id="devices-table">
     <thead>
         <th>Status</th>
@@ -1216,7 +1217,9 @@
             $json_data['Hardware']['Devices'],
             ['Status', 'Name', 'Description', 'DeviceID'],
             function(&$row) {
-                if ($row['Status'] === 'Error') {
+                if ($row['ConfigManagerErrorCode'] === 22) {
+                    $row['Status'] = 'Disabled (22)';
+                } else if ($row['Status'] === 'Error') {
                     $row['Status'] = "Error ({$row['ConfigManagerErrorCode']})";
                 }
             }
