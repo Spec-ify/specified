@@ -492,7 +492,15 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td>Manufacturer</td>
+                                                        <td>Motherboard Product</td>
+                                                        <td><?= $motherboard ?> <?= $json_data['Hardware']['Motherboard']['Product'] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Motherboard Manufacturer</td>
+                                                        <td><?=$json_data['Hardware']['Motherboard']['Manufacturer']?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>BIOS Manufacturer</td>
                                                         <td><?= $json_data['Hardware']['BiosInfo'][0]['Manufacturer'] ?></td>
                                                     </tr>
                                                     <tr>

@@ -287,48 +287,45 @@ async function call_hwapi(path, payload, fallbackCallack = () => {}) {
     // cpuTable.innerHTML = tableContents;
     document.getElementById("hwapi-body").innerHTML = tableContents;
 
-    let usbDevices = {};
-    let pcieDevices = {};
+    const deviceTrs = document.querySelectorAll("#devices-table tbody tr");
+
+    let usbIndexes = [];
+    let usbValues = [];
+    let pcieIndexes = [];
+    let pcieValues = [];
 
     // go through all the devices and build an array to
-    document.querySelectorAll("#devices-table tbody tr").forEach((tr, index) => {
+    deviceTrs.forEach((tr, index) => {
         const jsonDevice = json["Hardware"]["Devices"][index];
         if (jsonDevice.DeviceID.startsWith("USB")) {
-            usbDevices[index] = jsonDevice["DeviceID"];
+            usbIndexes.push(index);
+            usbValues.push(jsonDevice["DeviceID"]);
         }
         if (jsonDevice.DeviceID.startsWith("PCI")) {
-            pcieDevices[index] = jsonDevice["DeviceID"];
+            pcieIndexes.push(index);
+            pcieValues.push(jsonDevice["DeviceID"]);
         }
     })
-
-    const usbIndexes = Object.keys(usbDevices);
-    const usbValues = Object.values(usbDevices);
-    const pcieIndexes = Object.keys(pcieDevices);
-    const pcieValues = Object.values(pcieDevices);
 
     const usbResponsePromise = call_hwapi('api/usbs/', usbValues);
     const pcieResponsePromise = call_hwapi('api/pcie/', pcieValues);
     const [usbResponse, pcieResponse] = await Promise.all([usbResponsePromise, pcieResponsePromise]);
 
-    for (let ai = 0; ai < usbValues.length; ai++) {
-        const tr = document.querySelectorAll("#devices-table tbody tr")[usbIndexes[ai]];
-        if (usbResponse[ai]) {
-            const response = usbResponse[ai];
+    deviceTrs.forEach((tr, trIndex) => {
+        const usbArrayIndex = usbIndexes.indexOf(trIndex);
+        const pcieArrayIndex = pcieIndexes.indexOf(trIndex);
+        if (usbArrayIndex !== -1 && usbResponse[usbArrayIndex]) { // the value is a usb device and it was found
+            const response = usbResponse[usbArrayIndex];
             const vendor = document.createElement("td");
             vendor.innerText = response.vendor || "";
             tr.appendChild(vendor);
             const device = document.createElement("td");
             device.innerText = response.device || "";
             tr.appendChild(device);
-            const subsystem = document.createElement("td");
+            const subsystem = document.createElement("td"); // no subsystem for usb
             tr.appendChild(subsystem);
-        }
-    }
-
-    for (let ai = 0; ai < pcieValues.length; ai++) {
-        const tr = document.querySelectorAll("#devices-table tbody tr")[pcieIndexes[ai]];
-        if (pcieResponse[ai]) {
-            const response = pcieResponse[ai];
+        } else if (pcieArrayIndex !== -1 && pcieResponse[pcieArrayIndex]) {
+            const response = pcieResponse[pcieArrayIndex];
             const vendor = document.createElement("td");
             vendor.innerText = response.vendor || "";
             tr.appendChild(vendor);
@@ -338,6 +335,15 @@ async function call_hwapi(path, payload, fallbackCallack = () => {}) {
             const subsystem = document.createElement("td");
             subsystem.innerText = response.subsystem || "";
             tr.appendChild(subsystem);
+        } else {
+            tr.innerHTML += "<td></td><td></td><td></td>";
         }
-    }
+    });
+    document.querySelector("#devices-sort-warning").style.display = "none";
+    $("#devices-table").DataTable({
+        paging: false,
+        searching: false,
+        info: false,
+        order: [] // to prevent order changing on data table load
+    });
 })();
