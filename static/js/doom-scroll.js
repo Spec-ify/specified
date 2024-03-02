@@ -259,8 +259,8 @@ async function call_hwapi(path, payload, fallbackCallack = () => {}) {
         console.log(e.name + ": " + e.message);
     }
 
-    // The hwapi request calls currently takes >1s. It doesn't matter that much, but I am doing this in js so the page load
-    // is a little faster.
+    // The hwapi request calls currently takes >1s. It doesn't matter that much, but I am doing this in js so the initial
+    // page load is a little faster.
     /**
      * @type string
      */
@@ -295,36 +295,9 @@ async function call_hwapi(path, payload, fallbackCallack = () => {}) {
         const jsonDevice = json["Hardware"]["Devices"][index];
         if (jsonDevice.DeviceID.startsWith("USB")) {
             usbDevices[index] = jsonDevice["DeviceID"];
-            // can't use await in a querySelector forEach :(
-/*            call_hwapi(`api/usbs/?identifier=${encodeURIComponent(jsonDevice.DeviceID)}`, null).then(response => {
-               if (response) {
-                   const vendor = document.createElement("td");
-                   vendor.innerText = response.vendor || "";
-                   tr.appendChild(vendor);
-                   const device = document.createElement("td");
-                   device.innerText = response.device || "";
-                   tr.appendChild(device);
-                   const subsystem = document.createElement("td");
-                   tr.appendChild(subsystem);
-               }
-            });*/
         }
         if (jsonDevice.DeviceID.startsWith("PCI")) {
             pcieDevices[index] = jsonDevice["DeviceID"];
-            // can't use await in a querySelector forEach :(
-/*            call_hwapi(`api/pcie/?identifier=${encodeURIComponent(jsonDevice.DeviceID)}`, null).then(response => {
-                if (response) {
-                    const vendor = document.createElement("td");
-                    vendor.innerText = response.vendor || "";
-                    tr.appendChild(vendor);
-                    const device = document.createElement("td");
-                    device.innerText = response.device || "";
-                    tr.appendChild(device);
-                    const subsystem = document.createElement("td");
-                    subsystem.innerText = response.subsystem || "";
-                    tr.appendChild(subsystem);
-                }
-            });*/
         }
     })
 

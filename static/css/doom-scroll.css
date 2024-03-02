@@ -149,6 +149,10 @@ th {
     min-width: 17ch; /* just to make it look nice, this is the width of a mac address with colons */
 }
 
+.td-center {
+    text-align: center;
+}
+
 
 .smart-table-wrapper {
     display: flex;

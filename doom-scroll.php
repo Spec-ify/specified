@@ -238,12 +238,19 @@
 <h1>General Notes</h1>
 <?php
     // There will always be an uptime and eol/up-to-date note, so we don't need a placeholder like we do with PUPs
+    $thisBuildInt = (int) substr($json_data['BasicInfo']['Version'], 5);
+    $latestBuildInt = (int) substr($latestver, 5);
 
     // EOL
     $eoltext = '';
+    $os_insider = false;
     if (strpos($validversions, $json_data['BasicInfo']['Version']) !== false) {
         $eoltext = "Not EOL";
         $eolcolor = "green";
+    } else if ($thisBuildInt > $latestBuildInt) {
+        $os_insider = true;
+        $eoltext = 'Insider';
+        $eolcolor = "red";
     } else {
         $eoltext = "EOL";
         $eolcolor = "red";
@@ -267,9 +274,8 @@
     <li><span><?= $ram_used_percent ?>%</span> (<?= $ram_used ?> / <?= $total_ram ?> GB) of the system's RAM is being used.</li>
     <li>The OS is
         <span class="<?= $eolcolor ?>"><?= $eoltext ?></span>
-        <?= $osenglish ?>
-        <span class="<?= $oscolor ?>"><?= $oscheck ?></span>.
-        <span>(version <?= $json_data['BasicInfo']['FriendlyVersion'] ?>)</span>
+        <?php if (!$os_insider) echo " $osenglish <span class='$oscolor'>$oscheck</span>"; ?>
+        <span>(version <?= $json_data['BasicInfo']['FriendlyVersion'] ?>, build <?= $json_data['BasicInfo']['Version'] ?>)</span>
     </li>
     <li>The current uptime is <?= $test_time ?>.</li>
     <?php
@@ -553,17 +559,29 @@
             $ram_sticks = safe_count($json_data['Hardware']['Ram']);
             $ram_stick = 0;
             for ($ram_stick; $ram_stick < $ram_sticks; $ram_stick++) {
-                $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity']);
+                $ram_location = $json_data['Hardware']['Ram'][$ram_stick]['DeviceLocation'];
+                $ram_manufacturer = $json_data['Hardware']['Ram'][$ram_stick]['Manufacturer'];
+                $ram_part = $json_data['Hardware']['Ram'][$ram_stick]['PartNumber'];
                 $ram_speed = $json_data['Hardware']['Ram'][$ram_stick]['ConfiguredSpeed'];
-                echo '
+                $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity']);
+                if ($ram_size == 0) {
+                    echo '
         <tr>
-            <td>' . $json_data['Hardware']['Ram'][$ram_stick]['DeviceLocation'] . '</td>
-            <td>' . $json_data['Hardware']['Ram'][$ram_stick]['Manufacturer'] . '</td>
-            <td>' . $json_data['Hardware']['Ram'][$ram_stick]['PartNumber'] . '</td>
+            <td>' . $ram_location . '</td>
+            <td colspan="4" class="td-center">Not Detected</td>
+        </tr>
+                    ';
+                } else {
+                    echo '
+        <tr>
+            <td>' . $ram_location . '</td>
+            <td>' . $ram_manufacturer . '</td>
+            <td>' . $ram_part . '</td>
             <td>' . $ram_speed . 'MHz</td>
             <td>' . $ram_size . 'MB</td>
         </tr>
-                ';
+                    ';
+                }
             }
         ?>
     </tbody>
