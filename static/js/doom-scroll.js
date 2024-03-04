@@ -259,8 +259,8 @@ async function call_hwapi(path, payload, fallbackCallack = () => {}) {
         console.log(e.name + ": " + e.message);
     }
 
-    // The hwapi request calls currently takes >1s. It doesn't matter that much, but I am doing this in js so the page load
-    // is a little faster.
+    // The hwapi request calls currently takes >1s. It doesn't matter that much, but I am doing this in js so the initial
+    // page load is a little faster.
     /**
      * @type string
      */
