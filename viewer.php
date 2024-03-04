@@ -1314,7 +1314,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     <div class="widget-value">
                                         <div class="widget-value">
                                             <span style="color: <?= $green ?>;">
-                                                <?= $ram_used ?>%
+                                                <?= $json_data['Hardware']['Cpu']['LoadPercentage'] ?? '--' ?>%
                                             </span>
                                         </div>
                                     </div>
