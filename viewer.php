@@ -864,7 +864,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                                     }
                                                 };
                                             }
-                                            echo $adapter;
+                                            echo $adapterText;
 
                                             ?>
 
