@@ -72,11 +72,19 @@ foreach ($eoldata as $eolitem) {
     }
 }
 
+$thisBuildInt = (int) substr($json_data['BasicInfo']['Version'], 5);
+$latestBuildInt = (int) substr($latestver, 5);
+
 // EOL
 $eoltext = '';
+$os_insider = false;
 if (strpos($validversions, $json_data['BasicInfo']['Version']) !== false) {
     $eoltext = "Not EOL";
     $eolcolor = $green;
+} else if ($thisBuildInt > $latestBuildInt) {
+    $os_insider = true;
+    $eoltext = 'Insider';
+    $eolcolor = $red;
 } else {
     $eoltext = "EOL";
     $eolcolor = $red;
@@ -396,20 +404,33 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                    $ram_sticks = safe_count($json_data['Hardware']['Ram']);
-                                                    $ram_stick = 0;
-                                                    for ($ram_stick; $ram_stick < $ram_sticks; $ram_stick++) {
-                                                        $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity']);
-                                                        $ram_speed = $json_data['Hardware']['Ram'][$ram_stick]['ConfiguredSpeed'];
-                                                        echo
-                                                        '<tr>
-                                                <td>' . $json_data['Hardware']['Ram'][$ram_stick]['DeviceLocation'] . '</td>
-                                                <td>' . $json_data['Hardware']['Ram'][$ram_stick]['Manufacturer'] . '</td>
-                                                <td>' . $json_data['Hardware']['Ram'][$ram_stick]['PartNumber'] . '</td>
-                                                <td>' . $ram_speed . 'MHz</td>
-                                                <td>' . $ram_size . 'MB</td>
-                                            </tr>';
-                                                    }
+                                                        $ram_sticks = safe_count($json_data['Hardware']['Ram']);
+                                                        $ram_stick = 0;
+                                                        for ($ram_stick; $ram_stick < $ram_sticks; $ram_stick++) {
+                                                            $ram_location = $json_data['Hardware']['Ram'][$ram_stick]['DeviceLocation'];
+                                                            $ram_manufacturer = $json_data['Hardware']['Ram'][$ram_stick]['Manufacturer'];
+                                                            $ram_part = $json_data['Hardware']['Ram'][$ram_stick]['PartNumber'];
+                                                            $ram_speed = $json_data['Hardware']['Ram'][$ram_stick]['ConfiguredSpeed'];
+                                                            $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity']);
+                                                            if ($ram_size == 0) {
+                                                                echo '
+                                                    <tr>
+                                                        <td>' . $ram_location . '</td>
+                                                        <td colspan="4" class="td-center">Not Detected</td>
+                                                    </tr>
+                                                                ';
+                                                            } else {
+                                                                echo '
+                                                    <tr>
+                                                        <td>' . $ram_location . '</td>
+                                                        <td>' . $ram_manufacturer . '</td>
+                                                        <td>' . $ram_part . '</td>
+                                                        <td>' . $ram_speed . 'MHz</td>
+                                                        <td>' . $ram_size . 'MB</td>
+                                                    </tr>
+                                                                ';
+                                                            }
+                                                        }
                                                     ?>
                                                 </tbody>
                                             </table>
@@ -1282,7 +1303,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     <div class="widget-value">
                                         <div class="widget-value">
                                             <span style="color: <?= $green ?>;">
-                                                <?= $ram_used ?>%
+                                                <?= $json_data['Hardware']['Cpu']['LoadPercentage'] ?? '--' ?>%
                                             </span>
                                         </div>
                                     </div>
@@ -1476,9 +1497,8 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
                                 <p>The OS is
                                     <span style="color:<?= $eolcolor ?>"><?= $eoltext ?></span>
-                                    <?= $osenglish ?>
-                                    <span style="color:<?= $oscolor ?>"><?= $oscheck ?></span>.
-                                    <span>(version <?= $json_data['BasicInfo']['FriendlyVersion'] ?>)</span>
+                                    <?php if (!$os_insider) echo " $osenglish <span style='color: $oscolor;'>$oscheck</span>"; ?>
+                                    <span>(version <?= $json_data['BasicInfo']['FriendlyVersion'] ?>, build <?= $json_data['BasicInfo']['Version'] ?>)</span>
                                 </p>
 
                                 <p>The current uptime is
@@ -1847,7 +1867,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                         <div class="textbox metadata-detail" id="accordionTablesDevices">
                             <div class="accordion">
                                 <h1 class="accordion-header" id="devicesTableButton">
-                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#devices" aria-expanded="true" aria-controls="devices">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#devices" aria-expanded="true" aria-controls="devices">
                                         Devices
                                     </button>
                                 </h1>
@@ -1862,7 +1882,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     </table>
                                 </div>
                                 <h1 class="accordion-header" id="driversTableButton">
-                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#drivers" aria-expanded="true" aria-controls="drivers">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#drivers" aria-expanded="true" aria-controls="drivers">
                                         Drivers
                                     </button>
                                 </h1>
@@ -1884,7 +1904,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                         <div class="textbox metadata-detail" id="accordionTablesApps">
                             <div class="accordion">
                                 <h1 class="accordion-header" id="runningProcessesButton">
-                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#runningProcesses" aria-expanded="true" aria-controls="runningProcesses">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#runningProcesses" aria-expanded="true" aria-controls="runningProcesses">
                                         Running Processes
                                     </button>
                                 </h1>
@@ -1900,7 +1920,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     </table>
                                 </div>
                                 <h1 class="accordion-header" id="installedAppButton">
-                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#installedApp" aria-expanded="true" aria-controls="installedApp">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#installedApp" aria-expanded="true" aria-controls="installedApp">
                                         Installed Apps
                                     </button>
                                 </h1>
@@ -1921,7 +1941,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                         <div class="textbox metadata-detail" id="accordionTablesServices">
                             <div class="accordion">
                                 <h1 class="accordion-header" id="servicesTableButton">
-                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#services" aria-expanded="true" aria-controls="services">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#services" aria-expanded="true" aria-controls="services">
                                         Services
                                     </button>
                                 </h1>
@@ -1937,7 +1957,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     </table>
                                 </div>
                                 <h1 class="accordion-header" id="tasksTableButton">
-                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#tasks" aria-expanded="true" aria-controls="tasks">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#tasks" aria-expanded="true" aria-controls="tasks">
                                         Tasks
                                     </button>
                                 </h1>
@@ -1961,7 +1981,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                         <div class="textbox metadata-detail" id="accordionTablesNetwork">
                             <div class="accordion">
                                 <h1 class="accordion-header" id="netconTableButton">
-                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#netcon" aria-expanded="true" aria-controls="netcon">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#netcon" aria-expanded="true" aria-controls="netcon">
                                         Network Connections
                                     </button>
                                 </h1>
@@ -1977,7 +1997,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     </table>
                                 </div>
                                 <h1 class="accordion-header" id="routesTableButton">
-                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#routes" aria-expanded="true" aria-controls="routes">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#routes" aria-expanded="true" aria-controls="routes">
                                         Routes Table
                                     </button>
                                 </h1>
@@ -1994,7 +2014,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     </table>
                                 </div>
                                 <h1 class="accordion-header" id="hostsTableButton">
-                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#hosts" aria-expanded="true" aria-controls="hosts">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#hosts" aria-expanded="true" aria-controls="hosts">
                                         Hosts File
                                     </button>
                                 </h1>
@@ -2011,7 +2031,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                         <div class="textbox metadata-detail" id="accordionTablesDev">
                             <div class="accordion">
                                 <h1 class="accordion-header" id="debugLogButton">
-                                    <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#debugLog" aria-expanded="true" aria-controls="debugLog">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#debugLog" aria-expanded="true" aria-controls="debugLog">
                                         Debug Log
                                     </button>
                                 </h1>
