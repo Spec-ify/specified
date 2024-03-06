@@ -826,39 +826,28 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                         <div style="color: <?= $green ?>;">
 
                                             <?php
-                                            $adapter = "";
-                                            $specversion = preg_replace("/[^0-9]/", "", $json_data['Version']);
+                                            $adapterText = "Disconnected";
 
-                                            if ((int)$specversion >= 113) {
+                                            foreach ($json_data['Network']['Adapters'] as $adapter) {
+                                                if ($adapter['PhysicalAdapter'] && is_array($adapter['IPAddress']) && count($adapter['IPAddress']) > 0) {
+                                                    $adapterText = $adapter['Description'];
+                                                    break;
+                                                }
+                                            };
+
+                                            if ($adapter == "") {
                                                 foreach ($json_data['Network']['Adapters'] as $adapter) {
-                                                    if ($adapter['PhysicalAdapter'] == true && isset($adapter['DHCPLeaseExpires'])) {
-                                                        $adapter = $adapter['Description'];
+                                                    if ($adapter['PhysicalAdapter']) {
+                                                        $adapterText = $adapter['Description'];
                                                         break;
                                                     }
                                                 };
-
-                                                if ($adapter == "") {
-                                                    foreach ($json_data['Network']['Adapters'] as $adapter) {
-                                                        if ($adapter['PhysicalAdapter'] == true) {
-                                                            $adapter = $adapter['Description'];
-                                                            break;
-                                                        }
-                                                    };
-                                                }
-                                            } else {
-                                                foreach ($json_data['Network']['Adapters2'] as $nicold) {
-                                                    if ($nicold['ConnectorPresent']) {
-                                                        $adapter = $nicold['InterfaceDescription'];
-                                                        break;
-                                                    }
-                                                }
                                             }
                                             echo $adapter;
 
                                             ?>
 
                                         </div>
-                                        <div>OEM</div>
                                     </div>
                                 </div>
                             </div>
