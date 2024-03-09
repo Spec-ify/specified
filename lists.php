@@ -685,5 +685,7 @@ $defaultRegKeys = [
     "BypassSecureBootCheck" => [null],
     "SV2" => [null],
     "Win32PrioritySeparation" => [2],
-    "Windows Error Reporting\\Disabled" => [null]
+    "Windows Error Reporting\\Disabled" => [null],
+    "Windows Defender\\Passive Mode" => [null],
+    "UnsupportedHardwareNotificationCache\\SV2" => [null]
 ];
