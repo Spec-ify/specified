@@ -106,9 +106,12 @@ nav.nav-collapsed #nav-expand {
     background-color: var(--nav-hover-color);
 }
 
+a {
+    color: var(--link-color);
+}
+
 nav a {
     text-decoration: none;
-    color: var(--link-color);
     display: block;
     width: 100%;
 }
@@ -309,5 +312,15 @@ From PrismJS: https://github.com/PrismJS/prism/blob/master/LICENSE
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
 
+.whea-error {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.whea-error:not(:last-child) {
+    padding-bottom: 1rem;
 }

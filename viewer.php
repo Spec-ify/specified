@@ -1565,7 +1565,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                             $currentcap = $battery['Full_Charge_Capacity'] / 1000;
                                             $noteshtml .= "
                                             <p>
-                                                Battery <span>{$battery['Name']}</span> has a diminished capacity! (Designed for {$designcap} Wh, currently {$currentcap} Wh)
+                                                Battery <span>{$battery['Name']}</span> has a diminished capacity (Designed for {$designcap} Wh, currently {$currentcap} Wh)
                                             </p>";
                                         }
                                     }
@@ -1614,7 +1614,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     $partitionmodal = 'data-mdb-target="#partitionsModal"';
 
                                     $letters = array_filter(
-                                        array_column($json_data['Hardware']['Storage'][$driveKey]['Partitions'], 'PartitionLabel')
+                                        array_column($json_data['Hardware']['Storage'][$driveKey]['Partitions'], 'PartitionLetter')
                                     );
                                     $lettersString = implode(", ", $letters);
 

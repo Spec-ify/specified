@@ -11,8 +11,8 @@
   </component>
   <component name="PhpInterpreters">
     <interpreters>
-      <interpreter id="f8dfffb1-78ce-4082-9989-6b0e88494015" name="ubuntu@138.2.133.243:22 key" home="sshConfig://DATA" debugger_id="php.debugger.XDebug">
-        <remote_data INTERPRETER_PATH="/usr/bin/php" HELPERS_PATH="/home/ubuntu/.phpstorm_helpers" INITIALIZED="false" VALID="true" RUN_AS_ROOT_VIA_SUDO="false" SSH_CONFIG_ID="c54e1622-91da-4cb1-a080-675058e539af" SSH_CONFIG_NAME="ubuntu@138.2.133.243:22 key" SSH_CREDENTIALS_ID="sshConfig://ubuntu@138.2.133.243:22 key" />
+      <interpreter id="f8dfffb1-78ce-4082-9989-6b0e88494015" name="ubuntu@138.2.133.243:22 key" home="sshConfig://DATA" auto="false" debugger_id="php.debugger.XDebug">
+        <remote_data INTERPRETER_PATH="/usr/bin/php" HELPERS_PATH="/home/ubuntu/.phpstorm_helpers" VALID="true" RUN_AS_ROOT_VIA_SUDO="false" SSH_CONFIG_ID="c54e1622-91da-4cb1-a080-675058e539af" SSH_CONFIG_NAME="ubuntu@138.2.133.243:22 key" SSH_CREDENTIALS_ID="sshConfig://ubuntu@138.2.133.243:22 key" />
       </interpreter>
     </interpreters>
   </component>
@@ -66,7 +66,7 @@
       </interpreter>
     </phpInfoCache>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="7.4">
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.0">
     <option name="suggestChangeDefaultLanguageLevel" value="false" />
   </component>
   <component name="PhpStanOptionsConfiguration">

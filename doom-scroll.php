@@ -123,25 +123,6 @@
     }
     $pupsFoundRunning = array_unique($pupsFoundRunning);
 
-    // Old PUP Filter
-    /*
-    $pupsfoundInstalled = array_filter($referenceListInstalled, function ($checkobj) use ($normalizedArray) {
-        foreach ($normalizedArray as $pup) {
-            if (str_contains(strtolower($checkobj['Name']), $pup)) {
-                return $checkobj;
-            }
-        }
-    });
-
-    $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use ($normalizedArray){
-        foreach ($normalizedArray as $pup) {
-            if (str_contains(strtolower($checkobj['ProcessName']), $pup)) {
-                return $checkobj;
-            }
-        }
-    });
-    */
-
     /**
      * Return table layout for a data array
      * @param string[][] $arr
@@ -368,21 +349,21 @@
         }
 
     $drivehtml = '';
-    $driveKey = 0;
 
-        foreach ($json_data['Hardware']['Storage'] as $storage_device) {
+        foreach ($json_data['Hardware']['Storage'] as $drive) {
             $letters = array_filter(
-                array_column($json_data['Hardware']['Storage'][$driveKey]['Partitions'], 'PartitionLabel')
+                array_column($drive['Partitions'], 'PartitionLetter')
             );
             $lettersString = implode(", ", $letters);
+            $drive_url = '#' . urlencode('storage-' . $drive['DeviceName'] ?? 'un' . '-' . $drive['SerialNumber'] ?? 'un');
 
-            if ($storage_device['SmartData']) {
-                foreach ($storage_device['SmartData'] as $smartPoint) {
+            if ($drive['SmartData']) {
+                foreach ($drive['SmartData'] as $smartPoint) {
                     if (str_contains($smartPoint['Name'], '!')) {
                         if ($smartPoint['RawValue'] != '000000000000') {
                             echo "
     <li>
-        <span class='drivespan'>{$storage_device['DeviceName']} ($lettersString)</span> has 
+        <a href='$drive_url'>{$drive['DeviceName']} ($lettersString)</a> has 
         <span class='yellow'>{$smartPoint['RawValue']} {$smartPoint['Name']}</span>
     </li>
                         ";
@@ -391,13 +372,13 @@
                 }
             }
 
-            if (abs((floor(bytesToGigabytes($storage_device['DiskCapacity'])) -
-                    floor(bytesToGigabytes(getDriveCapacity($storage_device))))) > 5) {
-                $onDisk = floor(bytesToGigabytes($storage_device['DiskCapacity']));
-                $onParts = floor(bytesToGigabytes(getDriveCapacity($storage_device)));
+            if (abs((floor(bytesToGigabytes($drive['DiskCapacity'])) -
+                    floor(bytesToGigabytes(getDriveCapacity($drive))))) > 5) {
+                $onDisk = floor(bytesToGigabytes($drive['DiskCapacity']));
+                $onParts = floor(bytesToGigabytes(getDriveCapacity($drive)));
                 echo  "
     <li>
-        <span>{$storage_device['DeviceName']} ($lettersString) </span> has differing capacities.
+        <span>{$drive['DeviceName']} ($lettersString) </span> has differing capacities.
         ($onDisk on disk vs. $onParts on partitions)
     </li>
             ";
@@ -786,164 +767,47 @@
     </tbody>
 </table>
 
-<h1>Network Adapters</h1>
-<?php
 
-    foreach ($json_data["Network"]["Adapters"] as $nic) {
-        echo '
-<h2 class="item-header">' . $nic["Description"] . ' </h2>
-<table class="table nic">
-    <tr>
-        <td>Name</td>
-        <td>' . $nic['Description'] . '</td>
-    </tr>
-    <tr>
-        <td>Interface Index</td>
-        <td>' . $nic['InterfaceIndex'] . '</td>
-    </tr>
-    <tr>
-        <td>MAC</td>
-        <td>' . $nic["MACAddress"] . '</td>
-    </tr>
+<h1>Devices</h1>
+<p id="devices-sort-warning">Table will not be sortable until database lookups finish</p>
+<table id="devices-table">
+    <thead>
+        <th>Status</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>DID</th>
+        <th>Vendor (Database)</th>
+        <th>Device (Database)</th>
+        <th>PCIe Subsystem (Database)</th>
+    </thead>
+    <tbody>
+        <?= array_table_iter(
+            $json_data['Hardware']['Devices'],
+            ['Status', 'Name', 'Description', 'DeviceID'],
+            function(&$row) {
+                if ($row['ConfigManagerErrorCode'] === 22) {
+                    $row['Status'] = 'Disabled (22)';
+                } else if ($row['Status'] === 'Error') {
+                    $row['Status'] = "Error ({$row['ConfigManagerErrorCode']})";
+                }
+            }
+        ) ?>
+    </tbody>
+</table>
 
-    <tr>
-        <td>Gateway(s)</td>
-        <td>' . safe_implode('<br/>', $nic["DefaultIPGateway"]) . '</td>
-    </tr>
-
-    <tr>
-        <td>DHCP State</td>
-        <td>' . $nic["DHCPEnabled"] . '</td>
-    </tr>
-
-    <tr>
-        <td>DHCP Lease Expiry</td>
-        <td>' . $nic["DHCPLeaseExpires"] . '</td>
-    </tr>
-
-    <tr>
-        <td>DHCP Lease Obtained</td>
-        <td>' . $nic["DHCPLeaseObtained"] . '</td>
-    </tr>
-
-    <tr>
-        <td>DHCP Server</td>
-        <td>' . $nic["DHCPServer"] . '</td>
-    </tr>
-
-    <tr>
-        <td>DNS Domain</td>
-        <td>' . $nic["DNSDomain"] . '</td>
-    </tr>
-
-    <tr>
-        <td>DNS Hostname</td>
-        <td>' . $nic["DNSHostName"] . '</td>
-    </tr>
-        
-    <tr>
-        <td>DNS Servers IPv6</td>
-        <td>' . safe_implode('<br/>', $nic['DNSIPV6']) . '</td>
-    </tr>
-
-    <tr>
-        <td>DNS Suffixes</td>
-        <td>' . safe_implode('<br/>', $nic['DNSDomainSuffixSearchOrder']) . '</td>
-    </tr>
-
-    <tr>
-        <td>IP Enabled?</td>
-        <td>' . $nic["IPEnabled"] . '</td>
-    </tr>
-
-    <tr>
-        <td>IP(s)</td>
-        <td>' . safe_implode('<br/>', $nic['IPAddress']) . '</td>
-    </tr>
-
-    <tr>
-        <td>Subnet</td>
-        <td>' . safe_implode('<br/>', $nic['IPSubnet']) . '</td>
-    </tr>
-
-    <tr>
-        <td>Physical Adapter?</td>
-        <td>' . ($nic['PhysicalAdapter'] ?? 'unknown') . '</td>
-    </tr>
-        ';
-
-        if (isset($nic["LinkSpeed"])) {
-            echo '
-    <tr>
-        <td>Link Speed</td>
-        <td>' . round($nic["LinkSpeed"] / 1_000_000) . 'Mbps </td>
-    </tr>
-            ';
-        }
-
-        if (isset($nic["PhysicalAdapter"]) && $nic["PhysicalAdapter"]) {
-            echo '
-    <tr>
-        <td>Static DNS Servers?</td>
-        <td>' . $nic['DNSIsStatic'] ? 'Yes' : 'No' . '</td>
-    </tr>
-
-    <tr>
-        <td>DNS Servers IPv4</td>
-        <td>' . safe_implode('<br/>', $nic['DNSServerSearchOrder']) . '</td>
-    </tr>
-    
-    <tr>
-        <td>Full Duplex?</td>
-        <td>' . $nic["FullDuplex"] . '</td>
-    </tr>
-
-    <tr>
-        <td>Media Connection State</td>
-        <td>' . $nic["MediaConnectState"] . '</td>
-    </tr>
-
-    <tr>
-        <td>Media Duplex State</td>
-        <td>' . $nic["MediaDuplexState"] . '</td>
-    </tr>
-
-    <tr>
-        <td>MTU Size</td>
-        <td>' . $nic["MtuSize"] . '</td>
-    </tr>
-
-    <tr>
-        <td>Name</td>
-        <td>' . $nic["Name"] . '</td>
-    </tr>
-
-    <tr>
-        <td>Operational Status</td>
-        <td>' . ($nic["OperationalStatusDownMediaDisconnected"] ? 'Down - Media Disconnected' : '') . '</td>
-    </tr>
-
-    <tr>
-        <td>Permanent Address</td>
-        <td>' . $nic["PermanentAddress"] . '</td>
-    </tr>
-
-    <tr>
-        <td>Promiscuous Mode</td>
-        <td>' . $nic["PromiscuousMode"] . '</td>
-    </tr>
-
-    <tr>
-        <td>State</td>
-        <td>' . $nic["State"] . '</td>
-    </tr>
-            ';
-        }
-
-        echo '</table>';
-    }
-
-?>
+<h1>Drivers</h1>
+<table id="drivers-table">
+    <thead>
+        <th>Name</th>
+        <th>Friendly Name</th>
+        <th>Manufacturer</th>
+        <th>DID</th>
+        <th>Version</th>
+    </thead>
+    <tbody>
+        <?= array_table_iter($json_data['Hardware']['Drivers'], ['DeviceName', 'FriendlyName', 'Manufacturer', 'DeviceID', 'DriverVersion']) ?>
+    </tbody>
+</table>
 
 <h1>Storage</h1>
 <?php
@@ -953,7 +817,6 @@
     foreach ($json_data['Hardware']['Storage'] as $driveKey => $drive) {
         $drive_size_raw = $drive['DiskCapacity'];
         $drive_free_raw = getDriveFree($drive);
-        $device_name = $drive['DeviceName'];
         $drive_taken_raw = $drive_size_raw - $drive_free_raw;
         $drive_size = floor(bytesToGigabytes($drive_size_raw));
         $drive_taken = floor(bytesToGigabytes($drive_taken_raw));
@@ -970,7 +833,9 @@
 
         echo '
     <h2 class="item-header">' . $drive['DeviceName'] . '</h2>
-    <table class="table">
+    <table class="table" id="' .
+        urlencode('storage-' . $drive['DeviceName'] ?? 'un' . '-' . $drive['SerialNumber'] ?? 'un') /* un means unknown here */
+        . '">
         <thead>
         <th>Name</th>
         <th>SN</th>
@@ -1218,47 +1083,6 @@
     endforeach;
 ?>
 
-<h1>Devices</h1>
-<p id="devices-sort-warning">Table will not be sortable until database lookups finish</p>
-<table id="devices-table">
-    <thead>
-        <th>Status</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>DID</th>
-        <th>Vendor (Database)</th>
-        <th>Device (Database)</th>
-        <th>PCIe Subsystem (Database)</th>
-    </thead>
-    <tbody>
-        <?= array_table_iter(
-            $json_data['Hardware']['Devices'],
-            ['Status', 'Name', 'Description', 'DeviceID'],
-            function(&$row) {
-                if ($row['ConfigManagerErrorCode'] === 22) {
-                    $row['Status'] = 'Disabled (22)';
-                } else if ($row['Status'] === 'Error') {
-                    $row['Status'] = "Error ({$row['ConfigManagerErrorCode']})";
-                }
-            }
-        ) ?>
-    </tbody>
-</table>
-
-<h1>Drivers</h1>
-<table id="drivers-table">
-    <thead>
-        <th>Name</th>
-        <th>Friendly Name</th>
-        <th>Manufacturer</th>
-        <th>DID</th>
-        <th>Version</th>
-    </thead>
-    <tbody>
-        <?= array_table_iter($json_data['Hardware']['Drivers'], ['DeviceName', 'FriendlyName', 'Manufacturer', 'DeviceID', 'DriverVersion']) ?>
-    </tbody>
-</table>
-
 <!-- Haven't implemented functionality in PHP yet, in JS for now -->
 <h1>Running Processes</h1>
 <table id="processes-table">
@@ -1318,7 +1142,167 @@
     </tbody>
 </table>
 
-<h1>Network Connections</h1>
+<h1>Network</h1>
+<h2>Adapters</h2>
+<?php
+
+    foreach ($json_data["Network"]["Adapters"] as $nic) {
+        echo '
+<h2 class="item-header">' . $nic["Description"] . ' </h2>
+<table class="table nic">
+    <tr>
+        <td>Name</td>
+        <td>' . $nic['Description'] . '</td>
+    </tr>
+    <tr>
+        <td>Interface Index</td>
+        <td>' . $nic['InterfaceIndex'] . '</td>
+    </tr>
+    <tr>
+        <td>MAC</td>
+        <td>' . $nic["MACAddress"] . '</td>
+    </tr>
+
+    <tr>
+        <td>Gateway(s)</td>
+        <td>' . safe_implode('<br/>', $nic["DefaultIPGateway"]) . '</td>
+    </tr>
+
+    <tr>
+        <td>DHCP State</td>
+        <td>' . $nic["DHCPEnabled"] . '</td>
+    </tr>
+
+    <tr>
+        <td>DHCP Lease Expiry</td>
+        <td>' . $nic["DHCPLeaseExpires"] . '</td>
+    </tr>
+
+    <tr>
+        <td>DHCP Lease Obtained</td>
+        <td>' . $nic["DHCPLeaseObtained"] . '</td>
+    </tr>
+
+    <tr>
+        <td>DHCP Server</td>
+        <td>' . $nic["DHCPServer"] . '</td>
+    </tr>
+
+    <tr>
+        <td>DNS Domain</td>
+        <td>' . $nic["DNSDomain"] . '</td>
+    </tr>
+
+    <tr>
+        <td>DNS Hostname</td>
+        <td>' . $nic["DNSHostName"] . '</td>
+    </tr>
+        
+    <tr>
+        <td>DNS Servers IPv6</td>
+        <td>' . safe_implode('<br/>', $nic['DNSIPV6']) . '</td>
+    </tr>
+
+    <tr>
+        <td>DNS Suffixes</td>
+        <td>' . safe_implode('<br/>', $nic['DNSDomainSuffixSearchOrder']) . '</td>
+    </tr>
+
+    <tr>
+        <td>IP Enabled?</td>
+        <td>' . $nic["IPEnabled"] . '</td>
+    </tr>
+
+    <tr>
+        <td>IP(s)</td>
+        <td>' . safe_implode('<br/>', $nic['IPAddress']) . '</td>
+    </tr>
+
+    <tr>
+        <td>Subnet</td>
+        <td>' . safe_implode('<br/>', $nic['IPSubnet']) . '</td>
+    </tr>
+
+    <tr>
+        <td>Physical Adapter?</td>
+        <td>' . ($nic['PhysicalAdapter'] ?? 'unknown') . '</td>
+    </tr>
+        ';
+
+        if (isset($nic["LinkSpeed"])) {
+            echo '
+    <tr>
+        <td>Link Speed</td>
+        <td>' . round($nic["LinkSpeed"] / 1_000_000) . 'Mbps </td>
+    </tr>
+            ';
+        }
+
+        if (isset($nic["PhysicalAdapter"]) && $nic["PhysicalAdapter"]) {
+            echo '
+    <tr>
+        <td>Static DNS Servers?</td>
+        <td>' . $nic['DNSIsStatic'] ? 'Yes' : 'No' . '</td>
+    </tr>
+
+    <tr>
+        <td>DNS Servers IPv4</td>
+        <td>' . safe_implode('<br/>', $nic['DNSServerSearchOrder']) . '</td>
+    </tr>
+    
+    <tr>
+        <td>Full Duplex?</td>
+        <td>' . $nic["FullDuplex"] . '</td>
+    </tr>
+
+    <tr>
+        <td>Media Connection State</td>
+        <td>' . $nic["MediaConnectState"] . '</td>
+    </tr>
+
+    <tr>
+        <td>Media Duplex State</td>
+        <td>' . $nic["MediaDuplexState"] . '</td>
+    </tr>
+
+    <tr>
+        <td>MTU Size</td>
+        <td>' . $nic["MtuSize"] . '</td>
+    </tr>
+
+    <tr>
+        <td>Name</td>
+        <td>' . $nic["Name"] . '</td>
+    </tr>
+
+    <tr>
+        <td>Operational Status</td>
+        <td>' . ($nic["OperationalStatusDownMediaDisconnected"] ? 'Down - Media Disconnected' : '') . '</td>
+    </tr>
+
+    <tr>
+        <td>Permanent Address</td>
+        <td>' . $nic["PermanentAddress"] . '</td>
+    </tr>
+
+    <tr>
+        <td>Promiscuous Mode</td>
+        <td>' . $nic["PromiscuousMode"] . '</td>
+    </tr>
+
+    <tr>
+        <td>State</td>
+        <td>' . $nic["State"] . '</td>
+    </tr>
+            ';
+        }
+
+        echo '</table>';
+    }
+
+?>
+
+<h2>Connections</h2>
 <table id="network-connections-table">
     <thead>
         <th>Local IP</th>
@@ -1343,7 +1327,7 @@
     </tbody>
 </table>
 
-<h1>Routes Table</h1>
+<h2>Routes Table</h2>
 <table id="routes-table">
     <thead>
         <th>Route</th>
@@ -1369,7 +1353,7 @@
     </tbody>
 </table>
 
-<h1>Hosts File</h1>
+<h2>Hosts File</h2>
 <?php
     echo '<pre class="file"><code>';
     $lines = explode("\n", $json_data['Network']['HostsFile']);
