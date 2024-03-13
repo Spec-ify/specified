@@ -1147,6 +1147,9 @@
 <?php
 
     foreach ($json_data["Network"]["Adapters"] as $nic) {
+        // if DNSIPV6 is a string, explode it. If it's null, return an empty array. If it's an array, just give the array
+        $ipv6_dns = $nic['DNSIPV6'] ? ( is_array($nic['DNSIPV6']) ? $nic['DNSIPV6'] : explode(',', $nic['DNSIPV6']) ) : [];
+
         echo '
 <h2 class="item-header">' . $nic["Description"] . ' </h2>
 <table class="table nic">
@@ -1199,11 +1202,6 @@
     </tr>
         
     <tr>
-        <td>DNS Servers IPv6</td>
-        <td>' . safe_implode('<br/>', $nic['DNSIPV6']) . '</td>
-    </tr>
-
-    <tr>
         <td>DNS Suffixes</td>
         <td>' . safe_implode('<br/>', $nic['DNSDomainSuffixSearchOrder']) . '</td>
     </tr>
@@ -1246,8 +1244,8 @@
     </tr>
 
     <tr>
-        <td>DNS Servers IPv4</td>
-        <td>' . safe_implode('<br/>', $nic['DNSServerSearchOrder']) . '</td>
+        <td>DNS Servers</td>
+        <td>' . safe_implode('<br/>', array_merge($nic['DNSServerSearchOrder'] ?? [], $dns_ipv6)) . '</td>
     </tr>
     
     <tr>
