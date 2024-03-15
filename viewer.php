@@ -1591,9 +1591,47 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     }
                                 }
 
+                                $unexpected_shutdown_count = safe_count($json_data['Events']['UnexpectedShutdowns']);
+                                $machinecheck_count = safe_count($json_data['Events']['MachineCheckExceptions']);
+                                $whea_count = safe_count($json_data['Events']['WheaErrorRecords']);
+                                $pci_whea_count = safe_count($json_data['Events']['PciWheaErrors']);
+
+                                $unexpected_shutdown_display = $unexpected_shutdown_count >= 10 ? '10+' : "$unexpected_shutdown_count";
+                                $machinecheck_display = $machinecheck_count >= 10 ? '10+' : "$machinecheck_count";
+                                $whea_display = $whea_count >= 10 ? '10+' : "$whea_count";
+                                $pcie_whea_display = $pci_whea_count >= 10 ? '10+' : "$pci_whea_count";
+                                if ($unexpected_shutdown_count > 0) {
+                                    $noteshtml .= "
+                                        <p>
+                                            <span>$unexpected_shutdown_display</span> Unexpected Shutdowns detected
+                                        </p>
+                                    ";
+                                }
+                                if ($machinecheck_count > 0) {
+                                    $noteshtml .= "
+                                        <p>
+                                            <span>$machinecheck_display</span> MachineCheck Exceptions detected
+                                        </p>
+                                    ";
+                                }
+                                if ($whea_count > 0) {
+                                    $noteshtml .= "
+                                        <p>
+                                            <span>$whea_display</span> WHEA errors detected
+                                        </p>
+                                    ";
+                                }
+                                if ($pci_whea_count > 0) {
+                                    $noteshtml .= "
+                                        <p>
+                                            <span>$pcie_whea_display</span> PCI WHEA errors detected
+                                        </p>
+                                    ";
+                                }
+
                                 if ($json_data['Meta']['ElapsedTime'] > 20000) {
                                     $noteshtml .= '
-                                        <p>Specify runtime is over 20s.</p>
+                                        <p>Specify runtime is over 20s</p>
                                     ';
                                 }
 

@@ -75,6 +75,13 @@ nav {
     flex: 0 0 auto;
 }
 
+#nav-collapse {
+    position: absolute;
+    right: 0;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
 #nav-expand {
     display: none;
 }

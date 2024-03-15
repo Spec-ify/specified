@@ -348,7 +348,7 @@
             }
         }
 
-    $drivehtml = '';
+        $drivehtml = '';
 
         foreach ($json_data['Hardware']['Storage'] as $drive) {
             $letters = array_filter(
@@ -388,31 +388,69 @@
 
         $reghtml = "";
 
-    if ($json_data['System']['StaticCoreCount'] != false) {
-        echo '
+        if ($json_data['System']['StaticCoreCount'] != false) {
+            echo '
     <li>
         <span>Static Core Count</span> found set.
     </li>
-        ';
-    }
+            ';
+        }
 
-    foreach ($json_data['System']['ChoiceRegistryValues'] as $regkey) {
+        foreach ($json_data['System']['ChoiceRegistryValues'] as $regkey) {
 
-        if ($regkey['Value'] && !in_array($regkey['Value'], $defaultRegKeys[$regkey['Name']])) {
-            echo '
+            if ($regkey['Value'] && !in_array($regkey['Value'], $defaultRegKeys[$regkey['Name']])) {
+                echo '
     <li>
         Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
     </li>
+                    ';
+            }
+        }
+
+        $unexpected_shutdown_count = safe_count($json_data['Events']['UnexpectedShutdowns']);
+        $machinecheck_count = safe_count($json_data['Events']['MachineCheckExceptions']);
+        $whea_count = safe_count($json_data['Events']['WheaErrorRecords']);
+        $pci_whea_count = safe_count($json_data['Events']['PciWheaErrors']);
+
+        $unexpected_shutdown_display = $unexpected_shutdown_count >= 10 ? '10+' : "$unexpected_shutdown_count";
+        $machinecheck_display = $machinecheck_count >= 10 ? '10+' : "$machinecheck_count";
+        $whea_display = $whea_count >= 10 ? '10+' : "$whea_count";
+        $pcie_whea_display = $pci_whea_count >= 10 ? '10+' : "$pci_whea_count";
+        if ($unexpected_shutdown_count > 0) {
+            echo "
+    <li>
+        <span>$unexpected_shutdown_display</span> Unexpected Shutdowns detected
+    </li>
+            ";
+        }
+        if ($machinecheck_count > 0) {
+            echo "
+    <li>
+        <span>$machinecheck_display</span> MachineCheck Exceptions detected
+    </li>
+            ";
+        }
+        if ($whea_count > 0) {
+            echo "
+    <li>
+        <span>$whea_display</span> WHEA errors detected
+    </li>
+            ";
+        }
+        if ($pci_whea_count > 0) {
+            echo "
+    <li>
+        <span>$pcie_whea_display</span> PCI WHEA errors detected
+    </li>
+            ";
+        }
+
+        if ($json_data['Meta']['ElapsedTime'] > 20000) {
+            echo '
+    <li>Specify runtime is over 20s</li>
                 ';
         }
-    }
-
-    if ($json_data['Meta']['ElapsedTime'] > 20000) {
-        echo '
-    <li>Specify runtime is over 20s.</li>
-            ';
-    }
-?>
+    ?>
 </ul>
 
 <h1>PUPs</h1>
