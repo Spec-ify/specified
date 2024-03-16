@@ -1218,7 +1218,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     </table>
                                 <h5>SMART</h5>
 								';
-                                if (isset($drive['SmartData'])) {
+                                if (is_array($drive['SmartData']) && count($drive['SmartData']) != 0) {
                                     echo
                                     '
                                     <div class="smart-table-wrapper">
