@@ -230,7 +230,7 @@ const easterEgg = new Konami(
 $("#gesptoggle").click(() => {
     localStorage.setItem("viewmode", "gesp");
 });
-$("#spectoggle").click(() => {
+$("#spec-toggle").click(() => {
     //console.log('click');
     window.localStorage.removeItem("viewmode");
 });
