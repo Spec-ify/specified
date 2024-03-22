@@ -449,7 +449,7 @@ article h2:before {
 	color: #ccc;
 }
 
-#header_header {
+#headerHeader {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -464,7 +464,7 @@ article h2:before {
 	line-height: 100%;
 }
 
-#header_header > a {
+#headerHeader > a {
 	display: flex;
 	align-items: center;
 	background-color: #252b2d;
@@ -474,7 +474,7 @@ article h2:before {
 	border: 0;
 }
 
-#header_header > a > h1 {
+#headerHeader > a > h1 {
 	padding: 0 3px;
 	font-size: 14pt;
 	margin: 0;
@@ -482,13 +482,13 @@ article h2:before {
 	color: #fff;
 }
 
-#header_header svg {
+#headerHeader svg {
 	-webkit-filter: invert(0);
 	filter: invert(0);
 	padding-right: 5px;
 }
 
-#header_buttons {
+#headerButtons {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -831,7 +831,7 @@ article h2:before {
 	margin-right: auto;
 }
 
-#btn-back-to-top {
+#btnBackToTop {
 	position: fixed;
 	bottom: 20px;
 	right: 20px;
@@ -859,11 +859,11 @@ article h2:before {
 }
 
 /* initial property, will be changed when the button is clicked */
-#CollapseToggleHide {
+#collapseToggleHide {
 	display: none;
 }
 
-#Download:hover {
+#download:hover {
 	text-decoration: none;
 	border-bottom: none;
 }

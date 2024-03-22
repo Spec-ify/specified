@@ -230,24 +230,24 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
     <div id="blanket"></div>
     <div id="main">
         <!--$-->
-        <button type="button" class="btn btn-info btn-floating btn-lg" id="btn-back-to-top">
+        <button type="button" class="btn btn-info btn-floating btn-lg" id="btnBackToTop">
             <i class="fas fa-arrow-up"></i>
         </button>
-        <header id="header_header">
+        <header id="headerHeader">
             <a class="logo" href="index.html">
                 <img src="assets/logo.png" height="25em">
             </a>
-            <div id="header_buttons">
-                <button type="button" class="btn btn-info" id="CollapseToggle">Expand All</button>
-                <button type="button" class="btn btn-info" id="CollapseToggleHide">Collapse All</button>
-                <a id="Download" href="<?= $json_file ?>">
+            <div id="headerButtons">
+                <button type="button" class="btn btn-info" id="collapseToggle">Expand All</button>
+                <button type="button" class="btn btn-info" id="collapseToggleHide">Collapse All</button>
+                <a id="download" href="<?= $json_file ?>">
                     <button class="btn btn-info">View Raw JSON</button>
                 </a>
                 <?php
                 if (isset($json_data['System']['DumpZip'])) {
                     $dumplink = str_replace("\n", '', $json_data['System']['DumpZip']);
                     if (filter_var($dumplink, FILTER_VALIDATE_URL)) {
-                        echo '<a id="Download" href="' . $dumplink . '">
+                        echo '<a id="download" href="' . $dumplink . '">
                         <button class="btn btn-info">Download Dumps</button>
                     </a>';
                     }
@@ -256,12 +256,12 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
             </div>
             <div>
-                <select id="ViewToggle" style="width: 12em;">
+                <select id="viewToggle" style="width: 12em;">
                     <option selected hidden>Select View</option>
                     <option value="doom-scroll">Doom Scroll</option>
                     <option value="gesp-mode">Legacy View</option>
                 </select>
-                <select title="mappings" id="ModeToggle" style="width: 12em;">
+                <select title="mappings" id="modeToggle" style="width: 12em;">
                     <optgroup label="Theme">
                         <option value="classic">Dark Mode</option>
                         <option value="k9">K9's Dark Mode</option>
@@ -284,7 +284,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                 </div>
                 <div id="main">
                     <div class="metadata_metadata expanded" id="info">
-                        <div class="widgets_widgets widgets" id="hardware_widgets" data-hide="false">
+                        <div class="widgets_widgets widgets" id="hardwareWidgets" data-hide="false">
                             <div class="widget widget-cpu hover" type="button" data-mdb-toggle="modal" data-mdb-target="#cpuModal">
                                 <h1>CPU</h1>
                                 <div class="widget-values">
@@ -300,7 +300,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="ModalLabel">CPU info</h5>
+                                            <h5 class="modal-title" id="modalLabel">CPU info</h5>
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -387,7 +387,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="ModalLabel">Memory info</h5>
+                                            <h5 class="modal-title" id="modalLabel">Memory info</h5>
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -483,7 +483,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="ModalLabel">Board Information</h5>
+                                            <h5 class="modal-title" id="modalLabel">Board Information</h5>
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -561,7 +561,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                                     ?>
                                                 </tbody>
                                             </table>
-                                            <div style="display: none;" id="board-info-more-info">
+                                            <div style="display: none;" id="boardInfoMoreInfo">
                                                 <table class="table">
                                                     <tbody>
                                                     <?php
@@ -604,8 +604,8 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" id="board-info-more-info-button">More Info</button>
-                                            <button type="button" class="btn btn-secondary" id="board-info-close" data-mdb-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-secondary" id="boardInfoMoreInfoButton">More Info</button>
+                                            <button type="button" class="btn btn-secondary" id="boardInfoClose" data-mdb-dismiss="modal">Close</button>
                                         </div>
                                     </div>
                                 </div>
@@ -634,7 +634,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="ModalLabel">GPU and Monitor Info</h5>
+                                            <h5 class="modal-title" id="modalLabel">GPU and Monitor Info</h5>
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -732,7 +732,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="ModalLabel">System Information</h5>
+                                            <h5 class="modal-title" id="modalLabel">System Information</h5>
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -876,7 +876,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <div class="modal-dialog modal-fullscreen">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="ModalLabel">NIC Information</h5>
+                                            <h5 class="modal-title" id="modalLabel">NIC Information</h5>
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -1076,7 +1076,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                             </div>
 
                         </div>
-                        <div class="widgets_widgets widgets" id="storage_widgets" data-hide="false">
+                        <div class="widgets_widgets widgets" data-hide="false">
                             <?php
                             $drives_amount = safe_count($json_data['Hardware']['Storage']);
                             $driveKey = 0;
@@ -1088,7 +1088,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 $drive_taken_raw = $drive_size_raw - $drive_free_raw;
                                 $drive_size = floor(bytesToGigabytes($drive_size_raw));
                                 $drive_taken = floor(bytesToGigabytes($drive_taken_raw));
-                                // the drive size can sometimes be z ero if the drive is failing
+                                // the drive size can sometimes be zero if the drive is failing
                                 if ($drive_taken != 0 && $drive_size != 0) {
                                     $drive_percentage = round((float)$drive_taken / (float)$drive_size * 100);
                                 } else $drive_percentage = 0;
@@ -1131,7 +1131,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 						<div class="modal-dialog modal-xl">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title" id="ModalLabel">' . $device_name . ' ' . $lettersStringDisplay . '</h5>
+									<h5 class="modal-title" id="modalLabel">' . $device_name . ' ' . $lettersStringDisplay . '</h5>
 									<button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
 								</div>
 								<div class="modal-body">
@@ -1294,7 +1294,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                             }
                             ?>
                         </div>
-                        <div class="widgets_widgets widgets" id="realtime_widgets" data-hide="false">
+                        <div class="widgets_widgets widgets" data-hide="false">
                             <div class="widget widget-cpu hover">
                                 <h1>CPU
                                     <span>(Used)</span>
@@ -1345,7 +1345,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="ModalLabel">Temps</h5>
+                                            <h5 class="modal-title" id="modalLabel">Temps</h5>
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -1385,7 +1385,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <div class="modal-dialog modal-xl">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="ModalLabel">Audio Devices</h5>
+                                            <h5 class="modal-title" id="modalLabel">Audio Devices</h5>
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -1443,7 +1443,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="ModalLabel">Power/Battery</h5>
+                                            <h5 class="modal-title" id="modalLabel">Power/Battery</h5>
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -1754,7 +1754,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 ?>
                             </div>
                             <div class="metadata-detail-content jsondata" id="variables">
-                                <table id="variables_table" class="table">
+                                <table class="table">
                                     <thead>
                                         <th>Field</th>
                                         <th>Value</th>
@@ -1778,7 +1778,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                         ?>
                                     </tbody>
                                 </table>
-                                <table id="variables_table" class="table">
+                                <table class="table">
                                     <thead>
                                         <th>Field</th>
                                         <th>Value</th>
@@ -1835,7 +1835,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="ModalLabel">' . $browser['Name'] . ' Extensions</h5>
+                                        <h5 class="modal-title" id="modalLabel">' . $browser['Name'] . ' Extensions</h5>
                                         <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body" id="browserContainer' . $browser['Name'] . '">';
@@ -1864,7 +1864,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 </div>
                             </div>
                             <div class="metadata-detail-content jsondata" id="startup">
-                                <table id="startup_table" class="table">
+                                <table class="table">
                                     <thead>
                                         <th>App Name</th>
                                         <th>App Path</th>
@@ -1884,7 +1884,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 </table>
                             </div>
                             <div class="metadata-detail-content jsondata" id="updates">
-                                <table id="updates_table" class="table">
+                                <table class="table">
                                     <thead>
                                         <th>Update</th>
                                         <th>Install Date</th>
@@ -2065,7 +2065,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                             </div>
                         </div>
                     </div>
-                    <div id="devdiv" style="display: none">
+                    <div id="devDiv" style="display: none">
                         <div class="textbox metadata-detail" id="accordionTablesDev">
                             <div class="accordion">
                                 <h1 class="accordion-header" id="debugLogButton">

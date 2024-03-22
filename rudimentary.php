@@ -67,7 +67,7 @@
 
 <body>
 <div id="archive">
-<div class="widgets_widgets widgets" id="hardware_widgets" data-hide="false">
+<div class="widgets_widgets widgets" id="hardwareWidgets" data-hide="false">
 <?php
 //Initializing the directory
 $dir = "files/";

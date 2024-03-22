@@ -28,16 +28,16 @@ let urlsubr = new URLSearchParams(window.location.search);
 console.log(PROFILE_NAME);
 
 document
-    .querySelector("#board-info-more-info-button")
+    .querySelector("#boardInfoMoreInfoButton")
     .addEventListener("click", () => {
-        document.querySelector("#board-info-more-info").style.display = "block";
-        document.querySelector("#board-info-more-info-button").style.display =
+        document.querySelector("#boardInfoMoreInfo").style.display = "block";
+        document.querySelector("#boardInfoMoreInfoButton").style.display =
             "none";
     });
 
-document.querySelector("#board-info-close").addEventListener("click", () => {
-    document.querySelector("#board-info-more-info").style.display = "none";
-    document.querySelector("#board-info-more-info-button").style.display =
+document.querySelector("#boardInfoClose").addEventListener("click", () => {
+    document.querySelector("#boardInfoMoreInfo").style.display = "none";
+    document.querySelector("#boardInfoMoreInfoButton").style.display =
         "inline-block";
 });
 
@@ -61,7 +61,7 @@ $(function () {
 });
 
 // MUST be function(e) not arrow function because using this
-document.querySelector("#ViewToggle").onchange = function(e) {
+document.querySelector("#viewToggle").onchange = function(e) {
     let value = this.value;
     this.selectedIndex = 0;
     const url = new URL(window.location);
@@ -70,23 +70,23 @@ document.querySelector("#ViewToggle").onchange = function(e) {
 
 }
 
-$("#CollapseToggle").click(function () {
-    $("#CollapseToggle").hide();
-    $("#CollapseToggleHide").show();
+$("#collapseToggle").click(function () {
+    $("#collapseToggle").hide();
+    $("#collapseToggleHide").show();
     $(".accordion-collapse").addClass("show");
 });
 
-$("#CollapseToggleHide").click(function () {
-    $("#CollapseToggle").show();
-    $("#CollapseToggleHide").hide();
+$("#collapseToggleHide").click(function () {
+    $("#collapseToggle").show();
+    $("#collapseToggleHide").hide();
     $(".accordion-collapse").removeClass("show");
 });
 
 //Snippets like these allow for the screen to scroll and follow the expansion caused by collapsing accordion items.
 // This is extremely jank, but it works! - K9
-document.getElementById("CollapseToggle").addEventListener("click", () => {
-    document.getElementById("CollapseToggle").style.display = "none";
-    document.getElementById("CollapseToggleHide").style.display = "inline";
+document.getElementById("collapseToggle").addEventListener("click", () => {
+    document.getElementById("collapseToggle").style.display = "none";
+    document.getElementById("collapseToggleHide").style.display = "inline";
     var accordions = document.getElementsByClassName("accordion-collapse");
 
     for (var i = 0; i < accordions.length; i++) {
@@ -95,9 +95,9 @@ document.getElementById("CollapseToggle").addEventListener("click", () => {
 });
 
 // Double it and give it to the next person
-document.getElementById("CollapseToggleHide").addEventListener("click", () => {
-    document.getElementById("CollapseToggle").style.display = "inline";
-    document.getElementById("CollapseToggleHide").style.display = "none";
+document.getElementById("collapseToggleHide").addEventListener("click", () => {
+    document.getElementById("collapseToggle").style.display = "inline";
+    document.getElementById("collapseToggleHide").style.display = "none";
     var accordions = document.getElementsByClassName("accordion-collapse");
 
     for (var i = 0; i < accordions.length; i++) {
@@ -197,7 +197,7 @@ function searchFunction() {
 }
 
 //It goes to the top, that's it.
-let topbutton = document.getElementById("btn-back-to-top");
+let topbutton = document.getElementById("btnBackToTop");
 window.onscroll = function () {
     scrollFunction();
 };
@@ -224,7 +224,7 @@ function backToTop() {
 // Konami Code - Shows Debug Log
 // KonamiJS Code from https://github.com/georgemandis/konami-js
 const easterEgg = new Konami(
-    () => (document.getElementById("devdiv").style.display = "block")
+    () => (document.getElementById("devDiv").style.display = "block")
 );
 
 $("#gesptoggle").click(() => {
