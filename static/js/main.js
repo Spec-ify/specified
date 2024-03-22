@@ -28,27 +28,27 @@ let urlsubr = new URLSearchParams(window.location.search);
 console.log(PROFILE_NAME);
 
 document
-    .querySelector("#boardInfoMoreInfoButton")
+    .querySelector("#board-info-more-info-button")
     .addEventListener("click", () => {
-        document.querySelector("#boardInfoMoreInfo").style.display = "block";
-        document.querySelector("#boardInfoMoreInfoButton").style.display =
+        document.querySelector("#board-info-more-info").style.display = "block";
+        document.querySelector("#board-info-more-info-button").style.display =
             "none";
     });
 
-document.querySelector("#boardInfoClose").addEventListener("click", () => {
-    document.querySelector("#boardInfoMoreInfo").style.display = "none";
-    document.querySelector("#boardInfoMoreInfoButton").style.display =
+document.querySelector("#board-info-close").addEventListener("click", () => {
+    document.querySelector("#board-info-more-info").style.display = "none";
+    document.querySelector("#board-info-more-info-button").style.display =
         "inline-block";
 });
 
-document.querySelector("#cpuCloseButton").addEventListener("click", () => {
-    document.querySelector("#cpuMoreInfoButton").style.display = "";
-    document.querySelector("#cpuInfoTable").style.display="none";
+document.querySelector("#cpu-close-btn").addEventListener("click", () => {
+    document.querySelector("#cpu-more-info-btn").style.display = "";
+    document.querySelector("#cpu-info-table").style.display="none";
 });
 
-document.querySelector("#cpuMoreInfoButton").addEventListener("click", () => {
-    document.querySelector("#cpuMoreInfoButton").style.display = "none";
-    document.querySelector("#cpuInfoTable").style.display="";
+document.querySelector("#cpu-more-info-btn").addEventListener("click", () => {
+    document.querySelector("#cpu-more-info-btn").style.display = "none";
+    document.querySelector("#cpu-info-table").style.display="";
 })
 
 $(function () {
@@ -61,7 +61,7 @@ $(function () {
 });
 
 // MUST be function(e) not arrow function because using this
-document.querySelector("#viewToggle").onchange = function(e) {
+document.querySelector("#view-toggle").onchange = function(e) {
     let value = this.value;
     this.selectedIndex = 0;
     const url = new URL(window.location);
@@ -70,23 +70,23 @@ document.querySelector("#viewToggle").onchange = function(e) {
 
 }
 
-$("#collapseToggle").click(function () {
-    $("#collapseToggle").hide();
-    $("#collapseToggleHide").show();
+$("#collapse-toggle").click(function () {
+    $("#collapse-toggle").hide();
+    $("#collapse-toggle-hide").show();
     $(".accordion-collapse").addClass("show");
 });
 
-$("#collapseToggleHide").click(function () {
-    $("#collapseToggle").show();
-    $("#collapseToggleHide").hide();
+$("#collapse-toggle-hide").click(function () {
+    $("#collapse-toggle").show();
+    $("#collapse-toggle-hide").hide();
     $(".accordion-collapse").removeClass("show");
 });
 
 //Snippets like these allow for the screen to scroll and follow the expansion caused by collapsing accordion items.
 // This is extremely jank, but it works! - K9
-document.getElementById("collapseToggle").addEventListener("click", () => {
-    document.getElementById("collapseToggle").style.display = "none";
-    document.getElementById("collapseToggleHide").style.display = "inline";
+document.getElementById("collapse-toggle").addEventListener("click", () => {
+    document.getElementById("collapse-toggle").style.display = "none";
+    document.getElementById("collapse-toggle-hide").style.display = "inline";
     var accordions = document.getElementsByClassName("accordion-collapse");
 
     for (var i = 0; i < accordions.length; i++) {
@@ -95,9 +95,9 @@ document.getElementById("collapseToggle").addEventListener("click", () => {
 });
 
 // Double it and give it to the next person
-document.getElementById("collapseToggleHide").addEventListener("click", () => {
-    document.getElementById("collapseToggle").style.display = "inline";
-    document.getElementById("collapseToggleHide").style.display = "none";
+document.getElementById("collapse-toggle-hide").addEventListener("click", () => {
+    document.getElementById("collapse-toggle").style.display = "inline";
+    document.getElementById("collapse-toggle-hide").style.display = "none";
     var accordions = document.getElementsByClassName("accordion-collapse");
 
     for (var i = 0; i < accordions.length; i++) {
@@ -107,7 +107,7 @@ document.getElementById("collapseToggleHide").addEventListener("click", () => {
 
 //Snippets like these allow for the screen to scroll and follow the expansion caused by collapsing accordion items.
 
-document.getElementById("devicesTableButton").addEventListener("click", () => {
+document.getElementById("devices-table-btn").addEventListener("click", () => {
     document.getElementById("devices").scrollIntoView({
         behavior: "smooth",
         block: "start",
@@ -115,7 +115,7 @@ document.getElementById("devicesTableButton").addEventListener("click", () => {
     });
 });
 
-document.getElementById("driversTableButton").addEventListener("click", () => {
+document.getElementById("drivers-table-button").addEventListener("click", () => {
     document.getElementById("drivers").scrollIntoView({
         behavior: "smooth",
         block: "start",
@@ -124,24 +124,24 @@ document.getElementById("driversTableButton").addEventListener("click", () => {
 });
 
 document
-    .getElementById("runningProcessesButton")
+    .getElementById("running-processes-button")
     .addEventListener("click", () => {
-        document.getElementById("runningProcesses").scrollIntoView({
+        document.getElementById("running-processes").scrollIntoView({
             behavior: "smooth",
             block: "start",
             inline: "nearest",
         });
     });
 
-document.getElementById("installedAppButton").addEventListener("click", () => {
-    document.getElementById("installedApp").scrollIntoView({
+document.getElementById("installed-app-button").addEventListener("click", () => {
+    document.getElementById("installed-app").scrollIntoView({
         behavior: "smooth",
         block: "start",
         inline: "nearest",
     });
 });
 
-document.getElementById("servicesTableButton").addEventListener("click", () => {
+document.getElementById("services-table-btn").addEventListener("click", () => {
     document.getElementById("services").scrollIntoView({
         behavior: "smooth",
         block: "start",
@@ -149,7 +149,7 @@ document.getElementById("servicesTableButton").addEventListener("click", () => {
     });
 });
 
-document.getElementById("tasksTableButton").addEventListener("click", () => {
+document.getElementById("tasks-table-btn").addEventListener("click", () => {
     document.getElementById("tasks").scrollIntoView({
         behavior: "smooth",
         block: "start",
@@ -157,7 +157,7 @@ document.getElementById("tasksTableButton").addEventListener("click", () => {
     });
 });
 
-document.getElementById("netconTableButton").addEventListener("click", () => {
+document.getElementById("netcon-table-btn").addEventListener("click", () => {
     document.getElementById("netcon").scrollIntoView({
         behavior: "smooth",
         block: "start",
@@ -165,7 +165,7 @@ document.getElementById("netconTableButton").addEventListener("click", () => {
     });
 });
 
-document.getElementById("routesTableButton").addEventListener("click", () => {
+document.getElementById("routes-table-btn").addEventListener("click", () => {
     document.getElementById("routes").scrollIntoView({
         behavior: "smooth",
         block: "start",
@@ -178,7 +178,7 @@ document.getElementById("routesTableButton").addEventListener("click", () => {
 //through them for each keystroke, setting visibility of matched divs with class widget, searching the text into their h1 children.
 function searchFunction() {
     var input, filter, li, i, txtValue, h1;
-    input = document.getElementById("searchBarDiv");
+    input = document.getElementById("searchbar-div");
     filter = input.value.toUpperCase();
     let mainbody = document.getElementById("main");
     li = mainbody.getElementsByClassName("widget");
@@ -197,7 +197,7 @@ function searchFunction() {
 }
 
 //It goes to the top, that's it.
-let topbutton = document.getElementById("btnBackToTop");
+let topbutton = document.getElementById("btn-back-to-top");
 window.onscroll = function () {
     scrollFunction();
 };
@@ -274,10 +274,10 @@ $("#spectoggle").click(() => {
             )
         ).json();
     }
-    const titleElement = document.getElementById("cpuInfoTitle");
-    const cpuTable = document.getElementById("fetchedCpuInfo");
+    const titleElement = document.getElementById("cpu-info-title");
+    const cpuTable = document.getElementById("fetched-cpu-info");
     // update the title element to reflect the name fetched from the database
-    document.getElementById("cpuInfoTitle").innerHTML =
+    document.getElementById("cpu-info-title").innerHTML =
         titleElement.innerHTML.slice(0, -3) + response.name;
     let tableContents = "";
     // add new elements to the table for every kv in the database
@@ -285,5 +285,5 @@ $("#spectoggle").click(() => {
         tableContents += `<tr><td>${key}</td><td>${value}</td></tr>`;
     }
     // cpuTable.innerHTML = tableContents;
-    document.getElementById("fetchedCpuInfo").innerHTML = tableContents;
+    document.getElementById("fetched-cpu-info").innerHTML = tableContents;
 })();

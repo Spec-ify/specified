@@ -449,7 +449,7 @@ article h2:before {
 	color: #ccc;
 }
 
-#headerHeader {
+#header-header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -464,7 +464,7 @@ article h2:before {
 	line-height: 100%;
 }
 
-#headerHeader > a {
+#header-header > a {
 	display: flex;
 	align-items: center;
 	background-color: #252b2d;
@@ -474,7 +474,7 @@ article h2:before {
 	border: 0;
 }
 
-#headerHeader > a > h1 {
+#header-header > a > h1 {
 	padding: 0 3px;
 	font-size: 14pt;
 	margin: 0;
@@ -482,13 +482,13 @@ article h2:before {
 	color: #fff;
 }
 
-#headerHeader svg {
+#header-header svg {
 	-webkit-filter: invert(0);
 	filter: invert(0);
 	padding-right: 5px;
 }
 
-#headerButtons {
+#header-buttons {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -831,7 +831,7 @@ article h2:before {
 	margin-right: auto;
 }
 
-#btnBackToTop {
+#btn-back-to-top {
 	position: fixed;
 	bottom: 20px;
 	right: 20px;
@@ -859,7 +859,7 @@ article h2:before {
 }
 
 /* initial property, will be changed when the button is clicked */
-#collapseToggleHide {
+#collapse-toggle-hide {
 	display: none;
 }
 
