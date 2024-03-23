@@ -44,7 +44,7 @@ async function dataTables() {
 			};
 		});
 
-		$("#runningProcessesTable").DataTable({
+		$("#running-processes-table").DataTable({
 			autoWidth: false,
 			data: displayProcesses,
 			pageLength: 25,
@@ -71,7 +71,7 @@ async function dataTables() {
 	}
 
 	try {
-		$("#installedAppTable").DataTable({
+		$("#installed-app-table").DataTable({
 			autoWidth: false,
 			data: json.System.InstalledApps,
 			columns: [
@@ -86,7 +86,7 @@ async function dataTables() {
 	}
 
 	try {
-		$("#servicesTable").DataTable({
+		$("#services-table").DataTable({
 			autoWidth: false,
 			data: json.System.Services,
 			pageLength: 25,
@@ -104,7 +104,7 @@ async function dataTables() {
 	}
 
 	try {
-		$("#tasksTable").DataTable({
+		$("#tasks-table").DataTable({
 			autoWidth: false,
 			data: json.System.ScheduledTasks,
 			pageLength: 25,
@@ -123,7 +123,7 @@ async function dataTables() {
 	}
 
 	try {
-		$("#tempTable").DataTable({
+		$("#temp-table").DataTable({
 			autoWidth: false,
 			data: json.Hardware.Temperatures,
 			columns: [
@@ -138,7 +138,7 @@ async function dataTables() {
 	}
 
 	try {
-		$("#powerTable").DataTable({
+		$("#power-table").DataTable({
 			autoWidth: false,
 			searching: false,
 			ordering: false,
@@ -200,7 +200,7 @@ async function dataTables() {
 	}
 
 	try {
-		$("#audioTable").DataTable({
+		$("#audio-table").DataTable({
 			autoWidth: false,
 			searching: false,
 			ordering: false,
@@ -219,7 +219,7 @@ async function dataTables() {
 	}
 
 	try {
-		$("#batteryTable").DataTable({
+		$("#battery-table").DataTable({
 			autoWidth: false,
 			data: json.Hardware.Batteries,
 			searching: false,
@@ -297,7 +297,7 @@ async function dataTables() {
            return row;
         });
 
-		$("#devicesTable").DataTable({
+		$("#devices-table").DataTable({
 			autoWidth: false,
 			data: json.Hardware.Devices,
 			columns: [
@@ -315,7 +315,7 @@ async function dataTables() {
 	}
 
 	try {
-		$("#driversTable").DataTable({
+		$("#drivers-table").DataTable({
 			autoWidth: false,
 			data: json.Hardware.Drivers,
 			columns: [

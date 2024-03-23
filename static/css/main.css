@@ -449,7 +449,7 @@ article h2:before {
 	color: #ccc;
 }
 
-#header_header {
+#header-header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -464,7 +464,7 @@ article h2:before {
 	line-height: 100%;
 }
 
-#header_header > a {
+#header-header > a {
 	display: flex;
 	align-items: center;
 	background-color: #252b2d;
@@ -474,7 +474,7 @@ article h2:before {
 	border: 0;
 }
 
-#header_header > a > h1 {
+#header-header > a > h1 {
 	padding: 0 3px;
 	font-size: 14pt;
 	margin: 0;
@@ -482,13 +482,13 @@ article h2:before {
 	color: #fff;
 }
 
-#header_header svg {
+#header-header svg {
 	-webkit-filter: invert(0);
 	filter: invert(0);
 	padding-right: 5px;
 }
 
-#header_buttons {
+#header-buttons {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -848,7 +848,7 @@ article h2:before {
 	margin: auto;
 	width: 80%;
 }
-#loginForm {
+#login-form {
 	background-color: #2e383e;
 	width: 20%;
 	position: absolute;
@@ -859,11 +859,11 @@ article h2:before {
 }
 
 /* initial property, will be changed when the button is clicked */
-#CollapseToggleHide {
+#collapse-toggle-hide {
 	display: none;
 }
 
-#Download:hover {
+#download:hover {
 	text-decoration: none;
 	border-bottom: none;
 }

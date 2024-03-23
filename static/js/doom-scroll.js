@@ -276,7 +276,7 @@ async function call_hwapi(path, payload, fallbackCallack = () => {}) {
     if (!cpuResponse || !cpuResponse.name) {
         statusSpan.textContent = "Could not get database results";
     }
-    const cpuTable = document.getElementById("fetchedCpuInfo");
+
     // update the title element to reflect the name fetched from the database
     document.querySelector("#hwapi-header").textContent += ` for ${cpuResponse.name}`;
     let tableContents = "";

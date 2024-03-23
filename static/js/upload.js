@@ -1,8 +1,8 @@
 //This is the drag and drop upload handler, I wish it was easier, but it's pretty self-explanatory.
-let form = document.querySelector("#uploadform");
+let form = document.querySelector("#upload-form");
 let html = document.querySelector("html");
-let text = document.querySelector("#dragtext");
-let box = document.querySelector("#uploadbox");
+let text = document.querySelector("#drag-text");
+let box = document.querySelector("#upload-box");
 let input = document.querySelector("#input-file-now");
 
 // Prevent Redirect

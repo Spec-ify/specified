@@ -5,17 +5,17 @@ let themeTextBox = null;
 
 const localStorageTheme = window.localStorage.getItem("theme");
 if (localStorageTheme !== null) {
-    document.querySelector(`#ModeToggle option[value="${localStorageTheme}"]`).setAttribute("selected", "");
+    document.querySelector(`#mode-toggle option[value="${localStorageTheme}"]`).setAttribute("selected", "");
     change_theme();
 }
 
 // Call the function every time it changes
-document.querySelector('#ModeToggle').onchange = change_theme;
+document.querySelector('#mode-toggle').onchange = change_theme;
 
 function change_theme(){
     // Get selection for the switch
-    let theme = document.querySelector('#ModeToggle').value;
-    let themeables = document.querySelectorAll('.textbox, .searchbar, .widget, #header_header');
+    let theme = document.querySelector('#mode-toggle').value;
+    let themeables = document.querySelectorAll('.textbox, .searchbar, .widget, #header-header');
     let html = document.getElementsByTagName("HTML")[0];
 
 	// Remove current theme

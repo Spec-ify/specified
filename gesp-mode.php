@@ -96,7 +96,7 @@ td, th {
 tr:nth-child(even) {
   background-color: #2A2E3A;
 }
-#topbutton{
+#top-btn{
   opacity: 80%;
   width: 5%;
   padding-top: -3%;
@@ -109,7 +109,7 @@ tr:nth-child(even) {
   font-size: 24px;
   color: #87ab63;
 }
-#sysvarTable{
+#sys-var-table{
     max-width:600px;
 }
 </style>
@@ -120,11 +120,11 @@ tr:nth-child(even) {
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
-<a id="spectoggle" href="<?= http_strip_query_param($_SERVER['REQUEST_URI'], 'view') ?>">
+<a id="spec-toggle" href="<?= http_strip_query_param($_SERVER['REQUEST_URI'], 'view') ?>">
     <button class="btn btn-info">Specify Mode</button>
 </a>
 <pre>
-<a href="#top"><div id="topbutton">
+<a href="#top"><div id="top-btn">
 ⬆
 </div></a>
 
@@ -191,25 +191,25 @@ foreach ($json_data['System']['ChoiceRegistryValues'] as $regkey) {
 <h2>Sections</h2>
 <div style="line-height:0">
 <p><a href="#hw">Hardware Basics</a></p>
-<p><a href="#SecInfo">Security Information</a></p>
+<p><a href="#sec-info">Security Information</a></p>
 <p><a href="#bios">BIOS</a></p>
-<p><a href="#SysVar">System Variables</a></p>
-<p><a href="#UserVar">User Variables</a></p>
+<p><a href="#sys-var">System Variables</a></p>
+<p><a href="#user-var">User Variables</a></p>
 <p><a href="#hotfixes">Installed updates</a></p>
-<p><a href="#StartupTasks">Startup Tasks</a></p>
-<p><a href="#Power">Powerprofiles</a></p>
-<p><a href="#RunningProcs">Running Processes</a></p>
-<p><a href="#Services">Services</a></p>
-<p><a href="#InstalledApps">Installed Applications</a></p>
-<p><a href="#BrowserExtensions">Browser Extensions</a></p>
-<p><a href="#NetConfig">Network Configuration</a></p>
-<p><a href="#NetConnections">Network Connections</a></p>
-<p><a href="#Drivers">Drivers and device versions</a></p>
-<p><a href="#usbDevices">USB Devices</a></p>
-<p><a href="#issueDevices">Devices with issues</a></p>
-<p><a href="#Audio">Audio Devices</a></p>
-<p><a href="#Disks">Disk Layouts(WIP)</a></p>
-<p><a href="#SMART">SMART</a></p>
+<p><a href="#startup-tasks">Startup Tasks</a></p>
+<p><a href="#power">Powerprofiles</a></p>
+<p><a href="#running-procs">Running Processes</a></p>
+<p><a href="#services">Services</a></p>
+<p><a href="#installed-apps">Installed Applications</a></p>
+<p><a href="#browser-extensions">Browser Extensions</a></p>
+<p><a href="#">Network Configuration</a></p>
+<p><a href="#net-connections">Network Connections</a></p>
+<p><a href="#drivers">drivers and device versions</a></p>
+<p><a href="#usb-devices">USB Devices</a></p>
+<p><a href="#issue-devices">Devices with issues</a></p>
+<p><a href="#audio">Audio Devices</a></p>
+<p><a href="#disks">Disk Layouts(WIP)</a></p>
+<p><a href="#smart">SMART</a></p>
 </div>
 
 <h2 id='hw'>Hardware Basics</h2>
@@ -432,7 +432,7 @@ echo"
     </table>
 
 
-<h2 id='SecInfo'>Security Information</h2>
+<h2 id='sec-info'>Security Information</h2>
 
     <table>
 
@@ -496,7 +496,7 @@ echo"
         ?>
     </tr>
     </table>
-    <h2 id='TPM'>TPM</h2>
+    <h2>TPM</h2>
         <table>
             <colgroup>
                 <col/>
@@ -520,7 +520,7 @@ echo"
                 <td><?=$json_data['Security']['Tpm']['SpecVersion']?></td>
             </tr>
         </table>
-    <h2 id="BIOS">BIOS</h2>
+    <h2 d=":bios">BIOS</h2>
         <table>
             <colgroup>
                 <col/>
@@ -549,9 +549,9 @@ echo"
 
         </table>
 
-    <h2 id='SysVar'>System Variables</h2>
+    <h2 id="sys-var">System Variables</h2>
 
-        <table id="sysvarTable">
+        <table id="sys-var-table">
 
         <tr>
             <th>Name</th>
@@ -569,7 +569,7 @@ echo"
             
         </table>
 
-    <h2 id='UserVar'>User Variables</h2>
+    <h2 id='user-var'>User Variables</h2>
 
         <table>
 
@@ -589,7 +589,7 @@ echo"
         
     </table>
 
-    <h2 id="Hotfixes">Installed updates</h2>
+    <h2>Installed updates</h2>
         
         <table>
             
@@ -618,7 +618,7 @@ echo"
         </table>
 
 
-<h2 id='StartupTasks'>Startup Tasks</h2>
+<h2 id='startup-tasks'>Startup Tasks</h2>
 
     <?php
         foreach($json_data['System']['StartupTasks'] as $su) {
@@ -627,7 +627,7 @@ echo"
     ?>
 
 
-<h2 id='Power'>Powerprofiles</h2>
+<h2 id='power'>Powerprofiles</h2>
 
     <table>
         <colgroup>
@@ -651,7 +651,7 @@ echo"
 
     </table>
 
-<h2 id='RunningProcs'>Running Processes WIP</h2>
+<h2 id='running-procs'>Running Processes WIP</h2>
 Total RAM usage: WIP
 
     <table>
@@ -692,7 +692,7 @@ Total RAM usage: WIP
 
     </table>
     
-<h2 id='Services'>Services</h2>
+<h2 id='services'>Services</h2>
 
     <table>
         
@@ -728,7 +728,7 @@ Total RAM usage: WIP
     
     </table>
 
-<h2 id='InstalledApps'>Installed Apps</h2>
+<h2 id='installed-apps'>Installed Apps</h2>
     
     <table>
     
@@ -753,7 +753,7 @@ Total RAM usage: WIP
     
     </table>
 
-<h2 id='BrowserExtensions'>Browser Extensions</h2>
+<h2 id='browser-extensions'>Browser Extensions</h2>
     
     <table>
     
@@ -798,7 +798,7 @@ Total RAM usage: WIP
     
     </table>
 
-<h2 id='NetConfig'>Network Configuration</h2>
+<h2 id='net-config'>Network Configuration</h2>
 
 
         <?php
@@ -836,7 +836,7 @@ Total RAM usage: WIP
         ?>
 
 
-<h2 id='NetConnections'>Network Connections WIP</h2>
+<h2 id='net-connections'>Network Connections WIP</h2>
     <table>
 
         <colgroup>
@@ -875,7 +875,7 @@ Total RAM usage: WIP
         ?>
 
     </table>
-<h2 id='Drivers'>Drivers and device versions</h2>
+<h2 id='drivers'>Drivers and device versions</h2>
 
     <table>
 
@@ -901,7 +901,7 @@ Total RAM usage: WIP
     </table>
 
 
-<h2 id='usbDevices'>USB Devices</h2>
+<h2 id='usb-devices'>USB Devices</h2>
     <table>
 
         <colgroup>
@@ -930,7 +930,7 @@ Total RAM usage: WIP
 
     </table>
 
-    <h2 id='issueDevices'>Devices with Issues</h2>
+    <h2 id='issue-devices'>Devices with Issues</h2>
     <table>
 
         <colgroup>
@@ -956,7 +956,7 @@ Total RAM usage: WIP
         ?>
 
     </table>
-<h2 id='Audio'>Audio devices</h2>
+<h2 id='audio'>Audio devices</h2>
 
     <table>
 
@@ -982,7 +982,7 @@ Total RAM usage: WIP
     </table>
 
 
-<h2 id='Disks'>Disk layouts</h2>
+<h2 id='disks'>Disk layouts</h2>
 
     
     <table>
@@ -1085,7 +1085,7 @@ Total RAM usage: WIP
     </table>
 
 
-<h2 id='SMART'>SMART WIP</h2>
+<h2 id='smart'>SMART WIP</h2>
 
     <table>
     
@@ -1112,7 +1112,7 @@ Total RAM usage: WIP
 <?php 
 
 if ($hostFileCheck){
-    echo "<h2 id='HostFile'> Host File</h2> Hash (ripemd160): "
+    echo "<h2 id='host-file'> Host File</h2> Hash (ripemd160): "
     . $hostFileHash
     . "<br><br>"
     . $json_data['Network']['HostsFile'];
@@ -1120,7 +1120,7 @@ if ($hostFileCheck){
 
 ?>
 
-<h2 id='RunTime'>Runtime</h2>
+<h2 id='runtime'>Runtime</h2>
 
     <table>
 

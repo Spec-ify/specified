@@ -30,16 +30,16 @@ else
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.dark.min.css" rel="stylesheet">
     <link href="static/css/main.css" rel="stylesheet">
 </head>
-<div class="textbox metadata-detail tablebox widget jsondata" id="loginForm">
+<div class="textbox metadata-detail tablebox widget jsondata" id="login-form">
 <h1>Specify Archive Login</h1>
 <form method="POST" action="archive">
     <div class="form-outline mb-4">
-        <input type="text" name="user" class="form-control" id="loginFormUser"></input><br/>
-        <label class="form-label" for="loginFormUser">Username</label>
+        <input type="text" name="user" class="form-control" id="login-form-user"></input><br/>
+        <label class="form-label" for="login-form-user">Username</label>
     </div>
     <div class="form-outline mb-4">
-        <input type="password" name="pass" class="form-control" id="loginFormPass"></input><br/>
-        <label class="form-label" for="loginFormPass">Password</label>
+        <input type="password" name="pass" class="form-control" id="login-form-pass"></input><br/>
+        <label class="form-label" for="login-form-pass">Password</label>
     </div>
     <button type="submit" name="submit" class="btn btn-primary btn-block">Login</button>
 </form>
