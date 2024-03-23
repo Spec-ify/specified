@@ -239,7 +239,7 @@ async function dataTables() {
 	}
 
 	try {
-		$("#netconTable").DataTable({
+		$("#netcon-table").DataTable({
 			autoWidth: false,
 			data: json.Network.NetworkConnections,
 			columns: [
@@ -269,7 +269,7 @@ async function dataTables() {
 	// InnerJoin the InterfaceIndex from one tree in the json to another tree in the json, thus giving me the ability
 	// to print out the corresponding name of the NIC that's using a route, instead of just a number.
 	try {
-		$("#routesTable").DataTable({
+		$("#routes-table").DataTable({
 			autoWidth: false,
 			data: json.Network.Routes,
 			columns: [
