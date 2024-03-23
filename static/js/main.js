@@ -224,7 +224,7 @@ function backToTop() {
 // Konami Code - Shows Debug Log
 // KonamiJS Code from https://github.com/georgemandis/konami-js
 const easterEgg = new Konami(
-    () => (document.getElementById("devDiv").style.display = "block")
+    () => (document.getElementById("dev-div").style.display = "block")
 );
 
 $("#gesptoggle").click(() => {
