@@ -2056,7 +2056,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     </button>
                                 </h1>
                                 <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="routes">
-                                    <table id="routesTable" class="table">
+                                    <table id="routes-table" class="table">
                                         <thead>
                                             <th>Route</th>
                                             <th>Destination</th>
