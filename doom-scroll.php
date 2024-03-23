@@ -152,7 +152,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Profile <?= $profile_name ?> | Specified</title>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
     <link
         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
         rel="stylesheet"/>
@@ -174,8 +173,8 @@
         window.PROFILE_NAME = "<?= $profile_name ?>";
     </script>
     <script defer src="static/js/doom-scroll.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.slim.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/sc-2.0.7/datatables.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.slim.min.js"></script>
+    <script defer type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/sc-2.0.7/datatables.min.js"></script>
     <script src="static/js/konami.js"></script>
 </head>
 <body>
