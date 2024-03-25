@@ -1,17 +1,17 @@
-.homepage_homepage section {
+.homepage-homepage section {
     background-color: #252b2d;
     border-radius: 15px;
     margin: 25px 0;
     padding: .1px 15px
 }
 
-.homepage_homepage .link .link-description {
+.homepage-homepage .link .link-description {
     width: 17.5rem;
     font-weight: 400
 }
 
 @media (max-width: 640px) {
-    .homepage_homepage .link {
+    .homepage-homepage .link {
         flex-direction: column;
         align-items: start;
         height: auto;
@@ -19,24 +19,24 @@
         gap: .5rem
     }
 
-    .homepage_homepage .link .link-description {
+    .homepage-homepage .link .link-description {
         width: auto;
         margin-bottom: .5rem
     }
 }
 
-.homepage_homepage .feature {
+.homepage-homepage .feature {
     display: flex;
     gap: 20px;
     padding-left: 20px;
     margin: 30px 0
 }
 
-.homepage_homepage .feature > div {
+.homepage-homepage .feature > div {
     max-width: 70%
 }
 
-.homepage_homepage .feature > div h3 {
+.homepage-homepage .feature > div h3 {
     margin: 0;
     color: #ffc93a
 }

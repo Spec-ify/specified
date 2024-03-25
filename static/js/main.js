@@ -1,10 +1,10 @@
 //These are very rudimentary ways of implementing quick pagination of elements without needing any complicated setups.
-$(".notes_button").click(() => showtab("#notes"));
-$(".pups_button").click(() => showtab("#pups"));
-$(".variables_button").click(() => showtab("#variables"));
-$(".browsers_button").click(() => showtab("#browsers"));
-$(".startup_button").click(() => showtab("#startup"));
-$(".updates_button").click(() => showtab("#updates"));
+$(".notes-button").click(() => showtab("#notes"));
+$(".pups-button").click(() => showtab("#pups"));
+$(".variables-button").click(() => showtab("#variables"));
+$(".browsers-button").click(() => showtab("#browsers"));
+$(".startup-button").click(() => showtab("#startup"));
+$(".updates-button").click(() => showtab("#updates"));
 function showtab(seltab) {
     // List of all tabs
     const tabs = [
