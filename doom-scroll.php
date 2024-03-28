@@ -1398,6 +1398,46 @@
     echo '</code></pre>';
 ?>
 
+<h1>Events</h1>
+
+<h2>Unexpected Shutdowns</h2>
+<table>
+    <thead>
+        <th>Timestamp</th>
+        <th>Bugcheck Code</th>
+        <th>P1</th>
+        <th>P2</th>
+        <th>P3</th>
+        <th>P4</th>
+        <th>Power Button Recorded</th>
+    </thead>
+    <tbody>
+        <?=
+            array_table_iter(
+                $json_data['Events']['UnexpectedShutdowns'],
+                ['Timestamp','BugcheckCode','BugcheckParameter1','BugcheckParameter2','BugcheckParameter3','BugcheckParameter4','PowerButtonTimestamp']
+            )
+        ?>
+    </tbody>
+</table>
+
+<h2>PCIe WHEA Errors</h2>
+<table>
+    <thead>
+        <th>Timestamp</th>
+        <th>Vendor ID</th>
+        <th>Device ID</th>
+    </thead>
+    <tbody>
+        <?=
+            array_table_iter(
+                $json_data['Events']['PciWheaErrors'],
+                ['Timestamp','VendorId','DeviceId']
+            )
+        ?>
+    </tbody>
+</table>
+
 <div id="debug-log">
     <h1>Debug Log</h1>
     <?php
