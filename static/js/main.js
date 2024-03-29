@@ -197,11 +197,8 @@ function searchFunction() {
 }
 
 //It goes to the top, that's it.
-let topbutton = document.getElementById("btn-back-to-top");
-window.onscroll = function () {
-    scrollFunction();
-};
-function scrollFunction() {
+$("#btn-back-to-top").addEventListener("scroll", (e) => {
+    topbutton = e.target;
     if (
         document.body.scrollTop > 20 ||
         document.documentElement.scrollTop > 20
@@ -214,6 +211,12 @@ function scrollFunction() {
             topbutton.style.visibility = "hidden";
         }, "100");
     }
+})
+let topbutton = document.getElementById("btn-back-to-top");
+window.onscroll = function () {
+    scrollFunction();
+};
+function scrollFunction() {
 }
 topbutton.addEventListener("click", backToTop);
 function backToTop() {
