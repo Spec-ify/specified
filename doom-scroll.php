@@ -144,6 +144,20 @@
         }
         return $res;
     }
+
+    /**
+     * Return table layout for a data object (key => value)
+     * @param string[][] $arr
+     */
+    function object_table_iter(?array $arr): string
+    {
+        $res = "";
+        if (!$arr) return '';
+        foreach ($arr as $key => $val) {
+            $res .= "<tr><td>$key</td><td>$val</td></tr>";
+        }
+        return $res;
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -1261,7 +1275,7 @@
 
     <tr>
         <td>Physical Adapter?</td>
-        <td>' . ($nic['PhysicalAdapter'] ?? 'unknown') . '</td>
+        <td>' . (($nic['PhysicalAdapter'] ? 'Yes' : 'No') ?? 'unknown') . '</td>
     </tr>
         ';
 
@@ -1278,17 +1292,17 @@
             echo '
     <tr>
         <td>Static DNS Servers?</td>
-        <td>' . $nic['DNSIsStatic'] ? 'Yes' : 'No' . '</td>
+        <td>' . ($nic['DNSIsStatic'] ? 'Yes' : 'No') . '</td>
     </tr>
 
     <tr>
         <td>DNS Servers</td>
-        <td>' . safe_implode('<br/>', array_merge($nic['DNSServerSearchOrder'] ?? [], $dns_ipv6)) . '</td>
+        <td>' . safe_implode('<br/>', array_merge($nic['DNSServerSearchOrder'] ?? [], $ipv6_dns)) . '</td>
     </tr>
     
     <tr>
         <td>Full Duplex?</td>
-        <td>' . $nic["FullDuplex"] . '</td>
+        <td>' . ($nic["FullDuplex"] ? 'Yes' : 'No') . '</td>
     </tr>
 
     <tr>
@@ -1386,6 +1400,22 @@
 
             echo array_table_iter($routes, ['Description', 'Destination', 'InterfaceIndex', 'Mask', 'Metric1', 'NextHop']);
         ?>
+    </tbody>
+</table>
+
+<h2>Other</h2>
+<table>
+    <tbody>
+        <tr>
+            <td>RecieveSideScaling</td>
+            <td><?= $json_data['Network']['ReceiveSideScaling'] ? 'True' : 'False' ?></td>
+        </tr>
+    </tbody>
+</table>
+<h3>AutoTuningLevelLocal</h3>
+<table>
+    <tbody>
+        <?= object_table_iter($json_data['Network']['AutoTuningLevelLocal']) ?>
     </tbody>
 </table>
 
