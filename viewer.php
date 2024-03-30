@@ -343,8 +343,8 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                             </table>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" id="cpu-more-info-btn">More Info</button>
-                                            <button type="button" class="btn btn-secondary" id="cpu-close-btn" data-mdb-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-secondary" id="cpu-more-info-button">More Info</button>
+                                            <button type="button" class="btn btn-secondary" id="cpu-close-button" data-mdb-dismiss="modal">Close</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1905,7 +1905,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                     <div>
                         <div class="textbox metadata-detail">
                             <div class="accordion">
-                                <h1 class="accordion-header" id="devices-table-btn">
+                                <h1 class="accordion-header" id="devices-table-button">
                                     <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#devices" aria-expanded="true" aria-controls="devices">
                                         Devices
                                     </button>
@@ -1979,7 +1979,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                     <div>
                         <div class="textbox metadata-detail">
                             <div class="accordion">
-                                <h1 class="accordion-header" id="services-table-btn">
+                                <h1 class="accordion-header" id="services-table-button">
                                     <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#services" aria-expanded="true" aria-controls="services">
                                         Services
                                     </button>
@@ -1995,7 +1995,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                         </thead>
                                     </table>
                                 </div>
-                                <h1 class="accordion-header" id="tasks-table-btn">
+                                <h1 class="accordion-header" id="tasks-table-button">
                                     <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#tasks" aria-expanded="true" aria-controls="tasks">
                                         Tasks
                                     </button>
@@ -2019,7 +2019,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                     <div>
                         <div class="textbox metadata-detail" id="accordion-tables-network">
                             <div class="accordion">
-                                <h1 class="accordion-header" id="netcon-table-btn">
+                                <h1 class="accordion-header" id="netcon-table-button">
                                     <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#netcon" aria-expanded="true" aria-controls="netcon">
                                         Network Connections
                                     </button>
@@ -2035,7 +2035,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                         </thead>
                                     </table>
                                 </div>
-                                <h1 class="accordion-header" id="routes-table-btn">
+                                <h1 class="accordion-header" id="routes-table-button">
                                     <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#routes" aria-expanded="true" aria-controls="routes">
                                         Routes Table
                                     </button>
@@ -2052,7 +2052,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                         </thead>
                                     </table>
                                 </div>
-                                <h1 class="accordion-header" id="hosts-table-btn">
+                                <h1 class="accordion-header" id="hosts-table-button">
                                     <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#hosts" aria-expanded="true" aria-controls="hosts">
                                         Hosts File
                                     </button>
@@ -2069,7 +2069,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                     <div id="dev-div" style="display: none">
                         <div class="textbox metadata-detail">
                             <div class="accordion">
-                                <h1 class="accordion-header" id="debug-log-btn">
+                                <h1 class="accordion-header" id="debug-log-button">
                                     <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#debug-log" aria-expanded="true" aria-controls="debug-log">
                                         Debug Log
                                     </button>

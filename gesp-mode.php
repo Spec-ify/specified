@@ -96,7 +96,7 @@ td, th {
 tr:nth-child(even) {
   background-color: #2A2E3A;
 }
-#top-btn{
+#top-button{
   opacity: 80%;
   width: 5%;
   padding-top: -3%;
@@ -124,7 +124,7 @@ tr:nth-child(even) {
     <button class="btn btn-info">Specify Mode</button>
 </a>
 <pre>
-<a href="#top"><div id="top-btn">
+<a href="#top"><div id="top-button">
 ⬆
 </div></a>
 
