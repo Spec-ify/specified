@@ -1475,14 +1475,15 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                             </div>
                         </div>
                         <div class="textbox metadata-detail tabbed-info">
-                            <ul class="metadata-detail-controls">
-                                <li class="notes-button">Notes</li>
-                                <li class="pups-button">PUPs</li>
-                                <li class="variables-button">Variables</li>
-                                <li class="browsers-button">Browsers</li>
-                                <li class="startup-button">Startup Tasks</li>
-                                <li class="updates-button">Windows Updates</li>
-                            </ul>
+                            <div class="metadata-detail-controls">
+                                <button onclick="showTab('#notes')" class="notes-button">Notes</button>
+                                <button onclick="showTab('#pups')" class="pups-button">PUPs</button>
+                                <button onclick="showTab('#variables')" class="variables-button">Variables</button>
+                                <button onclick="showTab('#browsers')" class="browsers-button">Browsers</button>
+                                <button onclick="showTab('#startup')" class="startup-button">Startup Tasks</button>
+                                <button onclick="showTab('#updates')" class="updates-button">Windows Updates</button>
+                            </div>
+
                             <div class="metadata-detail-content json-data" id="notes">
                                 <!-- OS Version -->
 

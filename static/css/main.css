@@ -656,7 +656,7 @@ article h2:before {
 	padding: 0;
 	margin: 10px 0 30px;
 }
-
+/* 
 .metadata-metadata .metadata-detail .metadata-detail-controls li {
 	list-style-type: none;
 	display: inline;
@@ -668,6 +668,21 @@ article h2:before {
 }
 
 .metadata-metadata .metadata-detail .metadata-detail-controls li.selected {
+	color: #fff;
+} */
+
+.metadata-metadata .metadata-detail .metadata-detail-controls button {
+	list-style-type: none;
+	display: inline;
+	cursor: pointer;
+	margin: 0 3px;
+	margin-bottom: 5px;
+	background-color: #293134;
+	padding: 7px 15px;
+	border-radius: 5px;
+}
+
+.metadata-metadata .metadata-detail .metadata-detail-controls button.selected {
 	color: #fff;
 }
 

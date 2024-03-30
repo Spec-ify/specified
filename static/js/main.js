@@ -1,11 +1,8 @@
-//These are very rudimentary ways of implementing quick pagination of elements without needing any complicated setups.
-$(".notes-button").click(() => showtab("#notes"));
-$(".pups-button").click(() => showtab("#pups"));
-$(".variables-button").click(() => showtab("#variables"));
-$(".browsers-button").click(() => showtab("#browsers"));
-$(".startup-button").click(() => showtab("#startup"));
-$(".updates-button").click(() => showtab("#updates"));
-function showtab(seltab) {
+/**
+ * Toggle the currently displayed tab
+ * @param {("#pups" | "#notes" | "#variables" | "#startup" | "#updates")} tab 
+ */
+function showTab(tab) {
     // List of all tabs
     const tabs = [
         "#pups",
@@ -16,12 +13,13 @@ function showtab(seltab) {
         "#updates",
     ];
     // Removes selected tab
-    const hiddentabs = tabs.filter((val) => val !== seltab);
-    for (const tab in hiddentabs) {
-        $(hiddentabs[tab]).hide();
+    const hiddenTabs = tabs.filter((val) => val !== tab);
+    for (const t of hiddenTabs) {
+        $(t).hide();
     }
-    $(seltab).show();
+    $(tab).show();
 }
+
 const viewmodetoggle = localStorage.getItem("viewmode");
 const blackblanket = document.querySelector("#blanket");
 let urlsubr = new URLSearchParams(window.location.search);
