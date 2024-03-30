@@ -144,6 +144,20 @@
         }
         return $res;
     }
+
+    /**
+     * Return table layout for a data object (key => value)
+     * @param string[][] $arr
+     */
+    function object_table_iter(?array $arr): string
+    {
+        $res = "";
+        if (!$arr) return '';
+        foreach ($arr as $key => $val) {
+            $res .= "<tr><td>$key</td><td>$val</td></tr>";
+        }
+        return $res;
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -152,7 +166,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Profile <?= $profile_name ?> | Specified</title>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
     <link
         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
         rel="stylesheet"/>
@@ -182,10 +195,11 @@
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <nav>
     <span id="nav-expand"><a href="#">&gt;&gt;</a></span>
-    <ul id="navlist">
+    <span id="nav-collapse"><a href="#">&lt;&lt;</a></span>
+    <ul id="nav-list">
         <li><a href="<?= http_strip_query_param($_SERVER['REQUEST_URI'], 'view') ?>">Specify View</a></li>
         <li id="nav-top-link"><a href="#top">Back To Top</a></li>
-        <li id="nav-collapse-link"><a href="#">Collapse Sidebar</a></li>
+        <li class="nav-space-below"><a href="<?= $json_file ?>">Download JSON</a></li>
     </ul>
 </nav>
 <main>
@@ -1261,7 +1275,7 @@
 
     <tr>
         <td>Physical Adapter?</td>
-        <td>' . ($nic['PhysicalAdapter'] ?? 'unknown') . '</td>
+        <td>' . (($nic['PhysicalAdapter'] ? 'Yes' : 'No') ?? 'unknown') . '</td>
     </tr>
         ';
 
@@ -1278,17 +1292,17 @@
             echo '
     <tr>
         <td>Static DNS Servers?</td>
-        <td>' . $nic['DNSIsStatic'] ? 'Yes' : 'No' . '</td>
+        <td>' . ($nic['DNSIsStatic'] ? 'Yes' : 'No') . '</td>
     </tr>
 
     <tr>
         <td>DNS Servers</td>
-        <td>' . safe_implode('<br/>', array_merge($nic['DNSServerSearchOrder'] ?? [], $dns_ipv6)) . '</td>
+        <td>' . safe_implode('<br/>', array_merge($nic['DNSServerSearchOrder'] ?? [], $ipv6_dns)) . '</td>
     </tr>
     
     <tr>
         <td>Full Duplex?</td>
-        <td>' . $nic["FullDuplex"] . '</td>
+        <td>' . ($nic["FullDuplex"] ? 'Yes' : 'No') . '</td>
     </tr>
 
     <tr>
@@ -1389,6 +1403,22 @@
     </tbody>
 </table>
 
+<h2>Other</h2>
+<table>
+    <tbody>
+        <tr>
+            <td>RecieveSideScaling</td>
+            <td><?= $json_data['Network']['ReceiveSideScaling'] ? 'True' : 'False' ?></td>
+        </tr>
+    </tbody>
+</table>
+<h3>AutoTuningLevelLocal</h3>
+<table>
+    <tbody>
+        <?= object_table_iter($json_data['Network']['AutoTuningLevelLocal']) ?>
+    </tbody>
+</table>
+
 <h2>Hosts File</h2>
 <?php
     echo '<pre class="file"><code>';
@@ -1398,6 +1428,46 @@
     }
     echo '</code></pre>';
 ?>
+
+<h1>Events</h1>
+
+<h2>Unexpected Shutdowns</h2>
+<table>
+    <thead>
+        <th>Timestamp</th>
+        <th>Bugcheck Code</th>
+        <th>P1</th>
+        <th>P2</th>
+        <th>P3</th>
+        <th>P4</th>
+        <th>Power Button Recorded</th>
+    </thead>
+    <tbody>
+        <?=
+            array_table_iter(
+                $json_data['Events']['UnexpectedShutdowns'],
+                ['Timestamp','BugcheckCode','BugcheckParameter1','BugcheckParameter2','BugcheckParameter3','BugcheckParameter4','PowerButtonTimestamp']
+            )
+        ?>
+    </tbody>
+</table>
+
+<h2>PCIe WHEA Errors</h2>
+<table>
+    <thead>
+        <th>Timestamp</th>
+        <th>Vendor ID</th>
+        <th>Device ID</th>
+    </thead>
+    <tbody>
+        <?=
+            array_table_iter(
+                $json_data['Events']['PciWheaErrors'],
+                ['Timestamp','VendorId','DeviceId']
+            )
+        ?>
+    </tbody>
+</table>
 
 <div id="debug-log">
     <h1>Debug Log</h1>

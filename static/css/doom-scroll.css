@@ -86,22 +86,26 @@ nav {
     display: none;
 }
 
-nav.nav-collapsed #navlist {
+.nav-collapsed #nav-list {
     display: none;
 }
 
-nav.nav-collapsed #nav-expand {
+.nav-collapsed #nav-expand {
     display: block;
     position: relative;
     left: 50%;
     cursor: pointer;
 }
 
-#nav-collapse-link {
+.nav-collapsed #nav-collapse {
+    display: none;
+}
+
+.nav-space-below {
     margin-bottom: 0.5rem;
 }
 
-#navlist {
+#nav-list {
     margin-top: 0; /* We make it margin instead of padding so that it doesn't slide down when scrolling */
     padding-top: 1rem;
     font-size: 16px;
@@ -109,7 +113,7 @@ nav.nav-collapsed #nav-expand {
     padding-left: 1rem;
 }
 
-#navlist li:hover {
+#nav-list li:hover {
     background-color: var(--nav-hover-color);
 }
 
@@ -149,10 +153,6 @@ td, th {
 
 th {
     font-weight: bold;
-}
-
-.json-data table {
-    background: none;
 }
 
 .nic tr > td:nth-child(2) {

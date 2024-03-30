@@ -32,14 +32,14 @@ function createLinks(selector) {
         link.style.width = "100%";
         link.href = `#${slug}`;
         li.appendChild(link);
-        document.querySelector("#navlist").appendChild(li);
+        document.querySelector("#nav-list").appendChild(li);
     });
 }
 // there are just too many network adapters/disks lol
 // the .item-header class should be added to dynamic headers (i.e. extensions, disks, network adapters, etc.)
 createLinks("h1, h2:not(.item-header)");
 
-document.querySelector("#nav-collapse-link").onclick = () => {
+document.querySelector("#nav-collapse").onclick = () => {
     document.querySelector("nav").classList.add("nav-collapsed");
     return false;
 }
@@ -276,7 +276,7 @@ async function call_hwapi(path, payload, fallbackCallack = () => {}) {
     if (!cpuResponse || !cpuResponse.name) {
         statusSpan.textContent = "Could not get database results";
     }
-    const cpuTable = document.getElementById("fetched-cpu-info");
+
     // update the title element to reflect the name fetched from the database
     document.querySelector("#hwapi-header").textContent += ` for ${cpuResponse.name}`;
     let tableContents = "";
