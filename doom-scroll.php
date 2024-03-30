@@ -181,10 +181,11 @@
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <nav>
     <span id="nav-expand"><a href="#">&gt;&gt;</a></span>
-    <ul id="navlist">
+    <span id="nav-collapse"><a href="#">&lt;&lt;</a></span>
+    <ul id="nav-list">
         <li><a href="<?= http_strip_query_param($_SERVER['REQUEST_URI'], 'view') ?>">Specify View</a></li>
         <li id="nav-top-link"><a href="#top">Back To Top</a></li>
-        <li id="nav-collapse-link"><a href="#">Collapse Sidebar</a></li>
+        <li class="nav-space-below"><a href="<?= $json_file ?>">Download JSON</a></li>
     </ul>
 </nav>
 <main>

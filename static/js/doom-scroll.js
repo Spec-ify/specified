@@ -32,14 +32,14 @@ function createLinks(selector) {
         link.style.width = "100%";
         link.href = `#${slug}`;
         li.appendChild(link);
-        document.querySelector("#navlist").appendChild(li);
+        document.querySelector("#nav-list").appendChild(li);
     });
 }
 // there are just too many network adapters/disks lol
 // the .item-header class should be added to dynamic headers (i.e. extensions, disks, network adapters, etc.)
 createLinks("h1, h2:not(.item-header)");
 
-document.querySelector("#nav-collapse-link").onclick = () => {
+document.querySelector("#nav-collapse").onclick = () => {
     document.querySelector("nav").classList.add("nav-collapsed");
     return false;
 }
