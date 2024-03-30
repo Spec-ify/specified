@@ -13,6 +13,10 @@
     $json_data = json_decode($json, true);
     $profile_name = pathinfo($json_file, PATHINFO_FILENAME);
 
+    $script_nonce = bin2hex(random_bytes(20));
+    // TODO: style the progress bars differently, and remove unsafe-inline!
+    header("Content-Security-Policy: default-src 'self'; connect-src 'self' https://spec-ify.com http://localhost:3000; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; script-src 'self' https://cdnjs.cloudflare.com https://cdn.datatables.net 'nonce-$script_nonce'");
+
     include('common.php');
 
     // Grabs data from endoflife.date's api and checks it
@@ -183,7 +187,7 @@
     <link rel="icon" href="assets/specify-glass-black-256x256.png" media="(prefers-color-scheme light)" />
     <link rel="icon" href="assets/specify-glass-black-256x256.png" media="(prefers-color-scheme dark)" />
 
-    <script>
+    <script nonce="<?= $script_nonce ?>">
         window.PROFILE_NAME = "<?= $profile_name ?>";
     </script>
     <script defer src="static/js/doom-scroll.js"></script>

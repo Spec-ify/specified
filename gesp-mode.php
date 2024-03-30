@@ -12,6 +12,10 @@ $test=0;
 $json_data = json_decode($json,true);
 $profile_name = explode(".", explode("/", $json_file)[1])[0];
 
+
+$nonce = bin2hex(random_bytes(20));
+header("Content-Security-Policy: default-src 'self'; style-src 'self' 'nonce-$nonce'; script-src 'self' 'nonce-$nonce'");
+
 include('common.php');
 
 // named this way to avoid conflicting with common.php
@@ -61,9 +65,9 @@ $pupsfoundRunning = array_unique($pupsfoundRunning);
 <link rel="shortcut icon" href="assets/specify-glass-dynamic.svg" />
 <link rel="icon" href="assets/specify-glass-black-256x256.png" media="(prefers-color-scheme light)" />
 <link rel="icon" href="assets/specify-glass-black-256x256.png" media="(prefers-color-scheme dark)" />
-<style>
+<style nonce="<?= $nonce ?>">
 * {
-    font-family: verdana !important;
+    font-family: Verdana, sans-serif !important;
     font-size: 12px;
 }
 body {
@@ -112,8 +116,17 @@ tr:nth-child(even) {
 #sys-var-table{
     max-width:600px;
 }
+#sections {
+    line-height: 0;
+}
+.pink {
+    color: #ab6387;
+}
+.green {
+    color: #87ab63;
+}
 </style>
-    <script>
+    <script nonce="<?= $nonce ?>">
         window.PROFILE_NAME = "<?= $profile_name ?>";
     </script>
     <script defer="defer" src="static/js/redir.js"></script>
@@ -189,7 +202,7 @@ foreach ($json_data['System']['ChoiceRegistryValues'] as $regkey) {
     ?>
 <a name="top"></a>
 <h2>Sections</h2>
-<div style="line-height:0">
+<div id="sections">
 <p><a href="#hw">Hardware Basics</a></p>
 <p><a href="#sec-info">Security Information</a></p>
 <p><a href="#bios">BIOS</a></p>
@@ -713,11 +726,11 @@ Total RAM usage: WIP
             echo "<tr>";
 
             if ($serv['State'] == "Stopped"){
-                echo "<td style='color:#ab6387'>Stopped</td>";
+                echo "<td class='pink'>Stopped</td>";
             }
 
             else {
-                echo "<td style='color:#87ab63'>Running</td>";
+                echo "<td class='green'>Running</td>";
             }
             
             echo "<td>{$serv['StartMode']}</td>

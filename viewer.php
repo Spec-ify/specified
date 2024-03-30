@@ -220,7 +220,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
     <link rel="icon" href="assets/specify-glass-black-256x256.png" media="(prefers-color-scheme light)" />
     <link rel="icon" href="assets/specify-glass-black-256x256.png" media="(prefers-color-scheme dark)" />
 
-    <script>
+    <script nonce="<?= $script_nonce ?>">
         window.PROFILE_NAME = "<?= $profile_name ?>";
     </script>
     <!--This should be first to make sure the themes load on time-->
