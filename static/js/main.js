@@ -1,11 +1,8 @@
-//These are very rudimentary ways of implementing quick pagination of elements without needing any complicated setups.
-$(".notes_button").click(() => showtab("#notes"));
-$(".pups_button").click(() => showtab("#pups"));
-$(".variables_button").click(() => showtab("#variables"));
-$(".browsers_button").click(() => showtab("#browsers"));
-$(".startup_button").click(() => showtab("#startup"));
-$(".updates_button").click(() => showtab("#updates"));
-function showtab(seltab) {
+/**
+ * Toggle the currently displayed tab in the main view
+ * @param {("#pups" | "#notes" | "#variables" | "#startup" | "#updates")} tab 
+ */
+function showTab(tab) {
     // List of all tabs
     const tabs = [
         "#pups",
@@ -16,209 +13,141 @@ function showtab(seltab) {
         "#updates",
     ];
     // Removes selected tab
-    const hiddentabs = tabs.filter((val) => val !== seltab);
-    for (const tab in hiddentabs) {
-        $(hiddentabs[tab]).hide();
+    const hiddenTabs = tabs.filter((val) => val !== tab);
+    for (const t of hiddenTabs) {
+        $(t).hide();
     }
-    $(seltab).show();
+    $(tab).show();
 }
-const viewmodetoggle = localStorage.getItem("viewmode");
-const blackblanket = document.querySelector("#blanket");
-let urlsubr = new URLSearchParams(window.location.search);
+
+// TODO: the way this is defined is a little bit weird, could probably be improved, it's currently defined by updating the value on the global `window` object
 console.log(PROFILE_NAME);
 
-document
-    .querySelector("#board-info-more-info-button")
-    .addEventListener("click", () => {
-        document.querySelector("#board-info-more-info").style.display = "block";
+// Interactivity for the cpu and motherboard widgets
+{
+    // Interactivity for the show more and hide more buttons for the motherboard widget
+    document.querySelector("#board-info-more-info-button").addEventListener("click", () => {
+            document.querySelector("#board-info-more-info").style.display = "block";
+            document.querySelector("#board-info-more-info-button").style.display =
+                "none";
+    });
+    document.querySelector("#board-info-close").addEventListener("click", () => {
+        document.querySelector("#board-info-more-info").style.display = "none";
         document.querySelector("#board-info-more-info-button").style.display =
-            "none";
+            "inline-block";
     });
 
-document.querySelector("#board-info-close").addEventListener("click", () => {
-    document.querySelector("#board-info-more-info").style.display = "none";
-    document.querySelector("#board-info-more-info-button").style.display =
-        "inline-block";
-});
-
-document.querySelector("#cpu-close-btn").addEventListener("click", () => {
-    document.querySelector("#cpu-more-info-btn").style.display = "";
-    document.querySelector("#cpu-info-table").style.display="none";
-});
-
-document.querySelector("#cpu-more-info-btn").addEventListener("click", () => {
-    document.querySelector("#cpu-more-info-btn").style.display = "none";
-    document.querySelector("#cpu-info-table").style.display="";
-})
-
-$(function () {
-    if (viewmodetoggle === "gesp") {
-        blackblanket.style.transition = "opacity 0.2s";
-        const url = new URL(window.location);
-        url.searchParams.append("view", "gesp-mode");
-        window.location = url.toString();
-    }
-});
-
-// MUST be function(e) not arrow function because using this
-document.querySelector("#view-toggle").onchange = function(e) {
-    let value = this.value;
-    this.selectedIndex = 0;
-    const url = new URL(window.location);
-    url.searchParams.append("view", value);
-    window.location = url.toString();
-
+    // Interactivity for the show more and hide buttons for the cpu widget
+    document.querySelector("#cpu-close-button").addEventListener("click", () => {
+        document.querySelector("#cpu-more-info-button").style.display = "";
+        document.querySelector("#cpu-info-table").style.display="none";
+    });
+    document.querySelector("#cpu-more-info-button").addEventListener("click", () => {
+        document.querySelector("#cpu-more-info-button").style.display = "none";
+        document.querySelector("#cpu-info-table").style.display="";
+    });
 }
 
-$("#collapse-toggle").click(function () {
-    $("#collapse-toggle").hide();
-    $("#collapse-toggle-hide").show();
-    $(".accordion-collapse").addClass("show");
+// When the selected view is changed (eg, gesp mode or doomscroll), redirect the user to that page
+document.querySelector("#view-toggle").addEventListener("change", e => {
+    const selectedView = e.target.value;
+    const url = new URL(window.location);
+    url.searchParams.append("view", selectedView);
+    window.location = url.toString();
 });
 
-$("#collapse-toggle-hide").click(function () {
-    $("#collapse-toggle").show();
-    $("#collapse-toggle-hide").hide();
-    $(".accordion-collapse").removeClass("show");
-});
-
-//Snippets like these allow for the screen to scroll and follow the expansion caused by collapsing accordion items.
 // This is extremely jank, but it works! - K9
-document.getElementById("collapse-toggle").addEventListener("click", () => {
-    document.getElementById("collapse-toggle").style.display = "none";
-    document.getElementById("collapse-toggle-hide").style.display = "inline";
-    var accordions = document.getElementsByClassName("accordion-collapse");
-
-    for (var i = 0; i < accordions.length; i++) {
-        accordions[i].className = accordions[i].className + " show";
-    }
-});
-
-// Double it and give it to the next person
-document.getElementById("collapse-toggle-hide").addEventListener("click", () => {
-    document.getElementById("collapse-toggle").style.display = "inline";
-    document.getElementById("collapse-toggle-hide").style.display = "none";
-    var accordions = document.getElementsByClassName("accordion-collapse");
-
-    for (var i = 0; i < accordions.length; i++) {
-        accordions[i].className = accordions[i].className.replace(" show", "");
-    }
-});
-
-//Snippets like these allow for the screen to scroll and follow the expansion caused by collapsing accordion items.
-
-document.getElementById("devices-table-btn").addEventListener("click", () => {
-    document.getElementById("devices").scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest",
+// Add functionality to the "Collapse all"/"Expand all" button at the top of the main viewer page
+{
+    document.getElementById("collapse-toggle").addEventListener("click", () => {
+        document.getElementById("collapse-toggle").style.display = "none";
+        document.getElementById("collapse-toggle-hide").style.display = "inline";
+        const accordions = document.getElementsByClassName("accordion-collapse");
+        for (const accordion of accordions) {
+            accordion.classList.add("show");
+        }
     });
-});
-
-document.getElementById("drivers-table-button").addEventListener("click", () => {
-    document.getElementById("drivers").scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest",
+    document.getElementById("collapse-toggle-hide").addEventListener("click", () => {
+        document.getElementById("collapse-toggle").style.display = "inline";
+        document.getElementById("collapse-toggle-hide").style.display = "none";
+        const accordions = document.getElementsByClassName("accordion-collapse");
+        for (const accordion of accordions) {
+            accordion.classList.remove("show");
+        }
     });
-});
+}
 
-document
-    .getElementById("running-processes-button")
-    .addEventListener("click", () => {
-        document.getElementById("running-processes").scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-            inline: "nearest",
+// This could definitely be cleaned up more, for now we hand pick accordion elements to scroll into when expanded
+{
+    // Where the first item is the id of a button to add an event listener to, and the second item is the id of the element to scroll into
+    const elementsToScrollInto = [
+        ["devices-table-button", "devices"],
+        ["drivers-table-button", "drivers"],
+        ["running-processes-button", "running-processes"],
+        ["installed-app-button", "installed-app"],
+        ["services-table-button", "services"],
+        ["tasks-table-button", "tasks"],
+        ["netcon-table-button", "netcon"],
+        ["routes-table-button", "routes"],
+    ];
+    for (const [button, elementToScrollInto] of elementsToScrollInto) {
+        document.getElementById(button).addEventListener("click", () => {
+            document.getElementById(elementToScrollInto).scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+                inline: "nearest",
+            });
         });
-    });
-
-document.getElementById("installed-app-button").addEventListener("click", () => {
-    document.getElementById("installed-app").scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest",
-    });
-});
-
-document.getElementById("services-table-btn").addEventListener("click", () => {
-    document.getElementById("services").scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest",
-    });
-});
-
-document.getElementById("tasks-table-btn").addEventListener("click", () => {
-    document.getElementById("tasks").scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest",
-    });
-});
-
-document.getElementById("netcon-table-btn").addEventListener("click", () => {
-    document.getElementById("netcon").scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest",
-    });
-});
-
-document.getElementById("routes-table-btn").addEventListener("click", () => {
-    document.getElementById("routes").scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest",
-    });
-});
+    }
+}
 
 //Don't even ask.
 //Setting the target as the searchbar, sanitizing the inputs into the search bar into lower case, then getting all divs by class of widget into an array and looping
 //through them for each keystroke, setting visibility of matched divs with class widget, searching the text into their h1 children.
 function searchFunction() {
-    var input, filter, li, i, txtValue, h1;
-    input = document.getElementById("searchbar-div");
-    filter = input.value.toUpperCase();
-    let mainbody = document.getElementById("main");
-    li = mainbody.getElementsByClassName("widget");
+    let txtValue, h1;
+    const input = document.getElementById("searchbar-div");
+    const filter = input.value.toUpperCase();
+    const mainBody = document.getElementById("main");
+    const widgets = mainBody.getElementsByClassName("widget");
 
-    for (i = 0; i < li.length; i++) {
-        if (li[i].getElementsByTagName("h1")[0]) {
-            h1 = li[i].getElementsByTagName("h1")[0];
+    for (const widget of widgets) {
+        if (widget.getElementsByTagName("h1")[0]) {
+            h1 = widget.getElementsByTagName("h1")[0];
         }
         txtValue = h1.textContent || h1.innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
+            widget.style.display = "";
         } else {
-            li[i].style.display = "none";
+            widget.style.display = "none";
         }
     }
 }
 
-//It goes to the top, that's it.
-let topbutton = document.getElementById("btn-back-to-top");
-window.onscroll = function () {
-    scrollFunction();
-};
-function scrollFunction() {
-    if (
-        document.body.scrollTop > 20 ||
-        document.documentElement.scrollTop > 20
-    ) {
-        topbutton.style.opacity = 1;
-        topbutton.style.visibility = "visible";
-    } else {
-        topbutton.style.opacity = 0;
-        setTimeout(() => {
-            topbutton.style.visibility = "hidden";
-        }, "100");
-    }
-}
-topbutton.addEventListener("click", backToTop);
-function backToTop() {
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
+// Button in the bottom right that scrolls the page back to the top
+{
+    const topButton = document.getElementById("btn-back-to-top");
+    // Show the top button if the page isn't at the top
+    // and hide it if it is
+    document.addEventListener("scroll", () => {
+        if (
+            document.body.scrollTop > 20 ||
+            document.documentElement.scrollTop > 20
+        ) {
+            topButton.style.opacity = 1;
+            topButton.style.visibility = "visible";
+        } else {
+            topButton.style.opacity = 0;
+            setTimeout(() => {
+                topButton.style.visibility = "hidden";
+            }, "100");
+        }  
+    })
+    // Scroll the page to the top when clicked
+    topButton.addEventListener("click", () => {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    });
 }
 
 // Konami Code - Shows Debug Log
@@ -227,13 +156,6 @@ const easterEgg = new Konami(
     () => (document.getElementById("dev-div").style.display = "block")
 );
 
-$("#gesptoggle").click(() => {
-    localStorage.setItem("viewmode", "gesp");
-});
-$("#spec-toggle").click(() => {
-    //console.log('click');
-    window.localStorage.removeItem("viewmode");
-});
 // populate the cpu info table with stuff from hwapi
 (async () => {
     const report = await (await fetch(`./files/${PROFILE_NAME}.json`)).json();
@@ -275,7 +197,6 @@ $("#spec-toggle").click(() => {
         ).json();
     }
     const titleElement = document.getElementById("cpu-info-title");
-    const cpuTable = document.getElementById("fetched-cpu-info");
     // update the title element to reflect the name fetched from the database
     document.getElementById("cpu-info-title").innerHTML =
         titleElement.innerHTML.slice(0, -3) + response.name;

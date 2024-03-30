@@ -299,8 +299,8 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                     <input class="searchbar" type="text" placeholder="Search..." id="searchbar-div" onkeyup="searchFunction()">
                 </div>
                 <div id="main">
-                    <div class="metadata_metadata expanded" id="info">
-                        <div class="widgets_widgets widgets" id="hardware-widgets" data-hide="false">
+                    <div class="metadata-metadata expanded" id="info">
+                        <div class="widgets-widgets widgets" id="hardware-widgets" data-hide="false">
                             <div class="widget widget-cpu hover" type="button" data-mdb-toggle="modal" data-mdb-target="#cpu-modal">
                                 <h1>CPU</h1>
                                 <div class="widget-values">
@@ -359,8 +359,8 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                             </table>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" id="cpu-more-info-btn">More Info</button>
-                                            <button type="button" class="btn btn-secondary" id="cpu-close-btn" data-mdb-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-secondary" id="cpu-more-info-button">More Info</button>
+                                            <button type="button" class="btn btn-secondary" id="cpu-close-button" data-mdb-dismiss="modal">Close</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1092,7 +1092,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                             </div>
 
                         </div>
-                        <div class="widgets_widgets widgets" data-hide="false">
+                        <div class="widgets-widgets widgets" data-hide="false">
                             <?php
                             $drives_amount = safe_count($json_data['Hardware']['Storage']);
                             $driveKey = 0;
@@ -1310,7 +1310,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                             }
                             ?>
                         </div>
-                        <div class="widgets_widgets widgets" data-hide="false">
+                        <div class="widgets-widgets widgets" data-hide="false">
                             <div class="widget widget-cpu hover">
                                 <h1>CPU
                                     <span>(Used)</span>
@@ -1491,15 +1491,16 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                             </div>
                         </div>
                         <div class="textbox metadata-detail tabbed-info">
-                            <ul class="metadata-detail-controls">
-                                <li class="notes_button">Notes</li>
-                                <li class="pups_button">PUPs</li>
-                                <li class="variables_button">Variables</li>
-                                <li class="browsers_button">Browsers</li>
-                                <li class="startup_button">Startup Tasks</li>
-                                <li class="updates_button">Windows Updates</li>
-                            </ul>
-                            <div class="metadata-detail-content jsondata" id="notes">
+                            <div class="metadata-detail-controls">
+                                <button onclick="showTab('#notes')" class="notes-button">Notes</button>
+                                <button onclick="showTab('#pups')" class="pups-button">PUPs</button>
+                                <button onclick="showTab('#variables')" class="variables-button">Variables</button>
+                                <button onclick="showTab('#browsers')" class="browsers-button">Browsers</button>
+                                <button onclick="showTab('#startup')" class="startup-button">Startup Tasks</button>
+                                <button onclick="showTab('#updates')" class="updates-button">Windows Updates</button>
+                            </div>
+
+                            <div class="metadata-detail-content json-data" id="notes">
                                 <!-- OS Version -->
 
                                 <h4 style="margin:5px; color:#ffffff66">General Notes</h4>
@@ -1676,7 +1677,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                         foreach ($storage_device['SmartData'] as $smartPoint) {
                                             if (str_contains($smartPoint['Name'], '!')) {
                                                 if ($smartPoint['RawValue'] != '000000000000') {
-                                                    $drivehtml .= '<p><span class="drivespan" data-mdb-toggle="modal" type="button" ' . $drivemodal . '>'
+                                                    $drivehtml .= '<p><span class="drive-span" data-mdb-toggle="modal" type="button" ' . $drivemodal . '>'
                                                         . $storage_device['DeviceName'] . ' (' . $lettersString . ') </span> has <span>'
                                                         . $smartPoint['RawValue'] . ' ' . $smartPoint['Name'] . '</span></p>';
                                                 }
@@ -1732,7 +1733,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 ?>
 
                             </div>
-                            <div class="metadata-detail-content jsondata" id="pups">
+                            <div class="metadata-detail-content json-data" id="pups">
                                 <?php
                                 $puphtml = '';
 
@@ -1769,7 +1770,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 }
                                 ?>
                             </div>
-                            <div class="metadata-detail-content jsondata" id="variables">
+                            <div class="metadata-detail-content json-data" id="variables">
                                 <table class="table">
                                     <thead>
                                         <th>Field</th>
@@ -1811,8 +1812,8 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="metadata-detail-content jsondata" id="browsers">
-                                <div class="widgets_widgets widgets">
+                            <div class="metadata-detail-content json-data" id="browsers">
+                                <div class="widgets-widgets widgets">
 
                                     <?php
                                     $browser_icon = '';
@@ -1879,7 +1880,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     ?>
                                 </div>
                             </div>
-                            <div class="metadata-detail-content jsondata" id="startup">
+                            <div class="metadata-detail-content json-data" id="startup">
                                 <table class="table">
                                     <thead>
                                         <th>App Name</th>
@@ -1899,7 +1900,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="metadata-detail-content jsondata" id="updates">
+                            <div class="metadata-detail-content json-data" id="updates">
                                 <table class="table">
                                     <thead>
                                         <th>Update</th>
@@ -1920,12 +1921,12 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                     <div>
                         <div class="textbox metadata-detail">
                             <div class="accordion">
-                                <h1 class="accordion-header" id="devices-table-btn">
+                                <h1 class="accordion-header" id="devices-table-button">
                                     <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#devices" aria-expanded="true" aria-controls="devices">
                                         Devices
                                     </button>
                                 </h1>
-                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="devices">
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="devices">
                                     <table id="devices-table" class="table">
                                         <thead>
                                             <th>Status</th>
@@ -1940,7 +1941,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                         Drivers
                                     </button>
                                 </h1>
-                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="drivers">
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="drivers">
                                     <table id="drivers-table" class="table">
                                         <thead>
                                             <th>Name</th>
@@ -1962,7 +1963,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                         Running Processes
                                     </button>
                                 </h1>
-                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="running-processes">
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="running-processes">
                                     <table id="running-processes-table" class="table">
                                         <thead>
                                             <th>PID</th>
@@ -1978,7 +1979,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                         Installed Apps
                                     </button>
                                 </h1>
-                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="installed-app">
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="installed-app">
                                     <table id="installed-app-table" class="table">
                                         <thead>
                                             <th>Name</th>
@@ -1994,12 +1995,12 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                     <div>
                         <div class="textbox metadata-detail">
                             <div class="accordion">
-                                <h1 class="accordion-header" id="services-table-btn">
+                                <h1 class="accordion-header" id="services-table-button">
                                     <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#services" aria-expanded="true" aria-controls="services">
                                         Services
                                     </button>
                                 </h1>
-                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="services">
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="services">
                                     <table id="services-table" class="table">
                                         <thead>
                                             <th>State</th>
@@ -2010,12 +2011,12 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                         </thead>
                                     </table>
                                 </div>
-                                <h1 class="accordion-header" id="tasks-table-btn">
+                                <h1 class="accordion-header" id="tasks-table-button">
                                     <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#tasks" aria-expanded="true" aria-controls="tasks">
                                         Tasks
                                     </button>
                                 </h1>
-                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="tasks">
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="tasks">
                                     <table id="tasks-table" class="table">
                                         <thead>
                                             <th>State</th>
@@ -2034,12 +2035,12 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                     <div>
                         <div class="textbox metadata-detail" id="accordion-tables-network">
                             <div class="accordion">
-                                <h1 class="accordion-header" id="netcon-table-btn">
+                                <h1 class="accordion-header" id="netcon-table-button">
                                     <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#netcon" aria-expanded="true" aria-controls="netcon">
                                         Network Connections
                                     </button>
                                 </h1>
-                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="netcon">
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="netcon">
                                     <table id="netcon-table" class="table">
                                         <thead>
                                             <th>Local IP</th>
@@ -2050,7 +2051,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                         </thead>
                                     </table>
                                 </div>
-                                <h1 class="accordion-header" id="routes-table-btn">
+                                <h1 class="accordion-header" id="routes-table-button">
                                     <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#routes" aria-expanded="true" aria-controls="routes">
                                         Routes Table
                                     </button>
@@ -2067,12 +2068,12 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                         </thead>
                                     </table>
                                 </div>
-                                <h1 class="accordion-header" id="hosts-table-btn">
+                                <h1 class="accordion-header" id="hosts-table-button">
                                     <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#hosts" aria-expanded="true" aria-controls="hosts">
                                         Hosts File
                                     </button>
                                 </h1>
-                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="hosts">
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="hosts">
                                     <?php
                                     $hoststext = nl2br($json_data['Network']['HostsFile']);
                                     ?>
@@ -2084,12 +2085,12 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                     <div id="dev-div" style="display: none">
                         <div class="textbox metadata-detail">
                             <div class="accordion">
-                                <h1 class="accordion-header" id="debug-log-btn">
+                                <h1 class="accordion-header" id="debug-log-button">
                                     <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#debug-log" aria-expanded="true" aria-controls="debug-log">
                                         Debug Log
                                     </button>
                                 </h1>
-                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="debug-log">
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="debug-log">
                                     <?php
                                     $DebugLog = nl2br($json_data['DebugLogText']);
                                     ?>

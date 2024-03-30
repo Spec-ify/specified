@@ -30,7 +30,7 @@ else
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.dark.min.css" rel="stylesheet">
     <link href="static/css/main.css" rel="stylesheet">
 </head>
-<div class="textbox metadata-detail tablebox widget jsondata" id="login-form">
+<div class="textbox metadata-detail tablebox widget json-data" id="login-form">
 <h1>Specify Archive Login</h1>
 <form method="POST" action="archive">
     <div class="form-outline mb-4">
