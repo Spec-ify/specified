@@ -1,35 +1,73 @@
-/* Light Mode */
-.LightModeBody{
-    background-color:#ffffff!important;
-    color:#0d111388!important;
-}
-.LightModeTextbox{
-    background:#0d111388!important;
-    color:#ffffff!important;
-    filter: drop-shadow(4px 4px 4px #5e81ac);
-}
-.LightModeTextbox h1{
-    color:#ffffff!important;
-}
-.LightModeTextbox h2{
-    background:#0d111388!important;
-    color:#ffffff!important;
+:root, :root[data-theme="classic-mode"] {
+    --color-scheme: dark;
+    --bg-color: #3b4252;
+    --fg-color: #e0e2e4;
+    --secondary-bg: #252b2d;
+    --secondary-fg: #b5b5b5;
+    --tertiary-bg: #293134;
+    --widget-emph: #fff;
+    --logo-bg: #252b2d;
+    --button-fg: #ccc;
+    --header-bg: #181d1f;
+    --box-shadow: #130b00;
+    --link-secondary: #f77669;
+    --select-color: #5e81ac;
+    --tr-even: #ffffff07;
+    --border-color: #595959;
+    --partition-bar-filled: hsl(0, 0%, 20%);
+    --table-color: #fff;
+    --modal-color: #424242;
+    --meta-h4-color: #ffffff66;
+
+    --green: #A3BE8C;
+    --yellow: rgb(235, 203, 139);
+    --red: rgb(191, 97, 106);
+    --amd: rgb(215,27,27);
+    --intel: rgb(8,110,224);
 }
 
-/* K9 Mode */
-.K9ModeBody{
-    background-color:#0d1113!important;
-    color:#ddd9d0!important;
+:root[data-theme="light-mode"] {
+    --color-scheme: only light;
+    --bg-color: #ffffff;
+    --fg-color: #0d111388;
+    --secondary-bg: #f0f0f0;
+    --secondary-fg: #444;
+    --tertiary-bg: #e0e0e0;
+    --widget-emph: black;
+    --logo-bg: #252b2d;
+    --button-fg: #222222;
+    --header-bg: #eeeeee;
+    --header-dropdown: #d0d0d0;
+    --box-shadow: #d6d6d6;
+    --link-secondary: #f77669;
+    --select-color: #5e81ac;
+    --tr-even: #ffffff07;
+    --border-color: #595959;
+    --partition-bar-filled: hsl(0, 0%, 20%);
+    --table-color: var(--secondary-fg);
+    --modal-color: #ffffff;
+    --meta-h4-color: #333333;
+
+    --green: green;
+    --yellow: goldenrod;
+    --red: #ef4444;
+    --amd: rgb(215,27,27);
+    --intel: rgb(8,110,224);
 }
-.K9ModeTextbox{
-    background:#181d1e!important;
-    color:#ddd9d0!important;
+
+:root[data-theme="light-mode"] .accordion-button::after {
+    filter: invert(1);
 }
-.K9ModeTextbox h1{
-    background:#181d1e!important;
-    color:#ddd9d0!important;
+
+:root[data-theme="light-mode"] .modal-header {
+    color: var(--widget-emph);
 }
-.K9ModeTextbox h2{
-    background:#ddd9d0!important;
-    color:#181d1e!important;
+
+:root[data-theme="k9-mode"] {
+    --color-scheme: dark;
+    --bg-color: #0d1113;
+    --fg-color: #ddd9d0;
+    --widget-bg: #181d1e;
+    --widget-fg: #ddd9d0;
+    --heading-color: #181d1e;
 }

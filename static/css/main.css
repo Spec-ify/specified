@@ -1,13 +1,13 @@
 @import url(https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&amp;display=swap);
 
 html {
-	background-color: #3b4252 !important;
-	color-scheme: dark;
+	background-color: var(--bg-color);
+	color-scheme: var(--color-scheme);
 }
 
 body {
-	background-color: #3b4252 !important;
-	color: #e0e2e4;
+	background-color: var(--bg-color);
+	color: var(--fg-color);
 	font-family: JetBrains Mono, monospace;
 	font-size: 10pt;
 	line-height: 150%;
@@ -21,6 +21,12 @@ html {
 	-moz-text-size-adjust: none;
 	-ms-text-size-adjust: none;
 }
+
+.green { color: var(--green); }
+.yellow { color: var(--yellow); }
+.red { color: var(--red); }
+.amd { color: var(--amd); }
+.intel { color: var(--intel); }
 
 main {
 	flex-grow: 1;
@@ -54,7 +60,7 @@ a:hover {
 button,
 input,
 select {
-	background-color: #252b2d;
+	background-color: var(--secondary-bg);
 	border-radius: 6px;
 	border-style: none;
 	color: #ccc;
@@ -106,7 +112,7 @@ header > .logo {
 }
 
 header > .logo {
-	background-color: #252b2d;
+	background-color: var(--logo-bg);
 	border: 0;
 	border-radius: 5px;
 	margin: 3px 0;
@@ -131,6 +137,7 @@ header > .logo img {
 	padding: 0;
 }
 
+/* this is only used in landing as of 2024-03-31 */
 footer {
 	color: #888;
 	font-size: 10pt;
@@ -140,6 +147,7 @@ footer {
 	text-align: right;
 }
 
+/* this is only used in landing as of 2024-03-31 */
 article {
 	font-size: 120%;
 	margin: 20px auto;
@@ -235,6 +243,7 @@ optgroup {
 	width: 250px;
 }
 
+/* this is only used in homepage used as of 2024-03-31 */
 .link {
 	align-items: center;
 	background-color: #252b2d;
@@ -295,17 +304,11 @@ optgroup {
 	--fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
 }
 
-html {
-	background-color: #1e2527;
-	color-scheme: dark;
-}
-
 body {
 	font-family: JetBrains Mono, monospace;
 	font-size: 10pt;
 	line-height: 150%;
 	margin: 0;
-	color: #e0e2e4;
 }
 
 body,
@@ -336,22 +339,22 @@ a:active,
 a:hover,
 a:link,
 a:visited {
-	color: #f77669;
+	color: var(--link-secondary);
 	text-decoration: none;
 }
 
 a:active,
 a:hover {
-	border-bottom: 1px solid #f77669;
+	border-bottom: 1px solid var(--link-secondary);
 }
 
 button,
 input,
 select {
 	font-family: JetBrains Mono, monospace;
-	background-color: #252b2d;
+	background-color: var(--secondary-bg);
 	border-style: none;
-	color: #ccc;
+	color: var(--button-fg);
 	border-radius: 6px;
 	padding: 5px;
 }
@@ -375,16 +378,19 @@ button {
 	cursor: pointer;
 }
 
+/* not used in viewer (may be used elsewhere) as of 2024-03-31 */
 hr {
 	border: 2px solid #252b2d;
 }
 
+/* not used in viewer (may be used elsewhere) as of 2024-03-31 */
 article {
 	max-width: 900px;
 	margin: 20px auto;
 	font-size: 120%;
 }
 
+/* not used in viewer (may be used elsewhere) as of 2024-03-31 */
 article h1:before,
 article h2:before {
 	content: "# ";
@@ -394,8 +400,8 @@ article h2:before {
 .textbox {
 	font-size: 130%;
 	letter-spacing: -1px;
-	color: #b5b5b5;
-	background: #252b2d;
+	color: var(--secondary-fg);
+	background: var(--secondary-bg);
 	padding: 8px;
 	margin: 12px 0;
 	border-radius: 6px;
@@ -405,6 +411,7 @@ article h2:before {
 	padding: 24px;
 }
 
+/* not used in viewer (may be used elsewhere) as of 2024-03-31 */
 .link {
 	background-color: #252b2d;
 	border-radius: 15px;
@@ -454,12 +461,12 @@ article h2:before {
 	justify-content: space-between;
 	align-items: center;
 	gap: 10px;
-	background: #181d1f;
-	color: #ccc;
+	background: var(--header-bg);
+	/*color: #ccc;*/
 	padding: 5px 20px;
 	margin: 0;
 	font-weight: 400;
-	box-shadow: 0 0 4px #130b00;
+	box-shadow: 0 0 4px var(--box-shadow);
 	z-index: 20;
 	line-height: 100%;
 }
@@ -467,13 +474,18 @@ article h2:before {
 #header-header > a {
 	display: flex;
 	align-items: center;
-	background-color: #252b2d;
+	background-color: var(--logo-bg);
 	border-radius: 5px;
 	padding: 3px 5px 3px 3px;
 	margin: 3px 0;
 	border: 0;
 }
 
+#header-header select {
+    background-color: var(--header-dropdown);
+}
+
+/* not used in viewer (may be used elsewhere) as of 2024-03-31 */
 #header-header > a > h1 {
 	padding: 0 3px;
 	font-size: 14pt;
@@ -482,6 +494,7 @@ article h2:before {
 	color: #fff;
 }
 
+/* not used in viewer (may be used elsewhere) as of 2024-03-31 */
 #header-header svg {
 	-webkit-filter: invert(0);
 	filter: invert(0);
@@ -572,8 +585,8 @@ article h2:before {
 }
 
 .widgets-widgets .widget {
-	color: #b5b5b5;
-	background: #252b2d;
+	color: var(--secondary-fg);
+	background: var(--secondary-bg);
 	padding: 2px 5px;
 	border-radius: 6px;
 	width: 260px;
@@ -587,7 +600,7 @@ article h2:before {
 	padding-bottom: 8px;
 	font-size: 13pt;
 	font-weight: 400;
-	color: #fff;
+	color: var(--widget-emph);
 	text-align: center;
 }
 
@@ -595,7 +608,7 @@ article h2:before {
 	vertical-align: middle;
 	padding-left: 6px;
 	font-size: 11pt;
-	color: #b5b5b5;
+	color: var(--secondary-fg);
 }
 
 .widgets-widgets .widget .widget-values {
@@ -614,7 +627,7 @@ article h2:before {
 }
 
 .widgets-widgets .widget .widget-value div:nth-child(2) {
-	color: #b5b5b5;
+	color: var(--secondary-fg);
 }
 
 .widgets-widgets .widget .widget-single-value {
@@ -623,7 +636,7 @@ article h2:before {
 }
 
 .widgets-widgets .widget .widget-single-value span:nth-child(2) {
-	color: #b5b5b5;
+	color: var(--secondary-fg);
 	padding: 0 5px;
 }
 
@@ -649,7 +662,7 @@ article h2:before {
 }
 
 .metadata-metadata .metadata-detail p span {
-	color: #fff;
+	color: var(--widget-emph);
 }
 
 .metadata-metadata .metadata-detail .metadata-detail-controls {
@@ -677,13 +690,13 @@ article h2:before {
 	cursor: pointer;
 	margin: 0 3px;
 	margin-bottom: 5px;
-	background-color: #293134;
+	background-color: var(--tertiary-bg);
 	padding: 7px 15px;
 	border-radius: 5px;
 }
 
 .metadata-metadata .metadata-detail .metadata-detail-controls button.selected {
-	color: #fff;
+	color: var(--widget-emph);
 }
 
 .metadata-metadata
@@ -699,6 +712,7 @@ article h2:before {
 	padding-left: 20px;
 }
 
+/* not used in viewer (may be used elsewhere) as of 2024-03-31 */
 .metadata-metadata .metadata-detail .configurations ul ul {
 	border-left: 1px solid #3c3f41;
 }
@@ -811,9 +825,10 @@ article h2:before {
 	transition-duration: 0.1s;
 	border-size: 5px;
 	border-style: solid;
-	border-color: #5e81ac;
+	border-color: var(--select-color);
 }
 
+/* not used in viewer (may be used elsewhere) as of 2024-03-31 */
 .drive-span:hover {
 	color: #ffffffbf !important;
 }
@@ -836,9 +851,10 @@ article h2:before {
 
 .accordion-button {
 	background: none !important;
+    color: var(--widget-emph) !important;
 }
 .accordion-button:hover {
-	background: #5e81ac !important;
+	background: var(--select-color) !important;
 }
 .center {
 	display: block;
@@ -884,7 +900,7 @@ article h2:before {
 }
 
 .even {
-	background-color: #ffffff07;
+	background-color: var(--tr-even);
 }
 
 .previous {
@@ -907,7 +923,7 @@ label {
 }
 
 table {
-	border: 1px #595959 solid;
+	border: 1px var(--border-color) solid;
 	border-radius: 5px;
 	border-collapse: collapse;
 }
@@ -917,7 +933,11 @@ table {
 	font-size: 10pt;
 	font-weight: normal;
 	padding: 0.125rem 0.25rem;
-	border: 1px #595959 solid;
+	border: 1px var(--border-color) solid;
+}
+
+.table > :not(:last-child) > :last-child > * {
+    border-bottom-color: var(--border-color);
 }
 
 .json-data table {
@@ -926,6 +946,8 @@ table {
 
 .table {
 	table-layout: auto;
+    color: var(--table-color);
+    background: transparent;
 }
 
 .nic {
@@ -962,6 +984,10 @@ table {
     background-color:black;
 }
 
+.modal-content {
+    background-color: var(--modal-color);
+}
+
 .modal-column {
     float: left;
 }
@@ -978,20 +1004,20 @@ table {
 .partition-whole-bar {
     height: 64px;
     background-color: inherit;
-    border: 2px #595959 solid;
+    border: 2px var(--border-color) solid;
     margin-bottom: 0.5rem;
 }
 
 .partition-one-bar {
     background-color: inherit;
-    border-right: 2px #595959 solid;
+    border-right: 2px var(--border-color) solid;
     position: relative;
     height: 100%;
 }
 
 .partition-space-bar {
     height: 100%;
-    background-color: hsl(0, 0%, 20%);
+    background-color: var(--partition-bar-filled);
 }
 
 .partition-bar-label {

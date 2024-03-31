@@ -23,13 +23,6 @@ $profile_name = pathinfo($json_file, PATHINFO_FILENAME);
 
 include('common.php');
 
-//Some generic color inserts. I know I could have used a smarter CSS alternative, but call me old fashioned.
-$green = '#A3BE8C';
-$yellow = 'rgb(235, 203, 139)';
-$red = 'rgb(191, 97, 106)';
-$amd = 'rgb(215,27,27)';
-$intel = 'rgb(8,110,224)';
-
 // Grabs data from endoflife.date's api and checks it
 
 $eoldata = json_decode(file_get_contents('https://endoflife.date/api/windows.json'), true);
@@ -80,24 +73,24 @@ $eoltext = '';
 $os_insider = false;
 if (strpos($validversions, $json_data['BasicInfo']['Version']) !== false) {
     $eoltext = "Not EOL";
-    $eolcolor = $green;
+    $eolcolor = "green";
 } else if ($thisBuildInt > $latestBuildInt) {
     $os_insider = true;
     $eoltext = 'Insider';
-    $eolcolor = $red;
+    $eolcolor = "green";
 } else {
     $eoltext = "EOL";
-    $eolcolor = $red;
+    $eolcolor = "red";
 }
 
 // Up-to-Date-ness
 $oscheck = '';
 if (strpos($latestver, $json_data['BasicInfo']['Version']) !== false) {
     $oscheck = 'Up-to-date';
-    $oscolor = $green;
+    $oscolor = "green";
 } else {
     $oscheck = 'Not Up-to-Date';
-    $oscolor = $red;
+    $oscolor = "red";
 }
 
 //The lines below are for the loop that calculates total RAM/CPU used.
@@ -132,9 +125,9 @@ $motherboard = strtok($json_data['Hardware']['Motherboard']['Manufacturer'], " "
 
 //Little bit of cheeky coloring for the CPU based on what it's name contains.
 if (str_contains($json_data['Hardware']['Cpu']['Name'], 'AMD')) {
-    $cpu_color = $amd;
+    $cpu_color = "amd";
 } else {
-    $cpu_color = $intel;
+    $cpu_color = "intel";
 }
 //Basic string to time php function to take the generation date and turn it into a usable format.
 $ds = strtotime($json_data['Meta']['GenerationDate']);
@@ -195,7 +188,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 */
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="en" data-mdb-theme="dark">
 <meta content="text/html;charset=UTF-8" http-equiv="content-type" />
 
 <head>
@@ -206,9 +199,9 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.dark.min.css" rel="stylesheet">
+    <link href="static/css/themes.css" rel="stylesheet">
     <link href="static/css/main.css" rel="stylesheet">
     <link href="static/css/tables.css" rel="stylesheet">
-    <link href="static/css/themes.css" rel="stylesheet">
 
     <!--This section is for the discord embed card. Need to expand upon it. -->
     <meta name="og:title" content="<?= $json_data["BasicInfo"]["Hostname"] ?>" />
@@ -280,8 +273,8 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                 <select title="mappings" id="mode-toggle" style="width: 12em;">
                     <optgroup label="Theme">
                         <option value="classic">Dark Mode</option>
-                        <option value="k9">K9's Dark Mode</option>
-                        <option value="light">Light Mode</option>
+                        <option value="k9-mode">K9's Dark Mode</option>
+                        <option value="light-mode">Light Mode</option>
                     </optgroup>
                 </select>
             </div>
@@ -305,7 +298,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <h1>CPU</h1>
                                 <div class="widget-values">
                                     <div class="widget-value">
-                                        <div style="color: <?= $cpu_color ?>;">
+                                        <div class="<?= $cpu_color ?>">
                                             <?= $json_data['Hardware']['Cpu']['Name'] ?>
                                         </div>
                                         <div>Callsign</div>
@@ -382,7 +375,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                             $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity'] / 1000);
                                             echo '
                                     <div class="widget-value" style="flex: 1 1 ' . $flex_basis . ';">
-                                        <div style="color:' . $green . '">' . $ram_size . 'GB</div>
+                                        <div class="green">' . $ram_size . 'GB</div>
                                         <div>DIMM' . $current_ram_stick . '</div>
                                     </div>';
                                         } else {
@@ -482,13 +475,13 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <h1>Motherboard</h1>
                                 <div class="widget-values">
                                     <div class="widget-value">
-                                        <div style="color: <?= $green ?>;">
+                                        <div class="green">
                                             <?= $motherboard ?>
                                         </div>
                                         <div>OEM</div>
                                     </div>
                                     <div class="widget-value">
-                                        <div style="color: <?= $green ?>;">
+                                        <div class="green">
                                             <?= $json_data['Hardware']['Motherboard']['Product'] ?>
                                         </div>
                                         <div>Chipset</div>
@@ -630,7 +623,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <h1>GPU</h1>
                                 <div class="widget-values">
                                     <div class="widget-value">
-                                        <div style="color: <?= $green ?>;">
+                                        <div class="green">
                                             <?php
 
                                             if (!$json_data['Hardware']['Monitors']) {
@@ -734,7 +727,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <div class="widget-values">
                                     <div class="widget-value">
                                         <div class="widget-value">
-                                            <span style="color: <?= $green ?>;">
+                                            <span class="green">
                                                 <?= $json_data['BasicInfo']['Edition'] ?>
                                             </span>
                                         </div>
@@ -860,7 +853,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <h1>NIC</h1>
                                 <div class="widget-values">
                                     <div class="widget-value">
-                                        <div style="color: <?= $green ?>;">
+                                        <div class="green">
 
                                             <?php
                                             $adapterText = "Disconnected";
@@ -1111,15 +1104,15 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 $flavor_color = '';
 
                                 if ($drive_percentage >= 80) {
-                                    $flavor_color = $red;
+                                    $flavor_color = "red";
                                 } elseif ($drive_percentage >= 50 && $drive_percentage <= 79) {
-                                    $flavor_color = $yellow;
+                                    $flavor_color = "yellow";
                                 } elseif ($drive_percentage >= 0 && $drive_percentage <= 49) {
-                                    $flavor_color = $green;
+                                    $flavor_color = "green";
                                 }
                                 if (abs(floor(bytesToGigabytes($drive['DiskCapacity'])) -
                                     floor(bytesToGigabytes(getDriveCapacity($drive)))) > 5) {
-                                    $flavor_color = $red;
+                                    $flavor_color = "red";
                                 }
 
                                 $letters = array_filter(
@@ -1135,7 +1128,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 							<div class="widget-value">
 								<div class="widget-single-value">
 									<span
-                                                                   style="color:' . $flavor_color . ';">' . (int)$drive_taken . ' GB</span>
+                                                                   class="' . $flavor_color . '">' . (int)$drive_taken . ' GB</span>
 									<span>/</span>
 									<span>' . (int)$drive_size . ' GB</span>
 								</div>
@@ -1318,7 +1311,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <div class="widget-values">
                                     <div class="widget-value">
                                         <div class="widget-value">
-                                            <span style="color: <?= $green ?>;">
+                                            <span class="green">
                                                 <?= $json_data['Hardware']['Cpu']['LoadPercentage'] ?? '--' ?>%
                                             </span>
                                         </div>
@@ -1332,7 +1325,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <div class="widget-values">
                                     <div class="widget-value">
                                         <div class="widget-single-value">
-                                            <span style="color: <?= $green ?>;">
+                                            <span class="green">
                                                 <?= $ram_used ?>GB
                                             </span>
                                             <span>/</span>
@@ -1392,8 +1385,8 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                             $externalaudio = $externalaudio + 1;
                                         };
                                     }
-                                    echo '<div class="widget-value" style="color:' . $green . ';">Internal : ' . $internalaudio . '</div>';
-                                    echo '<div class="widget-value" style="color:' . $yellow . ';">External : ' . $externalaudio . '</div>';
+                                    echo '<div class="widget-value green">Internal : ' . $internalaudio . '</div>';
+                                    echo '<div class="widget-value yellow">External : ' . $externalaudio . '</div>';
                                     ?>
                                 </div>
                             </div>
@@ -1503,18 +1496,18 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                             <div class="metadata-detail-content json-data" id="notes">
                                 <!-- OS Version -->
 
-                                <h4 style="margin:5px; color:#ffffff66">General Notes</h4>
+                                <h4 style="margin:5px; color:var(--meta-h4-color);">General Notes</h4>
 
                                 <?php
 
-                                if (($eolcolor == $red && $oscolor == $green) || ($eolcolor == $green && $oscolor == $red)) $osenglish = 'but';
+                                if (($eolcolor == "red" && $oscolor == "green") || ($eolcolor == "green" && $oscolor == "red")) $osenglish = 'but';
                                 else $osenglish = 'and';
 
                                 ?>
 
                                 <p>The OS is
-                                    <span style="color:<?= $eolcolor ?>"><?= $eoltext ?></span>
-                                    <?php if (!$os_insider) echo " $osenglish <span style='color: $oscolor;'>$oscheck</span>"; ?>
+                                    <span class="<?= $eolcolor ?>"><?= $eoltext ?></span>
+                                    <?php if (!$os_insider) echo " $osenglish <span class='<?= $oscolor ?>'>$oscheck</span>"; ?>
                                     <span>(version <?= $json_data['BasicInfo']['FriendlyVersion'] ?>, build <?= $json_data['BasicInfo']['Version'] ?>)</span>
                                 </p>
 
@@ -1524,7 +1517,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
                                 <?php
                                 if (empty($json_data['Security']['AvList'])) {
-                                    echo '<p style="color:' . $red . '">No AVs found!</p>';
+                                    echo '<p class="red">No AVs found!</p>';
                                 } elseif (sizeof($json_data['Security']['AvList']) == 1) {
                                     $av = $json_data["Security"]["AvList"][0];
                                     echo "<p>The currently installed AV is <span>{$av}</span></p>";
@@ -1556,7 +1549,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 if ($json_data['System']['RecentMinidumps'] != 0) {
                                     $noteshtml .= '
                                     <p>
-                                        There have been <span style="color:' . $red . '">' . $json_data['System']['RecentMinidumps'] . '</span> Minidumps found
+                                        There have been <span class="red">' . $json_data['System']['RecentMinidumps'] . '</span> Minidumps found
                                     </p>
                                     ';
                                 }
@@ -1699,7 +1692,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 }
 
                                 if (!empty($drivehtml)) {
-                                    $drivehtml = '<br> <h4 style="margin:5px; color:#ffffff66">Drive / SMART Notes</h4>' . $drivehtml;
+                                    $drivehtml = '<br> <h4 style="margin:5px; color:var(--meta-h4-color);">Drive / SMART Notes</h4>' . $drivehtml;
                                     echo $drivehtml;
                                 }
 
@@ -1727,7 +1720,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 }
 
                                 if (!empty($reghtml)) {
-                                    $reghtml = '<br> <h4 style="margin:5px; color:#ffffff66">Notable Registry Changes</h4>' . $reghtml;
+                                    $reghtml = '<br> <h4 style="margin:5px; color:var(--meta-h4-color);">Notable Registry Changes</h4>' . $reghtml;
                                     echo $reghtml;
                                 }
                                 ?>
