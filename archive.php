@@ -28,6 +28,7 @@ else
 
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.dark.min.css" rel="stylesheet">
+    <link href="static/css/themes.css" rel="stylesheet" >
     <link href="static/css/main.css" rel="stylesheet">
 </head>
 <div class="textbox metadata-detail tablebox widget json-data" id="login-form">
