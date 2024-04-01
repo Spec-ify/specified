@@ -65,27 +65,28 @@ $pupsfoundRunning = array_unique($pupsfoundRunning);
 <link rel="shortcut icon" href="assets/specify-glass-dynamic.svg" />
 <link rel="icon" href="assets/specify-glass-black-256x256.png" media="(prefers-color-scheme light)" />
 <link rel="icon" href="assets/specify-glass-black-256x256.png" media="(prefers-color-scheme dark)" />
+<meta name="darkreader-lock" />
 <style nonce="<?= $nonce ?>">
 * {
     font-family: Verdana, sans-serif !important;
     font-size: 12px;
 }
 body {
-    background-color: #3b4252;
-    color: White;
+    background-color: #eceff4;
+    color: #2e3440;
     margin-left: 30px;
 }
 h2 {
     color: #96a56c;
 }
 a:link {
-    color: White;
+    color: #5e81ac;
 }
 a:visited {
-    color: White;
+    color: #5e81ac;
 }
 a:hover{
-    color: #252b2d;
+    color: #81a1c1;
 }
 table {
   font-family: arial, sans-serif;
@@ -98,7 +99,7 @@ td, th {
   padding: 8px;
 }
 tr:nth-child(even) {
-  background-color: #2A2E3A;
+  background-color: #e5e9f0;
 }
 #top-button{
   opacity: 80%;

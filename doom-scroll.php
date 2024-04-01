@@ -176,6 +176,8 @@
     <link href="static/css/doom-scroll.css" rel="stylesheet" />
     <link href="static/css/tables.css" rel="stylesheet" />
 
+    <meta name="darkreader-lock" />
+
     <!--This section is for the discord embed card. Need to expand upon it. -->
     <meta name="og:title" content="<?= $json_data["BasicInfo"]["Hostname"] ?>"/>
     <meta name="og:site_name" content="Specify"/>

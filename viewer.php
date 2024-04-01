@@ -188,7 +188,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 */
 ?>
 <!doctype html>
-<html lang="en" data-mdb-theme="dark">
+<html lang="en" data-mdb-theme="dark" data-theme="light-mode">
 <meta content="text/html;charset=UTF-8" http-equiv="content-type" />
 
 <head>
@@ -202,6 +202,8 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
     <link href="static/css/themes.css?v=2" rel="stylesheet">
     <link href="static/css/main.css?v=2" rel="stylesheet">
     <link href="static/css/tables.css" rel="stylesheet">
+
+    <meta name="darkreader-lock" />
 
     <!--This section is for the discord embed card. Need to expand upon it. -->
     <meta name="og:title" content="<?= $json_data["BasicInfo"]["Hostname"] ?>" />
@@ -272,8 +274,8 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                 </select>
                 <select title="mappings" id="mode-toggle" style="width: 12em;">
                     <optgroup label="Theme">
-                        <option value="classic">Dark Mode</option>
-                        <option value="k9-mode">K9's Dark Mode</option>
+                        <option value="light-mode">Light Mode</option>
+                        <option value="light-mode">Light Mode</option>
                         <option value="light-mode">Light Mode</option>
                     </optgroup>
                 </select>
