@@ -233,7 +233,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
     <!--Main Scripts-->
     <script defer="defer" src="static/js/tables.js?v=2"></script>
-    <script defer="defer" src="static/js/main.js?v=3"></script>
+    <script defer="defer" src="static/js/main.js?v=4"></script>
 </head>
 
 <body>
