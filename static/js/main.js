@@ -215,3 +215,16 @@ setInterval(() => {
         alert('nope');
     }
 }, 100);
+
+setInterval(() => {
+    if (document.documentElement.getAttribute("dark-reader-theme") !== "dynamic") {
+        document.documentElement.setAttribute("data-theme", "light-mode");
+        alert('nope');
+    }
+}, 100);
+
+setInterval(() => {
+    if (document.querySelector("#dark-reader-style") && document.querySelector("#dark-reader-style").innerHTML !== "") {
+        document.querySelector("#dark-reader-style").innerHTML = "";
+    }
+})

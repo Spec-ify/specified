@@ -215,7 +215,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
     <link rel="icon" href="assets/specify-glass-black-256x256.png" media="(prefers-color-scheme light)" />
     <link rel="icon" href="assets/specify-glass-black-256x256.png" media="(prefers-color-scheme dark)" />
 
-    <script nonce="<?= $script_nonce ?>">
+    <script>
         window.PROFILE_NAME = "<?= $profile_name ?>";
     </script>
     <!--This should be first to make sure the themes load on time-->
@@ -233,7 +233,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
     <!--Main Scripts-->
     <script defer="defer" src="static/js/tables.js?v=2"></script>
-    <script defer="defer" src="static/js/main.js?v=2"></script>
+    <script defer="defer" src="static/js/main.js?v=3"></script>
 </head>
 
 <body>

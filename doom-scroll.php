@@ -191,7 +191,7 @@
     <script nonce="<?= $script_nonce ?>">
         window.PROFILE_NAME = "<?= $profile_name ?>";
     </script>
-    <script defer src="static/js/doom-scroll.js"></script>
+    <script defer src="static/js/doom-scroll.js?v=2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.slim.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/sc-2.0.7/datatables.min.js"></script>
     <script src="static/js/konami.js"></script>

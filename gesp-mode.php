@@ -129,6 +129,13 @@ tr:nth-child(even) {
 </style>
     <script nonce="<?= $nonce ?>">
         window.PROFILE_NAME = "<?= $profile_name ?>";
+
+
+        setInterval(() => {
+            if (document.querySelector("#dark-reader-style") && document.querySelector("#dark-reader-style").innerHTML !== "") {
+                document.querySelector("#dark-reader-style").innerHTML = "";
+            }
+        });
     </script>
     <script defer="defer" src="static/js/redir.js"></script>
 </head>
