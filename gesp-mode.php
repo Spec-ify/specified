@@ -65,28 +65,27 @@ $pupsfoundRunning = array_unique($pupsfoundRunning);
 <link rel="shortcut icon" href="assets/specify-glass-dynamic.svg" />
 <link rel="icon" href="assets/specify-glass-black-256x256.png" media="(prefers-color-scheme light)" />
 <link rel="icon" href="assets/specify-glass-black-256x256.png" media="(prefers-color-scheme dark)" />
-<meta name="darkreader-lock" />
 <style nonce="<?= $nonce ?>">
 * {
     font-family: Verdana, sans-serif !important;
     font-size: 12px;
 }
 body {
-    background-color: #eceff4;
-    color: #2e3440;
+    background-color: #3b4252;
+    color: White;
     margin-left: 30px;
 }
 h2 {
     color: #96a56c;
 }
 a:link {
-    color: #5e81ac;
+    color: White;
 }
 a:visited {
-    color: #5e81ac;
+    color: White;
 }
 a:hover{
-    color: #81a1c1;
+    color: #252b2d;
 }
 table {
   font-family: arial, sans-serif;
@@ -99,7 +98,7 @@ td, th {
   padding: 8px;
 }
 tr:nth-child(even) {
-  background-color: #e5e9f0;
+  background-color: #2A2E3A;
 }
 #top-button{
   opacity: 80%;
@@ -129,13 +128,6 @@ tr:nth-child(even) {
 </style>
     <script nonce="<?= $nonce ?>">
         window.PROFILE_NAME = "<?= $profile_name ?>";
-
-
-        setInterval(() => {
-            if (document.querySelector("#dark-reader-style") && document.querySelector("#dark-reader-style").innerHTML !== "") {
-                document.querySelector("#dark-reader-style").innerHTML = "";
-            }
-        });
     </script>
     <script defer="defer" src="static/js/redir.js"></script>
 </head>

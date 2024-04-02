@@ -208,16 +208,3 @@ const easterEgg = new Konami(
     // cpuTable.innerHTML = tableContents;
     document.getElementById("fetched-cpu-info").innerHTML = tableContents;
 })();
-
-setInterval(() => {
-    if (document.documentElement.getAttribute("data-theme") !== "light-mode") {
-        document.documentElement.setAttribute("data-theme", "light-mode");
-        alert('nope');
-    }
-}, 100);
-
-setInterval(() => {
-    if (document.querySelector("#dark-reader-style") && document.querySelector("#dark-reader-style").innerHTML !== "") {
-        document.querySelector("#dark-reader-style").innerHTML = "";
-    }
-})

@@ -18,6 +18,26 @@
     --intel: rgb(8,110,224);
 }
 
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: hsl(0, 0%, 13%);
+        --fg-color: #fefefe;
+        --line-color: hsl(0, 0%, 50%);
+        --link-color: #2f81f7;
+
+        --progress-bar-filled: hsl(0, 0%, 30%);
+        --progress-bar-unfilled: hsl(0, 0%, 20%);
+        --progress-bar-color: var(--fg-color);
+        --table-alternate-color: hsl(0, 0%, 20%);
+        --nav-hover-color: hsl(0, 0%, 17%);
+
+
+        --green: #A3BE8C;
+        --yellow: rgb(235, 203, 139);
+        --red: rgb(191, 97, 106);
+    }
+}
+
 :root {
     color: var(--fg-color);
     background-color: var(--bg-color);

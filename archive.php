@@ -53,7 +53,7 @@ else
 ></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/sc-2.0.7/datatables.min.js"></script>
-';
+<script defer="defer" src="static/js/main.js"></script>';
     }
 }
 ?>

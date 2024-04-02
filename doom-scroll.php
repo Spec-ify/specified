@@ -176,8 +176,6 @@
     <link href="static/css/doom-scroll.css" rel="stylesheet" />
     <link href="static/css/tables.css" rel="stylesheet" />
 
-    <meta name="darkreader-lock" />
-
     <!--This section is for the discord embed card. Need to expand upon it. -->
     <meta name="og:title" content="<?= $json_data["BasicInfo"]["Hostname"] ?>"/>
     <meta name="og:site_name" content="Specify"/>
@@ -191,7 +189,7 @@
     <script nonce="<?= $script_nonce ?>">
         window.PROFILE_NAME = "<?= $profile_name ?>";
     </script>
-    <script defer src="static/js/doom-scroll.js?v=2"></script>
+    <script defer src="static/js/doom-scroll.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.slim.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/sc-2.0.7/datatables.min.js"></script>
     <script src="static/js/konami.js"></script>

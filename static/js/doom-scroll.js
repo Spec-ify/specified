@@ -347,10 +347,3 @@ async function call_hwapi(path, payload, fallbackCallack = () => {}) {
         order: [] // to prevent order changing on data table load
     });
 })();
-
-
-setInterval(() => {
-    if (document.querySelector("#dark-reader-style") && document.querySelector("#dark-reader-style").innerHTML !== "") {
-        document.querySelector("#dark-reader-style").innerHTML = "";
-    }
-})
