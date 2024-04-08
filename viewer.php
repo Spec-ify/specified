@@ -1507,7 +1507,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
                                 <p>The OS is
                                     <span class="<?= $eolcolor ?>"><?= $eoltext ?></span>
-                                    <?php if (!$os_insider) echo " $osenglish <span class='<?= $oscolor ?>'>$oscheck</span>"; ?>
+                                    <?php if (!$os_insider) echo " $osenglish <span class='$oscolor'>$oscheck</span>"; ?>
                                     <span>(version <?= $json_data['BasicInfo']['FriendlyVersion'] ?>, build <?= $json_data['BasicInfo']['Version'] ?>)</span>
                                 </p>
 

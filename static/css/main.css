@@ -22,12 +22,6 @@ html {
 	-ms-text-size-adjust: none;
 }
 
-.green { color: var(--green); }
-.yellow { color: var(--yellow); }
-.red { color: var(--red); }
-.amd { color: var(--amd); }
-.intel { color: var(--intel); }
-
 main {
 	flex-grow: 1;
 	padding: 0 20px 20px;
@@ -663,6 +657,7 @@ article h2:before {
 
 .metadata-metadata .metadata-detail p span {
 	color: var(--widget-emph);
+    font-weight: bold;
 }
 
 .metadata-metadata .metadata-detail .metadata-detail-controls {
@@ -1025,3 +1020,9 @@ table {
     left: 50%;
     transform: translateX(-50%);
 }
+
+.green { color: var(--green) !important; }
+.yellow { color: var(--yellow) !important; }
+.red { color: var(--red) !important; }
+.amd { color: var(--amd) !important; }
+.intel { color: var(--intel) !important; }
