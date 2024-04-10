@@ -1963,7 +1963,6 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                             <th>Name</th>
                                             <th>Path</th>
                                             <th>RAM (MB)</th>
-                                            <th>CPU</th>
                                         </thead>
                                     </table>
                                 </div>

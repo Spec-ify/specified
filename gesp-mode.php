@@ -682,7 +682,6 @@ Total RAM usage: WIP
         
         <tr>
             <th>Name</th>
-            <th>Count</th>
             <th>PID</th>
             <th>Mem (M)</th>
             <th>Path</th>
@@ -690,12 +689,10 @@ Total RAM usage: WIP
 
         <?php
                 foreach($json_data['System']['RunningProcesses'] as $rp) {
-                    $count = abs($rp['CpuPercent']);
                     $setconvert = $rp['WorkingSet']/1000000;
                     $set = (int)$setconvert;
                     echo "<tr>
                             <th>{$rp['ProcessName']}</th>
-                            <th>{$count}</th>
                             <th>{$rp['Id']}</th>
                             <th>{$set}MB</th>
                             <th>{$rp['ExePath']}</th>

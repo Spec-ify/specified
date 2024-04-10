@@ -218,15 +218,11 @@ async function call_hwapi(path, payload, fallbackCallack = () => {}) {
                 workingSetReal / Math.pow(2, 20)
             ).toFixed(2);
             const workingSetDisplay = intl.format(workingSetMegaBytes);
-            const cpuPercent = e
-                .map((p) => p.CpuPercent)
-                .reduce((acc, cur) => acc + cur);
             return {
                 ProcessName: `${e[0].ProcessName} (${count})`,
                 ExePath: e[0].ExePath,
                 Id: e[0].Id, // We can perhaps make this a list later
                 WorkingSet: workingSetDisplay,
-                CpuPercent: cpuPercent,
                 WorkingSetReal: workingSetReal,
             };
         });
@@ -242,13 +238,12 @@ async function call_hwapi(path, payload, fallbackCallack = () => {}) {
                 { data: "ProcessName" },
                 { data: "ExePath" },
                 { data: "WorkingSet" },
-                { data: "CpuPercent" },
                 { data: "WorkingSetReal" },
             ],
             columnDefs: [
-                { orderData: [5], targets: [4] },
+                { orderData: [4], targets: [3] },
                 {
-                    targets: [5],
+                    targets: [3],
                     searchable: false,
                     visible: false,
                 },
