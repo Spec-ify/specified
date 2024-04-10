@@ -243,7 +243,7 @@ async function call_hwapi(path, payload, fallbackCallack = () => {}) {
             columnDefs: [
                 { orderData: [4], targets: [3] },
                 {
-                    targets: [3],
+                    targets: [4],
                     searchable: false,
                     visible: false,
                 },
@@ -251,7 +251,7 @@ async function call_hwapi(path, payload, fallbackCallack = () => {}) {
         });
     } catch (e) {
         console.log("Failed making Running Processes DataTable. Is it blank?");
-        console.log(e.name + ": " + e.message);
+        console.error(e);
     }
 
     // The hwapi request calls currently takes >1s. It doesn't matter that much, but I am doing this in js so the initial
