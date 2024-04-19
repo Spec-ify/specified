@@ -1,17 +1,22 @@
+// List of all tabs
+const tabs = [
+    "#pups",
+    "#notes",
+    "#variables",
+    "#browsers",
+    "#startup",
+    "#updates",
+];
+
+for (const tab of tabs) {
+    document.querySelector(`${tab}-button`).onclick = () => { showTab(tab) };
+}
+
 /**
  * Toggle the currently displayed tab in the main view
  * @param {("#pups" | "#notes" | "#variables" | "#startup" | "#updates")} tab 
  */
 function showTab(tab) {
-    // List of all tabs
-    const tabs = [
-        "#pups",
-        "#notes",
-        "#variables",
-        "#browsers",
-        "#startup",
-        "#updates",
-    ];
     // Removes selected tab
     const hiddenTabs = tabs.filter((val) => val !== tab);
     for (const t of hiddenTabs) {
@@ -100,6 +105,8 @@ document.querySelector("#view-toggle").addEventListener("change", e => {
         });
     }
 }
+
+document.querySelector("#searchbar-div").onkeyup = searchFunction;
 
 //Don't even ask.
 //Setting the target as the searchbar, sanitizing the inputs into the search bar into lower case, then getting all divs by class of widget into an array and looping

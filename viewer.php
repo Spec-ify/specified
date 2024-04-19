@@ -21,6 +21,10 @@ $json = file_get_contents($json_file);
 $json_data = json_decode($json, true);
 $profile_name = pathinfo($json_file, PATHINFO_FILENAME);
 
+$script_nonce = bin2hex(random_bytes(20));
+// TODO: style the progress bars differently, and remove unsafe-inline!
+header("Content-Security-Policy: default-src 'self'; connect-src 'self' https://spec-ify.com http://localhost:3000; style-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com 'unsafe-inline'; font-src https://cdnjs.cloudflare.com https://fonts.gstatic.com; script-src 'self' https://cdnjs.cloudflare.com https://cdn.datatables.net 'nonce-$script_nonce'; img-src 'self' data:;");
+
 include('common.php');
 
 // Grabs data from endoflife.date's api and checks it
@@ -289,7 +293,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                             Under Specify Version <?= $json_data['Version'] ?>
                         </span>
                     </div>
-                    <input class="searchbar" type="text" placeholder="Search..." id="searchbar-div" onkeyup="searchFunction()">
+                    <input class="searchbar" type="text" placeholder="Search..." id="searchbar-div">
                 </div>
                 <div id="main">
                     <div class="metadata-metadata expanded" id="info">
@@ -1485,12 +1489,12 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                         </div>
                         <div class="textbox metadata-detail tabbed-info">
                             <div class="metadata-detail-controls">
-                                <button onclick="showTab('#notes')" class="notes-button">Notes</button>
-                                <button onclick="showTab('#pups')" class="pups-button">PUPs</button>
-                                <button onclick="showTab('#variables')" class="variables-button">Variables</button>
-                                <button onclick="showTab('#browsers')" class="browsers-button">Browsers</button>
-                                <button onclick="showTab('#startup')" class="startup-button">Startup Tasks</button>
-                                <button onclick="showTab('#updates')" class="updates-button">Windows Updates</button>
+                                <button id="notes-button">Notes</button>
+                                <button id="pups-button">PUPs</button>
+                                <button id="variables-button">Variables</button>
+                                <button id="browsers-button">Browsers</button>
+                                <button id="startup-button">Startup Tasks</button>
+                                <button id="updates-button">Windows Updates</button>
                             </div>
 
                             <div class="metadata-detail-content json-data" id="notes">
