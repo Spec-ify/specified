@@ -820,7 +820,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                                     echo
                                                     '<tr>
                                                 <td>Secure Boot</td>
-                                                <td>' . $json_data['Security']['SecureBootEnabled'] ? 'Enabled' : 'Disabled' . '</td>
+                                                <td>' . ($json_data['Security']['SecureBootEnabled'] ? 'Enabled' : 'Disabled') . '</td>
                                             </tr>';
                                                     echo
                                                     '<tr>
