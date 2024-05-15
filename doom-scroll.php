@@ -73,20 +73,23 @@
 
     $ram_used = number_format($working_set / 1073741824, 2, '.', '');
 
-    //Don't ask me why this is an old fashioned for loop, I got carried away.
-    //Getting the total amount of RAM in the system.
     $total_ram = 0;
-    $ram_sticks = safe_count($json_data['Hardware']['Ram']);
-    $ram_stick = 0;
 
-    for ($ram_stick == 0; $ram_stick < $ram_sticks; $ram_stick++) {
-        if ($json_data['Hardware']['Ram'][$ram_stick]['Capacity'] != 0) {
-            $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity'] / 1000);
-            $total_ram = $total_ram + $ram_size;
+    if ($json_data['Hardware']['Ram']){ 
+        //Don't ask me why this is an old fashioned for loop, I got carried away.
+        //Getting the total amount of RAM in the system.
+        $ram_sticks = safe_count($json_data['Hardware']['Ram']);
+
+        foreach ($json_data['Hardware']['Ram'] as $stick) {
+            $capacity = $stick['Capacity'];
+            if ($capacity != 0) {
+                $ram_size = floor($stick['Capacity'] / 1000);
+                $total_ram += $ram_size;
+            }
         }
+        //Calculating how much of it is used
+        $ram_used_percent = round((float)$ram_used / (float)$total_ram * 100);
     }
-    //Calculating how much of it is used
-    $ram_used_percent = round((float)$ram_used / (float)$total_ram * 100);
 
     //Basic string to time php function to take the generation date and turn it into a usable format.
     $ds = strtotime($json_data['Meta']['GenerationDate']);

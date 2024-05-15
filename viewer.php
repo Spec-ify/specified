@@ -109,20 +109,23 @@ foreach ($json_data['System']['RunningProcesses'] as $process) {
 
 $ram_used = number_format($working_set / 1073741824, 2, '.', '');
 
-//Don't ask me why this is an old fashioned for loop, I got carried away.
-//Getting the total amount of RAM in the system.
 $total_ram = 0;
-$ram_sticks = safe_count($json_data['Hardware']['Ram']);
 
-foreach ($json_data['Hardware']['Ram'] as $stick) {
-    $capacity = $stick['Capacity'];
-    if ($capacity != 0) {
-        $ram_size = floor($stick['Capacity'] / 1000);
-        $total_ram += $ram_size;
+if ($json_data['Hardware']['Ram']){ 
+    //Don't ask me why this is an old fashioned for loop, I got carried away.
+    //Getting the total amount of RAM in the system.
+    $ram_sticks = safe_count($json_data['Hardware']['Ram']);
+
+    foreach ($json_data['Hardware']['Ram'] as $stick) {
+        $capacity = $stick['Capacity'];
+        if ($capacity != 0) {
+            $ram_size = floor($stick['Capacity'] / 1000);
+            $total_ram += $ram_size;
+        }
     }
+    //Calculating how much of it is used
+    $ram_used_percent = round((float)$ram_used / (float)$total_ram * 100);
 }
-//Calculating how much of it is used
-$ram_used_percent = round((float)$ram_used / (float)$total_ram * 100);
 
 //Trimming the motherboard manufacturer string after the first space.
 $motherboard = strtok($json_data['Hardware']['Motherboard']['Manufacturer'], " ");
@@ -372,26 +375,35 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     <?php
                                     $ram_sticks = safe_count($json_data['Hardware']['Ram']);
                                     $ram_stick = 0;
-                                    for ($ram_stick; $ram_stick < $ram_sticks; $ram_stick++) {
-                                        $current_ram_stick = $ram_stick + 1;
-                                        $flex_basis = 100 / ($ram_sticks / 2) . '%';
-                                        if ($json_data['Hardware']['Ram'][$ram_stick]['Capacity'] != 0) {
-                                            $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity'] / 1000);
-                                            echo '
-                                    <div class="widget-value" style="flex: 1 1 ' . $flex_basis . ';">
-                                        <div class="green">' . $ram_size . 'GB</div>
-                                        <div>DIMM' . $current_ram_stick . '</div>
-                                    </div>';
-                                        } else {
-                                            echo '
-                                    <div class="widget-value" style="flex: 1 1 ' . $flex_basis . ';">
-                                        <div style="color: rgb(215,27,27);">--</div>
-                                        <div>DIMM' . $current_ram_stick . '</div>
-                                    </div>';
+                                    if ($ram_sticks > 0){
+                                        for ($ram_stick; $ram_stick < $ram_sticks; $ram_stick++) {
+                                            $current_ram_stick = $ram_stick + 1;
+                                            $flex_basis = 100 / ($ram_sticks / 2) . '%';
+                                            if ($json_data['Hardware']['Ram'][$ram_stick]['Capacity'] != 0) {
+                                                $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity'] / 1000);
+                                                echo '
+                                        <div class="widget-value" style="flex: 1 1 ' . $flex_basis . ';">
+                                            <div class="green">' . $ram_size . 'GB</div>
+                                            <div>DIMM' . $current_ram_stick . '</div>
+                                        </div>';
+                                            } else {
+                                                echo '
+                                        <div class="widget-value" style="flex: 1 1 ' . $flex_basis . ';">
+                                            <div style="color: rgb(215,27,27);">--</div>
+                                            <div>DIMM' . $current_ram_stick . '</div>
+                                        </div>';
+                                            }
+                                            if (safe_count($json_data['Hardware']['Ram']) > 4 && ($current_ram_stick % 4) == 0) {
+                                                echo '<div style="flex-basis: 100%;"></div>';
+                                            }
                                         }
-                                        if (safe_count($json_data['Hardware']['Ram']) > 4 && ($current_ram_stick % 4) == 0) {
-                                            echo '<div style="flex-basis: 100%;"></div>';
-                                        }
+                                    }
+                                    else {
+                                        echo '
+                                        <div class="widget-value">
+                                            <div class="red"> Error! </div>
+                                            <div>Error retrieving memory information.</div>
+                                        </div>';
                                     }
                                     ?>
                                 </div>
@@ -1021,6 +1033,26 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                                             <tr>
                                                                 <td>Link Speed</td>
                                                                 <td>' . round($nic["LinkSpeed"] / 1_000_000) . 'Mbps </td>
+                                                            </tr>
+                                                    ';
+                                                }
+
+                                                if (isset($nic["DNSIPV6"])) {
+                                                    // Stolen from doom-scroll.php.
+                                                    $ipv6_dns = $nic['DNSIPV6'] ? ( is_array($nic['DNSIPV6']) ? $nic['DNSIPV6'] : explode(',', $nic['DNSIPV6']) ) : [];
+                                                    $table .= '
+                                                            <tr>
+                                                                <td>IPv6 DNS?</td>
+                                                                <td>' . $ipv6_dns . '</td>
+                                                            </tr>
+                                                    ';
+                                                }
+
+                                                if (isset($nic["DNSIsStatic"])) {
+                                                    $table .= '
+                                                            <tr>
+                                                                <td>Is DNS Static?</td>
+                                                                <td>' . $nic["DNSIsStatic"] . '</td>
                                                             </tr>
                                                     ';
                                                 }
