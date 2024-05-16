@@ -130,12 +130,6 @@ if ($json_data['Hardware']['Ram']){
 //Trimming the motherboard manufacturer string after the first space.
 $motherboard = strtok($json_data['Hardware']['Motherboard']['Manufacturer'], " ");
 
-//Little bit of cheeky coloring for the CPU based on what it's name contains.
-if (str_contains($json_data['Hardware']['Cpu']['Name'], 'AMD')) {
-    $cpu_color = "amd";
-} else {
-    $cpu_color = "intel";
-}
 //Basic string to time php function to take the generation date and turn it into a usable format.
 $ds = strtotime($json_data['Meta']['GenerationDate']);
 $test_time = timeConvert($json_data['BasicInfo']['Uptime']);
@@ -305,7 +299,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <h1>CPU</h1>
                                 <div class="widget-values">
                                     <div class="widget-value">
-                                        <div class="<?= $cpu_color ?>">
+                                        <div>
                                             <?= $json_data['Hardware']['Cpu']['Name'] ?>
                                         </div>
                                         <div>Callsign</div>
@@ -1379,9 +1373,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <h1>Temps</h1>
                                 <div class="widget-values">
                                     <div class="widget-value">
-                                        <div style="color: <?= $cpu_color ?>;">
-                                            🔥
-                                        </div>
+                                        <div>🔥</div>
                                         <div>C</div>
                                     </div>
                                 </div>
