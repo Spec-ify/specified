@@ -299,7 +299,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <h1>CPU</h1>
                                 <div class="widget-values">
                                     <div class="widget-value">
-                                        <div>
+                                        <div class="green">
                                             <?= $json_data['Hardware']['Cpu']['Name'] ?>
                                         </div>
                                         <div>Callsign</div>
