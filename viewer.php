@@ -1673,6 +1673,24 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     ';
                                 }
 
+                                if ($json_data['System']['LimitedMemory']) {
+                                    $noteshtml .= '
+                                        <p>
+                                            Device configured to use a limited amount of memory
+                                        </p>
+                                    ';
+                                }
+
+                                if ($json_data['System']['WindowsOld']) {
+                                    $noteshtml .= '
+                                        <p>
+                                            <span>Windows.OLD</span> detected
+                                        </p>
+                                    ';
+                                }
+
+
+
                                 if (!empty($noteshtml)) {
                                     $noteshtml = '<br>' . $noteshtml;
                                     echo $noteshtml;
