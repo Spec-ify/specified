@@ -687,5 +687,6 @@ $defaultRegKeys = [
     "Win32PrioritySeparation" => [2],
     "Windows Error Reporting\\Disabled" => [null],
     "Windows Defender\\Passive Mode" => [null],
-    "UnsupportedHardwareNotificationCache\\SV2" => [null]
+    "UnsupportedHardwareNotificationCache\\SV2" => [null],
+    "HypervisorEnforcedCodeIntegrity" => [null],
 ];
