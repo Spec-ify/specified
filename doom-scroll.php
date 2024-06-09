@@ -317,8 +317,8 @@
             ';
         }
 
-        $hostFileHash = hash('ripemd160', $json_data['Network']['HostsFile']);
-        $hostFileCheck = "4fbad385eddbc2bdc1fa9ff6d270e994f8c32c5f" !== $hostFileHash; // Pre-calculated Hash
+        $hostFileHash = $json_data['Network']['HostsFileHash'];
+        $hostFileCheck = "2D6BDFB341BE3A6234B24742377F93AA7C7CFB0D9FD64EFA9282C87852E57085" !== $hostFileHash; // Pre-calculated Hash
 
         if ($hostFileCheck) {
             echo '
