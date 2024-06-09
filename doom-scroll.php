@@ -427,40 +427,36 @@
             }
         }
 
-        $unexpected_shutdown_count = safe_count($json_data['Events']['UnexpectedShutdowns']);
-        $machinecheck_count = safe_count($json_data['Events']['MachineCheckExceptions']);
-        $whea_count = safe_count($json_data['Events']['WheaErrorRecords']);
-        $pci_whea_count = safe_count($json_data['Events']['PciWheaErrors']);
+        $unexpected_shutdown_count = $json_data['Events']['UnexpectedShutdownCount'];
+        $machinecheck_count = $json_data['Events']['MachineCheckExceptionCount'];
+        $whea_count = $json_data['Events']['WheaErrorRecordCount'];
+        $pci_whea_count = $json_data['Events']['PciWheaErrorCount'];
 
-        $unexpected_shutdown_display = $unexpected_shutdown_count >= 10 ? '10+' : "$unexpected_shutdown_count";
-        $machinecheck_display = $machinecheck_count >= 10 ? '10+' : "$machinecheck_count";
-        $whea_display = $whea_count >= 10 ? '10+' : "$whea_count";
-        $pcie_whea_display = $pci_whea_count >= 10 ? '10+' : "$pci_whea_count";
         if ($unexpected_shutdown_count > 0) {
             echo "
     <li>
-        <span>$unexpected_shutdown_display</span> Unexpected Shutdowns detected
+        <span>$unexpected_shutdown_count</span> Unexpected Shutdowns detected
     </li>
             ";
         }
         if ($machinecheck_count > 0) {
             echo "
     <li>
-        <span>$machinecheck_display</span> MachineCheck Exceptions detected
+        <span>$machinecheck_count</span> MachineCheck Exceptions detected
     </li>
             ";
         }
         if ($whea_count > 0) {
             echo "
     <li>
-        <span>$whea_display</span> WHEA errors detected
+        <span>$whea_count</span> WHEA errors detected
     </li>
             ";
         }
         if ($pci_whea_count > 0) {
             echo "
     <li>
-        <span>$pcie_whea_display</span> PCI WHEA errors detected
+        <span>$pci_whea_count</span> PCI WHEA errors detected
     </li>
             ";
         }
