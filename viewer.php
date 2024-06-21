@@ -244,9 +244,11 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
             <i class="fas fa-arrow-up"></i>
         </button>
         <header id="header-header">
-            <a class="logo" href="index.html">
-                <img src="assets/logo.png" height="25em">
-            </a>
+            <div id="header-logo">
+                <a class="logo" href="index.html">
+                    <img src="assets/logo.png" height="25em">
+                </a>
+            </div>
             <div id="header-buttons">
                 <button type="button" class="btn btn-info" id="collapse-toggle">Expand All</button>
                 <button type="button" class="btn btn-info" id="collapse-toggle-hide">Collapse All</button>
@@ -265,7 +267,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                 ?>
 
             </div>
-            <div>
+            <div id="style-toggles">
                 <select id="view-toggle" style="width: 12em;">
                     <option selected hidden>Select View</option>
                     <option value="doom-scroll">Doom Scroll</option>
