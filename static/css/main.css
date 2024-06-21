@@ -101,15 +101,15 @@ header {
 
 header,
 header > #header-logo > .logo {
-	align-items: center;
+	align-content: center;
+	justify-content: center;
 }
 
 header > #header-logo > .logo {
 	background-color: var(--logo-bg);
 	border: 0;
 	border-radius: 5px;
-	margin: 3px 0;
-	padding: 3px 5px 3px 3px;
+	padding: 6px 3px;
 }
 
 header > #header-logo > .logo > h1 {
@@ -124,6 +124,7 @@ header img {
 	-webkit-filter: invert(0);
 	filter: invert(0);
 	padding-right: 5px;
+	align-self: center;
 }
 
 header > #header-logo > .logo img {
@@ -474,12 +475,12 @@ article h2:before {
 }
 
 #header-header > #header-logo > a {
-	align-items: center;
+	align-self: center;
 	background-color: var(--logo-bg);
 	border-radius: 5px;
-	padding: 7px 3px 7px 3px;
-	margin: 3px 0;
+	padding: 6px 3px;
 	border: 0;
+	display: inline-flex;
 }
 
 #header-header > :first-child, #header-header > :last-child {
