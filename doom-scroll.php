@@ -205,7 +205,7 @@
     <ul id="nav-list">
         <li><a href="<?= http_strip_query_param($_SERVER['REQUEST_URI'], 'view') ?>">Specify View</a></li>
         <li id="nav-top-link"><a href="#top">Back To Top</a></li>
-        <li class="nav-space-below"><a href="<?= $json_file ?>">Download JSON</a></li>
+        <li class="nav-space-below"><a href="<?= $json_file ?>">View JSON</a></li>
     </ul>
 </nav>
 <main>
