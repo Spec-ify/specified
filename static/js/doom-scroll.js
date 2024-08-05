@@ -1,3 +1,5 @@
+import { call_hwapi } from "./common.js";
+
 /**
  * This function contains extremely hacky hacks.
  *  (a) To avoid scrolling horizontally to the heading when you click on it
@@ -215,6 +217,7 @@ $("#routes-table").DataTable({
     deviceTrs.forEach((tr, trIndex) => {
         const usbArrayIndex = usbIndexes.indexOf(trIndex);
         const pcieArrayIndex = pcieIndexes.indexOf(trIndex);
+
         if (usbArrayIndex !== -1 && usbResponse[usbArrayIndex]) { // the value is a usb device and it was found
             const response = usbResponse[usbArrayIndex];
             const vendor = document.createElement("td");
@@ -239,6 +242,11 @@ $("#routes-table").DataTable({
         } else {
             tr.innerHTML += "<td></td><td></td><td></td>";
         }
+
+        const linker = document.createElement("span");
+        linker.classList.add("linker");
+        linker.id = `device-${trIndex}`;
+        tr.appendChild(linker);
     });
     document.querySelector("#devices-sort-warning").style.display = "none";
     $("#devices-table").DataTable({
@@ -247,4 +255,29 @@ $("#routes-table").DataTable({
         info: false,
         order: [] // to prevent order changing on data table load
     });
+
+    document.querySelectorAll("#pcie-whea-table tbody tr").forEach((tr, trIndex) => {
+        const vendorString = `VEN_${json['Events']['PciWheaErrors'][trIndex]['VendorId'].replace("0x", "")}`.toUpperCase();
+        const deviceString = `DEV_${json['Events']['PciWheaErrors'][trIndex]['DeviceId'].replace("0x", "")}`.toUpperCase();
+        for (const [index, device] of json['Hardware']['Devices'].entries()) {
+            if (device['DeviceID'].includes(vendorString) && device['DeviceID'].includes(deviceString)) {
+                const matchTd = tr.querySelectorAll("td")[3];
+                matchTd.innerText = `${device['Name']} `;
+                const jumpLink = document.createElement("a");
+                jumpLink.innerText = "Jump";
+                jumpLink.href = `#device-${index}`;
+
+                jumpLink.onclick = () => {
+                    // can't use jumpLink.href here because that makes it the whole link
+                    document.querySelector(`#device-${index}`).parentElement.classList.add("tr-focus");
+                    setTimeout(() => {
+                        document.querySelector(`#device-${index}`).parentElement.classList.remove("tr-focus");
+                    }, 3000);
+                }
+
+                matchTd.appendChild(jumpLink);
+                break;
+            }
+        }
+    })
 })();

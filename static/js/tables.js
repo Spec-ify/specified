@@ -1,3 +1,5 @@
+import { call_hwapi } from "./common.js";
+
 const filename = `files/${PROFILE_NAME}.json`;
 
 async function dataTables() {
