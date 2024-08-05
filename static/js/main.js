@@ -1,3 +1,5 @@
+var devClick = 0;
+
 // List of all tabs
 const tabs = [
     "#pups",
@@ -9,7 +11,20 @@ const tabs = [
 ];
 
 for (const tab of tabs) {
-    document.querySelector(`${tab}-button`).onclick = () => { showTab(tab) };
+    if (tab === "#notes"){
+        document.querySelector(`${tab}-button`).addEventListener("click", async () => { 
+            showTab(tab);
+
+            if (devClick === 0) {devClickReset = setTimeout(function() { devClick = 0; }, 1000);}
+            if (++devClick === 3) {
+                openDevDiv();
+                clearTimeout(devClickReset);
+            }
+        });
+    }
+    else {
+        document.querySelector(`${tab}-button`).addEventListener("click", () => { showTab(tab) });
+    }
 }
 
 /**
@@ -157,10 +172,16 @@ function searchFunction() {
     });
 }
 
+function openDevDiv(){
+    const devDiv = document.getElementById("dev-div");
+    devDiv.style.display = "block";
+    devDiv.scrollIntoView();
+}
+
 // Konami Code - Shows Debug Log
 // KonamiJS Code from https://github.com/georgemandis/konami-js
 const easterEgg = new Konami(
-    () => (document.getElementById("dev-div").style.display = "block")
+    () => (openDevDiv)
 );
 
 // populate the cpu info table with stuff from hwapi
