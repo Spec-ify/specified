@@ -61,3 +61,35 @@ table.dataTable thead > tr > th:active,
 table.dataTable thead > tr > td:active {
     outline: none;
 }
+
+table.dataTable td.dt-control {
+    text-align: center;
+    cursor: pointer;
+}
+table.dataTable td.dt-control:before {
+    display: inline-block;
+    box-sizing: border-box;
+    content: "";
+    border-top: 5px solid transparent;
+    border-left: 10px solid var(--border-color);
+    border-bottom: 5px solid transparent;
+    border-right: 0px solid transparent;
+}
+table.dataTable tr.dt-hasChild td.dt-control:before {
+    border-top: 10px solid var(--border-color);
+    border-left: 5px solid transparent;
+    border-bottom: 0px solid transparent;
+    border-right: 5px solid transparent;
+}
+
+html.dark table.dataTable td.dt-control:before,
+:root[data-bs-theme=dark] table.dataTable td.dt-control:before,
+:root[data-theme=dark] table.dataTable td.dt-control:before {
+    border-left-color: var(--border-color);
+}
+html.dark table.dataTable tr.dt-hasChild td.dt-control:before,
+:root[data-bs-theme=dark] table.dataTable tr.dt-hasChild td.dt-control:before,
+:root[data-theme=dark] table.dataTable tr.dt-hasChild td.dt-control:before {
+    border-top-color: var(--border-color);
+    border-left-color: transparent;
+}

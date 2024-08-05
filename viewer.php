@@ -233,6 +233,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
     <!--Main Scripts-->
     <script defer="defer" src="static/js/tables.js?v=2"></script>
     <script defer="defer" src="static/js/main.js?v=2"></script>
+    <script defer="defer" src="static/js/call-hwapi.js?v=2"></script>
 </head>
 
 <body>
@@ -1852,66 +1853,74 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <div class="widgets-widgets widgets">
 
                                     <?php
-                                    $browser_icon = '';
-                                    $default_browser = '';
-                                    foreach ($json_data['System']['BrowserExtensions'] as $browser) {
-                                        if (str_contains(strtolower($json_data['System']['DefaultBrowser']), strtolower($browser['Name']))) {
-                                            $default_browser = "(Default)";
-                                        } else $default_browser = '';
-                                        $browsercheckformat = strtolower($browser['Name']);
 
-                                        if (str_contains($browsercheckformat, 'chrome')) {
-                                            $browser_icon = 'assets/chrome.png';
-                                        } elseif (str_contains($browsercheckformat, 'firefox')) {
-                                            $browser_icon = 'assets/firefox.png';
-                                        } elseif (str_contains($browsercheckformat, 'edge')) {
-                                            $browser_icon = 'assets/edge.png';
-                                        } elseif (str_contains($browsercheckformat, 'opera')) {
-                                            $browser_icon = 'assets/gx.png';
-                                        } elseif (str_contains($browsercheckformat, 'brave')) {
-                                            $browser_icon = 'assets/brave.png';
-                                        } elseif (str_contains($browsercheckformat, 'vivaldi')) {
-                                            $browser_icon = 'assets/vivaldi.png';
-                                        } else {
-                                            $browser_icon = '#';
-                                        }
-                                        echo '<div class="widget widget-browser hover"  type="button" data-mdb-toggle="modal" data-mdb-target="#' . $browser['Name'] . 'Modal">
-<div class="widget-values">
-                                            <div class="widget-value">
-                                            <h1>' . $browser['Name'] . $default_browser . '</h1>
-                                            <img class="center" height="48px" width="48px" src="' . $browser_icon . '">
+                                    if ($json_data['System']['BrowserExtensions'] === []) {
+                                        echo 'BrowserExtensions Array is empty!';
+                                    }
+
+                                    else {
+                                        $browser_icon = '';
+                                        $default_browser = '';
+                                        
+                                        foreach ($json_data['System']['BrowserExtensions'] as $browser) {
+                                            if (str_contains(strtolower($json_data['System']['DefaultBrowser']), strtolower($browser['Name']))) {
+                                                $default_browser = "(Default)";
+                                            } else $default_browser = '';
+                                            $browsercheckformat = strtolower($browser['Name']);
+
+                                            if (str_contains($browsercheckformat, 'chrome')) {
+                                                $browser_icon = 'assets/chrome.png';
+                                            } elseif (str_contains($browsercheckformat, 'firefox')) {
+                                                $browser_icon = 'assets/firefox.png';
+                                            } elseif (str_contains($browsercheckformat, 'edge')) {
+                                                $browser_icon = 'assets/edge.png';
+                                            } elseif (str_contains($browsercheckformat, 'opera')) {
+                                                $browser_icon = 'assets/gx.png';
+                                            } elseif (str_contains($browsercheckformat, 'brave')) {
+                                                $browser_icon = 'assets/brave.png';
+                                            } elseif (str_contains($browsercheckformat, 'vivaldi')) {
+                                                $browser_icon = 'assets/vivaldi.png';
+                                            } else {
+                                                $browser_icon = '#';
+                                            }
+                                            echo '<div class="widget widget-browser hover"  type="button" data-mdb-toggle="modal" data-mdb-target="#' . $browser['Name'] . 'Modal">
+    <div class="widget-values">
+                                                <div class="widget-value">
+                                                <h1>' . $browser['Name']    . $default_browser . '</h1>
+                                                <img class="center" height="48px" width="48px" src="' . $browser_icon . '">
+                                                </div>
                                             </div>
-                                          </div>
-                                          </div>
-                                    ';
-                                        echo '<div class="modal fade " id="' . $browser['Name'] . 'Modal" tabindex="-1" aria-labelledby="' . $browser['Name'] . 'Modal" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="modal-label">' . $browser['Name'] . ' Extensions</h5>
-                                        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body" id="browser-container' . $browser['Name'] . '">';
-                                        foreach ($browser['Profiles'] as $browserprofile) {
-                                            $profileKey = array_search($browserprofile, $browser['Profiles']);
+                                            </div>
+                                        ';
+                                            echo '<div class="modal fade " id="' . $browser['Name'] . 'Modal" tabindex="-1" aria-labelledby="' . $browser['Name'] . 'Modal" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modal-label">' . $browser['Name'] . ' Extensions</h5>
+                                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body" id="browser-container' . $browser['Name'] . '">';
+                                            foreach ($browser['Profiles'] as $browserprofile) {
+                                                $profileKey = array_search($browserprofile, $browser['Profiles']);
+                                                echo '
+                                            <h2>' . $browser['Name'] . ' Profile "' . $browser['Profiles'][$profileKey]['name'] . '"</h2>
+                                            <table id="' . $browser['Name'] . 'Profile' . $profileKey . 'Table" class="table">
+                                            <thead>
+                                            <th>Name</th>
+                                            <th>Version</th>
+                                            <th>Description</th>
+                                            </thead>
+                                            </table>';
+                                            };
                                             echo '
-                                        <h2>' . $browser['Name'] . ' Profile "' . $browser['Profiles'][$profileKey]['name'] . '"</h2>
-                                        <table id="' . $browser['Name'] . 'Profile' . $profileKey . 'Table" class="table">
-                                        <thead>
-                                        <th>Name</th>
-                                        <th>Version</th>
-                                        <th>Description</th>
-                                        </thead>
-                                        </table>';
-                                        };
-                                        echo '
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>';
+                            </div>';
+                                        }
                                     }
                                     ?>
                                 </div>
@@ -2023,6 +2032,27 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                         </thead>
                                     </table>
                                 </div>
+                                <?php
+
+                                if (isset($json_data['System']['WindowsStorePackages'])){
+
+                                echo '<h1 class="accordion-header" id="installed-windows-store-button">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#installed-windows-store" aria-expanded="true" aria-controls="installed-windows-store">
+                                        Installed Windows Store Packages
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="installed-windows-store">
+                                    <table id="installed-windows-store-table" class="table">
+                                        <thead>
+                                            <th>Name</th>
+                                            <th>Program ID</th>
+                                            <th>Vendor</th>
+                                            <th>Version</th>
+                                        </thead>
+                                    </table>
+                                </div>';
+                                }
+                                ?>
 
                             </div>
                         </div>
@@ -2117,6 +2147,106 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                             </div>
                         </div>
                     </div>
+
+                    <?php
+                    
+                        $error_div_contents = '';
+
+                        
+                        if (isset($json_data['Events']['UnexpectedShutdowns']) && !($json_data['Events']['UnexpectedShutdowns'] === [])) {
+                        
+                            $error_div_contents .= '<div class="accordion">
+                                <h1 class="accordion-header" id="debug-log-button">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#unexpected-shutdowns" aria-expanded="true" aria-controls="unexpected-shutdowns">
+                                        Unexpected Shutdowns
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="unexpected-shutdowns">
+                                    <table id="unexpected-shutdowns-table" class="table">
+                                        <thead>
+                                            <th></th>
+                                            <th>Timestamp</th>
+                                            <th>Power Button Timestamp</th>
+                                            <th>Bugcheck Code</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>';
+                        }
+                        
+                        if (isset($json_data['Events']['MachineCheckExceptions']) && !($json_data['Events']['MachineCheckExceptions'] === [])) {
+                            $error_div_contents .= '<div class="accordion">
+                                    <h1 class="accordion-header" id="debug-log-button">
+                                        <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#mce" aria-expanded="true" aria-controls="mce">
+                                            Machine Check Exceptions
+                                        </button>
+                                    </h1>
+                                    <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="mce">
+                                        <table id="mce-table" class="table">
+                                            <thead>
+                                                <th></th>
+                                                <th>Timestamp</th>
+                                                <th>MCA Error Code</th>
+                                                <th>Error Message</th>
+                                                <th>Transaction Type</th>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>';
+                        }
+
+                        if (isset($json_data['Events']['WheaErrorRecords']) && !($json_data['Events']['WheaErrorRecords'] === [])) {
+
+                            $error_div_contents .= '<div class="accordion">
+                                <h1 class="accordion-header" id="debug-log-button">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#whea-records" aria-expanded="true" aria-controls="whea-records">
+                                        WHEA Error Records
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="whea-records">
+                                    <table id="whea-records-table" class="table">
+                                        <thead>
+                                            <th></th>
+                                            <th>Severity</th>
+                                            <th>Timestamp</th>
+                                            <th>Platform ID</th>
+                                            <th>Creator ID</th>
+                                            <th>Notify Type</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>';
+                            }
+
+                        if (isset($json_data['Events']['PciWheaErrors']) && !($json_data['Events']['PciWheaErrors'] === [])) {
+
+                            $error_div_contents .= '<div class="accordion">
+                                <h1 class="accordion-header" id="debug-log-button">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#pci-whea" aria-expanded="true" aria-controls="pci-whea">
+                                        PCI WHEA Errors
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="pci-whea">
+                                    <table id="pci-whea-table" class="table">
+                                        <thead>
+                                            <th>Timestamp</th>
+                                            <th>VendorId</th>
+                                            <th>DeviceId</th>
+                                            <th>Vendor</th>
+                                            <th>Device</th>
+                                            <th>Subsystem</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>';
+                        }
+
+                        if (!($error_div_contents === '')){
+                            $error_div_contents = '<div id="errors-div"><div class="textbox metadata-detail">' . $error_div_contents . '</div>';
+                            echo $error_div_contents;
+                        }
+                    ?>
+
                     <div id="dev-div" style="display: none">
                         <div class="textbox metadata-detail">
                             <div class="accordion">
