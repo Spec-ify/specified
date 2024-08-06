@@ -502,8 +502,6 @@ async function errorTables(json) {
 			);
 		}
 
-		console.log(json.Events.MachineCheckExceptions);
-
 		let mceTable = new DataTable("#mce-table", {
 			autoWidth: false,
 			data: json.Events.MachineCheckExceptions,

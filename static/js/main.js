@@ -180,8 +180,8 @@ function openDevDiv(){
 
 // Konami Code - Shows Debug Log
 // KonamiJS Code from https://github.com/georgemandis/konami-js
-const easterEgg = new Konami(
-    () => (openDevDiv)
+new Konami(
+    () => (openDevDiv())
 );
 
 // populate the cpu info table with stuff from hwapi
