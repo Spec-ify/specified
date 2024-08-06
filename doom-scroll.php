@@ -134,12 +134,14 @@
      * Return table layout for a data array
      * @param string[][] $arr
      * @param string[] $cols cols can be modified in the transform function. if a column is not present in the array, it will be blank
-     * @param function $transform an optional function that takes the row `function (&$row) {` as an argument and can modify it
+     * @param Closure $transform an optional function that takes the row `function (&$row) {` as an argument and can modify it
+     * @param string $noDataMessage what to output for an empty array
      */
-    function array_table_iter(?array $arr, array $cols, $transform = null): string
+    function array_table_iter(?array $arr, array $cols, $transform = null, string $noDataMessage = 'No Data'): string
     {
         $res = "";
-        if (!$arr) return '';
+        $colLength = count($cols);
+        if (!$arr) return "<tr><td colspan='$colLength'>$noDataMessage</td></tr>";
         foreach ($arr as $row) {
             if ($transform) {
                 $transform($row);
