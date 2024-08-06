@@ -65,9 +65,16 @@
 
 :root[data-theme="k9-mode"] {
     --color-scheme: dark;
-    --bg-color: #0d1113;
+    --bg-color: #181a1b;
+    --modal-color: #232527;
     --fg-color: #ddd9d0;
+    --secondary-bg: #202325;
     --widget-bg: #181d1e;
     --widget-fg: #ddd9d0;
     --heading-color: #181d1e;
+    --meta-h4-color: #ffffff;
+
+    --green: #72ff72;
+    --yellow: #e2b23a;
+    --red: #f04d4d;
 }
