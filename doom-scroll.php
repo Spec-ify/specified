@@ -101,8 +101,7 @@
     // Split the paths into an array using the semicolon as the delimiter
     $path_array = explode(';', $paths);
 
-
-    //PUP check
+    // Notable Software and SMBIOS
     include('lists.php');
     // Set up the reference list
     $referenceListInstalled = $json_data['System']['InstalledApps'];
@@ -472,8 +471,8 @@
     ?>
 </ul>
 
-<h1>PUPs</h1>
-<?php if (!$pupsFoundInstalled && !$pupsFoundRunning) echo "No PUPs detected" ?>
+<h1>Notable Software</h1>
+<?php if (!$pupsFoundInstalled && !$pupsFoundRunning) echo "No notable software detected" ?>
 <ul>
     <?php
         foreach ($pupsFoundInstalled as $pup) {
