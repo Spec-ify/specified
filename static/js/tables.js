@@ -541,6 +541,55 @@ async function errorTables(json) {
 	// WHEA Error Records Error
 	try {
 		function format(d) {
+
+			let errorDescriptors = `<details style="margin: 0.5rem">
+										<summary style="font-size: 1rem">Error Descriptors</summary>`;
+
+			d.ErrorDescriptors.forEach((item) => {
+				errorDescriptors += `<table class="table" style="margin: 0.5rem 0">
+						<tbody>
+							<tr>
+								<td>Section Offset</td>
+								<td>${item.SectionOffset}</td>
+							</tr>
+							<tr>
+								<td>Section Length</td>
+								<td>${item.SectionLength}</td>
+							</tr>
+							<tr>
+								<td>Revision</td>
+								<td>${item.Revision}</td>
+							</tr>
+							<tr>
+								<td>Valid Bits</td>
+								<td>${item.ValidBits}</td>
+							</tr>
+							<tr>
+								<td>Flags</td>
+								<td>${item.Flags}</td>
+							</tr>
+							<tr>
+								<td>Section Type</td>
+								<td>${item.SectionType}</td>
+							</tr>
+							<tr>
+								<td>FRU ID</td>
+								<td>${item.FRUId}</td>
+							</tr>
+							<tr>
+								<td>Section Severity</td>
+								<td>${item.SectionSeverity}</td>
+							</tr>
+							<tr>
+								<td>FRU Text</td>
+								<td>${item.FRUText}</td>
+							</tr>
+						</tbody>
+					</table>`
+			});
+
+			errorDescriptors += `</details>`;
+
 			return (
 				// Error Header
 				`
@@ -612,52 +661,10 @@ async function errorTables(json) {
 					</table>
 				</details>
 				` +
+				
 				// Error Descriptors
-				`
-				<details style="margin: 0.5rem">
-					<summary style="font-size: 1rem">Error Descriptors</summary>
-					<table class="table" style="margin: 0.5rem 0">
-						<tbody>
-							<tr>
-								<td>Section Offset</td>
-								<td>${d.ErrorHeader.SectionOffset}</td>
-							</tr>
-							<tr>
-								<td>Section Length</td>
-								<td>${d.ErrorHeader.SectionLength}</td>
-							</tr>
-							<tr>
-								<td>Revision</td>
-								<td>${d.ErrorHeader.Revision}</td>
-							</tr>
-							<tr>
-								<td>Valid Bits</td>
-								<td>${d.ErrorHeader.ValidBits}</td>
-							</tr>
-							<tr>
-								<td>Flags</td>
-								<td>${d.ErrorHeader.Flags}</td>
-							</tr>
-							<tr>
-								<td>Section Type</td>
-								<td>${d.ErrorHeader.SectionType}</td>
-							</tr>
-							<tr>
-								<td>FRU ID</td>
-								<td>${d.ErrorHeader.FRUId}</td>
-							</tr>
-							<tr>
-								<td>Section Severity</td>
-								<td>${d.ErrorHeader.SectionSeverity}</td>
-							</tr>
-							<tr>
-								<td>FRU Text</td>
-								<td>${d.ErrorHeader.FRUText}</td>
-							</tr>
-						</tbody>
-					</table>
-				</details>
-				` +
+				errorDescriptors +
+
 				// Error Packets
 				`
 				<details style="margin: 0.5rem">
