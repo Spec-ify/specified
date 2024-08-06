@@ -1462,14 +1462,14 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                                         }
                                                     }
                                                     if (str_contains(strtolower($current_profile), 'balanced')) {
-                                                        $profile_color = '#EBCB8B';
+                                                        $profile_color = '--yellow';
                                                     } elseif (str_contains(strtolower($current_profile), 'high')) {
-                                                        $profile_color = '#D08770';
+                                                        $profile_color = '--red';
                                                     } elseif (str_contains(strtolower($current_profile), 'saver')) {
-                                                        $profile_color = '#A3BE8C';
+                                                        $profile_color = '--green';
                                                     }
 
-                                                    echo '<span style="color:' . $profile_color . ';">' . $current_profile . '</span>';
+                                                    echo '<span style="color: var(' . $profile_color . ');">' . $current_profile . '</span>';
                                                 }
                                             }
                                             ?>
@@ -1769,7 +1769,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 ?>
 
                             </div>
-                            <div class="metadata-detail-content json-data" id="pups">
+                            <div class="metadata-detail-content json-data tablebox" id="pups">
                                 <?php
                                 $puphtml = '';
 
@@ -1806,7 +1806,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 }
                                 ?>
                             </div>
-                            <div class="metadata-detail-content json-data" id="variables">
+                            <div class="metadata-detail-content json-data tablebox" id="variables">
                                 <table class="table">
                                     <thead>
                                         <th>Field</th>
@@ -1883,48 +1883,48 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                                 $browser_icon = '#';
                                             }
                                             echo '<div class="widget widget-browser hover"  type="button" data-mdb-toggle="modal" data-mdb-target="#' . $browser['Name'] . 'Modal">
-    <div class="widget-values">
+                                                <div class="widget-values">
                                                 <div class="widget-value">
                                                 <h1>' . $browser['Name']    . $default_browser . '</h1>
                                                 <img class="center" height="48px" width="48px" src="' . $browser_icon . '">
                                                 </div>
                                             </div>
                                             </div>
-                                        ';
+                                            ';
                                             echo '<div class="modal fade " id="' . $browser['Name'] . 'Modal" tabindex="-1" aria-labelledby="' . $browser['Name'] . 'Modal" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="modal-label">' . $browser['Name'] . ' Extensions</h5>
-                                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body" id="browser-container' . $browser['Name'] . '">';
-                                            foreach ($browser['Profiles'] as $browserprofile) {
-                                                $profileKey = array_search($browserprofile, $browser['Profiles']);
-                                                echo '
-                                            <h2>' . $browser['Name'] . ' Profile "' . $browser['Profiles'][$profileKey]['name'] . '"</h2>
-                                            <table id="' . $browser['Name'] . 'Profile' . $profileKey . 'Table" class="table">
-                                            <thead>
-                                            <th>Name</th>
-                                            <th>Version</th>
-                                            <th>Description</th>
-                                            </thead>
-                                            </table>';
-                                            };
-                                            echo '
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>';
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="modal-label">' . $browser['Name'] . ' Extensions</h5>
+                                                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body" id="browser-container' . $browser['Name'] . '">';
+                                                            foreach ($browser['Profiles'] as $browserprofile) {
+                                                                $profileKey = array_search($browserprofile, $browser['Profiles']);
+                                                                echo '
+                                                            <h2>' . $browser['Name'] . ' Profile "' . $browser['Profiles'][$profileKey]['name'] . '"</h2>
+                                                            <table id="' . $browser['Name'] . 'Profile' . $profileKey . 'Table" class="table">
+                                                            <thead>
+                                                            <th>Name</th>
+                                                            <th>Version</th>
+                                                            <th>Description</th>
+                                                            </thead>
+                                                            </table>';
+                                                            };
+                                                            echo '
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>';
                                         }
                                     }
                                     ?>
                                 </div>
                             </div>
-                            <div class="metadata-detail-content json-data" id="startup">
+                            <div class="metadata-detail-content json-data tablebox" id="startup">
                                 <table class="table">
                                     <thead>
                                         <th>App Name</th>
@@ -1944,7 +1944,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="metadata-detail-content json-data" id="updates">
+                            <div class="metadata-detail-content json-data tablebox" id="updates">
                                 <table class="table">
                                     <thead>
                                         <th>Update</th>
