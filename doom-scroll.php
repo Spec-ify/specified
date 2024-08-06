@@ -133,7 +133,8 @@
     /**
      * Return table layout for a data array
      * @param string[][] $arr
-     * @param string[] $cols
+     * @param string[] $cols cols can be modified in the transform function. if a column is not present in the array, it will be blank
+     * @param function $transform an optional function that takes the row `function (&$row) {` as an argument and can modify it
      */
     function array_table_iter(?array $arr, array $cols, $transform = null): string
     {
@@ -192,8 +193,7 @@
     <script nonce="<?= $script_nonce ?>">
         window.PROFILE_NAME = "<?= $profile_name ?>";
     </script>
-    <script src="static/js/call-hwapi.js"></script>
-    <script defer src="static/js/doom-scroll.js"></script>
+    <script defer src="static/js/doom-scroll.js" type="module"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.slim.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/sc-2.0.7/datatables.min.js"></script>
     <script src="static/js/konami.js"></script>
@@ -1437,7 +1437,7 @@
 <table>
     <thead>
         <th>Timestamp</th>
-        <th>Bugcheck Code</th>
+        <th colspan="2">Bugcheck Code</th>
         <th>P1</th>
         <th>P2</th>
         <th>P3</th>
@@ -1448,24 +1448,32 @@
         <?=
             array_table_iter(
                 $json_data['Events']['UnexpectedShutdowns'],
-                ['Timestamp','BugcheckCode','BugcheckParameter1','BugcheckParameter2','BugcheckParameter3','BugcheckParameter4','PowerButtonTimestamp']
+                ['Timestamp','BugcheckCode','BugcheckHex','BugcheckParameter1','BugcheckParameter2','BugcheckParameter3','BugcheckParameter4','PowerButtonTimestamp'],
+                function(&$row) {
+                    $hex = dechex($row['BugcheckCode']);
+                    $row['BugcheckHex'] = "0x$hex";
+                }
             )
         ?>
     </tbody>
 </table>
 
 <h2>PCIe WHEA Errors</h2>
-<table>
+<table id="pcie-whea-table">
     <thead>
         <th>Timestamp</th>
         <th>Vendor ID</th>
         <th>Device ID</th>
+        <th>Matched Device</th>
     </thead>
     <tbody>
         <?=
             array_table_iter(
                 $json_data['Events']['PciWheaErrors'],
-                ['Timestamp','VendorId','DeviceId']
+                ['Timestamp','VendorId','DeviceId','MatchedDeviceDummy'],
+                function(&$row) {
+                    $row['MatchedDeviceDummy'] = "No Match";
+                }
             )
         ?>
     </tbody>

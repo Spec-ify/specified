@@ -331,3 +331,7 @@ From PrismJS: https://github.com/PrismJS/prism/blob/master/LICENSE
 .whea-error:not(:last-child) {
     padding-bottom: 1rem;
 }
+
+.tr-focus {
+    border: 2px solid var(--link-color);
+}
