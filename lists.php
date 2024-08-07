@@ -51,8 +51,7 @@
         "salad", // crypto miner
         "cleaner", // blanket for debloater
         "Speedify", // messes with network
-        "UltraUXThemePatcher", // can mess up ui
-        "driver" // blanket for driver updaters
+        "UltraUXThemePatcher" // can mess up ui
     ];
 
     $biosCharacteristics = [
