@@ -10,7 +10,7 @@
      * who are giving support should know about, like VPNs. It should NOT include things that do not directly impact
      * support like Roblox. It should also not include AVs because those are already detected elsewhere.
      */
-    $puplist = [
+    $notableSoftwareList = [
         "smartbyte", // messes with network
         "netlimiter", // messes with network
         "cfosspeed", // messes with network
@@ -18,7 +18,6 @@
         "XFast LAN", // messes with network
         "Driver Easy", // driver updater
         "CCleaner", // debloater
-        "EASEUS", // "Snakeoil garbage that pretends to be unique and proper, despite being a crappier clone of photorec." - KayZ
         "Wondershare", // "Adware with popups and shills, even after uninstalling it will still give you ads and popups constantly." - KayZ
         "Vanguard", // Kernel-level Anti-cheat, causes system instability
         "Battleye", // Kernel-level Anti-cheat, causes system instability
@@ -47,11 +46,13 @@
         "Reimage Repair", // debloater
         "Browser Assistant", // malware
         "KMS", // piracy tools that can have malware
+        "HWID", // cheat tools that can have malware
         "Advanced SystemCare", // debloater
         "salad", // crypto miner
         "cleaner", // blanket for debloater
         "Speedify", // messes with network
-        "UltraUXThemePatcher" // can mess up ui
+        "UltraUXThemePatcher", // can mess up ui
+        "driver" // blanket for driver updaters
     ];
 
     $biosCharacteristics = [
