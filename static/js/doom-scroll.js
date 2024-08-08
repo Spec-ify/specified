@@ -57,16 +57,14 @@ new Konami(() => {
     createLinks("#debug-log h1");
 });
 
-// We don't want DataTables to alert about a 'No Data' td.
+// We don't want DataTables to alert errors
 DataTable.ext.errMode = 'none';
-
-// the event handler below will make data-tables errors log in console
+// the event handler below will make DataTables errors log in console
 // https://datatables.net/reference/event/dt-error
 $("table")
 .on('error.dt', function (e, settings, techNote, message) {
         console.log('An error has been reported by DataTables: ', message);
-    })
-    .DataTable();
+    });
 
 // jQuery is needed just for data tables, avoid using elsewhere
 $("#temps-table").DataTable({

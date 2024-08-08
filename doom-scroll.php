@@ -140,7 +140,11 @@
     {
         $res = "";
         $colLength = count($cols);
-        if (!$arr) return "<tr><td colspan='$colLength'>$noDataMessage</td></tr>";
+        if (!$arr) {
+            // we need these so DataTables doesn't get mad
+            $fillerTds = str_repeat("<td class='hidden'></td>", $colLength - 1);
+            return "<tr><td colspan='$colLength'>$noDataMessage</td>$fillerTds</tr>";
+        }
         foreach ($arr as $row) {
             if ($transform) {
                 $transform($row);
@@ -194,7 +198,7 @@
     <script nonce="<?= $script_nonce ?>">
         window.PROFILE_NAME = "<?= $profile_name ?>";
     </script>
-    <script defer src="static/js/doom-scroll.js" type="module"></script>
+    <script defer src="static/js/doom-scroll.js?v=2" type="module"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.slim.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/sc-2.0.7/datatables.min.js"></script>
     <script src="static/js/konami.js"></script>
