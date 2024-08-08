@@ -149,7 +149,7 @@ $referenceListRunning = $json_data['System']['RunningProcesses'];
 
 $pupsfoundInstalled = array();
 foreach ($referenceListInstalled as $installed) {
-    foreach ($puplist as $pups) {
+    foreach ($notableSoftwareList as $pups) {
         preg_match('/\b(' . strtolower($pups) . ')\b/', strtolower($installed['Name']), $matches, PREG_OFFSET_CAPTURE);
         if ($matches) {
             array_push($pupsfoundInstalled, $installed['Name']);
@@ -160,7 +160,7 @@ $pupsfoundInstalled = array_unique($pupsfoundInstalled);
 
 $pupsfoundRunning = array();
 foreach ($referenceListRunning as $running) {
-    foreach ($puplist as $pups) {
+    foreach ($notableSoftwareList as $pups) {
         preg_match('/\b(' . strtolower($pups) . ')\b/', strtolower($running['ProcessName']), $matches, PREG_OFFSET_CAPTURE);
         if ($matches) {
             array_push($pupsfoundRunning, $running['ProcessName']);
@@ -1516,7 +1516,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                         <div class="textbox metadata-detail tabbed-info">
                             <div class="metadata-detail-controls">
                                 <button id="notes-button">Notes</button>
-                                <button id="pups-button">PUPs</button>
+                                <button id="pups-button">Notable Software</button>
                                 <button id="variables-button">Variables</button>
                                 <button id="browsers-button">Browsers</button>
                                 <button id="startup-button">Startup Tasks</button>
@@ -1775,7 +1775,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
                                 if (!empty($pupsfoundInstalled)) {
 
-                                    $puphtml .= '<h4>PUPS found Installed</h4>';
+                                    $puphtml .= '<h4>Notable Software found Installed</h4>';
 
                                     $puphtml .= '<table id="pups-table-installed" class="table">';
 
@@ -1788,7 +1788,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
                                 if (!empty($pupsfoundRunning)) {
 
-                                    $puphtml .= '<h4>PUPS found Running</h4>';
+                                    $puphtml .= '<h4>Notable Software found Running</h4>';
 
                                     $puphtml .= '<table id="pups-table-running" class="table">';
 
@@ -1802,7 +1802,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 if (!empty($puphtml)) {
                                     echo $puphtml;
                                 } else {
-                                    echo '<h4>No PUPs found, yay!</h4>';
+                                    echo '<h4>No Notable Software found, yay!</h4>';
                                 }
                                 ?>
                             </div>
