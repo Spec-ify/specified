@@ -2096,56 +2096,6 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="textbox metadata-detail" id="accordion-tables-network">
-                            <div class="accordion">
-                                <h1 class="accordion-header" id="netcon-table-button">
-                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#netcon" aria-expanded="true" aria-controls="netcon">
-                                        Network Connections
-                                    </button>
-                                </h1>
-                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="netcon">
-                                    <table id="netcon-table" class="table">
-                                        <thead>
-                                            <th>Local IP</th>
-                                            <th>Local Port</th>
-                                            <th>Remote IP</th>
-                                            <th>Remote Port</th>
-                                            <th>Process Name</th>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <h1 class="accordion-header" id="routes-table-button">
-                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#routes" aria-expanded="true" aria-controls="routes">
-                                        Routes Table
-                                    </button>
-                                </h1>
-                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="routes">
-                                    <table id="routes-table" class="table">
-                                        <thead>
-                                            <th>Route</th>
-                                            <th>Destination</th>
-                                            <th>Interface</th>
-                                            <th>Mask</th>
-                                            <th>Metric</th>
-                                            <th>Next Hop</th>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <h1 class="accordion-header" id="hosts-table-button">
-                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#hosts" aria-expanded="true" aria-controls="hosts">
-                                        Hosts File
-                                    </button>
-                                </h1>
-                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="hosts">
-                                    <?php
-                                    $hoststext = nl2br($json_data['Network']['HostsFile']);
-                                    ?>
-                                    <p style="font-size: 10pt;"><?= $hoststext ?> </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <?php
                     
@@ -2245,6 +2195,57 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                             echo $error_div_contents;
                         }
                     ?>
+
+                    <div>
+                        <div class="textbox metadata-detail" id="accordion-tables-network">
+                            <div class="accordion">
+                                <h1 class="accordion-header" id="netcon-table-button">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#netcon" aria-expanded="true" aria-controls="netcon">
+                                        Network Connections
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="netcon">
+                                    <table id="netcon-table" class="table">
+                                        <thead>
+                                            <th>Local IP</th>
+                                            <th>Local Port</th>
+                                            <th>Remote IP</th>
+                                            <th>Remote Port</th>
+                                            <th>Process Name</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <h1 class="accordion-header" id="routes-table-button">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#routes" aria-expanded="true" aria-controls="routes">
+                                        Routes Table
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="routes">
+                                    <table id="routes-table" class="table">
+                                        <thead>
+                                            <th>Route</th>
+                                            <th>Destination</th>
+                                            <th>Interface</th>
+                                            <th>Mask</th>
+                                            <th>Metric</th>
+                                            <th>Next Hop</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <h1 class="accordion-header" id="hosts-table-button">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#hosts" aria-expanded="true" aria-controls="hosts">
+                                        Hosts File
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="hosts">
+                                    <?php
+                                    $hoststext = nl2br($json_data['Network']['HostsFile']);
+                                    ?>
+                                    <p style="font-size: 10pt;"><?= $hoststext ?> </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div id="dev-div" style="display: none">
                         <div class="textbox metadata-detail">
