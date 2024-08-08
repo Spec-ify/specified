@@ -57,6 +57,11 @@ new Konami(() => {
     createLinks("#debug-log h1");
 });
 
+// We don't want DataTables to alert about a 'No Data' td. This will make it so it still throws
+// errors for troubleshooting if needed. We could just check it in JS at some point but
+// ✨it'll be fine✨
+DataTable.ext.errMode = 'throw';
+
 // jQuery is needed just for data tables, avoid using elsewhere
 $("#temps-table").DataTable({
     paging: false,
