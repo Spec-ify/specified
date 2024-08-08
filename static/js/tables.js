@@ -397,6 +397,7 @@ async function errorTables(json) {
 					}
 				},
 			],
+			order: [[1,"desc"]],
 		});
 
 		unexpectedShutdownsTable.on('click', 'td', function (e) {
@@ -518,6 +519,7 @@ async function errorTables(json) {
 				{ data: "ErrorMessage" },
 				{ data: "TransactionType" },
 			],
+			order: [[1,"desc"]],
 		});
 
 		mceTable.on('click', 'td.dt-control', function (e) {
@@ -731,8 +733,21 @@ async function errorTables(json) {
 
 		json.Events.PciWheaErrors.forEach((data, index) => {
 			json["Events"]["PciWheaErrors"][index]["Vendor"] = responseIds[index]["vendor"]
-			json["Events"]["PciWheaErrors"][index]["Device"] = responseIds[index]["device"]
 			json["Events"]["PciWheaErrors"][index]["Subsystem"] = responseIds[index]["subsystem"]
+
+			let vendorIdItem = data.VendorId.replace("0x", "").toUpperCase();
+			let deviceIdItem = data.VendorId.replace("0x", "").toUpperCase();
+
+			json.Hardware.Devices.forEach((deviceData) => {
+				if (deviceData.DeviceID.includes(vendorIdItem) && deviceData.DeviceID.includes(deviceIdItem)) {
+					json["Events"]["PciWheaErrors"][index]["Device"] = deviceData.Name;
+					return;
+				}
+			})
+
+			if (json["Events"]["PciWheaErrors"][index]["Device"] == null){
+				json["Events"]["PciWheaErrors"][index]["Device"] = responseIds[index]["vendor"]
+			}
 		});
 
 		new DataTable("#pci-whea-table", {
