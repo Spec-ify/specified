@@ -149,7 +149,7 @@ $referenceListRunning = $json_data['System']['RunningProcesses'];
 
 $pupsfoundInstalled = array();
 foreach ($referenceListInstalled as $installed) {
-    foreach ($puplist as $pups) {
+    foreach ($notableSoftwareList as $pups) {
         preg_match('/\b(' . strtolower($pups) . ')\b/', strtolower($installed['Name']), $matches, PREG_OFFSET_CAPTURE);
         if ($matches) {
             array_push($pupsfoundInstalled, $installed['Name']);
@@ -160,7 +160,7 @@ $pupsfoundInstalled = array_unique($pupsfoundInstalled);
 
 $pupsfoundRunning = array();
 foreach ($referenceListRunning as $running) {
-    foreach ($puplist as $pups) {
+    foreach ($notableSoftwareList as $pups) {
         preg_match('/\b(' . strtolower($pups) . ')\b/', strtolower($running['ProcessName']), $matches, PREG_OFFSET_CAPTURE);
         if ($matches) {
             array_push($pupsfoundRunning, $running['ProcessName']);
@@ -1518,7 +1518,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                         <div class="textbox metadata-detail tabbed-info">
                             <div class="metadata-detail-controls">
                                 <button id="notes-button">Notes</button>
-                                <button id="pups-button">PUPs</button>
+                                <button id="pups-button">Notable Software</button>
                                 <button id="variables-button">Variables</button>
                                 <button id="browsers-button">Browsers</button>
                                 <button id="startup-button">Startup Tasks</button>
@@ -1777,7 +1777,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
                                 if (!empty($pupsfoundInstalled)) {
 
-                                    $puphtml .= '<h4>PUPS found Installed</h4>';
+                                    $puphtml .= '<h4>Notable Software found Installed</h4>';
 
                                     $puphtml .= '<table id="pups-table-installed" class="table">';
 
@@ -1790,7 +1790,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
                                 if (!empty($pupsfoundRunning)) {
 
-                                    $puphtml .= '<h4>PUPS found Running</h4>';
+                                    $puphtml .= '<h4>Notable Software found Running</h4>';
 
                                     $puphtml .= '<table id="pups-table-running" class="table">';
 
@@ -1804,7 +1804,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 if (!empty($puphtml)) {
                                     echo $puphtml;
                                 } else {
-                                    echo '<h4>No PUPs found, yay!</h4>';
+                                    echo '<h4>No Notable Software found, yay!</h4>';
                                 }
                                 ?>
                             </div>
@@ -2098,56 +2098,6 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="textbox metadata-detail" id="accordion-tables-network">
-                            <div class="accordion">
-                                <h1 class="accordion-header" id="netcon-table-button">
-                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#netcon" aria-expanded="true" aria-controls="netcon">
-                                        Network Connections
-                                    </button>
-                                </h1>
-                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="netcon">
-                                    <table id="netcon-table" class="table">
-                                        <thead>
-                                            <th>Local IP</th>
-                                            <th>Local Port</th>
-                                            <th>Remote IP</th>
-                                            <th>Remote Port</th>
-                                            <th>Process Name</th>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <h1 class="accordion-header" id="routes-table-button">
-                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#routes" aria-expanded="true" aria-controls="routes">
-                                        Routes Table
-                                    </button>
-                                </h1>
-                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="routes">
-                                    <table id="routes-table" class="table">
-                                        <thead>
-                                            <th>Route</th>
-                                            <th>Destination</th>
-                                            <th>Interface</th>
-                                            <th>Mask</th>
-                                            <th>Metric</th>
-                                            <th>Next Hop</th>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <h1 class="accordion-header" id="hosts-table-button">
-                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#hosts" aria-expanded="true" aria-controls="hosts">
-                                        Hosts File
-                                    </button>
-                                </h1>
-                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="hosts">
-                                    <?php
-                                    $hoststext = nl2br($json_data['Network']['HostsFile']);
-                                    ?>
-                                    <p style="font-size: 10pt;"><?= $hoststext ?> </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <?php
                     
@@ -2247,6 +2197,57 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                             echo $error_div_contents;
                         }
                     ?>
+
+                    <div>
+                        <div class="textbox metadata-detail" id="accordion-tables-network">
+                            <div class="accordion">
+                                <h1 class="accordion-header" id="netcon-table-button">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#netcon" aria-expanded="true" aria-controls="netcon">
+                                        Network Connections
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="netcon">
+                                    <table id="netcon-table" class="table">
+                                        <thead>
+                                            <th>Local IP</th>
+                                            <th>Local Port</th>
+                                            <th>Remote IP</th>
+                                            <th>Remote Port</th>
+                                            <th>Process Name</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <h1 class="accordion-header" id="routes-table-button">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#routes" aria-expanded="true" aria-controls="routes">
+                                        Routes Table
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget jsondata accordion-item accordion-collapse collapse" id="routes">
+                                    <table id="routes-table" class="table">
+                                        <thead>
+                                            <th>Route</th>
+                                            <th>Destination</th>
+                                            <th>Interface</th>
+                                            <th>Mask</th>
+                                            <th>Metric</th>
+                                            <th>Next Hop</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <h1 class="accordion-header" id="hosts-table-button">
+                                    <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#hosts" aria-expanded="true" aria-controls="hosts">
+                                        Hosts File
+                                    </button>
+                                </h1>
+                                <div class="textbox metadata-detail tablebox widget json-data accordion-item accordion-collapse collapse" id="hosts">
+                                    <?php
+                                    $hoststext = nl2br($json_data['Network']['HostsFile']);
+                                    ?>
+                                    <p style="font-size: 10pt;"><?= $hoststext ?> </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div id="dev-div" style="display: none">
                         <div class="textbox metadata-detail">

@@ -335,3 +335,7 @@ From PrismJS: https://github.com/PrismJS/prism/blob/master/LICENSE
 .tr-focus {
     border: 2px solid var(--link-color);
 }
+
+.hidden {
+    display: none;
+}
