@@ -198,7 +198,8 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
     <meta content="width=device-width,initial-scale=1" name="viewport" />
 
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.dark.min.css" rel="stylesheet">
+<!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.dark.min.css" rel="stylesheet">-->
+    <link href="static/css/mdb-dark-purged.css" rel="stylesheet">
     <link href="static/css/themes.css?v=2" rel="stylesheet">
     <link href="static/css/main.css?v=2" rel="stylesheet">
     <link href="static/css/tables.css" rel="stylesheet">
@@ -227,7 +228,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
     <script defer type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/sc-2.0.7/datatables.min.js"></script>
 
     <!--UI Stuff-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js" type="text/javascript"></script>
+    <script defer src="static/js/mdb-stripped.js" type="text/javascript"></script>
 
     <!--Main Scripts-->
     <script defer="defer" src="static/js/tables.js?v=3" type="module"></script>
