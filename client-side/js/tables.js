@@ -1,3 +1,4 @@
+import DataTable from "datatables.net-bs5";
 import { call_hwapi } from "./common.js";
 
 const filename = `files/${PROFILE_NAME}.json`;
@@ -16,7 +17,7 @@ async function dataTables() {
 
 function modalsTables(json) {
 	try {
-		$("#temp-table").DataTable({
+		new DataTable("#temp-table", {
 			autoWidth: false,
 			data: json.Hardware.Temperatures,
 			columns: [
@@ -31,7 +32,7 @@ function modalsTables(json) {
 	}
 
 	try {
-		$("#power-table").DataTable({
+		new DataTable("#power-table", {
 			autoWidth: false,
 			searching: false,
 			ordering: false,
@@ -73,7 +74,7 @@ function modalsTables(json) {
 					json.System.BrowserExtensions[Browser].Profiles[Profile]
 						.Extensions;
 				BrowserJsonData = BrowserJsonData.filter((e) => e != null);
-				$(BrowserName).DataTable({
+				new DataTable(BrowserName, {
 					autoWidth: false,
 					searching: false,
 					ordering: false,
@@ -93,7 +94,7 @@ function modalsTables(json) {
 	}
 
 	try {
-		$("#audio-table").DataTable({
+		new DataTable("#audio-table", {
 			autoWidth: false,
 			searching: false,
 			ordering: false,
@@ -112,7 +113,7 @@ function modalsTables(json) {
 	}
 
 	try {
-		$("#battery-table").DataTable({
+		new DataTable("#battery-table", {
 			autoWidth: false,
 			data: json.Hardware.Batteries,
 			searching: false,
@@ -142,7 +143,7 @@ function devicesAndDrivers(json){
            return row;
         });
 
-		$("#devices-table").DataTable({
+		new DataTable("#devices-table", {
 			autoWidth: false,
 			data: json.Hardware.Devices,
 			columns: [
@@ -160,7 +161,7 @@ function devicesAndDrivers(json){
 	}
 
 	try {
-		$("#drivers-table").DataTable({
+		new DataTable("#drivers-table", {
 			autoWidth: false,
 			data: json.Hardware.Drivers,
 			columns: [
@@ -215,7 +216,7 @@ function appsTables(json) {
 			};
 		});
 
-		$("#running-processes-table").DataTable({
+		new DataTable("#running-processes-table", {
 			autoWidth: false,
 			data: displayProcesses,
 			pageLength: 25,
@@ -241,7 +242,7 @@ function appsTables(json) {
 	}
 
 	try {
-		$("#installed-app-table").DataTable({
+		new DataTable("#installed-app-table", {
 			autoWidth: false,
 			data: json.System.InstalledApps,
 			columns: [
@@ -257,7 +258,7 @@ function appsTables(json) {
 
 	if (document.getElementById("installed-windows-store-table")){
 		try {
-			$("#installed-windows-store-table").DataTable({
+			new DataTable("#installed-windows-store-table", {
 				autoWidth: false,
 				pageLength: 25,
 				data: json.System.WindowsStorePackages,
@@ -277,7 +278,7 @@ function appsTables(json) {
 
 function servicesAndTasks(json) {
 	try {
-		$("#services-table").DataTable({
+		new DataTable("#services-table", {
 			autoWidth: false,
 			data: json.System.Services,
 			pageLength: 25,
@@ -295,7 +296,7 @@ function servicesAndTasks(json) {
 	}
 
 	try {
-		$("#tasks-table").DataTable({
+		new DataTable("#tasks-table", {
 			autoWidth: false,
 			data: json.System.ScheduledTasks,
 			pageLength: 25,
@@ -316,7 +317,7 @@ function servicesAndTasks(json) {
 
 function networkTables(json) {
 	try {
-		$("#netcon-table").DataTable({
+		new DataTable("#netcon-table", {
 			autoWidth: false,
 			data: json.Network.NetworkConnections,
 			columns: [
@@ -346,7 +347,7 @@ function networkTables(json) {
 	// InnerJoin the InterfaceIndex from one tree in the json to another tree in the json, thus giving me the ability
 	// to print out the corresponding name of the NIC that's using a route, instead of just a number.
 	try {
-		$("#routes-table").DataTable({
+		new DataTable("#routes-table", {
 			autoWidth: false,
 			data: json.Network.Routes,
 			columns: [

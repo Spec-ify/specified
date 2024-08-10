@@ -1,4 +1,7 @@
-var devClick = 0;
+import "./themes";
+import Konami from "./konami";
+
+let devClick = 0, devClickReset;
 
 // List of all tabs
 const tabs = [
@@ -35,9 +38,9 @@ function showTab(tab) {
     // Removes selected tab
     const hiddenTabs = tabs.filter((val) => val !== tab);
     for (const t of hiddenTabs) {
-        $(t).hide();
+        document.querySelector(t).hidden = true;
     }
-    $(tab).show();
+    document.querySelector(tab).hidden = false;
 }
 
 // TODO: the way this is defined is a little bit weird, could probably be improved, it's currently defined by updating the value on the global `window` object
@@ -236,3 +239,5 @@ new Konami(
     // cpuTable.innerHTML = tableContents;
     document.getElementById("fetched-cpu-info").innerHTML = tableContents;
 })();
+
+import "./tables";
