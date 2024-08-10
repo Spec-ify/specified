@@ -35,9 +35,9 @@ function showTab(tab) {
     // Removes selected tab
     const hiddenTabs = tabs.filter((val) => val !== tab);
     for (const t of hiddenTabs) {
-        $(t).hide();
+        document.querySelector(t).hide();
     }
-    $(tab).show();
+    document.querySelector(tab).show();
 }
 
 // TODO: the way this is defined is a little bit weird, could probably be improved, it's currently defined by updating the value on the global `window` object

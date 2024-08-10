@@ -224,7 +224,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
     <script defer="defer" src="static/js/konami.js"></script>
 
     <!--Table Rendering-->
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.slim.min.js"></script>
+    <script defer src="static/js/jquery-stripped.min.js"></script>
     <script defer type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/sc-2.0.7/datatables.min.js"></script>
 
     <!--UI Stuff-->
