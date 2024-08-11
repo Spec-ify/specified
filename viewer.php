@@ -197,7 +197,6 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
     <title>Profile <?= $profile_name ?> | Specified</title>
     <meta content="width=device-width,initial-scale=1" name="viewport" />
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.dark.min.css" rel="stylesheet">
     <link href="static/css/themes.css?v=2" rel="stylesheet">
@@ -241,7 +240,10 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
     <div id="main">
         <!--$-->
         <button type="button" class="btn btn-info btn-floating btn-lg" id="btn-back-to-top">
-            <i class="fas fa-arrow-up"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="#0d1113">
+                <!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. -->
+                <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2 160 448c0 17.7 14.3 32 32 32s32-14.3 32-32l0-306.7L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/>
+            </svg>
         </button>
         <header id="header-header">
             <div id="header-logo">

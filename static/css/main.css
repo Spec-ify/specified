@@ -890,6 +890,10 @@ article h2:before {
   	will-change: opacity, visibility;
 }
 
+#btn-back-to-top svg {
+    height: 20px;
+}
+
 #archive {
 	margin: auto;
 	width: 80%;

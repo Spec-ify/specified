@@ -129,6 +129,14 @@
     }
     $pupsFoundRunning = array_unique($pupsFoundRunning);
 
+    $dumpLink = "";
+    if (isset($json_data['System']['DumpZip'])) {
+        $strippedLink = str_replace("\n", '', $json_data['System']['DumpZip']);
+        if (filter_var($strippedLink, FILTER_VALIDATE_URL)) {
+            $dumpLink = $strippedLink;
+        }
+    }
+
     /**
      * Return table layout for a data array
      * @param string[][] $arr
@@ -140,7 +148,11 @@
     {
         $res = "";
         $colLength = count($cols);
-        if (!$arr) return "<tr><td colspan='$colLength'>$noDataMessage</td></tr>";
+        if (!$arr) {
+            // we need these so DataTables doesn't get mad
+            $fillerTds = str_repeat("<td class='hidden'></td>", $colLength - 1);
+            return "<tr><td colspan='$colLength'>$noDataMessage</td>$fillerTds</tr>";
+        }
         foreach ($arr as $row) {
             if ($transform) {
                 $transform($row);
@@ -207,6 +219,7 @@
     <ul id="nav-list">
         <li><a href="<?= http_strip_query_param($_SERVER['REQUEST_URI'], 'view') ?>">Specify View</a></li>
         <li id="nav-top-link"><a href="#top">Back To Top</a></li>
+        <?= $dumpLink ? "<li><a href='$dumpLink'>Download Dumps</a></li>" : '' ?>
         <li class="nav-space-below"><a href="<?= $json_file ?>">View JSON</a></li>
     </ul>
 </nav>
@@ -305,21 +318,21 @@
             ';
         }
         if ($json_data['System']['OneDriveCommercialPathLength'] != null) {
-            echo '
+            echo "
     <li>
-        OneDrive Path Length : <span>' . $json_data['System']['OneDriveCommercialPathLength'] . '</span>
-        OneDrive Name Length : <span>' . $json_data['System']['OneDriveCommercialNameLength'] . '</span>
+        OneDrive Path Length : <span>{$json_data['System']['OneDriveCommercialPathLength']}</span>
+        OneDrive Name Length : <span>{$json_data['System']['OneDriveCommercialNameLength']}</span>
     </li>
-                ';
+                ";
         }
 
         if ($json_data['System']['RecentMinidumps'] != 0) {
-            // TODO: add link to download minidumps
-            echo '
+            ?>
     <li>
-        There have been <span class="red">' . $json_data['System']['RecentMinidumps'] . '</span> Minidumps found
+        There have been <span class="red"><?= $json_data['System']['RecentMinidumps'] ?></span> Minidumps found.
+        <?= $dumpLink ? "<a href='$dumpLink'>Download</a>" : '' ?>
     </li>
-            ';
+            <?php
         }
 
         $hostFileHash = $json_data['Network']['HostsFileHash'];
@@ -421,11 +434,11 @@
         foreach ($json_data['System']['ChoiceRegistryValues'] as $regkey) {
 
             if ($regkey['Value'] && !in_array($regkey['Value'], $defaultRegKeys[$regkey['Name']])) {
-                echo '
+                echo "
     <li>
-        Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
+        Registry Value <span>{$regkey['Name']}</span> found set, value of <span>{$regkey['Value']}</span>
     </li>
-                    ';
+                    ";
             }
         }
 
@@ -599,22 +612,22 @@
                 $ram_speed = $json_data['Hardware']['Ram'][$ram_stick]['ConfiguredSpeed'];
                 $ram_size = floor($json_data['Hardware']['Ram'][$ram_stick]['Capacity']);
                 if ($ram_size == 0) {
-                    echo '
+                    echo "
         <tr>
-            <td>' . $ram_location . '</td>
-            <td colspan="4" class="td-center">Not Detected</td>
+            <td>$ram_location</td>
+            <td colspan='4' class='td-center'>Not Detected</td>
         </tr>
-                    ';
+                    ";
                 } else {
-                    echo '
+                    echo "
         <tr>
-            <td>' . $ram_location . '</td>
-            <td>' . $ram_manufacturer . '</td>
-            <td>' . $ram_part . '</td>
-            <td>' . $ram_speed . 'MHz</td>
-            <td>' . $ram_size . 'MB</td>
+            <td>$ram_location</td>
+            <td>$ram_manufacturer</td>
+            <td>$ram_part</td>
+            <td>{$ram_speed}MHz</td>
+            <td>{$ram_size}MB</td>
         </tr>
-                    ';
+                    ";
                 }
             }
         ?>
