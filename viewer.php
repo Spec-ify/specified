@@ -487,20 +487,34 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                             </div>
                             <div class="widget widget-board hover" type="button" data-mdb-toggle="modal" data-mdb-target="#board-modal">
                                 <h1>Motherboard</h1>
-                                <div class="widget-values">
-                                    <div class="widget-value">
-                                        <div class="green">
-                                            <?= $motherboard ?>
+                                <?php
+                                if ($motherboard){
+                                    echo '
+                                    <div class="widget-values">
+                                        <div class="widget-value">
+                                            <div class="green">'
+                                            . $motherboard .
+                                            '</div>
+                                            <div>OEM</div>
                                         </div>
-                                        <div>OEM</div>
-                                    </div>
-                                    <div class="widget-value">
-                                        <div class="green">
-                                            <?= $json_data['Hardware']['Motherboard']['Product'] ?>
+                                        <div class="widget-value">
+                                            <div class="green">'
+                                            . $json_data['Hardware']['Motherboard']['Product'] .
+                                            '
+                                            </div>
+                                            <div>Chipset</div>
                                         </div>
-                                        <div>Chipset</div>
-                                    </div>
-                                </div>
+                                    </div>';
+                                } else {
+                                    echo '
+                                        <div class="widget-value">
+                                            <div class="red"> Error! </div>
+                                            <div>Error retrieving motherboard information.</div>
+                                        </div>';
+                                }
+
+                                ?>
+                                
                             </div>
                             <div class="modal fade" id="board-modal" tabindex="-1" aria-labelledby="board-modal" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
