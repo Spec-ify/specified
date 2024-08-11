@@ -206,7 +206,7 @@
     <script nonce="<?= $script_nonce ?>">
         window.PROFILE_NAME = "<?= $profile_name ?>";
     </script>
-    <script defer src="static/js/doom-scroll.js?v=2" type="module"></script>
+    <script defer src="static/js/doom-scroll.js?v=1" type="module"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.slim.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/sc-2.0.7/datatables.min.js"></script>
     <script src="static/js/konami.js"></script>
@@ -1419,7 +1419,8 @@
     </tbody>
 </table>
 
-<h2>Other</h2>
+<h2>Others</h2>
+<h3>Recieve Side Scaling</h3>
 <table>
     <tbody>
         <tr>
@@ -1428,7 +1429,7 @@
         </tr>
     </tbody>
 </table>
-<h3>AutoTuningLevelLocal</h3>
+<h3>Auto Tuning Level Local</h3>
 <table>
     <tbody>
         <?= object_table_iter($json_data['Network']['AutoTuningLevelLocal']) ?>
@@ -1445,53 +1446,308 @@
     echo '</code></pre>';
 ?>
 
-<h1>Events</h1>
+<?php
 
-<h2>Unexpected Shutdowns</h2>
-<table>
-    <thead>
-        <th>Timestamp</th>
-        <th colspan="2">Bugcheck Code</th>
-        <th>P1</th>
-        <th>P2</th>
-        <th>P3</th>
-        <th>P4</th>
-        <th>Power Button Recorded</th>
-    </thead>
-    <tbody>
-        <?=
-            array_table_iter(
-                $json_data['Events']['UnexpectedShutdowns'],
-                ['Timestamp','BugcheckCode','BugcheckHex','BugcheckParameter1','BugcheckParameter2','BugcheckParameter3','BugcheckParameter4','PowerButtonTimestamp'],
-                function(&$row) {
-                    $hex = dechex($row['BugcheckCode']);
-                    $row['BugcheckHex'] = "0x$hex";
-                }
-            )
-        ?>
-    </tbody>
-</table>
+$events_part = '';
 
-<h2>PCIe WHEA Errors</h2>
-<table id="pcie-whea-table">
-    <thead>
-        <th>Timestamp</th>
-        <th>Vendor ID</th>
-        <th>Device ID</th>
-        <th>Matched Device</th>
-    </thead>
-    <tbody>
-        <?=
-            array_table_iter(
-                $json_data['Events']['PciWheaErrors'],
-                ['Timestamp','VendorId','DeviceId','MatchedDeviceDummy'],
-                function(&$row) {
-                    $row['MatchedDeviceDummy'] = "No Match";
-                }
-            )
-        ?>
-    </tbody>
-</table>
+if ($json_data['Events']['UnexpectedShutdowns'] != []) {
+    $table_data = array_table_iter(
+        $json_data['Events']['UnexpectedShutdowns'],
+        ['Timestamp','BugcheckCode','BugcheckHex','BugcheckParameter1','BugcheckParameter2','BugcheckParameter3','BugcheckParameter4','PowerButtonTimestamp'],
+        function(&$row) {
+            $hex = dechex($row['BugcheckCode']);
+            $row['BugcheckHex'] = "0x$hex";
+        }
+    );
+
+    $events_part .= '
+        <h2>Unexpected Shutdowns</h2>
+        <table>
+            <thead>
+                <th>Timestamp</th>
+                <th colspan="2">Bugcheck Code</th>
+                <th>P1</th>
+                <th>P2</th>
+                <th>P3</th>
+                <th>P4</th>
+                <th>Power Button Recorded</th>
+            </thead>
+            <tbody>' .
+            $table_data
+            . '</tbody>
+        </table>
+    ';
+}
+
+if ($json_data['Events']['MachineCheckExceptions'] != []) {
+    $mce_tables = '';
+    foreach ($json_data['Events']['MachineCheckExceptions'] as $exception_item){
+        $mce_tables .= '
+        <table>
+            <tr>
+                <td>Timestamp</td>
+                <td>' . $exception_item['Timestamp'] . '</td>
+            </tr>
+            <tr>
+                <td>MCE Status Register Valid</td>
+                <td>' . $exception_item['MciStatusRegisterValid'] . '</td>
+            </tr>
+            <tr>
+                <td>Error Overflow</td>
+                <td>' . $exception_item['ErrorOverflow'] . '</td>
+            </tr>
+            <tr>
+                <td>Uncorrected Error</td>
+                <td>' . $exception_item['UncorrectedError'] . '</td>
+            </tr>
+            <tr>
+                <td>Error Reporting Enabled</td>
+                <td>' . $exception_item['ErrorReportingEnabled'] . '</td>
+            </tr>
+            <tr>
+                <td>Processor Context Corrupted</td>
+                <td>' . $exception_item['ProcessorContextCorrupted'] . '</td>
+            </tr>
+            <tr>
+                <td>Poisoned Data</td>
+                <td>' . $exception_item['PoisonedData'] . '</td>
+            </tr>
+            <tr>
+                <td>Extended Error Code</td>
+                <td>' . $exception_item['ExtendedErrorCode'] . '</td>
+            </tr>
+            <tr>
+                <td>MCA Error Code</td>
+                <td>' . $exception_item['McaErrorCode'] . '</td>
+            </tr>
+            <tr>
+                <td>Error Message</td>
+                <td>' . $exception_item['ErrorMessage'] . '</td>
+            </tr>
+            <tr>
+                <td>TransactionType</td>
+                <td>' . $exception_item['TransactionType'] . '</td>
+            </tr>
+            <tr>
+                <td>Memory Hierarchy Level</td>
+                <td>' . $exception_item['MemoryHierarchyLevel'] . '</td>
+            </tr>
+            <tr>
+                <td>Request Type</td>
+                <td>' . $exception_item['RequestType'] . '</td>
+            </tr>
+            <tr>
+                <td>Participation</td>
+                <td>' . $exception_item['Participation'] . '</td>
+            </tr>
+            <tr>
+                <td>Timeout</td>
+                <td>' . $exception_item['Timeout'] . '</td>
+            </tr>
+            <tr>
+                <td>Memory Or IO</td>
+                <td>' . $exception_item['MemoryOrIo'] . '</td>
+            </tr>
+            <tr>
+                <td>Memory Transaction Type</td>
+                <td>' . $exception_item['MemoryTransactionType'] . '</td>
+            </tr>
+            <tr>
+                <td>Channel Number</td>
+                <td>' . $exception_item['ChannelNumber'] . '</td>
+            </tr>
+        </table><br/>';
+    };
+
+    $events_part .= '<h2>Machine Check Exceptions</h2>' . $mce_tables;
+}
+
+if ($json_data['Events']['PciWheaErrors'] != []) {
+    $table_data = array_table_iter(
+        $json_data['Events']['PciWheaErrors'],
+        ['Timestamp','VendorId','DeviceId','MatchedDeviceDummy'],
+        function(&$row) {
+            $row['MatchedDeviceDummy'] = "No Match";
+        }
+    );
+
+    $events_part .= '
+        <h2>PCIe WHEA Errors</h2>
+        <table id="pcie-whea-table">
+            <thead>
+                <th>Timestamp</th>
+                <th>Vendor ID</th>
+                <th>Device ID</th>
+                <th>Matched Device</th>
+            </thead>
+            <tbody>' . 
+            $table_data
+            . '</tbody>
+        </table>
+    ';
+}
+
+if ($json_data['Events']['WheaErrorRecords'] != []) {
+    $whea_tables = '';
+    foreach ($json_data['Events']['WheaErrorRecords'] as $record){
+
+        $descriptor_data = '';
+        $error_packets = '';
+
+        foreach ($record['ErrorDescriptors'] as $descriptor) {
+            $descriptor_data .= '
+            <table style="width: 100%">
+                <tbody>
+                    <tr>
+                        <td>Section Offset</td>
+                        <td>' . $descriptor["SectionOffset"] . '</td>
+                    </tr>
+                    <tr>
+                        <td>Section Length</td>
+                        <td>' . $descriptor["SectionLength"] . '</td>
+                    </tr>
+                    <tr>
+                        <td>Revision</td>
+                        <td>' . $descriptor["Revision"] . '</td>
+                    </tr>
+                    <tr>
+                        <td>Valid Bits</td>
+                        <td>' . $descriptor["ValidBits"] . '</td>
+                    </tr>
+                    <tr>
+                        <td>Flags</td>
+                        <td>' . $descriptor["Flags"] . '</td>
+                    </tr>
+                    <tr>
+                        <td>Section Type</td>
+                        <td>' . $descriptor["SectionType"] . '</td>
+                    </tr>
+                    <tr>
+                        <td>FRU ID</td>
+                        <td>' . $descriptor["FRUId"] . '</td>
+                    </tr>
+                    <tr>
+                        <td>Section Severity</td>
+                        <td>' . $descriptor["SectionSeverity"] . '</td>
+                    </tr>
+                    <tr>
+                        <td>FRU Text</td>
+                        <td>' . $descriptor["FRUText"] . '</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br/>';
+        };
+
+        foreach ($record['ErrorPackets'] as $packet) {
+            $error_packets .= '
+            <code style="font-size:1rem"><pre>'. $packet .'</pre></code><br/>';
+        };
+
+        $whea_tables .= '
+        <table>
+            <tr>
+                <td>Timestamp</td>
+                <td>' . $record['ErrorHeader']['Timestamp'] . '</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <details open>
+                        <summary>Error Header</summary>
+                        <table style="width: 100%">
+                            <tbody>
+                                <tr>
+                                    <td>Signature</td>
+                                    <td>' . $record['ErrorHeader']['Signature'] . '</td>
+                                </tr>
+                                <tr>
+                                    <td>Revision</td>
+                                    <td>' . $record['ErrorHeader']['Revision'] . '</td>
+                                </tr>
+                                <tr>
+                                    <td>Signature End</td>
+                                    <td>' . $record['ErrorHeader']['SignatureEnd'] . '</td>
+                                </tr>
+                                <tr>
+                                    <td>Section Count</td>
+                                    <td>' . $record['ErrorHeader']['SectionCount'] . '</td>
+                                </tr>
+                                <tr>
+                                    <td>Severity</td>
+                                    <td>' . $record['ErrorHeader']['Severity'] . '</td>
+                                </tr>
+                                <tr>
+                                    <td>Valid Bits</td>
+                                    <td>' . $record['ErrorHeader']['ValidBits'] . '</td>
+                                </tr>
+                                <tr>
+                                    <td>Length</td>
+                                    <td>' . $record['ErrorHeader']['Length'] . '</td>
+                                </tr>
+                                <tr>
+                                    <td>Timestamp</td>
+                                    <td>' . $record['ErrorHeader']['Timestamp'] . '</td>
+                                </tr>
+                                <tr>
+                                    <td>Platform ID</td>
+                                    <td>' . $record['ErrorHeader']['PlatformId'] . '</td>
+                                </tr>
+                                <tr>
+                                    <td>Partition ID</td>
+                                    <td>' . $record['ErrorHeader']['PartitionId'] . '</td>
+                                </tr>
+                                <tr>
+                                    <td>Creator ID</td>
+                                    <td>' . $record['ErrorHeader']['CreatorId'] . '</td>
+                                </tr>
+                                <tr>
+                                    <td>Notify Type</td>
+                                    <td>' . $record['ErrorHeader']['NotifyType'] . '</td>
+                                </tr>
+                                <tr>
+                                    <td>Record ID</td>
+                                    <td>' . $record['ErrorHeader']['RecordId'] . '</td>
+                                </tr>
+                                <tr>
+                                    <td>Flags</td>
+                                    <td>' . $record['ErrorHeader']['Flags'] . '</td>
+                                </tr>
+                                <tr>
+                                    <td>Persistence Info</td>
+                                    <td>' . $record['ErrorHeader']['PersistenceInfo'] . '</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </details>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <details open>
+                        <summary>Error Descriptors</summary>' . 
+                        $descriptor_data
+                    . '</details>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <details open>
+                        <summary>Error Packets</summary>' .
+                        $error_packets                    
+                    . '</details>
+                </td>
+            </tr>
+        </table><br/>';
+    };
+
+    $events_part .= '<h2>WHEA Error Records</h2>' . $whea_tables;
+}
+
+if ($events_part != '') {
+    $events_part = '<h1>Events</h1>' . $events_part;
+    echo $events_part;
+}
+?>
 
 <div id="debug-log">
     <h1>Debug Log</h1>
