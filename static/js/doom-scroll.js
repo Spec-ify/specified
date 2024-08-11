@@ -1,4 +1,4 @@
-import { call_hwapi } from "./common.js";
+import { call_hwapi, createHexId } from "./common.js";
 
 /**
  * This function contains extremely hacky hacks.
@@ -257,8 +257,8 @@ $("#routes-table").DataTable({
     });
 
     document.querySelectorAll("#pcie-whea-table tbody tr").forEach((tr, trIndex) => {
-        const vendorString = `VEN_${json['Events']['PciWheaErrors'][trIndex]['VendorId'].replace("0x", "")}`.toUpperCase();
-        const deviceString = `DEV_${json['Events']['PciWheaErrors'][trIndex]['DeviceId'].replace("0x", "")}`.toUpperCase();
+        const vendorString = `VEN_${createHexId(json['Events']['PciWheaErrors'][trIndex]['VendorId'])}`;
+        const deviceString = `DEV_${createHexId(json['Events']['PciWheaErrors'][trIndex]['DeviceId'])}`;
         for (const [index, device] of json['Hardware']['Devices'].entries()) {
             if (device['DeviceID'].includes(vendorString) && device['DeviceID'].includes(deviceString)) {
                 const matchTd = tr.querySelectorAll("td")[3];

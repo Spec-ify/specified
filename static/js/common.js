@@ -91,3 +91,14 @@ export async function call_hwapi(path, payload, fallbackCallack = () => {}) {
         return {};
     }
 }
+
+export function createHexId(id) {
+    id = id.replace("0x", "").toUpperCase();
+    const regex = /^[0-9A-F]{4}$/i;
+
+    if (!regex.test(id)) {
+        id = "0".repeat(4 - id.length) + id;
+    }
+
+    return id;
+}
