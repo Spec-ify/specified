@@ -3,6 +3,8 @@
 # https://stackoverflow.com/a/1482133
 SCRIPT_DIR=$(dirname -- "$( readlink -f -- "$0"; )")
 
+cd $SCRIPT_DIR
+
 # held files list must contain absolute paths
 HELD_FILES_LIST="$SCRIPT_DIR/held_files"
 
