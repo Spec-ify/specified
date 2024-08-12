@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-# held files list must contain absolute paths
-HELD_FILES_LIST="held_files"
-
 # https://stackoverflow.com/a/246128/
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+# held files list must contain absolute paths
+HELD_FILES_LIST="$SCRIPT_DIR/held_files"
 
 # get files older than 24 hours
 OLD_FILES=$( find $SCRIPT_DIR/files -mindepth 1 -mtime +0 -type f )
