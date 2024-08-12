@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# https://stackoverflow.com/a/246128/
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+# https://stackoverflow.com/a/1482133
+SCRIPT_DIR=$(dirname -- "$( readlink -f -- "$0"; )")
 
 # held files list must contain absolute paths
 HELD_FILES_LIST="$SCRIPT_DIR/held_files"
