@@ -1,4 +1,4 @@
-import { call_hwapi, createHexId } from "./common.js";
+import { call_hwapi, createPcieHexId } from "./common.js";
 
 /**
  * This function contains extremely hacky hacks.
@@ -81,6 +81,12 @@ $("#installed-apps-table").DataTable({
     paging: false,
     searching: false,
     info: false
+});
+$("#windows-store-table").DataTable({
+    paging: false,
+    searching: false,
+    info: false,
+    fallback: false
 });
 $("#services-table").DataTable({
     paging: false,
@@ -266,8 +272,8 @@ $("#routes-table").DataTable({
     });
 
     document.querySelectorAll("#pcie-whea-table tbody tr").forEach((tr, trIndex) => {
-        const vendorString = `VEN_${createHexId(json['Events']['PciWheaErrors'][trIndex]['VendorId'])}`;
-        const deviceString = `DEV_${createHexId(json['Events']['PciWheaErrors'][trIndex]['DeviceId'])}`;
+        const vendorString = `VEN_${createPcieHexId(json['Events']['PciWheaErrors'][trIndex]['VendorId'])}`;
+        const deviceString = `DEV_${createPcieHexId(json['Events']['PciWheaErrors'][trIndex]['DeviceId'])}`;
         for (const [index, device] of json['Hardware']['Devices'].entries()) {
             if (device['DeviceID'].includes(vendorString) && device['DeviceID'].includes(deviceString)) {
                 const matchTd = tr.querySelectorAll("td")[3];

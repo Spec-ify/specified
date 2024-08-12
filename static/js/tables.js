@@ -1,4 +1,4 @@
-import { call_hwapi, createHexId } from "./common.js";
+import { call_hwapi, createPcieHexId } from "./common.js";
 
 const filename = `files/${PROFILE_NAME}.json`;
 
@@ -726,7 +726,7 @@ async function errorTables(json) {
 		let inputIds = [];
 
 		json.Events.PciWheaErrors.forEach((data) => {
-			inputIds.push(`PCI\\VEN_${createHexId(data.VendorId)}&DEV_${createHexId(data.DeviceId)}`);
+			inputIds.push(`PCI\\VEN_${createPcieHexId(data.VendorId)}&DEV_${createPcieHexId(data.DeviceId)}`);
 		});
 
 		let responseIds = await call_hwapi('api/pcie/', inputIds);

@@ -277,18 +277,18 @@ th {
     column-count: 2;
 }
 
-.file {
+pre {
     border: 1px solid var(--line-color);
     padding: 2px;
 }
 
-.file code {
+pre code {
     font-family: "JetBrains Mono", monospace;
     font-size: 13px;
     counter-reset: line;
 }
 
-.file code span {
+pre code span {
     display: block;
     counter-increment: line;
 }
@@ -321,15 +321,46 @@ From PrismJS: https://github.com/PrismJS/prism/blob/master/LICENSE
     user-select: none;
 }
 
-.whea-error {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    align-items: flex-start;
+.machinecheck-exception:not(:last-child) {
+    margin-bottom: 1rem;
 }
 
-.whea-error:not(:last-child) {
-    padding-bottom: 1rem;
+.whea-packets {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 1rem;
+    column-gap: 0.5rem;
+}
+
+/* https://www.w3schools.com/tags/tag_hn.asp */
+.whea-summary {
+    /*display: block;*/
+    font-size: 1em;
+    margin-top: 1.33em;
+    margin-bottom: 1.33em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+.whea-summary:hover {
+    cursor: pointer;
+}
+
+.whea-row {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0.5rem;
+}
+
+/* I want the columns of the table to line up and idk any better way to do it than this */
+.whea-descriptor td:first-child {
+    width: 20ch;
+}
+
+.whea-packet {
+    margin: 0;
 }
 
 .tr-focus {
@@ -337,5 +368,10 @@ From PrismJS: https://github.com/PrismJS/prism/blob/master/LICENSE
 }
 
 .hidden {
+    display: none;
+}
+
+/* We already have our own No Data message */
+.dataTables_empty {
     display: none;
 }

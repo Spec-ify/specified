@@ -92,7 +92,7 @@ export async function call_hwapi(path, payload, fallbackCallack = () => {}) {
     }
 }
 
-export function createHexId(id) {
+export function createPcieHexId(id) {
     id = id.replace("0x", "").toUpperCase();
     const regex = /^[0-9A-F]{4}$/i;
 
