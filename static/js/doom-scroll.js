@@ -271,6 +271,32 @@ $("#routes-table").DataTable({
         order: [] // to prevent order changing on data table load
     });
 
+    let bugcheckMalformed = false;
+    // bugcheck replacemenet for unexpected shutdowns
+    const bugCheckCodes = json['Events']['UnexpectedShutdowns'].map(shutdown => {
+        if (!Number.isSafeInteger(shutdown['BugcheckCode'])) bugcheckMalformed = true;
+        return shutdown['BugcheckCode'];
+    });
+    if (bugcheckMalformed) { // if one of them is not an integer for now, we can add more checks later
+        console.error("BugCheck codes malformed")
+    } else {
+        const response = await call_hwapi(`api/bugcheck/`, bugCheckCodes);
+        response.forEach((bugcheck, index) => {
+            //console.table({ index: index, ...bugcheck});
+            if (bugcheck && bugcheck.name) {
+                // this refers to the bugcheckcode column. we need to use "... tbody tr" because otherwise it will select the header row too
+                const parent = document.querySelectorAll("#unexpected-shutdowns-table tbody tr")[index].querySelectorAll("td")[1];
+                parent.innerHTML = ""; // clear code that was inserted in php
+                const a = document.createElement("a"); // i think inserting it like this is better for sanitation
+                a.href = bugcheck.url;
+                a.title = bugcheck.name; // these names can be very long so we're making it a tooltip instead
+                //a.innerText = `${bugcheck.name} (0x${bugcheck.code.toString(16)})`;
+                a.innerText = `0x${bugcheck.code.toString(16)}`;
+                parent.appendChild(a);
+            }
+        });
+    }
+
     document.querySelectorAll("#pcie-whea-table tbody tr").forEach((tr, trIndex) => {
         const vendorString = `VEN_${createPcieHexId(json['Events']['PciWheaErrors'][trIndex]['VendorId'])}`;
         const deviceString = `DEV_${createPcieHexId(json['Events']['PciWheaErrors'][trIndex]['DeviceId'])}`;

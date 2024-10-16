@@ -378,6 +378,30 @@ async function errorTables(json) {
 			);
 		}
 
+        let bugcheckMalformed = false;
+        // bugcheck replacemenet for unexpected shutdowns
+        const bugCheckCodes = json['Events']['UnexpectedShutdowns'].map(shutdown => {
+            if (!Number.isSafeInteger(shutdown['BugcheckCode'])) bugcheckMalformed = true;
+            return shutdown['BugcheckCode'];
+        });
+        let bugCheckTable = {}
+        if (bugcheckMalformed) { // if one of them is not an integer for now, we can add more checks later
+            throw new Error("BugCheck codes malformed");
+        } else {
+            const response = await call_hwapi(`api/bugcheck/`, bugCheckCodes);
+            response.forEach((bugcheck, index) => {
+                //console.table({ index: index, ...bugcheck});
+                if (bugcheck && bugcheck.name) {
+                    const a = document.createElement("a"); // i think inserting it like this is better for sanitation
+                    a.href = bugcheck.url;
+                    a.title = bugcheck.name; // these names can be very long so we're making it a tooltip instead
+                    //a.innerText = `${bugcheck.name} (0x${bugcheck.code.toString(16)})`;
+                    a.innerText = `0x${bugcheck.code.toString(16)}`;
+                    bugCheckTable[bugcheck.code] = a.outerHTML;
+                }
+            });
+        }
+
 		let unexpectedShutdownsTable = new DataTable(("#unexpected-shutdowns-table"), {
 			autoWidth: false,
 			data: json.Events.UnexpectedShutdowns,
@@ -393,7 +417,7 @@ async function errorTables(json) {
 				{ data: "PowerButtonTimestamp" },
 				{ data: "BugcheckCode",
 					render: function (data) {
-						return `0x${data.toString(16).toUpperCase()}`;
+						return bugCheckTable[data] ?? `0x${data.toString(16)}`;
 					}
 				},
 			],

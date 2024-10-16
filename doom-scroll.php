@@ -788,9 +788,11 @@
 <h2>Temperatures</h2>
 <table id="temps-table">
     <thead>
-        <th>Hardware</th>
-        <th>Sensor</th>
-        <th>Temperature (&deg;C)</th>
+        <tr>
+            <th>Hardware</th>
+            <th>Sensor</th>
+            <th>Temperature (&deg;C)</th>
+        </tr>
     </thead>
     <tbody><?= array_table_iter($json_data['Hardware']['Temperatures'], ['Hardware', 'SensorName', 'SensorValue']) ?></tbody>
 </table>
@@ -841,13 +843,15 @@
 <p id="devices-sort-warning">Table will not be sortable until database lookups finish</p>
 <table id="devices-table">
     <thead>
-        <th>Status</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>DID</th>
-        <th>Vendor (Database)</th>
-        <th>Device (Database)</th>
-        <th>PCIe Subsystem (Database)</th>
+        <tr>
+            <th>Status</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>DID</th>
+            <th>Vendor (Database)</th>
+            <th>Device (Database)</th>
+            <th>PCIe Subsystem (Database)</th>
+        </tr>
     </thead>
     <tbody>
         <?= array_table_iter(
@@ -867,11 +871,13 @@
 <h1>Drivers</h1>
 <table id="drivers-table">
     <thead>
-        <th>Name</th>
-        <th>Friendly Name</th>
-        <th>Manufacturer</th>
-        <th>DID</th>
-        <th>Version</th>
+        <tr>
+            <th>Name</th>
+            <th>Friendly Name</th>
+            <th>Manufacturer</th>
+            <th>DID</th>
+            <th>Version</th>
+        </tr>
     </thead>
     <tbody>
         <?= array_table_iter($json_data['Hardware']['Drivers'], ['DeviceName', 'FriendlyName', 'Manufacturer', 'DeviceID', 'DriverVersion']) ?>
@@ -906,11 +912,13 @@
         urlencode('storage-' . $drive['DeviceName'] ?? 'un' . '-' . $drive['SerialNumber'] ?? 'un') /* un means unknown here */
         . '">
         <thead>
-        <th>Name</th>
-        <th>SN</th>
-        <th>#</th>
-        <th>Capacity</th>
-        <th>Free</th>
+            <tr>
+                <th>Name</th>
+                <th>SN</th>
+                <th>#</th>
+                <th>Capacity</th>
+                <th>Free</th>
+            </tr>
         </thead>
         <tbody>
         ' . '<td>' . $drive['DeviceName'] . '</td>' . '
@@ -960,14 +968,16 @@
     </div>
     <table class="table">
         <thead>
-            <th>Label</th>
-            <th>Letter</th>
-            <th>Capacity</th>
-            <th>Free</th>
-            <th>FS Type</th>
-            <th>CfgMgr Error Code</th>
-            <th>Last Error Code</th>
-            <th>Dirty Bit</th>
+            <tr>
+                <th>Label</th>
+                <th>Letter</th>
+                <th>Capacity</th>
+                <th>Free</th>
+                <th>FS Type</th>
+                <th>CfgMgr Error Code</th>
+                <th>Last Error Code</th>
+                <th>Dirty Bit</th>
+            </tr>
         </thead>
         <tbody>
             ';
@@ -1019,10 +1029,12 @@
 <h1>Audio Devices</h1>
 <table>
     <thead>
-        <th>Device ID</th>
-        <th>Manufacturer</th>
-        <th>Name</th>
-        <th>Status</th>
+        <tr>
+            <th>Device ID</th>
+            <th>Manufacturer</th>
+            <th>Name</th>
+            <th>Status</th>
+        </tr>
     </thead>
     <tbody>
         <?= array_table_iter($json_data['Hardware']['AudioDevices'], ['DeviceID', 'Name', 'Manufacturer', 'Status']) ?>
@@ -1032,10 +1044,12 @@
 <h1>Power Profiles</h1>
 <table>
     <thead>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Instance Path</th>
-        <th>Active?</th>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Instance Path</th>
+            <th>Active?</th>
+        </tr>
     </thead>
     <tbody>
         <?=
@@ -1049,11 +1063,13 @@
 <h1>Batteries</h1>
 <table>
     <thead>
-        <th>Name</th>
-        <th>Manufacturer</th>
-        <th>Chemistry</th>
-        <th>Design Capacity</th>
-        <th>Current Full Charge Capacity</th>
+        <tr>
+            <th>Name</th>
+            <th>Manufacturer</th>
+            <th>Chemistry</th>
+            <th>Design Capacity</th>
+            <th>Current Full Charge Capacity</th>
+        </tr>
     </thead>
     <tbody>
         <?php
@@ -1105,9 +1121,11 @@
 <h2>Startup Tasks</h2>
 <table>
     <thead>
-        <th>App Name</th>
-        <th>App Path</th>
-        <th>Timestamp</th>
+        <tr>
+            <th>App Name</th>
+            <th>App Path</th>
+            <th>Timestamp</th>
+        </tr>
     </thead>
     <tbody>
         <?= array_table_iter($json_data['System']['StartupTasks'], ['AppName', 'ImagePath', 'TimeStamp']) ?>
@@ -1117,8 +1135,10 @@
 <h2>Installed Updates</h2>
 <table>
     <thead>
-        <th>Update</th>
-        <th>Installed On</th>
+        <tr>
+            <th>Update</th>
+            <th>Installed On</th>
+        </tr>
     </thead>
     <tbody>
         <?= array_table_iter($json_data['System']['InstalledHotfixes'], ['HotFixID', 'InstalledOn']) ?>
@@ -1139,9 +1159,11 @@
                 "<?= $profile['name'] /* This is lowercase in the json for some reason */ ?>"</h2>
             <table>
                 <thead>
-                    <th>Name</th>
-                    <th>Version</th>
-                    <th>Description</th>
+                    <tr>
+                        <th>Name</th>
+                        <th>Version</th>
+                        <th>Description</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <?= array_table_iter($profile['Extensions'], ['name', 'version', 'description']) /* These are lowercase in the json for some reason*/ ?>
@@ -1476,10 +1498,10 @@
     if ($unexpectedShutdownsPresent) {
 ?>
 <h2>Unexpected Shutdowns</h2>
-<table>
+<table id="unexpected-shutdowns-table">
     <thead>
         <th>Timestamp</th>
-        <th colspan="2">Bugcheck Code</th>
+        <th>Bugcheck Code</th>
         <th>P1</th>
         <th>P2</th>
         <th>P3</th>
@@ -1490,11 +1512,11 @@
         <?=
             array_table_iter(
                 $json_data['Events']['UnexpectedShutdowns'],
-                ['Timestamp','BugcheckCode','BugcheckHex','BugcheckParameter1','BugcheckParameter2',
+                ['Timestamp','BugcheckCode','BugcheckParameter1','BugcheckParameter2',
                     'BugcheckParameter3','BugcheckParameter4','PowerButtonTimestamp'],
                 function(&$row) {
-                    $hex = dechex($row['BugcheckCode']);
-                    $row['BugcheckHex'] = "0x$hex";
+                    // istg i messed up the capitalization of "BugcheckCode" like 5 times
+                    $row['BugcheckCode'] = "0x" . dechex($row['BugcheckCode']);
                 }
             );
         ?>
