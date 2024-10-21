@@ -51,7 +51,8 @@
         "salad", // crypto miner
         "cleaner", // blanket for debloater
         "Speedify", // messes with network
-        "UltraUXThemePatcher" // can mess up ui
+        "UltraUXThemePatcher", // can mess up ui
+        "Lockdown Browser" // has messed up windows power plans and other things https://discord.com/channels/749314018837135390/749316166878625843/1298020309881847849
     ];
 
     $biosCharacteristics = [
