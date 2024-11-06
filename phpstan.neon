@@ -1,0 +1,9 @@
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+parameters:
+    strictRules:
+    level: 0
+    paths:
+        - .
+    excludePaths:
+        - 'vendor/'
