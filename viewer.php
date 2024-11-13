@@ -1185,7 +1185,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 						<div class="modal-dialog modal-xl">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title" id="modal-label">' . $device_name . ' ' . $lettersStringDisplay . '</h5>
+									<h5 class="modal-title" id="modal-label">' . $device_name . ' ' . $lettersString . '</h5>
 									<button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
 								</div>
 								<div class="modal-body">
