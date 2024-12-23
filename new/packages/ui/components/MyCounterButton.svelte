@@ -6,6 +6,7 @@
   }
 </script>
 
-<button on:click={handleClick}>
-  clicks: {count}
-</button>
+<h1> I was imported from a shared library!</h1>
+
+<style>
+</style>

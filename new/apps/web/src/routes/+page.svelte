@@ -1,7 +1,12 @@
+<!-- YOU CAN DELETE EVERYTHING IN THIS PAGE -->
 <script lang="ts">
-	import { MyCounterButton } from '@repo/ui';
+	import { MyCounterButton } from "@repo/ui";
 </script>
 
-<h1>Web</h1>
-<MyCounterButton />
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+
+<div class="container h-full mx-auto flex justify-center items-center">
+	<div class="space-y-5">
+		<h1 class="h1">This is the page</h1>
+		<MyCounterButton/>
+	</div>
+</div>

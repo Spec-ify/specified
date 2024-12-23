@@ -16,5 +16,8 @@
   "devDependencies": {
     "@repo/eslint-config": "*",
     "svelte": "^4.2.12"
+  },
+  "dependencies": {
+    "@floating-ui/dom": "^1.6.12"
   }
 }
