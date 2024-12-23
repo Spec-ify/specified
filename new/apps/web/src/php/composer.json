@@ -1,0 +1,12 @@
+{
+    "name": "spec-ify/specified",
+    "description": "A web viewer for Specify",
+    "type": "project",
+    "require-dev": {
+        "phpstan/phpstan": "^1.12",
+        "phpstan/phpstan-strict-rules": "^1.6"
+    },
+    "require": {
+        "basuke/sveltekit-php-backend": "^1.0"
+    }
+}
