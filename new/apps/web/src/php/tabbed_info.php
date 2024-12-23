@@ -1,4 +1,6 @@
 <?php 
+include_once("head.php");
+include_once("common.php");
 $json_file = $_GET['file'];
 $json = file_get_contents($json_file);
 $json_data = json_decode($json, true);
