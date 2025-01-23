@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
+	import Widgets from '$lib/components/widgets.svelte';
 
 	let { data}: { data: PageData } = $props();
 
@@ -15,7 +16,8 @@
 
 
 <!-- <div class="container h-full mx-auto flex justify-center items-center"> -->
- <div>
+<div>
+	<Widgets/>
 	<div id="legacy-content">
 	</div>
 	<!-- <div class="space-y-5">
