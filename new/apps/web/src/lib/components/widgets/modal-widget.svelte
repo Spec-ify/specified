@@ -1,6 +1,7 @@
 <script>
     export let title = "Modal";
     export let modalId = "widget-modal";
+    export let modalSpecial = "";
 </script>
   
 <div class={"widget hover widget-"+ modalId} type="button" data-mdb-toggle="modal" data-mdb-target={"#" + modalId}>
@@ -13,7 +14,7 @@
 </div>
 
 <div class="modal fade" id={modalId} tabindex="-1" aria-labelledby={modalId} aria-hidden="true">
-    <div class="modal-dialog">
+    <div class={"modal-dialog " + modalSpecial}>
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id=modal-label>{title}</h5>
@@ -26,7 +27,9 @@
                 <slot name="extras"></slot>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id={modalId + "-more-info-button"}>More Info</button>
+                {#if $$slots.extras}
+                    <button type="button" class="btn btn-secondary" id={modalId + "-more-info-button"}>More Info</button>
+                {/if}
                 <button type="button" class="btn btn-secondary" id={modalId + "-close-button"} data-mdb-dismiss="modal">Close</button>
             </div>
         </div>

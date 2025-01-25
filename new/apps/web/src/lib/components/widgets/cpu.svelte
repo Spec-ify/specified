@@ -4,14 +4,14 @@
 </script>
 
 <!-- CPU -->
- <Widget title="CPU" modalId="cpu-modal">
+<Widget title="CPU" modalId="cpu-modal">
     <div slot="values">
         <div class="green">
             <!-- <?= $json_data['Hardware']['Cpu']['Name'] ?> -->
         </div>
         <div>Callsign</div>
     </div>
-  
+
     <table slot="modal-body" class="table">
         <tbody>
             <tr>

@@ -1,11 +1,12 @@
 <script lang="ts">
     import { jsonData } from '../../common/access-file.js';
+    import Widget from './modal-widget.svelte';
 </script>
 
 <!-- NIC -->
-<div class="widget widget-board hover" type="button" data-mdb-toggle="modal" data-mdb-target="#nic-modal">
-    <h1>NIC</h1>
-    <div class="widget-values">
+
+<Widget title="NIC" modalId="nic-modal">
+    <div slot="values">
         <div class="widget-value">
             <div class="green">
 
@@ -34,17 +35,9 @@
             </div>
         </div>
     </div>
-</div>
-<div class="modal fade " id="nic-modal" tabindex="-1" aria-labelledby="nic-modal" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modal-label">NIC Information</h5>
-                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
 
-                <!-- <?php
+    <div slot="modal-body">
+        <!-- <?php
 
                 foreach ($json_data["Network"]["Adapters"] as $nic) {
                     $table = '';
@@ -249,11 +242,5 @@
                 }
 
                 ?> -->
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-            </div>
-        </div>
     </div>
-</div>
+</Widget>
