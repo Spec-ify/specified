@@ -1,13 +1,11 @@
 <script lang="ts">
     import { jsonData } from '../../common/access-file.js';
+    import Widget from './modal-widget.svelte';
 </script>
 
 <!-- CPU Usage -->
-<div class="widget widget-cpu hover">
-    <h1>CPU
-        <span>(Used)</span>
-    </h1>
-    <div class="widget-values">
+<Widget title="CPU Usage" type="" modalId="cpu-usage-modal">
+    <div slot="values">
         <div class="widget-value">
             <div class="widget-value">
                 <span class="green">
@@ -16,4 +14,4 @@
             </div>
         </div>
     </div>
-</div>
+</Widget>

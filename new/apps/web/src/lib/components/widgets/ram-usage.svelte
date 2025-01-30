@@ -1,13 +1,11 @@
 <script lang="ts">
     import { jsonData } from '../../common/access-file.js';
+    import Widget from './modal-widget.svelte';
 </script>
 
 <!-- RAM Usage -->
-<div class="widget widget-memory hover">
-    <h1>Memory
-        <span>(Used)</span>
-    </h1>
-    <div class="widget-values">
+<Widget title="Memory Usage" type="" modalId="memory-usage-modal">
+    <div slot="values">
         <div class="widget-value">
             <div class="widget-single-value">
                 <span class="green">
@@ -23,4 +21,4 @@
             </div>
         </div>
     </div>
-</div>
+</Widget>

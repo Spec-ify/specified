@@ -1,3 +1,15 @@
+<script lang="ts">
+    import { jsonData } from '../../common/access-file.js';
+    import Widget from './modal-widget.svelte';
+</script>
+
+<!--
+
+# Drives
+ 
+Could probably use a foreach on array that adds a widget component for each drive detected
+
+-->
 <div class="widgets-widgets widgets" data-hide="false">
     <!-- <?php
     $drives_amount = safe_count($json_data['Hardware']['Storage']);

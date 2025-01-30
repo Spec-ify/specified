@@ -2,9 +2,10 @@
     export let title = "Modal";
     export let modalId = "widget-modal";
     export let modalSpecial = "";
+    export let type = "button";
 </script>
   
-<div class={"widget hover widget-"+ modalId} type="button" data-mdb-toggle="modal" data-mdb-target={"#" + modalId}>
+<div class={"widget hover widget-"+ modalId} type={type} data-mdb-toggle="modal" data-mdb-target={"#" + modalId}>
     <h1>{title}</h1>
     <div class="widget-values">
         <div class="widget-value">

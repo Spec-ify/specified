@@ -18,8 +18,6 @@
 <!-- <div class="container h-full mx-auto flex justify-center items-center"> -->
 <div>
 	<Widgets/>
-	<div id="legacy-content">
-	</div>
 	<!-- <div class="space-y-5">
 		<h1 class="h1">This is the page</h1>
 	</div> -->
