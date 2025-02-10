@@ -52,7 +52,35 @@
         "cleaner", // blanket for debloater
         "Speedify", // messes with network
         "UltraUXThemePatcher", // can mess up ui
-        "Lockdown Browser" // has messed up windows power plans and other things https://discord.com/channels/749314018837135390/749316166878625843/1298020309881847849
+        "Lockdown Browser", // has messed up windows power plans and other things https://discord.com/channels/749314018837135390/749316166878625843/1298020309881847849
+        "VoiceMeeter", // messes with audio
+        "Clownfish", // messes with audio
+        "IObit", // company that makes adware
+        "Outbyte", // company that makes tweakers
+        "iolo", // company that makes debloaters
+        "OpenCandy", // company that makes adware
+        "ChrisTitus", // guy that makes debloaters
+        "Snappy Driver", // driver updater
+        "Driver Booster", // driver updater
+        "System Mechanic", // debloater
+        "Bloatbox", // debloater
+        "BCUninstaller", // debloater
+        "Adamx Tweaking Utility", // scam debloater
+        "RoundedTB", // taskbar tweak that breaks explorer
+        "TranslucentTB", // taskbar tweak that breaks explorer
+        "StartAllBack", // taskbar tweak that breaks explorer
+        "WinAero Tweaker", // taskbar tweak that breaks explorer 
+        "ExplorerPatcher", // tweaker that breaks explorer  
+        "ShutUp10", // tweaker
+        "TuneUp Utilities" // tweaker
+        "TweakPower", // tweaker
+        "TweakNow PowerPack", //tweaker and adware
+        "AME-Wizard", // custom os installer
+        "Revision Tool", // custom os tweaker
+        "AtlasDesktop", // custom os tweaker
+        "portableapps", // adware installers
+        "PC Accelerate", // cleaner
+        "NetAdapter Repair" // messes with networking
     ];
 
     $biosCharacteristics = [
