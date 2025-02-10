@@ -72,7 +72,7 @@
         "WinAero Tweaker", // taskbar tweak that breaks explorer 
         "ExplorerPatcher", // tweaker that breaks explorer  
         "ShutUp10", // tweaker
-        "TuneUp Utilities" // tweaker
+        "TuneUp Utilities", // tweaker
         "TweakPower", // tweaker
         "TweakNow PowerPack", //tweaker and adware
         "AME-Wizard", // custom os installer
