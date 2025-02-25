@@ -7,7 +7,7 @@
 	onMount(() => {
 		// console.log(data.widgetResponse);
 		const wrapperDiv = document.getElementById('legacy-content');
-		wrapperDiv!.innerHTML = data.widgetResponse;
+		wrapperDiv!.innerHTML = data.widgetHTML + data.tabbedInfoHTML + data.tableHTML;
 		// document.appendChild(wrapperDiv);
 	});
 </script>
