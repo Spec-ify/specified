@@ -1,9 +1,8 @@
-import { call_hwapi, createPcieHexId } from "./common.js";
+import { call_hwapi, createPcieHexId } from './common.js';
 
 const filename = `files/${PROFILE_NAME}.json`;
 
 async function dataTables() {
-	
 	const json = await (await fetch(filename)).json();
 
 	modalsTables(json);
@@ -16,37 +15,33 @@ async function dataTables() {
 
 function modalsTables(json) {
 	try {
-		$("#temp-table").DataTable({
+		$('#temp-table').DataTable({
 			autoWidth: false,
 			data: json.Hardware.Temperatures,
-			columns: [
-				{ data: "Hardware" },
-				{ data: "SensorName" },
-				{ data: "SensorValue" },
-			],
+			columns: [{ data: 'Hardware' }, { data: 'SensorName' }, { data: 'SensorValue' }]
 		});
 	} catch (e) {
-		console.log("Failed making Temperature DataTable");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making Temperature DataTable');
+		console.log(e.name + ': ' + e.message);
 	}
 
 	try {
-		$("#power-table").DataTable({
+		$('#power-table').DataTable({
 			autoWidth: false,
 			searching: false,
 			ordering: false,
 			paging: false,
 			data: json.System.PowerProfiles,
 			columns: [
-				{ data: "Description" },
-				{ data: "ElementName" },
-				{ data: "InstanceID" },
-				{ data: "IsActive" },
-			],
+				{ data: 'Description' },
+				{ data: 'ElementName' },
+				{ data: 'InstanceID' },
+				{ data: 'IsActive' }
+			]
 		});
 	} catch (e) {
-		console.log("Failed making Power Profile DataTable");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making Power Profile DataTable');
+		console.log(e.name + ': ' + e.message);
 	}
 
 	//This function broke me as a human being.
@@ -59,19 +54,16 @@ function modalsTables(json) {
 	try {
 		var Browsers = Object.keys(json.System.BrowserExtensions);
 		Browsers.forEach(function (Browser) {
-			var Profiles = Object.keys(
-				json.System.BrowserExtensions[Browser].Profiles
-			);
+			var Profiles = Object.keys(json.System.BrowserExtensions[Browser].Profiles);
 			Profiles.forEach(function (Profile) {
 				let BrowserName =
-					"#" +
+					'#' +
 					json.System.BrowserExtensions[Browser].Name +
-					"Profile" +
+					'Profile' +
 					[Profile] +
-					"Table";
+					'Table';
 				let BrowserJsonData =
-					json.System.BrowserExtensions[Browser].Profiles[Profile]
-						.Extensions;
+					json.System.BrowserExtensions[Browser].Profiles[Profile].Extensions;
 				BrowserJsonData = BrowserJsonData.filter((e) => e != null);
 				$(BrowserName).DataTable({
 					autoWidth: false,
@@ -79,101 +71,97 @@ function modalsTables(json) {
 					ordering: false,
 					paging: false,
 					data: BrowserJsonData,
-					columns: [
-						{ data: "name" },
-						{ data: "version" },
-						{ data: "description" },
-					],
+					columns: [{ data: 'name' }, { data: 'version' }, { data: 'description' }]
 				});
 			});
 		});
 	} catch (e) {
-		console.log("Failed making Browser Extension DataTable");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making Browser Extension DataTable');
+		console.log(e.name + ': ' + e.message);
 	}
 
 	try {
-		$("#audio-table").DataTable({
+		$('#audio-table').DataTable({
 			autoWidth: false,
 			searching: false,
 			ordering: false,
 			paging: false,
 			data: json.Hardware.AudioDevices,
 			columns: [
-				{ data: "DeviceID" },
-				{ data: "Manufacturer" },
-				{ data: "Name" },
-				{ data: "Status" },
-			],
+				{ data: 'DeviceID' },
+				{ data: 'Manufacturer' },
+				{ data: 'Name' },
+				{ data: 'Status' }
+			]
 		});
 	} catch (e) {
-		console.log("Failed making Audio Devices DataTable");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making Audio Devices DataTable');
+		console.log(e.name + ': ' + e.message);
 	}
 
 	try {
-		$("#battery-table").DataTable({
+		$('#battery-table').DataTable({
 			autoWidth: false,
 			data: json.Hardware.Batteries,
 			searching: false,
 			ordering: false,
 			paging: false,
 			columns: [
-				{ data: "Name" },
-				{ data: "Manufacturer" },
-				{ data: "Chemistry" },
-				{ data: "Design_Capacity" },
-				{ data: "Full_Charge_Capacity" },
-			],
+				{ data: 'Name' },
+				{ data: 'Manufacturer' },
+				{ data: 'Chemistry' },
+				{ data: 'Design_Capacity' },
+				{ data: 'Full_Charge_Capacity' }
+			]
 		});
 	} catch (e) {
-		console.log("Failed making Audio Devices DataTable");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making Audio Devices DataTable');
+		console.log(e.name + ': ' + e.message);
 	}
 }
 
-function devicesAndDrivers(json){
+function devicesAndDrivers(json) {
 	try {
-        json.Hardware.Devices.map(row => {
-           if (row.Status === "Error") {
-               row.Status = `Error (${row.ConfigManagerErrorCode})`;
-           }
+		json.Hardware.Devices.map((row) => {
+			if (row.Status === 'Error') {
+				row.Status = `Error (${row.ConfigManagerErrorCode})`;
+			}
 
-           return row;
-        });
+			return row;
+		});
 
-		$("#devices-table").DataTable({
+		$('#devices-table').DataTable({
 			autoWidth: false,
 			data: json.Hardware.Devices,
 			columns: [
 				{
-                    data: "Status"
-                },
-				{ data: "Description" },
-				{ data: "Name" },
-				{ data: "DeviceID" },
-			],
+					data: 'Status'
+				},
+				{ data: 'Description' },
+				{ data: 'Name' },
+				{ data: 'DeviceID' }
+			]
 		});
 	} catch (e) {
-		console.log("Failed making Devices DataTable");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making Devices DataTable');
+		console.log(e.name + ': ' + e.message);
 	}
 
 	try {
-		$("#drivers-table").DataTable({
+		$('#drivers-table').DataTable({
 			autoWidth: false,
 			data: json.Hardware.Drivers,
 			columns: [
-				{ data: "DeviceName" },
-				{ data: "FriendlyName" },
-				{ data: "Manufacturer" },
-				{ data: "DeviceID" },
-				{ data: "DriverVersion" },
-			],
+				{ data: 'DeviceName' },
+				{ data: 'FriendlyName' },
+				{ data: 'Manufacturer' },
+				{ data: 'DeviceID' },
+				{ data: 'DriverVersion' }
+			]
 		});
 	} catch (e) {
-		console.log("Failed making Drivers DataTable");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making Drivers DataTable');
+		console.log(e.name + ': ' + e.message);
 	}
 }
 
@@ -182,14 +170,11 @@ function appsTables(json) {
 		let groupProcesses = {};
 		json.System.RunningProcesses.forEach((e) => {
 			const isSystemOrNull =
-				e.ExePath === "Not Found" ||
-				e.ExePath === "SYSTEM" ||
-				e.ExePath.startsWith(null);
+				e.ExePath === 'Not Found' || e.ExePath === 'SYSTEM' || e.ExePath.startsWith(null);
 			const keys = Object.keys(groupProcesses);
 			// the path is not valid if isSystemOrNull is true
 			if (isSystemOrNull) {
-				if (!keys.includes(e.ProcessName))
-					groupProcesses[e.ProcessName] = [e];
+				if (!keys.includes(e.ProcessName)) groupProcesses[e.ProcessName] = [e];
 				else groupProcesses[e.ProcessName].push(e);
 			} else {
 				if (!keys.includes(e.ExePath)) groupProcesses[e.ExePath] = [e];
@@ -198,134 +183,126 @@ function appsTables(json) {
 		});
 		const displayProcesses = Object.values(groupProcesses).flatMap((e) => {
 			const count = e.length;
-			const workingSetReal = e
-				.map((p) => p.WorkingSet)
-				.reduce((acc, cur) => acc + cur);
-			const intl = Intl.NumberFormat("en-US");
-			const workingSetMegaBytes = (
-				workingSetReal / Math.pow(2, 20)
-			).toFixed(2);
+			const workingSetReal = e.map((p) => p.WorkingSet).reduce((acc, cur) => acc + cur);
+			const intl = Intl.NumberFormat('en-US');
+			const workingSetMegaBytes = (workingSetReal / Math.pow(2, 20)).toFixed(2);
 			const workingSetDisplay = intl.format(workingSetMegaBytes);
 			return {
 				ProcessName: `${e[0].ProcessName} (${count})`,
 				ExePath: e[0].ExePath,
 				Id: e[0].Id, // We can perhaps make this a list later
 				WorkingSet: workingSetDisplay,
-				WorkingSetReal: workingSetReal,
+				WorkingSetReal: workingSetReal
 			};
 		});
 
-		$("#running-processes-table").DataTable({
+		$('#running-processes-table').DataTable({
 			autoWidth: false,
 			data: displayProcesses,
 			pageLength: 25,
 			columns: [
-				{ data: "Id" },
-				{ data: "ProcessName" },
-				{ data: "ExePath" },
-				{ data: "WorkingSet" },
-				{ data: "WorkingSetReal" },
+				{ data: 'Id' },
+				{ data: 'ProcessName' },
+				{ data: 'ExePath' },
+				{ data: 'WorkingSet' },
+				{ data: 'WorkingSetReal' }
 			],
 			columnDefs: [
 				{ orderData: [4], targets: [3] },
 				{
 					targets: [4],
 					searchable: false,
-					visible: false,
-				},
-			],
+					visible: false
+				}
+			]
 		});
 	} catch (e) {
-		console.log("Failed making Running Processes DataTable. Is it blank?");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making Running Processes DataTable. Is it blank?');
+		console.log(e.name + ': ' + e.message);
 	}
 
 	try {
-		$("#installed-app-table").DataTable({
+		$('#installed-app-table').DataTable({
 			autoWidth: false,
 			data: json.System.InstalledApps,
-			columns: [
-				{ data: "Name" },
-				{ data: "Version" },
-				{ data: "InstallDate" },
-			],
+			columns: [{ data: 'Name' }, { data: 'Version' }, { data: 'InstallDate' }]
 		});
 	} catch (e) {
-		console.log("Failed making Installed Apps DataTable");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making Installed Apps DataTable');
+		console.log(e.name + ': ' + e.message);
 	}
 
-	if (document.getElementById("installed-windows-store-table")){
+	if (document.getElementById('installed-windows-store-table')) {
 		try {
-			$("#installed-windows-store-table").DataTable({
+			$('#installed-windows-store-table').DataTable({
 				autoWidth: false,
 				pageLength: 25,
 				data: json.System.WindowsStorePackages,
 				columns: [
-					{ data: "Name" },
-					{ data: "ProgramId" },
-					{ data: "Vendor" },
-					{ data: "Version" },
-				],
+					{ data: 'Name' },
+					{ data: 'ProgramId' },
+					{ data: 'Vendor' },
+					{ data: 'Version' }
+				]
 			});
-		} catch (e){
-			console.log("Failed making Windows Store Packages table");
-			console.log(e.name + ": " + e.message);
+		} catch (e) {
+			console.log('Failed making Windows Store Packages table');
+			console.log(e.name + ': ' + e.message);
 		}
 	}
 }
 
 function servicesAndTasks(json) {
 	try {
-		$("#services-table").DataTable({
+		$('#services-table').DataTable({
 			autoWidth: false,
 			data: json.System.Services,
 			pageLength: 25,
 			columns: [
-				{ data: "State" },
-				{ data: "Caption" },
-				{ data: "Name" },
-				{ data: "PathName" },
-				{ data: "StartMode" },
-			],
+				{ data: 'State' },
+				{ data: 'Caption' },
+				{ data: 'Name' },
+				{ data: 'PathName' },
+				{ data: 'StartMode' }
+			]
 		});
 	} catch (e) {
-		console.log("Failed making Services DataTable");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making Services DataTable');
+		console.log(e.name + ': ' + e.message);
 	}
 
 	try {
-		$("#tasks-table").DataTable({
+		$('#tasks-table').DataTable({
 			autoWidth: false,
 			data: json.System.ScheduledTasks,
 			pageLength: 25,
 			columns: [
-				{ data: "State" },
-				{ data: "IsActive" },
-				{ data: "Name" },
-				{ data: "Path" },
-				{ data: "Author" },
-				{ data: "TriggerTypes" },
-			],
+				{ data: 'State' },
+				{ data: 'IsActive' },
+				{ data: 'Name' },
+				{ data: 'Path' },
+				{ data: 'Author' },
+				{ data: 'TriggerTypes' }
+			]
 		});
 	} catch (e) {
-		console.log("Failed making Tasks DataTable");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making Tasks DataTable');
+		console.log(e.name + ': ' + e.message);
 	}
 }
 
 function networkTables(json) {
 	try {
-		$("#netcon-table").DataTable({
+		$('#netcon-table').DataTable({
 			autoWidth: false,
 			data: json.Network.NetworkConnections,
 			columns: [
-				{ data: "LocalIPAddress" },
-				{ data: "LocalPort" },
-				{ data: "RemoteIPAddress" },
-				{ data: "RemotePort" },
+				{ data: 'LocalIPAddress' },
+				{ data: 'LocalPort' },
+				{ data: 'RemoteIPAddress' },
+				{ data: 'RemotePort' },
 				{
-					data: "OwningPID",
+					data: 'OwningPID',
 					render: function (data) {
 						json.System.RunningProcesses.forEach(function (PID) {
 							if (PID.Id == data) {
@@ -333,36 +310,36 @@ function networkTables(json) {
 							}
 						});
 						return data;
-					},
-				},
-			],
+					}
+				}
+			]
 		});
 	} catch (e) {
-		console.log("Failed making Network Connections DataTable");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making Network Connections DataTable');
+		console.log(e.name + ': ' + e.message);
 	}
 
 	// Clever little trickery in this function actually where I practically use DataTables render functionality to
 	// InnerJoin the InterfaceIndex from one tree in the json to another tree in the json, thus giving me the ability
 	// to print out the corresponding name of the NIC that's using a route, instead of just a number.
 	try {
-		$("#routes-table").DataTable({
+		$('#routes-table').DataTable({
 			autoWidth: false,
 			data: json.Network.Routes,
 			columns: [
-				{ data: "Description" },
-				{ data: "Destination" },
+				{ data: 'Description' },
+				{ data: 'Destination' },
 				{
-					data: "InterfaceIndex"
+					data: 'InterfaceIndex'
 				},
-				{ data: "Mask" },
-				{ data: "Metric1" },
-				{ data: "NextHop" },
-			],
+				{ data: 'Mask' },
+				{ data: 'Metric1' },
+				{ data: 'NextHop' }
+			]
 		});
 	} catch (e) {
-		console.log("Failed making Routes DataTable");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making Routes DataTable');
+		console.log(e.name + ': ' + e.message);
 	}
 }
 
@@ -378,31 +355,32 @@ async function errorTables(json) {
 			);
 		}
 
-        let bugcheckMalformed = false;
-        // bugcheck replacemenet for unexpected shutdowns
-        const bugCheckCodes = json['Events']['UnexpectedShutdowns'].map(shutdown => {
-            if (!Number.isSafeInteger(shutdown['BugcheckCode'])) bugcheckMalformed = true;
-            return shutdown['BugcheckCode'];
-        });
-        let bugCheckTable = {}
-        if (bugcheckMalformed) { // if one of them is not an integer for now, we can add more checks later
-            throw new Error("BugCheck codes malformed");
-        } else {
-            const response = await call_hwapi(`api/bugcheck/`, bugCheckCodes);
-            response.forEach((bugcheck, index) => {
-                //console.table({ index: index, ...bugcheck});
-                if (bugcheck && bugcheck.name) {
-                    const a = document.createElement("a"); // i think inserting it like this is better for sanitation
-                    a.href = bugcheck.url;
-                    a.title = bugcheck.name; // these names can be very long so we're making it a tooltip instead
-                    //a.innerText = `${bugcheck.name} (0x${bugcheck.code.toString(16)})`;
-                    a.innerText = `0x${bugcheck.code.toString(16)}`;
-                    bugCheckTable[bugcheck.code] = a.outerHTML;
-                }
-            });
-        }
+		let bugcheckMalformed = false;
+		// bugcheck replacemenet for unexpected shutdowns
+		const bugCheckCodes = json['Events']['UnexpectedShutdowns'].map((shutdown) => {
+			if (!Number.isSafeInteger(shutdown['BugcheckCode'])) bugcheckMalformed = true;
+			return shutdown['BugcheckCode'];
+		});
+		let bugCheckTable = {};
+		if (bugcheckMalformed) {
+			// if one of them is not an integer for now, we can add more checks later
+			throw new Error('BugCheck codes malformed');
+		} else {
+			const response = await call_hwapi(`api/bugcheck/`, bugCheckCodes);
+			response.forEach((bugcheck, index) => {
+				//console.table({ index: index, ...bugcheck});
+				if (bugcheck && bugcheck.name) {
+					const a = document.createElement('a'); // i think inserting it like this is better for sanitation
+					a.href = bugcheck.url;
+					a.title = bugcheck.name; // these names can be very long so we're making it a tooltip instead
+					//a.innerText = `${bugcheck.name} (0x${bugcheck.code.toString(16)})`;
+					a.innerText = `0x${bugcheck.code.toString(16)}`;
+					bugCheckTable[bugcheck.code] = a.outerHTML;
+				}
+			});
+		}
 
-		let unexpectedShutdownsTable = new DataTable(("#unexpected-shutdowns-table"), {
+		let unexpectedShutdownsTable = new DataTable('#unexpected-shutdowns-table', {
 			autoWidth: false,
 			data: json.Events.UnexpectedShutdowns,
 			columns: [
@@ -411,42 +389,41 @@ async function errorTables(json) {
 					orderable: false,
 					data: null,
 					defaultContent: '',
-					width: '2%',
+					width: '2%'
 				},
-				{ data: "Timestamp" },
-				{ data: "PowerButtonTimestamp" },
-				{ data: "BugcheckCode",
+				{ data: 'Timestamp' },
+				{ data: 'PowerButtonTimestamp' },
+				{
+					data: 'BugcheckCode',
 					render: function (data) {
 						return bugCheckTable[data] ?? `0x${data.toString(16)}`;
 					}
-				},
+				}
 			],
-			order: [[1,"desc"]],
+			order: [[1, 'desc']]
 		});
 
 		unexpectedShutdownsTable.on('click', 'td', function (e) {
 			let tr = e.target.closest('tr');
 			let row = unexpectedShutdownsTable.row(tr);
-		 
+
 			if (row.child.isShown()) {
 				// This row is already open - close it
 				row.child.hide();
-			}
-			else {
+			} else {
 				// Open this row
 				row.child(format(row.data())).show();
 			}
 		});
 	} catch (e) {
-		console.log("Failed making Unexpected Shutdowns DataTable");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making Unexpected Shutdowns DataTable');
+		console.log(e.name + ': ' + e.message);
 	}
 
 	// Machine Check Exception Table
 	try {
 		function format(d) {
-			return (
-				`
+			return `
 				<table class="table" style="margin: 0.5rem 0">
 					<tbody>
 						<tr>
@@ -523,11 +500,10 @@ async function errorTables(json) {
 						</tr>
 					</tbody>
 				</table>
-				`
-			);
+				`;
 		}
 
-		let mceTable = new DataTable("#mce-table", {
+		let mceTable = new DataTable('#mce-table', {
 			autoWidth: false,
 			data: json.Events.MachineCheckExceptions,
 			columns: [
@@ -536,38 +512,36 @@ async function errorTables(json) {
 					orderable: false,
 					data: null,
 					defaultContent: '',
-					width: '2%',
+					width: '2%'
 				},
-				{ data: "Timestamp" },
-				{ data: "McaErrorCode" },
-				{ data: "ErrorMessage" },
-				{ data: "TransactionType" },
+				{ data: 'Timestamp' },
+				{ data: 'McaErrorCode' },
+				{ data: 'ErrorMessage' },
+				{ data: 'TransactionType' }
 			],
-			order: [[1,"desc"]],
+			order: [[1, 'desc']]
 		});
 
 		mceTable.on('click', 'td.dt-control', function (e) {
 			let tr = e.target.closest('tr');
 			let row = mceTable.row(tr);
-		 
+
 			if (row.child.isShown()) {
 				// This row is already open - close it
 				row.child.hide();
-			}
-			else {
+			} else {
 				// Open this row
 				row.child(format(row.data())).show();
 			}
 		});
 	} catch (e) {
-		console.log("Failed making Machine Check Exception DataTable");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making Machine Check Exception DataTable');
+		console.log(e.name + ': ' + e.message);
 	}
 
 	// WHEA Error Records Error
 	try {
 		function format(d) {
-
 			let errorDescriptors = `<details style="margin: 0.5rem">
 										<summary style="font-size: 1rem">Error Descriptors</summary>`;
 
@@ -611,7 +585,7 @@ async function errorTables(json) {
 								<td>${item.FRUText}</td>
 							</tr>
 						</tbody>
-					</table>`
+					</table>`;
 			});
 
 			errorDescriptors += `</details>`;
@@ -687,10 +661,8 @@ async function errorTables(json) {
 					</table>
 				</details>
 				` +
-				
 				// Error Descriptors
 				errorDescriptors +
-
 				// Error Packets
 				`
 				<details style="margin: 0.5rem">
@@ -701,7 +673,7 @@ async function errorTables(json) {
 			);
 		}
 
-		let wheaErrorRecordsTable = new DataTable("#whea-records-table", {
+		let wheaErrorRecordsTable = new DataTable('#whea-records-table', {
 			autoWidth: false,
 			data: json.Events.WheaErrorRecords,
 			columns: [
@@ -710,14 +682,14 @@ async function errorTables(json) {
 					orderable: false,
 					data: null,
 					defaultContent: '',
-					width: '2%',
+					width: '2%'
 				},
-				{ data: "ErrorHeader.Severity" },
-				{ data: "ErrorHeader.Timestamp" },
-				{ data: "ErrorHeader.PlatformId" },
-				{ data: "ErrorHeader.CreatorId" },
-				{ data: "ErrorHeader.NotifyType" },
-			],
+				{ data: 'ErrorHeader.Severity' },
+				{ data: 'ErrorHeader.Timestamp' },
+				{ data: 'ErrorHeader.PlatformId' },
+				{ data: 'ErrorHeader.CreatorId' },
+				{ data: 'ErrorHeader.NotifyType' }
+			]
 		});
 
 		wheaErrorRecordsTable.on('click', 'td.dt-control', function (e) {
@@ -727,15 +699,14 @@ async function errorTables(json) {
 			if (row.child.isShown()) {
 				// This row is already open - close it
 				row.child.hide();
-			}
-			else {
+			} else {
 				// Open this row
 				row.child(format(row.data())).show();
 			}
 		});
 	} catch (e) {
-		console.log("Failed making WHEA Error Records DataTable");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making WHEA Error Records DataTable');
+		console.log(e.name + ': ' + e.message);
 	}
 
 	// PCI WHEA Error
@@ -744,51 +715,56 @@ async function errorTables(json) {
 		// this works similarly to how doom-scroll.js does it,
 		// so it runs through all of the items and pushes it to a
 		// separate array. but then it pushes it back to the inner rep
-		// of the data. very stupid but it works so im not gonna 
+		// of the data. very stupid but it works so im not gonna
 		// change it. i need coffee - k9
 
 		let inputIds = [];
 
 		json.Events.PciWheaErrors.forEach((data) => {
-			inputIds.push(`PCI\\VEN_${createPcieHexId(data.VendorId)}&DEV_${createPcieHexId(data.DeviceId)}`);
+			inputIds.push(
+				`PCI\\VEN_${createPcieHexId(data.VendorId)}&DEV_${createPcieHexId(data.DeviceId)}`
+			);
 		});
 
 		let responseIds = await call_hwapi('api/pcie/', inputIds);
 
 		json.Events.PciWheaErrors.forEach((data, index) => {
-			json["Events"]["PciWheaErrors"][index]["Vendor"] = responseIds[index]["vendor"]
-			json["Events"]["PciWheaErrors"][index]["Subsystem"] = responseIds[index]["subsystem"]
+			json['Events']['PciWheaErrors'][index]['Vendor'] = responseIds[index]['vendor'];
+			json['Events']['PciWheaErrors'][index]['Subsystem'] = responseIds[index]['subsystem'];
 
-			let vendorIdItem = data.VendorId.replace("0x", "").toUpperCase();
-			let deviceIdItem = data.VendorId.replace("0x", "").toUpperCase();
+			let vendorIdItem = data.VendorId.replace('0x', '').toUpperCase();
+			let deviceIdItem = data.VendorId.replace('0x', '').toUpperCase();
 
 			json.Hardware.Devices.forEach((deviceData) => {
-				if (deviceData.DeviceID.includes(vendorIdItem) && deviceData.DeviceID.includes(deviceIdItem)) {
-					json["Events"]["PciWheaErrors"][index]["Device"] = deviceData.Name;
+				if (
+					deviceData.DeviceID.includes(vendorIdItem) &&
+					deviceData.DeviceID.includes(deviceIdItem)
+				) {
+					json['Events']['PciWheaErrors'][index]['Device'] = deviceData.Name;
 					return;
 				}
-			})
+			});
 
-			if (json["Events"]["PciWheaErrors"][index]["Device"] == null){
-				json["Events"]["PciWheaErrors"][index]["Device"] = responseIds[index]["vendor"]
+			if (json['Events']['PciWheaErrors'][index]['Device'] == null) {
+				json['Events']['PciWheaErrors'][index]['Device'] = responseIds[index]['vendor'];
 			}
 		});
 
-		new DataTable("#pci-whea-table", {
+		new DataTable('#pci-whea-table', {
 			autoWidth: false,
 			data: json.Events.PciWheaErrors,
 			columns: [
-				{ data: "Timestamp" },
-				{ data: "VendorId" },
-				{ data: "DeviceId" },
-				{ data: "Vendor" },
-				{ data: "Device" },
-				{ data: "Subsystem" },
-			],
+				{ data: 'Timestamp' },
+				{ data: 'VendorId' },
+				{ data: 'DeviceId' },
+				{ data: 'Vendor' },
+				{ data: 'Device' },
+				{ data: 'Subsystem' }
+			]
 		});
 	} catch (e) {
-		console.log("Failed making PCI WHEA Errors DataTable");
-		console.log(e.name + ": " + e.message);
+		console.log('Failed making PCI WHEA Errors DataTable');
+		console.log(e.name + ': ' + e.message);
 	}
 }
 
@@ -800,18 +776,20 @@ async function errorcheck() {
 	for (let key in json) {
 		key = json[key];
 		try {
-			if ("ErrorCount" in key && key["ErrorCount"] > 0) {
-				for (let elem of document.getElementsByClassName("btn-info")) {
-					elem.style.backgroundColor = "#d35400";
-					elem.style.boxShadow = "0 4px 9px -4px #d35400";
+			if ('ErrorCount' in key && key['ErrorCount'] > 0) {
+				for (let elem of document.getElementsByClassName('btn-info')) {
+					elem.style.backgroundColor = '#d35400';
+					elem.style.boxShadow = '0 4px 9px -4px #d35400';
 				}
-				errors += key["ErrorCount"];
+				errors += key['ErrorCount'];
 			}
 		} catch {
 			continue;
 		}
 	}
-	if (errors > 0) {console.log("JSON Errors Total: " + errors);}
+	if (errors > 0) {
+		console.log('JSON Errors Total: ' + errors);
+	}
 }
 
 errorcheck();
