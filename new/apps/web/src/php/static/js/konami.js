@@ -25,11 +25,11 @@ var Konami = function (callback) {
 			if (obj.addEventListener) obj.addEventListener(type, fn, false);
 			else if (obj.attachEvent) {
 				// IE
-				obj["e" + type + fn] = fn;
+				obj['e' + type + fn] = fn;
 				obj[type + fn] = function () {
-					obj["e" + type + fn](window.event, ref_obj);
+					obj['e' + type + fn](window.event, ref_obj);
 				};
-				obj.attachEvent("on" + type, obj[type + fn]);
+				obj.attachEvent('on' + type, obj[type + fn]);
 			}
 		},
 		removeEvent: function (obj, eventName, eventCallback) {
@@ -39,32 +39,30 @@ var Konami = function (callback) {
 				obj.detachEvent(eventName);
 			}
 		},
-		input: "",
-		pattern: "38384040373937396665",
+		input: '',
+		pattern: '38384040373937396665',
 		keydownHandler: function (e, ref_obj) {
 			if (ref_obj) {
 				konami = ref_obj;
 			} // IE
 			konami.input += e ? e.keyCode : event.keyCode;
 			if (konami.input.length > konami.pattern.length) {
-				konami.input = konami.input.substr(
-					konami.input.length - konami.pattern.length
-				);
+				konami.input = konami.input.substr(konami.input.length - konami.pattern.length);
 			}
 			if (konami.input === konami.pattern) {
 				konami.code(konami._currentLink);
-				konami.input = "";
+				konami.input = '';
 				e.preventDefault();
 				return false;
 			}
 		},
 		load: function (link) {
 			this._currentLink = link;
-			this.addEvent(document, "keydown", this.keydownHandler, this);
+			this.addEvent(document, 'keydown', this.keydownHandler, this);
 			this.iphone.load(link);
 		},
 		unload: function () {
-			this.removeEvent(document, "keydown", this.keydownHandler);
+			this.removeEvent(document, 'keydown', this.keydownHandler);
 			this.iphone.unload();
 		},
 		code: function (link) {
@@ -77,19 +75,8 @@ var Konami = function (callback) {
 			stop_y: 0,
 			tap: false,
 			capture: false,
-			orig_keys: "",
-			keys: [
-				"UP",
-				"UP",
-				"DOWN",
-				"DOWN",
-				"LEFT",
-				"RIGHT",
-				"LEFT",
-				"RIGHT",
-				"TAP",
-				"TAP",
-			],
+			orig_keys: '',
+			keys: ['UP', 'UP', 'DOWN', 'DOWN', 'LEFT', 'RIGHT', 'LEFT', 'RIGHT', 'TAP', 'TAP'],
 			input: [],
 			code: function (link) {
 				konami.code(link);
@@ -130,42 +117,29 @@ var Konami = function (callback) {
 			},
 			load: function (link) {
 				this.orig_keys = this.keys;
-				konami.addEvent(document, "touchmove", this.touchmoveHandler);
-				konami.addEvent(
-					document,
-					"touchend",
-					this.touchendHandler,
-					false
-				);
-				konami.addEvent(document, "touchstart", this.touchstartHandler);
+				konami.addEvent(document, 'touchmove', this.touchmoveHandler);
+				konami.addEvent(document, 'touchend', this.touchendHandler, false);
+				konami.addEvent(document, 'touchstart', this.touchstartHandler);
 			},
 			unload: function () {
-				konami.removeEvent(
-					document,
-					"touchmove",
-					this.touchmoveHandler
-				);
-				konami.removeEvent(document, "touchend", this.touchendHandler);
-				konami.removeEvent(
-					document,
-					"touchstart",
-					this.touchstartHandler
-				);
+				konami.removeEvent(document, 'touchmove', this.touchmoveHandler);
+				konami.removeEvent(document, 'touchend', this.touchendHandler);
+				konami.removeEvent(document, 'touchstart', this.touchstartHandler);
 			},
 			check_direction: function () {
 				x_magnitude = Math.abs(this.start_x - this.stop_x);
 				y_magnitude = Math.abs(this.start_y - this.stop_y);
-				x = this.start_x - this.stop_x < 0 ? "RIGHT" : "LEFT";
-				y = this.start_y - this.stop_y < 0 ? "DOWN" : "UP";
+				x = this.start_x - this.stop_x < 0 ? 'RIGHT' : 'LEFT';
+				y = this.start_y - this.stop_y < 0 ? 'DOWN' : 'UP';
 				result = x_magnitude > y_magnitude ? x : y;
-				result = this.tap === true ? "TAP" : result;
+				result = this.tap === true ? 'TAP' : result;
 				return result;
-			},
-		},
+			}
+		}
 	};
 
-	typeof callback === "string" && konami.load(callback);
-	if (typeof callback === "function") {
+	typeof callback === 'string' && konami.load(callback);
+	if (typeof callback === 'function') {
 		konami.code = callback;
 		konami.load();
 	}
@@ -173,10 +147,10 @@ var Konami = function (callback) {
 	return konami;
 };
 
-if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 	module.exports = Konami;
 } else {
-	if (typeof define === "function" && define.amd) {
+	if (typeof define === 'function' && define.amd) {
 		define([], function () {
 			return Konami;
 		});

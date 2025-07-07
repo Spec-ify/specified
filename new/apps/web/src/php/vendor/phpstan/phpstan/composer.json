@@ -1,8 +1,13 @@
 {
 	"name": "phpstan/phpstan",
 	"description": "PHPStan - PHP Static Analysis Tool",
-	"license": ["MIT"],
-	"keywords": ["dev", "static analysis"],
+	"license": [
+		"MIT"
+	],
+	"keywords": [
+		"dev",
+		"static analysis"
+	],
 	"require": {
 		"php": "^7.2|^8.0"
 	},
@@ -14,7 +19,9 @@
 		"phpstan.phar"
 	],
 	"autoload": {
-		"files": ["bootstrap.php"]
+		"files": [
+			"bootstrap.php"
+		]
 	},
 	"support": {
 		"issues": "https://github.com/phpstan/phpstan/issues",

@@ -8,7 +8,9 @@ html {
 body {
 	background-color: var(--bg-color);
 	color: var(--fg-color);
-	font-family: JetBrains Mono, monospace;
+	font-family:
+		JetBrains Mono,
+		monospace;
 	font-size: 10pt;
 	line-height: 150%;
 	margin: 0;
@@ -58,7 +60,9 @@ select {
 	border-radius: 6px;
 	border-style: none;
 	color: #ccc;
-	font-family: JetBrains Mono, monospace;
+	font-family:
+		JetBrains Mono,
+		monospace;
 	padding: 5px;
 }
 
@@ -151,7 +155,7 @@ article {
 article h1:before,
 article h2:before {
 	color: #ffc93a;
-	content: "# ";
+	content: '# ';
 }
 
 optgroup {
@@ -286,20 +290,22 @@ optgroup {
 	font-size: 60%;
 }
 
-@import "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap";
+@import 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap';
 :host,
 :root {
-	--fa-font-solid: normal 900 1em/1 "Font Awesome 6 Solid";
-	--fa-font-regular: normal 400 1em/1 "Font Awesome 6 Regular";
-	--fa-font-light: normal 300 1em/1 "Font Awesome 6 Light";
-	--fa-font-thin: normal 100 1em/1 "Font Awesome 6 Thin";
-	--fa-font-duotone: normal 900 1em/1 "Font Awesome 6 Duotone";
-	--fa-font-sharp-solid: normal 900 1em/1 "Font Awesome 6 Sharp";
-	--fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
+	--fa-font-solid: normal 900 1em/1 'Font Awesome 6 Solid';
+	--fa-font-regular: normal 400 1em/1 'Font Awesome 6 Regular';
+	--fa-font-light: normal 300 1em/1 'Font Awesome 6 Light';
+	--fa-font-thin: normal 100 1em/1 'Font Awesome 6 Thin';
+	--fa-font-duotone: normal 900 1em/1 'Font Awesome 6 Duotone';
+	--fa-font-sharp-solid: normal 900 1em/1 'Font Awesome 6 Sharp';
+	--fa-font-brands: normal 400 1em/1 'Font Awesome 6 Brands';
 }
 
 body {
-	font-family: JetBrains Mono, monospace;
+	font-family:
+		JetBrains Mono,
+		monospace;
 	font-size: 10pt;
 	line-height: 150%;
 	margin: 0;
@@ -345,7 +351,9 @@ a:hover {
 button,
 input,
 select {
-	font-family: JetBrains Mono, monospace;
+	font-family:
+		JetBrains Mono,
+		monospace;
 	background-color: var(--secondary-bg);
 	border-style: none;
 	color: var(--button-fg);
@@ -387,7 +395,7 @@ article {
 /* not used in viewer (may be used elsewhere) as of 2024-03-31 */
 article h1:before,
 article h2:before {
-	content: "# ";
+	content: '# ';
 	color: #ebcb8b;
 }
 
@@ -483,7 +491,8 @@ article h2:before {
 	display: inline-flex;
 }
 
-#header-header > :first-child, #header-header > :last-child {
+#header-header > :first-child,
+#header-header > :last-child {
 	flex-grow: 1;
 	flex-basis: 0;
 }
@@ -503,7 +512,7 @@ article h2:before {
 }
 
 #header-header select > option {
-    background-color: var(--header-dropdown);
+	background-color: var(--header-dropdown);
 }
 
 /* not used in viewer (may be used elsewhere) as of 2024-03-31 */
@@ -577,24 +586,24 @@ article h2:before {
 	margin-bottom: 10px;
 }
 
-.widgets-widgets[data-hide="true"] :nth-child(n + 6) {
+.widgets-widgets[data-hide='true'] :nth-child(n + 6) {
 	display: none;
 }
 
 @media screen and (max-width: 1450px) {
-	.widgets-widgets[data-hide="true"] :nth-child(n + 5) {
+	.widgets-widgets[data-hide='true'] :nth-child(n + 5) {
 		display: none;
 	}
 }
 
 @media screen and (max-width: 1160px) {
-	.widgets-widgets[data-hide="true"] :nth-child(n + 4) {
+	.widgets-widgets[data-hide='true'] :nth-child(n + 4) {
 		display: none;
 	}
 }
 
 @media screen and (max-width: 880px) {
-	.widgets-widgets[data-hide="true"] :nth-child(n + 3) {
+	.widgets-widgets[data-hide='true'] :nth-child(n + 3) {
 		display: none;
 	}
 }
@@ -714,11 +723,7 @@ article h2:before {
 	color: var(--widget-emph);
 }
 
-.metadata-metadata
-	.metadata-detail
-	.metadata-detail-content
-	> .configurations
-	> p,
+.metadata-metadata .metadata-detail .metadata-detail-content > .configurations > p,
 .metadata-metadata .metadata-detail .metadata-detail-content > p {
 	margin: 0 5px;
 }
@@ -866,7 +871,7 @@ article h2:before {
 
 .accordion-button {
 	background: none !important;
-    color: var(--widget-emph) !important;
+	color: var(--widget-emph) !important;
 }
 .accordion-button:hover {
 	background: var(--select-color) !important;
@@ -882,16 +887,16 @@ article h2:before {
 	bottom: 20px;
 	right: 20px;
 	z-index: 999;
-	
+
 	opacity: 0;
 	visibility: hidden;
 
 	transition: opacity 0.1s ease-in;
-  	will-change: opacity, visibility;
+	will-change: opacity, visibility;
 }
 
 #btn-back-to-top svg {
-    height: 20px;
+	height: 20px;
 }
 
 #archive {
@@ -956,7 +961,7 @@ table {
 }
 
 .table > :not(:last-child) > :last-child > * {
-    border-bottom-color: var(--border-color);
+	border-bottom-color: var(--border-color);
 }
 
 .json-data table {
@@ -965,8 +970,8 @@ table {
 
 .table {
 	table-layout: auto;
-    color: var(--table-color);
-    background: transparent;
+	color: var(--table-color);
+	background: transparent;
 }
 
 .nic {
@@ -975,7 +980,7 @@ table {
 	margin: auto;
 }
 
-.nic td:not(:first-child){
+.nic td:not(:first-child) {
 	width: 100%;
 }
 
@@ -992,61 +997,71 @@ table {
 	float: right;
 }
 
-#blanket{
-    display:none;
-    width:100%;
-    height:100%;
-    position:fixed;
-    top:0px;
-    left:0px;
-    z-index:9999;
-    background-color:black;
+#blanket {
+	display: none;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: 9999;
+	background-color: black;
 }
 
 .modal-content {
-    background-color: var(--modal-color);
+	background-color: var(--modal-color);
 }
 
 .modal-column {
-    float: left;
+	float: left;
 }
 
 .modal-column:not(:first-of-type) {
-    margin-left: 1rem;
+	margin-left: 1rem;
 }
 
 .smart-table-wrapper {
-    display: flex;
-    gap: 1rem;
+	display: flex;
+	gap: 1rem;
 }
 
 .partition-whole-bar {
-    height: 64px;
-    background-color: inherit;
-    border: 2px var(--border-color) solid;
-    margin-bottom: 0.5rem;
+	height: 64px;
+	background-color: inherit;
+	border: 2px var(--border-color) solid;
+	margin-bottom: 0.5rem;
 }
 
 .partition-one-bar {
-    background-color: inherit;
-    border-right: 2px var(--border-color) solid;
-    position: relative;
-    height: 100%;
+	background-color: inherit;
+	border-right: 2px var(--border-color) solid;
+	position: relative;
+	height: 100%;
 }
 
 .partition-space-bar {
-    height: 100%;
-    background-color: var(--partition-bar-filled);
+	height: 100%;
+	background-color: var(--partition-bar-filled);
 }
 
 .partition-bar-label {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
 }
 
-.green { color: var(--green) !important; }
-.yellow { color: var(--yellow) !important; }
-.red { color: var(--red) !important; }
-.amd { color: var(--amd) !important; }
-.intel { color: var(--intel) !important; }
+.green {
+	color: var(--green) !important;
+}
+.yellow {
+	color: var(--yellow) !important;
+}
+.red {
+	color: var(--red) !important;
+}
+.amd {
+	color: var(--amd) !important;
+}
+.intel {
+	color: var(--intel) !important;
+}
