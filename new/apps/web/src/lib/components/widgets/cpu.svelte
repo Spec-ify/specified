@@ -1,7 +1,25 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
     import Widget from './modal-widget.svelte';
 
     export let data;
+
+    function cpuLookup(){
+        // to follow
+    };
+
+    onMount(() => {
+        const observer = new IntersectionObserver(entries => {
+            if(entries[0].isIntersecting) {
+                cpuLookup();
+                }
+            });
+
+        let cpuDatabase = document.getElementById("cpu-info-title");
+        if (cpuDatabase) {
+            observer.observe(cpuDatabase);
+        }
+    })
 </script>
 
 <!-- CPU -->
