@@ -1,39 +1,59 @@
 <script lang="ts">
-    import { jsonData } from '../../common/access-file.js';
     import Widget from './modal-widget.svelte';
+
+    export let data;
+
+    let tpmStatus = 'Disabled';
+    let tpmManufacturer: string, tpmVersion: string;
+
+    if (data.Security.Tpm && data['Security']['Tpm']['IsEnabled_InitialValue']){
+        tpmStatus = 'Enabled';
+        tpmManufacturer = `${data.Security.Tpm.ManufacturerVersionInfo} ${data.Security.Tpm.ManufacturerVersion}`;
+        tpmVersion = `${data.Security.Tpm.SpecVersion}`;
+    }
+
+    function dateConversion(date: string){
+        const input = date.match(/^(\d{4})(\d{2})(\d{2})/);
+
+        if (!input) {
+            return "Unknown"
+        }
+
+        const [ , year, month, day ] = input;
+        const formatted = `${month}/${day}/${year}`;
+
+        return formatted;
+    }
 </script>
 
 <!-- Motherboard -->
 <Widget title="Motherboard" modalId="board-modal">
     <div slot="values">
-        <!-- <?php
-            if ($motherboard) {
-                echo '
-                                    <div class="widget-values">
-                                        <div class="widget-value">
-                                            <div class="green">'
-                    . $motherboard .
-                    '</div>
-                                            <div>OEM</div>
-                                        </div>
-                                        <div class="widget-value">
-                                            <div class="green">'
-                    . $json_data['Hardware']['Motherboard']['Product'] .
-                    '
-                                            </div>
-                                            <div>Chipset</div>
-                                        </div>
-                                    </div>';
-            } else {
-                echo '
-                                        <div class="widget-value">
-                                            <div class="red"> Error! </div>
-                                            <div>Error retrieving motherboard information.</div>
-                                        </div>';
-            }
-
-            ?> -->
-
+        {#if (data.Hardware.Motherboard.Manufacturer)}
+            <div class="widget-values">
+                <div class="widget-value">
+                    <div class="green">
+                        {data.Hardware.Motherboard.Manufacturer}
+                    </div>
+                    <div>
+                        OEM
+                    </div>
+                </div>
+                <div class="widget-value">
+                    <div class="green">
+                        {data.Hardware.Motherboard.Product}
+                    </div>
+                    <div>
+                        Chipset                        
+                    </div>
+                </div>
+            </div>
+        {:else}
+            <div class="widget-value">
+                <div class="red"> Error! </div>
+                <div>Error retrieving motherboard information.</div>
+            </div>
+        {/if}
     </div>
 
     <table slot="modal-body" class="table">
@@ -42,72 +62,51 @@
         <tbody>
             <tr>
                 <td>Motherboard Product</td>
-                <!-- <td><?= $motherboard ?> <?= $json_data['Hardware']['Motherboard']['Product'] ?></td> -->
+                <td>{data.Hardware.Motherboard.Manufacturer} {data.Hardware.Motherboard.Product}</td>
             </tr>
             <tr>
                 <td>Motherboard Manufacturer</td>
-                <!-- <td><?= $json_data['Hardware']['Motherboard']['Manufacturer'] ?></td> -->
+                <td>{data.Hardware.Motherboard.Manufacturer}</td>
             </tr>
             <tr>
                 <td>BIOS Manufacturer</td>
-                <!-- <td><?= $json_data['Hardware']['BiosInfo'][0]['Manufacturer'] ?></td> -->
+                <td>{data['Hardware']['BiosInfo'][0]['Manufacturer']}</td>
             </tr>
             <tr>
                 <td>Version</td>
-                <!-- <td><?= $json_data['Hardware']['BiosInfo'][0]['SMBIOSBIOSVersion'] ?></td> -->
+                <td>{data['Hardware']['BiosInfo'][0]['SMBIOSBIOSVersion']}</td>
             </tr>
             <tr>
                 <td>Release Date</td>
-                <!-- <?php
-                $biosdate = $json_data['Hardware']['BiosInfo'][0]['ReleaseDate'];
-
-                // Use the DateTime class to parse the date string
-                $datetime = DateTime::createFromFormat('YmdHis.uO', $biosdate);
-                if ($datetime) { // the one provided by the bios wasn't valid
-                    // Format the date using the desired MMDDYYYY format
-                    $formattedbiosdate = $datetime->format('m/d/Y');
-                } else {
-                    $formattedbiosdate = "unknown";
-                }
-                ?> -->
-                <!-- <td><?= $formattedbiosdate ?></td> -->
+                <td>{dateConversion(data['Hardware']['BiosInfo'][0]['ReleaseDate'])}</td>
             </tr>
             <tr>
                 <td>Base</td>
-                <!-- <td><?= $json_data['Hardware']['BiosInfo'][0]['BIOSVersion'][2] ?></td> -->
+                <td>{data['Hardware']['BiosInfo'][0]['BIOSVersion'][2]}</td>
             </tr>
             <tr>
                 <td>Serial Number</td>
-                <!-- <td><?= $json_data['Hardware']['BiosInfo'][0]['SerialNumber'] ?></td> -->
+                <td>{data['Hardware']['BiosInfo'][0]['SerialNumber']}</td>
             </tr>
-            <!-- <?php
-            $tpm_status = 'Disabled';
-            $tpm_manufacturer = "N/A";
-            $tpm_version = "N/A";
-            if (is_null($json_data['Security']['Tpm']) || !(bool) $json_data['Security']['Tpm']['IsEnabled_InitialValue']) {
-            } else {
-                $tpm_status = 'Enabled';
-                $tpm_manufacturer = $json_data['Security']['Tpm']['ManufacturerVersionInfo'] . ' ' . $json_data['Security']['Tpm']['ManufacturerVersion'];
-                $tpm_version = $json_data['Security']['Tpm']['SpecVersion'];
-            }
-
-            echo
-
-            '<tr>
-                            <td>TPM Status</td>
-                            <td>' . $tpm_status . '</td>
-                        </tr>';
-            echo
-            '<tr>
-                            <td>TPM Manufacturer</td>
-                            <td>' . $tpm_manufacturer . '</td>
-                        </tr>';
-            echo
-            '<tr>
-                            <td>TPM Version</td>
-                            <td>' . $tpm_version . '</td>
-                        </tr>';
-            ?> -->
+            <tr>
+                <td>TPM Status</td>
+                <td>{#if (tpmStatus == "Enabled")}
+                        Enabled
+                    {:else}
+                        Disabled
+                    {/if}
+                </td>
+            </tr>
+            {#if (tpmStatus == "Enabled")}
+                <tr>
+                    <td>TPM Manufacturer</td>
+                    <td>{tpmManufacturer}</td>
+                </tr>
+                <tr>
+                    <td>TPM Version</td>
+                    <td>{tpmVersion}</td>
+                </tr>
+            {/if}
         </tbody>
     </table>
 

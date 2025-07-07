@@ -1,13 +1,14 @@
 <script lang="ts">
-    import { jsonData } from '../../common/access-file.js';
     import Widget from './modal-widget.svelte';
+
+    export let data;
 </script>
 
 <!-- CPU -->
 <Widget title="CPU" modalId="cpu-modal">
     <div slot="values">
         <div class="green">
-            <!-- <?= $json_data['Hardware']['Cpu']['Name'] ?> -->
+            {data.Hardware.Cpu.Name}
         </div>
         <div>Callsign</div>
     </div>
@@ -16,27 +17,27 @@
         <tbody>
             <tr>
                 <td>Name</td>
-                <!-- <td><?= $json_data['Hardware']['Cpu']['Name'] ?></td> -->
+                <td>{data.Hardware.Cpu.Name}</td>
             </tr>
             <tr>
                 <td>Manufacturer</td>
-                <!-- <td><?= $json_data['Hardware']['Cpu']['Manufacturer'] ?></td> -->
+                <td>{data.Hardware.Cpu.Manufacturer}</td>
             </tr>
             <tr>
                 <td>Socket Designation</td>
-                <!-- <td><?= $json_data['Hardware']['Cpu']['SocketDesignation'] ?></td> -->
+                <td>{data.Hardware.Cpu.SocketDesignation}</td>
             </tr>
             <tr>
                 <td>Current Clock Speed</td>
-                <!-- <td><?= $json_data['Hardware']['Cpu']['CurrentClockSpeed'] ?></td> -->
+                <td>{data.Hardware.Cpu.CurrentClockSpeed}</td>
             </tr>
             <tr>
                 <td># of Enabled Cores</td>
-                <!-- <td><?= $json_data['Hardware']['Cpu']['NumberOfEnabledCore'] ?></td> -->
+                <td>{data.Hardware.Cpu.NumberOfEnabledCore}</td>
             </tr>
             <tr>
                 <td>Thread Count</td>
-                <!-- <td><?= $json_data['Hardware']['Cpu']['ThreadCount'] ?></td> -->
+                <td>{data.Hardware.Cpu.ThreadCount}</td>
             </tr>
         </tbody>
     </table>

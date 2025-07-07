@@ -13,15 +13,17 @@
     import Temps from './widgets/temps.svelte';
     import AudioDevices from './widgets/audio-devices.svelte';
     import PowerProfiles from './widgets/power-profiles.svelte';
+
+    export let rawJSON;
 </script>
 
 <div class="widgets-widgets widgets" id="hardware-widgets" data-hide="false">
-    <CPU/>
-    <RAM/>
-    <Motherboard/>
-    <GPU/>
-    <OS/>
-    <NIC/>
+    <CPU data={rawJSON}/>
+    <RAM data={rawJSON}/>
+    <Motherboard data={rawJSON}/>
+    <GPU data={rawJSON}/>
+    <OS data={rawJSON}/>
+    <NIC data={rawJSON}/>
 </div>
 
 <div class="widgets-widgets widgets" data-hide="false">

@@ -1,6 +1,7 @@
 <script lang="ts">
-    import { jsonData } from '../../common/access-file.js';
     import Widget from './modal-widget.svelte';
+
+    export let data;
 </script>
 
 <!-- GPU -->
