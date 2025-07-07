@@ -1,8 +1,20 @@
-<script>
+<script lang="ts">
     export let title = "Modal";
     export let modalId = "widget-modal";
     export let modalSpecial = "";
     export let type = "button";
+
+    function infoClick(id: String){
+        let element = document.getElementById(id + "-info-table");
+        if (element){
+            element.style.display = "block";
+        }
+
+        let button = document.getElementById(id + "-more-info-button")
+        if (button){
+            button.style.display = "none";
+        }
+    };
 </script>
   
 <div class={"widget hover widget-"+ modalId} type={type} data-mdb-toggle="modal" data-mdb-target={"#" + modalId}>
@@ -29,7 +41,7 @@
             </div>
             <div class="modal-footer">
                 {#if $$slots.extras}
-                    <button type="button" class="btn btn-secondary" id={modalId + "-more-info-button"}>More Info</button>
+                    <button type="button" class="btn btn-secondary" id={modalId + "-more-info-button"} on:click={() => infoClick(modalId)}>More Info</button>
                 {/if}
                 <button type="button" class="btn btn-secondary" id={modalId + "-close-button"} data-mdb-dismiss="modal">Close</button>
             </div>

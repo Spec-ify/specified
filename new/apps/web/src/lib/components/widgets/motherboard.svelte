@@ -1,5 +1,6 @@
 <script lang="ts">
     import Widget from './modal-widget.svelte';
+    import { lists } from '$lib/common/lists';
 
     export let data;
 
@@ -24,6 +25,17 @@
 
         return formatted;
     }
+
+    function filterBiosCharacteristics(rawList: [string, any]){
+        let finalCharac = [""];
+        const characList = lists["biosCharacteristicsList"];
+
+        rawList.forEach((key: number) => {
+            finalCharac.push(characList[key]);
+        });
+
+        return finalCharac.filter(item => item !== null && item !== undefined && item !== "");
+    };
 </script>
 
 <!-- Motherboard -->
@@ -110,44 +122,39 @@
         </tbody>
     </table>
 
-    <div slot="extras">
+    <div slot="extras" class="modal-body" id="board-modal-info-table" style="display:none;">
         <table class="table">
             <tbody>
-                <!-- <?php
-                foreach ($json_data['Hardware']['BiosInfo'][0] as $key => $value) {
-                    if ($key == 'BiosCharacteristics') {
-                        $bcStringList = [];
-                        foreach ($value as $characteristic) {
-                            if (isset($biosCharacteristics[$characteristic])) {
-                                $bcStringList[] = $biosCharacteristics[$characteristic];
-                            }
-                        }
-                        echo '
-                                        <tr>
-                                            <td>' . $key . '</td>
-                                            <td>' . implode('<br/>', $bcStringList) . '</td>
-                                        </tr>
-                                        ';
-                        continue;
-                    }
-                    if ($key == 'BIOSVersion' || $key == 'ListOfLanguages') {
-                        echo '
-                                        <tr>
-                                            <td>' . $key . '</td>
-                                            <td>' . safe_implode('<br/>', $value) . '</td>
-                                        </tr>
-                                        ';
-                        continue;
-                    }
-
-                    echo "
-                                    <tr>
-                                        <td>$key</td>
-                                        <td>$value</td>
-                                    </tr>
-                                    ";
-                }
-                ?> -->
+                {#each Object.entries(data['Hardware']['BiosInfo'][0]) as [key, value]}
+                    {#if (key == "BiosCharacteristics")}
+                        <tr>
+                            <td>{key}</td>
+                            <td>
+                                <p>
+                                    {#each filterBiosCharacteristics(data['Hardware']['BiosInfo'][0]["BiosCharacteristics"]) as characteristic}
+                                        {characteristic}<br/>
+                                    {/each}
+                                </p>
+                            </td>
+                        </tr>
+                    {:else if (key == "BIOSVersion" || key == "ListOfLanguages")}
+                        <tr>
+                            <td>{key}</td>
+                            <td>
+                                <p>
+                                    {#each value as indivValue}
+                                        {indivValue}<br/>
+                                    {/each}
+                                </p>
+                            </td>
+                        </tr>
+                    {:else}
+                        <tr>
+                            <td>{key}</td>
+                            <td>{value}</td>
+                        </tr>
+                    {/if}
+                {/each}
             </tbody>
         </table>
     </div>

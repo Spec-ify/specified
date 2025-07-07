@@ -42,7 +42,7 @@
         </tbody>
     </table>
 
-    <div slot="extras" class="modal-body" id="cpu-info-table" style="display:none;">
+    <div slot="extras" class="modal-body" id="cpu-modal-info-table" style="display:none;">
         <!-- This content is populated javascript side -->
         <h6 class="modal-title" id="cpu-info-title">Database results for: ...</h6>
         <table class="table">
