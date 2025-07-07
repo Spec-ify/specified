@@ -7,7 +7,7 @@
     let tpmStatus = 'Disabled';
     let tpmManufacturer: string, tpmVersion: string;
 
-    if (data.Security.Tpm && data['Security']['Tpm']['IsEnabled_InitialValue']){
+    if (data.Security.Tpm && data.Security.Tpm.IsEnabled_InitialValue){
         tpmStatus = 'Enabled';
         tpmManufacturer = `${data.Security.Tpm.ManufacturerVersionInfo} ${data.Security.Tpm.ManufacturerVersion}`;
         tpmVersion = `${data.Security.Tpm.SpecVersion}`;

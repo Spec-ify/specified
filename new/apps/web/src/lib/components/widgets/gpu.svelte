@@ -5,8 +5,6 @@
 
     const gpuData: Record<any, Record<string, any>> = data.Hardware.Gpu;
     const monitorData: Record<any, Record<string, any>> = data.Hardware.Monitors;
-
-    console.log(Object.values(gpuData));
 </script>
 
 <!-- GPU -->

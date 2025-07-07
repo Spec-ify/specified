@@ -2,6 +2,15 @@
     import Widget from './modal-widget.svelte';
 
     export let data;
+
+    let tpmStatus = 'Disabled';
+    let tpmManufacturer: string, tpmVersion: string;
+
+    if (data.Security.Tpm && data.Security.Tpm.IsEnabled_InitialValue){
+        tpmStatus = 'Enabled';
+        tpmManufacturer = `${data.Security.Tpm.ManufacturerVersionInfo} ${data.Security.Tpm.ManufacturerVersion}`;
+        tpmVersion = `${data.Security.Tpm.SpecVersion}`;
+    }
 </script>
 
 <!-- OS -->
@@ -11,11 +20,11 @@
         <div class="widget-value">
             <div class="widget-value">
                 <span class="green">
-                    <!-- <?= $json_data['BasicInfo']['Edition'] ?> -->
+                    {data.BasicInfo.Edition}
                 </span>
             </div>
             <div>
-                <!-- <?= $json_data['BasicInfo']['FriendlyVersion'] ?> -->
+                {data.BasicInfo.FriendlyVersion}
             </div>
         </div>
     </div>
@@ -25,96 +34,103 @@
 
         </thead>
         <tbody>
-            <!-- <?php
-            echo
-            '<tr>
-                            <td>Edition</td>
-                            <td>' . $json_data['BasicInfo']['Edition'] . '</td>
-                        </tr>';
-            echo
-            '<tr>
-                            <td>Version</td>
-                            <td>' . $json_data['BasicInfo']['Version'] . '</td>
-                        </tr>';
-            echo
-            '<tr>
-                            <td>Friendly Version</td>
-                            <td>' . $json_data['BasicInfo']['FriendlyVersion'] . '</td>
-                        </tr>';
-            echo
-            '<tr>
-                            <td>Install Date</td>
-                            <td>' . $json_data['BasicInfo']['InstallDate'] . '</td>
-                        </tr>';
-            echo
-            '<tr>
-                            <td>Uptime</td>
-                            <td>' . $json_data['BasicInfo']['Uptime'] . '</td>
-                        </tr>';
-            echo
-            '<tr>
-                            <td>Hostname</td>
-                            <td>' . $json_data['BasicInfo']['Hostname'] . '</td>
-                        </tr>';
-            echo
-            '<tr>
-                            <td>Username</td>
-                            <td>' . $json_data['BasicInfo']['Username'] . '</td>
-                        </tr>';
-            echo
-            '<tr>
-                            <td>Domain</td>
-                            <td>' . $json_data['BasicInfo']['Domain'] . '</td>
-                        </tr>';
-            if ($json_data['Security']['UacEnabled']) {
-                $uac_status = 'Enabled';
-            } else {
-                $uac_status = 'Disabled';
-            }
-
-            echo
-
-            '<tr>
-                            <td>UAC Status</td>
-                            <td>' . $uac_status . '</td>
-                        </tr>';
-            echo
-            '<tr>
-                            <td>UAC Level</td>
-                            <td>' . $json_data['Security']['UacLevel'] . '</td>
-                        </tr>';
-            echo
-            '<tr>
-                            <td>Boot Mode</td>
-                            <td>' . $json_data['BasicInfo']['BootMode'] . '</td>
-                        </tr>';
-            echo
-            '<tr>
-                            <td>Secure Boot</td>
-                            <td>' . ((bool) $json_data['Security']['SecureBootEnabled'] ? 'Enabled' : 'Disabled') . '</td>
-                        </tr>';
-            echo
-            '<tr>
-                            <td>Boot State</td>
-                            <td>' . $json_data['BasicInfo']['BootState'] . '</td>
-                        </tr>';
-
-            echo
-            '<tr>
-                            <td>TPM Status</td>
-                            <td>' . $tpm_status . '</td>
-                        </tr>';
-            echo
-            '<tr>
-                            <td>Manufacturer Version</td>
-                            <td>' . $tpm_manufacturer . '</td>
-                        </tr>';
-            echo
-            '<tr>
-                            <td>Version</td>
-                            <td>' . $tpm_version . '</td>
-                        </tr>';
-            ?> -->
+            <tr>
+                <td>Edition</td>
+                <td>{data.BasicInfo.Edition}</td>
+            </tr>
+            <tr>
+                <td>Version</td>
+                <td>{data.BasicInfo.Version}</td>
+            </tr>
+            <tr>
+                <td>Friendly Version</td>
+                <td>{data.BasicInfo.FriendlyVersion}</td>
+            </tr>
+            <tr>
+                <td>Install Date</td>
+                <td>{data.BasicInfo.InstallDate}</td>
+            </tr>
+            <tr>
+                <td>Uptime</td>
+                <td>{data.BasicInfo.Uptime}</td>
+            </tr>
+            <tr>
+                <td>Hostname</td>
+                <td>{data.BasicInfo.Hostname}</td>
+            </tr>
+            <tr>
+                <td>Username</td>
+                <td>{data.BasicInfo.Username}</td>
+            </tr>
+            <tr>
+                <td>Domain</td>
+                <td>{data.BasicInfo.Domain}</td>
+            </tr>
+            <tr>
+                <td>UAC Status</td>
+                <td>
+                    {#if (data.Security.UacEnabled)}
+                        Enableed
+                    {:else}
+                        Disabled
+                    {/if}
+                </td>
+            </tr>
+            <tr>
+                <td>UAC Level</td>
+                <td>{data.Security.UacLevel}</td>
+            </tr>
+            <tr>
+                <td>Boot Mode</td>
+                <td>{data.BasicInfo.BootMode}</td>
+            </tr>
+            <tr>
+                <td>Secure Boot</td>
+                <td>
+                    {#if (data.Security.SecureBootEnabled)}
+                        Enableed
+                    {:else}
+                        Disabled
+                    {/if}
+                </td>
+            </tr>
+            <tr>
+                <td>Boot State</td>
+                <td>{data.BasicInfo.BootState}</td>
+            </tr>
+            <tr>
+                <td>TPM Status</td>
+                <td>{#if (tpmStatus == "Enabled")}
+                        Enabled
+                    {:else}
+                        Disabled
+                    {/if}
+                </td>
+            </tr>
+            {#if (tpmStatus == "Enabled")}
+                <tr>
+                    <td>TPM Manufacturer</td>
+                    <td>{tpmManufacturer}</td>
+                </tr>
+                <tr>
+                    <td>TPM Version</td>
+                    <td>{tpmVersion}</td>
+                </tr>
+            {/if}
+            <!-- 
+            <tr>
+                <td>TPM Status</td>
+                <td>$tpm_status</td>
+            </tr>
+            <tr>
+                <td>Manufacturer Version</td>
+                <td>$tpm_manufacturer</td>
+            </tr>
+            <tr>
+                <td>Version</td>
+                <td>$tpm_version</td>
+            </tr> 
+-->
         </tbody>
     </table>
 </Widget>

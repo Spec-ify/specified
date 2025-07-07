@@ -2,6 +2,30 @@
     import Widget from './modal-widget.svelte';
 
     export let data;
+
+    const adapterData = data.Network.Adapters;
+    
+    function findNic(){
+        let nicText = "";
+        adapterData.forEach((adapter: any, key: any) => {
+            console.log(adapter);
+            if (adapter.PhysicalAdapter && adapter.IPAddress){
+                if (Object.values(adapter.IPAddress).length > 0) 
+                    nicText = adapter.Description;
+                }
+        });
+
+        adapterData.forEach((_: string, adapter: Record<string, any>) => {
+            if (adapter.PhysicalAdapter) 
+                nicText = adapter.Description;
+        });
+
+        if (nicText == ""){
+            return "Disconnected";
+        } else {
+            return nicText;
+        }
+    }
 </script>
 
 <!-- NIC -->
@@ -10,29 +34,7 @@
     <div slot="values">
         <div class="widget-value">
             <div class="green">
-
-                <!-- <?php
-                $adapterText = "Disconnected";
-
-                foreach ($json_data['Network']['Adapters'] as $adapter) {
-                    if ((bool) $adapter['PhysicalAdapter'] && is_array($adapter['IPAddress']) && count($adapter['IPAddress']) > 0) {
-                        $adapterText = $adapter['Description'];
-                        break;
-                    }
-                };
-
-                if ($adapter == "") {
-                    foreach ($json_data['Network']['Adapters'] as $adapter) {
-                        if ((bool) $adapter['PhysicalAdapter']) {
-                            $adapterText = $adapter['Description'];
-                            break;
-                        }
-                    };
-                }
-                echo $adapterText;
-
-                ?> -->
-
+                {findNic()}
             </div>
         </div>
     </div>
