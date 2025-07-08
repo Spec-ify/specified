@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-    import Widget from './modal-widget.svelte';
+    import Widget from '../../common/modal-widget.svelte';
 
     export let data: any;
 

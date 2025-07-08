@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Widget from './modal-widget.svelte';
+    import Widget from '../../common/modal-widget.svelte';
 
     export let data;
 

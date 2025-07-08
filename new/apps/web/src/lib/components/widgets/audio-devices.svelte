@@ -1,6 +1,5 @@
 <script lang="ts">
-    import { jsonData } from '../../common/access-file.js';
-    import Widget from './modal-widget.svelte';
+    import Widget from '../../common/modal-widget.svelte';
 </script>
 
 <!-- Audio Devices -->

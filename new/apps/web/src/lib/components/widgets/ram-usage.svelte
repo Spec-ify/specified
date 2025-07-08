@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Widget from './modal-widget.svelte';
+    import Widget from '../../common/modal-widget.svelte';
 
     export let data;
 
@@ -9,7 +9,7 @@
         workingSet += process.WorkingSet;
     });
 
-    let ramUsed = Math.round((workingSet / 1073741824) * 100) / 100;
+    let ramUsed = Math.round((workingSet / 1073741824) * 100) / 100;    
     let totalRam: number = 0;
     let ramUsedPercent: number = 0; 
 
