@@ -2,14 +2,15 @@
     import Widget from '../../common/modal-widget.svelte';
     import Rambuilder from '../logic/rambuilder.svelte';
     
-    export let data;
+    export let ramData;
+    export let pagefileData;
 </script>
 
 <!-- RAM -->
 
 <Widget title="Memory" modalId="ram-modal">
     <div slot="values">
-        <Rambuilder data={data}/>
+        <Rambuilder data={ramData}/>
     </div>
 
     <div slot="modal-body">
@@ -25,7 +26,7 @@
                 </tr>
             </thead>
             <tbody>
-                {#each data.Hardware.Ram as ramStick}
+                {#each ramData as ramStick}
                     {#if (ramStick['Capacity'] <= 0)}
                         <tr>
                             <td>{ramStick['DeviceLocation']}</td>
@@ -48,19 +49,19 @@
             <tbody>
                 <tr>
                     <td>File Path</td>
-                    <td>{data.System.PageFile.Caption}</td>
+                    <td>{pagefileData.Caption}</td>
                 </tr>
                 <tr>
                     <td>Allocated Base Size</td>
-                    <td>{data.System.PageFile.AllocatedBaseSize} MB</td>
+                    <td>{pagefileData.AllocatedBaseSize} MB</td>
                 </tr>
                 <tr>
                     <td>Current Usage</td>
-                    <td>{data.System.PageFile.CurrentUsage} MB</td>
+                    <td>{pagefileData.CurrentUsage} MB</td>
                 </tr>
                 <tr>
                     <td>Peak Usage</td>
-                    <td>{data.System.PageFile.PeakUsage} MB</td>
+                    <td>{pagefileData.PeakUsage} MB</td>
                 </tr>
             </tbody>
         </table>

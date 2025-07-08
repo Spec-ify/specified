@@ -1,10 +1,11 @@
 <script lang="ts">
     import Widget from '../../common/modal-widget.svelte';
 
-    export let data;
+    export let rawGPUData;
+    export let rawMonitorData;
 
-    const gpuData: Record<any, Record<string, any>> = data.Hardware.Gpu;
-    const monitorData: Record<any, Record<string, any>> = data.Hardware.Monitors;
+    const gpuData: Record<any, Record<string, any>> = rawGPUData;
+    const monitorData: Record<any, Record<string, any>> = rawMonitorData;
 </script>
 
 <!-- GPU -->
@@ -68,7 +69,7 @@
                             <td>{monitor.DedicatedMemory} MB</td>
                             <td>{monitor.CurrentMode}</td>
                             <td>{monitor.MonitorModel} Hz</td>
-                            <td>{monitor.ConnectionType} Hz</td>
+                            <td>{monitor.ConnectionType}</td>
                         </tr>
                     {/each}
                 </tbody>

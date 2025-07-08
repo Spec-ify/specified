@@ -18,12 +18,12 @@
 </script>
 
 <div class="widgets-widgets widgets" id="hardware-widgets" data-hide="false">
-    <CPU data={rawJSON}/>
-    <RAM data={rawJSON}/>
-    <Motherboard data={rawJSON}/>
-    <GPU data={rawJSON}/>
-    <OS data={rawJSON}/>
-    <NIC data={rawJSON}/>
+    <CPU cpuData={rawJSON.Hardware.Cpu}/>
+    <RAM ramData={rawJSON.Hardware.Ram} pagefileData={rawJSON.System.PageFile}/>
+    <Motherboard tpmData={rawJSON.Security.Tpm} motherboardData={rawJSON.Hardware.Motherboard} biosData={rawJSON.Hardware.BiosInfo}/>
+    <GPU rawGPUData={rawJSON.Hardware.Gpu} rawMonitorData={rawJSON.Hardware.Monitors}/>
+    <OS securityData={rawJSON.Security} basicinfoData={rawJSON.BasicInfo}/>
+    <NIC nicData={rawJSON.Network.Adapters}/>
 </div>
 
 <div class="widgets-widgets widgets" data-hide="false">
@@ -31,8 +31,8 @@
 </div>
 
 <div class="widgets-widgets widgets" data-hide="false">
-    <CpuUsage data={rawJSON}/>
-    <RamUsage data={rawJSON}/>
+    <CpuUsage cpuloadData={rawJSON.Hardware.Cpu.LoadPercentage}/>
+    <RamUsage runprocData={rawJSON.System.RunningProcesses} ramData={rawJSON.Hardware.Ram}/>
     <Temps/>
     <AudioDevices/>
     <PowerProfiles/>

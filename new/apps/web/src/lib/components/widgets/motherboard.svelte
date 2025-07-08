@@ -2,15 +2,17 @@
     import Widget from '../../common/modal-widget.svelte';
     import { lists } from '$lib/common/lists';
 
-    export let data;
+    export let tpmData;
+    export let motherboardData;
+    export let biosData;
 
     let tpmStatus = 'Disabled';
     let tpmManufacturer: string, tpmVersion: string;
 
-    if (data.Security.Tpm && data.Security.Tpm.IsEnabled_InitialValue){
+    if (tpmData && tpmData.IsEnabled_InitialValue){
         tpmStatus = 'Enabled';
-        tpmManufacturer = `${data.Security.Tpm.ManufacturerVersionInfo} ${data.Security.Tpm.ManufacturerVersion}`;
-        tpmVersion = `${data.Security.Tpm.SpecVersion}`;
+        tpmManufacturer = `${tpmData.ManufacturerVersionInfo} ${tpmData.ManufacturerVersion}`;
+        tpmVersion = `${tpmData.SpecVersion}`;
     }
 
     function dateConversion(date: string){
@@ -41,11 +43,11 @@
 <!-- Motherboard -->
 <Widget title="Motherboard" modalId="board-modal">
     <div slot="values">
-        {#if (data.Hardware.Motherboard.Manufacturer)}
+        {#if (motherboardData.Manufacturer)}
             <div class="widget-values">
                 <div class="widget-value">
                     <div class="green">
-                        {data.Hardware.Motherboard.Manufacturer}
+                        {motherboardData.Manufacturer}
                     </div>
                     <div>
                         OEM
@@ -53,7 +55,7 @@
                 </div>
                 <div class="widget-value">
                     <div class="green">
-                        {data.Hardware.Motherboard.Product}
+                        {motherboardData.Product}
                     </div>
                     <div>
                         Chipset                        
@@ -74,31 +76,31 @@
         <tbody>
             <tr>
                 <td>Motherboard Product</td>
-                <td>{data.Hardware.Motherboard.Manufacturer} {data.Hardware.Motherboard.Product}</td>
+                <td>{motherboardData.Manufacturer} {motherboardData.Product}</td>
             </tr>
             <tr>
                 <td>Motherboard Manufacturer</td>
-                <td>{data.Hardware.Motherboard.Manufacturer}</td>
+                <td>{motherboardData.Manufacturer}</td>
             </tr>
             <tr>
                 <td>BIOS Manufacturer</td>
-                <td>{data['Hardware']['BiosInfo'][0]['Manufacturer']}</td>
+                <td>{biosData[0]['Manufacturer']}</td>
             </tr>
             <tr>
                 <td>Version</td>
-                <td>{data['Hardware']['BiosInfo'][0]['SMBIOSBIOSVersion']}</td>
+                <td>{biosData[0]['SMBIOSBIOSVersion']}</td>
             </tr>
             <tr>
                 <td>Release Date</td>
-                <td>{dateConversion(data['Hardware']['BiosInfo'][0]['ReleaseDate'])}</td>
+                <td>{dateConversion(biosData[0]['ReleaseDate'])}</td>
             </tr>
             <tr>
                 <td>Base</td>
-                <td>{data['Hardware']['BiosInfo'][0]['BIOSVersion'][2]}</td>
+                <td>{biosData[0]['BIOSVersion'][2]}</td>
             </tr>
             <tr>
                 <td>Serial Number</td>
-                <td>{data['Hardware']['BiosInfo'][0]['SerialNumber']}</td>
+                <td>{biosData[0]['SerialNumber']}</td>
             </tr>
             <tr>
                 <td>TPM Status</td>
@@ -125,13 +127,13 @@
     <div slot="extras" class="modal-body" id="board-modal-info-table" style="display:none;">
         <table class="table">
             <tbody>
-                {#each Object.entries(data['Hardware']['BiosInfo'][0]) as [key, value]}
+                {#each Object.entries(biosData[0]) as [key, value]}
                     {#if (key == "BiosCharacteristics")}
                         <tr>
                             <td>{key}</td>
                             <td>
                                 <p>
-                                    {#each filterBiosCharacteristics(data['Hardware']['BiosInfo'][0]["BiosCharacteristics"]) as characteristic}
+                                    {#each filterBiosCharacteristics(biosData[0]["BiosCharacteristics"]) as characteristic}
                                         {characteristic}<br/>
                                     {/each}
                                 </p>

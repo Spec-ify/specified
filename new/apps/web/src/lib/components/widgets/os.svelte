@@ -1,15 +1,16 @@
 <script lang="ts">
     import Widget from '../../common/modal-widget.svelte';
 
-    export let data;
+    export let securityData;
+    export let basicinfoData;
 
     let tpmStatus = 'Disabled';
     let tpmManufacturer: string, tpmVersion: string;
 
-    if (data.Security.Tpm && data.Security.Tpm.IsEnabled_InitialValue){
+    if (securityData.Tpm && securityData.Tpm.IsEnabled_InitialValue){
         tpmStatus = 'Enabled';
-        tpmManufacturer = `${data.Security.Tpm.ManufacturerVersionInfo} ${data.Security.Tpm.ManufacturerVersion}`;
-        tpmVersion = `${data.Security.Tpm.SpecVersion}`;
+        tpmManufacturer = `${securityData.Tpm.ManufacturerVersionInfo} ${securityData.Tpm.ManufacturerVersion}`;
+        tpmVersion = `${securityData.Tpm.SpecVersion}`;
     }
 </script>
 
@@ -20,11 +21,11 @@
         <div class="widget-value">
             <div class="widget-value">
                 <span class="green">
-                    {data.BasicInfo.Edition}
+                    {basicinfoData.Edition}
                 </span>
             </div>
             <div>
-                {data.BasicInfo.FriendlyVersion}
+                {basicinfoData.FriendlyVersion}
             </div>
         </div>
     </div>
@@ -36,40 +37,40 @@
         <tbody>
             <tr>
                 <td>Edition</td>
-                <td>{data.BasicInfo.Edition}</td>
+                <td>{basicinfoData.Edition}</td>
             </tr>
             <tr>
                 <td>Version</td>
-                <td>{data.BasicInfo.Version}</td>
+                <td>{basicinfoData.Version}</td>
             </tr>
             <tr>
                 <td>Friendly Version</td>
-                <td>{data.BasicInfo.FriendlyVersion}</td>
+                <td>{basicinfoData.FriendlyVersion}</td>
             </tr>
             <tr>
                 <td>Install Date</td>
-                <td>{data.BasicInfo.InstallDate}</td>
+                <td>{basicinfoData.InstallDate}</td>
             </tr>
             <tr>
                 <td>Uptime</td>
-                <td>{data.BasicInfo.Uptime}</td>
+                <td>{basicinfoData.Uptime}</td>
             </tr>
             <tr>
                 <td>Hostname</td>
-                <td>{data.BasicInfo.Hostname}</td>
+                <td>{basicinfoData.Hostname}</td>
             </tr>
             <tr>
                 <td>Username</td>
-                <td>{data.BasicInfo.Username}</td>
+                <td>{basicinfoData.Username}</td>
             </tr>
             <tr>
                 <td>Domain</td>
-                <td>{data.BasicInfo.Domain}</td>
+                <td>{basicinfoData.Domain}</td>
             </tr>
             <tr>
                 <td>UAC Status</td>
                 <td>
-                    {#if (data.Security.UacEnabled)}
+                    {#if (securityData.UacEnabled)}
                         Enableed
                     {:else}
                         Disabled
@@ -78,16 +79,16 @@
             </tr>
             <tr>
                 <td>UAC Level</td>
-                <td>{data.Security.UacLevel}</td>
+                <td>{securityData.UacLevel}</td>
             </tr>
             <tr>
                 <td>Boot Mode</td>
-                <td>{data.BasicInfo.BootMode}</td>
+                <td>{basicinfoData.BootMode}</td>
             </tr>
             <tr>
                 <td>Secure Boot</td>
                 <td>
-                    {#if (data.Security.SecureBootEnabled)}
+                    {#if (securityData.SecureBootEnabled)}
                         Enableed
                     {:else}
                         Disabled
@@ -96,7 +97,7 @@
             </tr>
             <tr>
                 <td>Boot State</td>
-                <td>{data.BasicInfo.BootState}</td>
+                <td>{basicinfoData.BootState}</td>
             </tr>
             <tr>
                 <td>TPM Status</td>

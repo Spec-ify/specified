@@ -2,13 +2,13 @@
 	import { onMount } from 'svelte';
     import Widget from '../../common/modal-widget.svelte';
 
-    export let data: any;
+    export let cpuData: any;
 
     async function cpuLookup(){
         /**
          * @type string
          */
-        const cpuName: string = data.Hardware.Cpu.Name;
+        const cpuName: string = cpuData.Name;
 
         let response;
         if (window.location.host.startsWith('localhost')) {
@@ -75,7 +75,7 @@
 <Widget title="CPU" modalId="cpu-modal">
     <div slot="values">
         <div class="green">
-            {data.Hardware.Cpu.Name}
+            {cpuData.Name}
         </div>
         <div>Callsign</div>
     </div>
@@ -84,27 +84,27 @@
         <tbody>
             <tr>
                 <td>Name</td>
-                <td>{data.Hardware.Cpu.Name}</td>
+                <td>{cpuData.Name}</td>
             </tr>
             <tr>
                 <td>Manufacturer</td>
-                <td>{data.Hardware.Cpu.Manufacturer}</td>
+                <td>{cpuData.Manufacturer}</td>
             </tr>
             <tr>
                 <td>Socket Designation</td>
-                <td>{data.Hardware.Cpu.SocketDesignation}</td>
+                <td>{cpuData.SocketDesignation}</td>
             </tr>
             <tr>
                 <td>Current Clock Speed</td>
-                <td>{data.Hardware.Cpu.CurrentClockSpeed}</td>
+                <td>{cpuData.CurrentClockSpeed}</td>
             </tr>
             <tr>
                 <td># of Enabled Cores</td>
-                <td>{data.Hardware.Cpu.NumberOfEnabledCore}</td>
+                <td>{cpuData.NumberOfEnabledCore}</td>
             </tr>
             <tr>
                 <td>Thread Count</td>
-                <td>{data.Hardware.Cpu.ThreadCount}</td>
+                <td>{cpuData.ThreadCount}</td>
             </tr>
         </tbody>
     </table>

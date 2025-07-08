@@ -1,20 +1,18 @@
 <script lang="ts">
     import Widget from '../../common/modal-widget.svelte';
 
-    export let data;
+    export let nicData: any;
 
-    const adapterData = data.Network.Adapters;
-    
     function findNic(){
         let nicText = "";
-        adapterData.forEach((adapter: any, _: any) => {
+        nicData.forEach((adapter: any, _: any) => {
             if (adapter.PhysicalAdapter && adapter.IPAddress){
                 if (Object.values(adapter.IPAddress).length > 0) 
                     nicText = adapter.Description;
                 }
         });
 
-        adapterData.forEach((_: string, adapter: Record<string, any>) => {
+        nicData.forEach((_: string, adapter: Record<string, any>) => {
             if (adapter.PhysicalAdapter) 
                 nicText = adapter.Description;
         });
@@ -39,7 +37,7 @@
     </div>
 
     <div slot="modal-body">
-        {#each adapterData as adapter}
+        {#each nicData as adapter}
             <table class="table nic">
                 <tbody>
                     <tr>

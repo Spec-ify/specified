@@ -1,7 +1,7 @@
 <script lang="ts">
     import Widget from '../../common/modal-widget.svelte';
 
-    export let data;
+    export let cpuloadData;
 </script>
 
 <!-- CPU Usage -->
@@ -10,7 +10,7 @@
         <div class="widget-value">
             <div class="widget-value">
                 <span class="green">
-                    {data.Hardware.Cpu.LoadPercentage ?? '--'}%
+                    {cpuloadData ?? '--'}%
                     <!-- <?= $json_data['Hardware']['Cpu']['LoadPercentage'] ?? '--' ?>% -->
                 </span>
             </div>

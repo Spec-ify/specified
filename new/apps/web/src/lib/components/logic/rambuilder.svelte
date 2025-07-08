@@ -1,7 +1,7 @@
 <script lang="ts">
     export let data;
 
-    const ramSticks = data.Hardware.Ram;
+    const ramSticks = data;
     let ramStickCount = 0;
     let flexBasis = ``;
     let htmlResult = "";

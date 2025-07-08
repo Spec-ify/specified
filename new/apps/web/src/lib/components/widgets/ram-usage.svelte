@@ -1,11 +1,12 @@
 <script lang="ts">
     import Widget from '../../common/modal-widget.svelte';
 
-    export let data;
+    export let runprocData;
+    export let ramData;
 
     let workingSet: number = 0;
 
-    data.System.RunningProcesses.forEach((process: any) => {
+    runprocData.forEach((process: any) => {
         workingSet += process.WorkingSet;
     });
 
@@ -13,13 +14,14 @@
     let totalRam: number = 0;
     let ramUsedPercent: number = 0; 
 
-    if (data.Hardware.Ram){
-        data.Hardware.Ram.forEach((stick: any) => {
+    if (ramData){
+        ramData.forEach((stick: any) => {
             let capacity = stick.Capacity;
             if (capacity > 0){
                 totalRam += Math.floor(capacity / 1024);
             }
         });
+        
         ramUsedPercent = Math.round((ramUsed / totalRam) * 100);
     }
 </script>
