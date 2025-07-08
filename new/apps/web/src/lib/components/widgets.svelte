@@ -31,8 +31,8 @@
 </div>
 
 <div class="widgets-widgets widgets" data-hide="false">
-    <CpuUsage/>
-    <RamUsage/>
+    <CpuUsage data={rawJSON}/>
+    <RamUsage data={rawJSON}/>
     <Temps/>
     <AudioDevices/>
     <PowerProfiles/>
