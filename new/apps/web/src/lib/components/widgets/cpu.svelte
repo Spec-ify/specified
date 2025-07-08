@@ -2,22 +2,71 @@
 	import { onMount } from 'svelte';
     import Widget from './modal-widget.svelte';
 
-    export let data;
+    export let data: any;
 
-    function cpuLookup(){
-        // to follow
+    async function cpuLookup(){
+        /**
+         * @type string
+         */
+        const cpuName: string = data.Hardware.Cpu.Name;
+
+        let response;
+        if (window.location.host.startsWith('localhost')) {
+            console.info('Trying local server for hwapi');
+            try {
+                response = await (
+                    await fetch(`http://localhost:3000/api/cpus/?name=${encodeURIComponent(cpuName)}`, {
+                        method: 'GET',
+                        mode: 'cors'
+                    })
+                ).json();
+            } catch (e) {
+                console.warn('Could not connect to local hwapi instance, falling back to spec-ify.com');
+            }
+        }
+        if (!response) {
+            response = await (
+                await fetch(`https://spec-ify.com/api/cpus/?name=${encodeURIComponent(cpuName)}`, {
+                    method: 'GET',
+                    mode: 'cors'
+                })
+            ).json();
+        }
+        // update the title element to reflect the name fetched from the database
+        let infoTitle = document.getElementById('cpu-info-title');
+        if (infoTitle){
+            infoTitle.innerHTML = infoTitle.innerHTML.slice(0, -3) + response.name;
+        }
+
+        let tableContents = '';
+        // add new elements to the table for every kv in the database
+        for (const [key, value] of Object.entries(response.attributes)) {
+            tableContents += `<tr><td>${key}</td><td>${value}</td></tr>`;
+        }
+        // cpuTable.innerHTML = tableContents;
+        let fetchedTitle = document.getElementById('fetched-cpu-info');
+        if (fetchedTitle) {
+            fetchedTitle.innerHTML = tableContents
+        }
     };
 
     onMount(() => {
         const observer = new IntersectionObserver(entries => {
             if(entries[0].isIntersecting) {
-                cpuLookup();
+                cpuLookup().then();
+                unobserve();
                 }
             });
 
         let cpuDatabase = document.getElementById("cpu-info-title");
         if (cpuDatabase) {
             observer.observe(cpuDatabase);
+        }
+
+        function unobserve() {
+            if (cpuDatabase){
+                observer.unobserve(cpuDatabase);
+            }
         }
     })
 </script>
