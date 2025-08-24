@@ -1,12 +1,11 @@
 let hwapiLocal = true;
 
 /**
- * This is extracted into its own function because we need to call localhost instead of spec-ify.com if there is a
- * hwapi dev server currently running.
+ * Submits a request to hwapi
  *
  * The path should not start with a slash.
  */
-export async function call_hwapi(path: string, payload: string, fallbackCallack = () => {}) {
+export async function fetchHwInfo(path: string, payload: string, fallbackCallack = () => {}): Promise<object> {
 	// https://stackoverflow.com/a/57949518
 	const isLocalhost = Boolean(
 		window.location.hostname === 'localhost' ||
@@ -16,7 +15,7 @@ export async function call_hwapi(path: string, payload: string, fallbackCallack 
 			window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)
 	);
 
-	let rawResponse;
+	let rawResponse: Response | undefined;
 	if (isLocalhost && hwapiLocal) {
 		console.info('Trying local server for hwapi');
 
@@ -40,7 +39,7 @@ export async function call_hwapi(path: string, payload: string, fallbackCallack 
 					}
 				});
 			}
-		} catch (e) {
+		} catch {
 			fallbackCallack();
 			console.warn('Hwapi dev server not online, falling back to spec-ify.com');
 			hwapiLocal = false;
@@ -70,7 +69,7 @@ export async function call_hwapi(path: string, payload: string, fallbackCallack 
 
 	try {
 		return await rawResponse.json();
-	} catch (e) {
+	} catch {
 		if (rawResponse.status !== 404)
 			// prevent error spam
 			console.error('Could not parse json from hwapi!');

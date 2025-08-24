@@ -1,13 +1,12 @@
 <script lang="ts">
-    import Widget from '../../common/modal-widget.svelte';
+	import Widget from '../../common/ModalWidget.svelte';
 </script>
 
 <!-- Power Profiles -->
 <Widget title="Power Profiles" modalId="power-modal">
-    <div slot="values">
-        <div class="widget-value">
-
-            <!-- <?php
+	<div slot="values">
+		<div class="widget-value">
+			<!-- <?php
             if ($json_data['System']['PowerProfiles']) {
                 $profile_count = safe_count($json_data['System']['PowerProfiles']);
                 $profile_color = '';
@@ -30,33 +29,34 @@
                 }
             }
             ?> -->
-            <div style="font-size: 10pt;">Current Profile</div>
-        </div>
-    </div>
+			<div style="font-size: 10pt;">Current Profile</div>
+		</div>
+	</div>
 
-    <div class="modal-body">
-        <h4>Power Profiles</h4>
-        <table id="power-table" class="table">
-            <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>Element</th>
-                    <th>Instance Path</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-        </table> <br>
-        <h4>Battery</h4>
-        <table id="battery-table" class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Manufacturer</th>
-                    <th>Chemistry</th>
-                    <th>Design Capacity</th>
-                    <th>Current Full Charge Capacity</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
+	<div class="modal-body">
+		<h4>Power Profiles</h4>
+		<table id="power-table" class="table">
+			<thead>
+				<tr>
+					<th>Description</th>
+					<th>Element</th>
+					<th>Instance Path</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+		</table>
+		<br />
+		<h4>Battery</h4>
+		<table id="battery-table" class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Manufacturer</th>
+					<th>Chemistry</th>
+					<th>Design Capacity</th>
+					<th>Current Full Charge Capacity</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
 </Widget>

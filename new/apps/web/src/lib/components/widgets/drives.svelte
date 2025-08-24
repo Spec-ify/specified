@@ -1,6 +1,5 @@
 <script lang="ts">
-    
-    import Widget from '../../common/modal-widget.svelte';
+	import Widget from '../../common/ModalWidget.svelte';
 </script>
 
 <!--
@@ -11,7 +10,7 @@ Could probably use a foreach on array that adds a widget component for each driv
 
 -->
 <div class="widgets-widgets widgets" data-hide="false">
-    <!-- <?php
+	<!-- <?php
     $drives_amount = safe_count($json_data['Hardware']['Storage']);
 
     foreach ($json_data['Hardware']['Storage'] as $driveKey => $drive) {
