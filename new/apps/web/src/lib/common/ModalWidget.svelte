@@ -1,4 +1,9 @@
+<!-- 
+ A widget that expands into a modal view/pop up when clicked. 
+-->
 <script lang="ts">
+	import { onMount } from "svelte";
+
 
 	let {
 		title = 'Modal',
@@ -7,6 +12,9 @@
 		widgetContents,
 		modalContents,
 	} = $props();
+	// TODO: support for "more info" is not currently
+	// implemented. When it is, it should not make use
+	// of IDs
 	function infoClick(id: String) {
 		let element = document.getElementById(id + '-info-table');
 		if (element) {
@@ -27,9 +35,7 @@
 >
 	<h1>{title}</h1>
 	<div class="widget-values">
-		<div class="widget-value">
 			{@render widgetContents()}
-		</div>
 	</div>
 </div>
 
@@ -66,3 +72,12 @@
 		</div>
 	</div>
 </div>
+
+<style>
+.widget-values div {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	text-align: center;
+}
+</style>

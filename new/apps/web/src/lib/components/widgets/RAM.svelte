@@ -1,3 +1,4 @@
+<!-- NOT YET IMPLEMENTED IN NEW WIDGET SYSTEM -->
 <script lang="ts">
 	import Widget from '../../common/ModalWidget.svelte';
 	import Rambuilder from '../logic/rambuilder.svelte';

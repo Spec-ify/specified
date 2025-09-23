@@ -1,3 +1,5 @@
+<!-- NOT YET MIGRATED TO NEW WIDGET SYSTEM -->
+
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Widget from '../../common/ModalWidget.svelte';

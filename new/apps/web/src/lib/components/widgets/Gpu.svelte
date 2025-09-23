@@ -1,3 +1,4 @@
+<!-- NOT YET MIGRATED TO NEW WIDGET SYSTEM -->
 <script lang="ts">
 	import Widget from '../../common/ModalWidget.svelte';
 
