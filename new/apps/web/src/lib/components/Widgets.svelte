@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Cpu from './widgets/Cpu.svelte';
-	import Ram from './widgets/RAM.svelte';
+	import Ram from './widgets/Ram.svelte';
 	import Motherboard from './widgets/Motherboard.svelte';
 	import Gpu from './widgets/Gpu.svelte';
 	import Os from './widgets/Os.svelte';
@@ -14,12 +14,12 @@
 	import AudioDevices from './widgets/AudioDevices.svelte';
 	import PowerProfiles from './widgets/PowerProfiles.svelte';
 
-	export let rawJSON;
+	export let report;
 </script>
 
 <div class="widgets-widgets widgets" id="hardware-widgets" data-hide="false">
-	<!-- <CPU cpuData={rawJSON.Hardware.Cpu} />
-	<RAM ramData={rawJSON.Hardware.Ram} pagefileData={rawJSON.System.PageFile} />
+	<Cpu cpu={report.Hardware.Cpu} />
+	<!--<RAM ramData={rawJSON.Hardware.Ram} pagefileData={rawJSON.System.PageFile} />
 	<Motherboard
 		tpmData={rawJSON.Security.Tpm}
 		motherboardData={rawJSON.Hardware.Motherboard}
@@ -38,6 +38,6 @@
 	<!-- <CpuUsage cpuloadData={rawJSON.Hardware.Cpu.LoadPercentage} />
 	<RamUsage runprocData={rawJSON.System.RunningProcesses} ramData={rawJSON.Hardware.Ram} />
 	<Temps /> -->
-	<AudioDevices audioDevices={rawJSON.Hardware.AudioDevices}/>
+	<AudioDevices audioDevices={report.Hardware.AudioDevices}/>
 	<!-- <PowerProfiles /> -->
 </div>

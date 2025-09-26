@@ -2,23 +2,37 @@
 
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { dev } from '$app/environment';
 	import Widget from '../../common/ModalWidget.svelte';
+	import AudioDevices from './AudioDevices.svelte';
 
-	export let cpuData: any;
+	interface CpuInfo {
+		CurrentClockSpeed: number;
+		LoadPercentage: number;
+		Manufacturer: string;
+		Name: string;
+		// Appears to be a typo in the schema
+		NumberOfEnabledCore: number;
+		SocketDesignation: string;
+		ThreadCount: number;
+	}
+
+	interface Props {
+		cpu: CpuInfo;
+	}
+
+	let {
+		cpu
+	}: Props = $props();
 
 	async function cpuLookup() {
-		/**
-		 * @type string
-		 */
-		const cpuName: string = cpuData.Name;
-
 		let response;
-		if (window.location.host.startsWith('localhost')) {
+		if (dev) {
 			console.info('Trying local server for hwapi');
 			try {
 				response = await (
 					await fetch(
-						`http://localhost:3000/api/cpus/?name=${encodeURIComponent(cpuName)}`,
+						`http://localhost:3000/api/cpus/?name=${encodeURIComponent(cpu.Name)}`,
 						{
 							method: 'GET',
 							mode: 'cors'
@@ -33,7 +47,7 @@
 		}
 		if (!response) {
 			response = await (
-				await fetch(`https://spec-ify.com/api/cpus/?name=${encodeURIComponent(cpuName)}`, {
+				await fetch(`https://spec-ify.com/api/cpus/?name=${encodeURIComponent(cpu.Name)}`, {
 					method: 'GET',
 					mode: 'cors'
 				})
@@ -80,47 +94,48 @@
 
 <!-- CPU -->
 <Widget title="CPU" modalId="cpu-modal">
-	<div slot="values">
+	{#snippet widgetContents()}
 		<div class="green">
-			{cpuData.Name}
+			{cpu.Name}
 		</div>
 		<div>Callsign</div>
-	</div>
+	{/snippet}
 
-	<table slot="modal-body" class="table">
-		<tbody>
-			<tr>
-				<td>Name</td>
-				<td>{cpuData.Name}</td>
-			</tr>
-			<tr>
-				<td>Manufacturer</td>
-				<td>{cpuData.Manufacturer}</td>
-			</tr>
-			<tr>
-				<td>Socket Designation</td>
-				<td>{cpuData.SocketDesignation}</td>
-			</tr>
-			<tr>
-				<td>Current Clock Speed</td>
-				<td>{cpuData.CurrentClockSpeed}</td>
-			</tr>
-			<tr>
-				<td># of Enabled Cores</td>
-				<td>{cpuData.NumberOfEnabledCore}</td>
-			</tr>
-			<tr>
-				<td>Thread Count</td>
-				<td>{cpuData.ThreadCount}</td>
-			</tr>
-		</tbody>
-	</table>
+	{#snippet modalContents()}
+		<table slot="modal-body" class="table">
+			<tbody>
+				<tr>
+					<td>Name</td>
+					<td>{cpu.Name}</td>
+				</tr>
+				<tr>
+					<td>Manufacturer</td>
+					<td>{cpu.Manufacturer}</td>
+				</tr>
+				<tr>
+					<td>Socket Designation</td>
+					<td>{cpu.SocketDesignation}</td>
+				</tr>
+				<tr>
+					<td>Current Clock Speed</td>
+					<td>{cpu.CurrentClockSpeed}</td>
+				</tr>
+				<tr>
+					<td># of Enabled Cores</td>
+					<td>{cpu.NumberOfEnabledCore}</td>
+				</tr>
+				<tr>
+					<td>Thread Count</td>
+					<td>{cpu.ThreadCount}</td>
+				</tr>
+			</tbody>
+		</table>
+	{/snippet}
 
-	<div slot="extras" class="modal-body" id="cpu-modal-info-table" style="display:none;">
-		<!-- This content is populated javascript side -->
+	<!-- <div slot="extras" class="modal-body" id="cpu-modal-info-table" style="display:none;">
 		<h6 class="modal-title" id="cpu-info-title">Database results for: ...</h6>
 		<table class="table">
 			<tbody id="fetched-cpu-info"> </tbody>
 		</table>
-	</div>
+	</div> -->
 </Widget>

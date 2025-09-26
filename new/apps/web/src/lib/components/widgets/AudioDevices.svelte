@@ -61,6 +61,7 @@
 			display: flex;
 			justify-content: space-around;
 			width: 100%;
+			font-size: 1.5rem;
 		}
 		
 		table {

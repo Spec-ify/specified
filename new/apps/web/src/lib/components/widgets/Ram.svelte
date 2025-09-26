@@ -1,7 +1,7 @@
 <!-- NOT YET IMPLEMENTED IN NEW WIDGET SYSTEM -->
 <script lang="ts">
 	import Widget from '../../common/ModalWidget.svelte';
-	import Rambuilder from '../logic/rambuilder.svelte';
+	import Rambuilder from '../logic/RamBuilder.svelte';
 
 	export let ramData;
 	export let pagefileData;
