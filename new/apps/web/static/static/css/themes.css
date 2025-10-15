@@ -1,7 +1,5 @@
-// Created with https://themes.skeleton.dev/themes/create
-:root,
-:root[data-theme='classic-mode'] {
-
+/* Created with https://themes.skeleton.dev/themes/create */
+:root {
 	--text-scaling: 1.067;
 	--base-font-color: var(--color-surface-950);
 	--base-font-color-dark: var(--color-surface-50);

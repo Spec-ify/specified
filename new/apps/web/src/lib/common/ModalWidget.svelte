@@ -18,38 +18,40 @@
 	let expanded = $state(false);
 </script>
 
-<div
-	onclick={() => {expanded = true;}}
-	class={'widget hover'}
-	data-mdb-toggle="modal"
+<button
+	onclick={() => {
+			expanded = true;
+		}}
+	class='widget hover'
 >
 	<h1>{title}</h1>
 	<div  class="widget-values">
 			{@render widgetContents()}
 	</div>
-</div>
+</button>
 
 {#if expanded}
-	<div class="modal fade" tabindex="-1" aria-labelledby={title} aria-hidden="true">
-		<div class={'modal-dialog ' + modalSpecial}>
-			<div class="modal-content">
-				<!-- modal header -->
-				<div class="modal-header">
-					<h5 class="modal-title">{title}</h5>
-					<button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"
-					></button>
-				</div>
+<span class="backdrop">
+</span>
+<div tabindex="-1" aria-labelledby={title}>
+		<div class="modal-content">
+			<!-- modal header -->
+			<div class="modal-header">
+				<h5 class="modal-title">{title}</h5>
+				<button onclick={() => {expanded = false;}} type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"
+				></button>
+			</div>
 
-				<div class="modal-body">
-					{@render modalContents()}
-				</div>
+			<div class="modal-body">
+				{@render modalContents()}
+			</div>
 
-				<!-- more info -->
-				<!-- <div class="modal-body">
-					{@render extraModalContents()}
-				</div> -->
+			<!-- more info -->
+			<!-- <div class="modal-body">
+				{@render extraModalContents()}
+			</div> -->
 
-				<!-- footer -->
+			<!-- footer -->
 				<div class="modal-footer">
 					<!-- {#if extraModalContents}
 						<button
@@ -60,17 +62,18 @@
 						>
 					{/if} -->
 					<button
+						onclick={() => {expanded = false;}}
 						type="button"
 						class="btn btn-secondary"
 						data-mdb-dismiss="modal">Close</button
 					>
 				</div>
 			</div>
-		</div>
+		<!-- </div> -->
 	</div>
 {/if}
 <style>
-.widget-values div {
+.widget-values {
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;

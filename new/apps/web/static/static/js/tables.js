@@ -1,6 +1,6 @@
 import { call_hwapi, createPcieHexId } from './common.js';
 
-const filename = `files/${PROFILE_NAME}.json`;
+const filename = `files/test1.json`;
 
 async function dataTables() {
 	const json = await (await fetch(filename)).json();

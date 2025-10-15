@@ -12,11 +12,12 @@ if (localStorageTheme !== null) {
 }
 
 // Call the function every time it changes
-document.querySelector('#mode-toggle').onchange = change_theme;
+// document.querySelector('#mode-toggle').onchange = change_theme;
 
 function change_theme() {
 	// Get selection for the switch
-	let theme = document.querySelector('#mode-toggle').value;
+	// let theme = document.querySelector('#mode-toggle').value;
+	let theme = "classic-mode";
 
 	document.documentElement.setAttribute('data-theme', theme);
 	localStorage.setItem('theme', theme);
