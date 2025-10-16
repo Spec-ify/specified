@@ -22,8 +22,7 @@
 	onclick={() => {
 			expanded = true;
 		}}
-	class='widget hover'
->
+	class="widget">
 	<h1>{title}</h1>
 	<div  class="widget-values">
 			{@render widgetContents()}
@@ -83,6 +82,14 @@
 
 .widget {
 	cursor: pointer;
+	/* TODO: rem-ify */
+	width: 260px;
+	max-width: 340px;
+	flex-grow: 1;
+	padding: 2px 5px;
 
+	background-color: var(--color-surface-950);
+	border-radius: 6px;
+	color: var(--base-font-color-dark);
 }
 </style>

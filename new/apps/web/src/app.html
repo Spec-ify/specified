@@ -19,7 +19,7 @@
 			href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.dark.min.css"
 			rel="stylesheet"
 		/>
-		<link href="static/css/themes.css?v=2" rel="stylesheet" />
+		<link href="static/css/classic-mode.css" rel="stylesheet" />
 		<link href="static/css/main.css?v=2" rel="stylesheet" />
 		<link href="static/css/tables.css" rel="stylesheet" />
 
@@ -40,12 +40,6 @@
 			href="assets/specify-glass-black-256x256.png"
 			media="(prefers-color-scheme dark)"
 		/>
-
-		<!-- <script nonce="<?= $script_nonce ?>">
-        window.PROFILE_NAME = "<?= $profile_name ?>";
-    </script> -->
-		<!--This should be first to make sure the themes load on time-->
-		<script defer src="static/js/themes.js?v=2"></script>
 
 		<!--Konami Code for Dev Stuff-->
 		<script defer="defer" src="static/js/konami.js"></script>
@@ -72,7 +66,7 @@
 		<script defer="defer" src="static/js/main.js?v=2"></script>
 		<!-- END OF LEGACY SUPPORT -->
 	</head>
-	<body data-sveltekit-preload-data="hover" data-theme="crimson">
+	<body data-sveltekit-preload-data="hover" data-theme="classic-mode">
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>
 </html>
