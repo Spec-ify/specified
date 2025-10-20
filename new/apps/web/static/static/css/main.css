@@ -1,6 +1,32 @@
 @import url(https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&amp;display=swap);
 
 #legacy-content {
+	--color-scheme: dark;
+	--bg-color: #3b4252;
+	--fg-color: #e0e2e4;
+	--secondary-bg: #252b2d;
+	--secondary-fg: #b5b5b5;
+	--tertiary-bg: #293134;
+	--widget-emph: #fff;
+	--logo-bg: #252b2d;
+	--button-fg: #ccc;
+	--header-bg: #181d1f;
+	--box-shadow: #130b00;
+	--link-secondary: #f77669;
+	--select-color: #5e81ac;
+	--tr-even: #ffffff07;
+	--border-color: #595959;
+	--partition-bar-filled: hsl(0, 0%, 20%);
+	--table-color: #fff;
+	--modal-color: #424242;
+	--meta-h4-color: #ffffff66;
+
+	--green: #a3be8c;
+	--yellow: rgb(235, 203, 139);
+	--red: rgb(191, 97, 106);
+	--amd: rgb(215, 27, 27);
+	--intel: rgb(8, 110, 224);
+
 	html {
 		background-color: var(--bg-color);
 		color-scheme: var(--color-scheme);

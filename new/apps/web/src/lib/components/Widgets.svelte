@@ -17,7 +17,7 @@
 	export let report;
 </script>
 
-<div class="widgets-widgets widgets" id="hardware-widgets" data-hide="false">
+<div class="widgets">
 	<Cpu cpu={report.Hardware.Cpu} />
 	<!--<RAM ramData={rawJSON.Hardware.Ram} pagefileData={rawJSON.System.PageFile} />
 	<Motherboard
@@ -30,14 +30,24 @@
 	<NIC nicData={rawJSON.Network.Adapters} /> -->
 </div>
 
-<div class="widgets-widgets widgets" data-hide="false">
+<div class="widgets">
 	<Drives />
 </div>
 
-<div class="widgets-widgets widgets" data-hide="false">
+<div class="widgets">
 	<!-- <CpuUsage cpuloadData={rawJSON.Hardware.Cpu.LoadPercentage} />
 	<RamUsage runprocData={rawJSON.System.RunningProcesses} ramData={rawJSON.Hardware.Ram} />
 	<Temps /> -->
 	<AudioDevices audioDevices={report.Hardware.AudioDevices}/>
 	<!-- <PowerProfiles /> -->
 </div>
+
+<style>
+	.widgets {
+		display: flex;
+		justify-content: space-evenly;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin-bottom: 10px;
+	}
+</style>

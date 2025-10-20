@@ -2,7 +2,6 @@
  A widget that expands into a modal view/pop up when clicked.
 -->
 <script lang="ts">
-
 	let {
 		title = 'Modal',
 		modalSpecial = '',
@@ -24,20 +23,19 @@
 		}}
 	class="widget">
 	<h1>{title}</h1>
-	<div  class="widget-values">
+	<div class="widget-values">
 			{@render widgetContents()}
 	</div>
 </button>
 
 {#if expanded}
-<span class="backdrop">
+<span class="backdrop" onclick={() => {expanded = false}}>
 </span>
-<div tabindex="-1" aria-labelledby={title}>
-		<div class="modal-content">
+<div class="modal">
 			<!-- modal header -->
-			<div class="modal-header">
-				<h5 class="modal-title">{title}</h5>
-				<button onclick={() => {expanded = false;}} type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"
+			<div>
+				<h5>{title}</h5>
+				<button onclick={() => {expanded = false;}} type="button" aria-label="Close"
 				></button>
 			</div>
 
@@ -51,7 +49,7 @@
 			</div> -->
 
 			<!-- footer -->
-				<div class="modal-footer">
+				<div>
 					<!-- {#if extraModalContents}
 						<button
 							type="button"
@@ -62,14 +60,10 @@
 					{/if} -->
 					<button
 						onclick={() => {expanded = false;}}
-						type="button"
-						class="btn btn-secondary"
-						data-mdb-dismiss="modal">Close</button
+						type="button">Close</button
 					>
 				</div>
 			</div>
-		<!-- </div> -->
-	</div>
 {/if}
 <style>
 .widget-values {
@@ -80,6 +74,15 @@
 	font-size: 16pt;
 }
 
+.widget h1 {
+	font-size: 13pt;
+	font-weight: 400;
+	margin: 0;
+	padding-top: 5px;
+	padding-bottom: 8px;
+	text-align: center;
+}
+
 .widget {
 	cursor: pointer;
 	/* TODO: rem-ify */
@@ -88,8 +91,31 @@
 	flex-grow: 1;
 	padding: 2px 5px;
 
-	background-color: var(--color-surface-950);
+	background-color: var(--color-surface-900);
 	border-radius: 6px;
 	color: var(--base-font-color-dark);
+}
+
+.backdrop {
+	z-index: 1054;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #00000099;
+}
+
+.modal {
+	/* pending removal of bootstrap */
+	display: inline !important;
+	position: absolute;
+	width: auto;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50);
+	max-width: 500px;
+	z-index: 1055;
+	background-color: var(--color-surface-900);
 }
 </style>

@@ -22,11 +22,11 @@
 	const numExternal = audioDevices.length - numInternal;
 </script>
 <!-- Audio Devices -->
-<Widget title="Audio Devices" modalId="audio-modal">
+<Widget title="Audio Devices">
 	{#snippet widgetContents()}
 		<div class="widget-contents">
-			<p class="green">Internal : {numInternal}</p>
-			<p class="yellow">External : {numExternal}</p>
+			<p class="num-internal">Internal : {numInternal}</p>
+			<p class="num-external">External : {numExternal}</p>
 		</div>
 	<style>
 	</style>
@@ -61,7 +61,15 @@
 			display: flex;
 			justify-content: space-around;
 			width: 100%;
-			font-size: 1.5rem;
+			font-size: 16px;
+		}
+
+		.num-internal {
+			color: var(--color-secondary-50);
+		}
+
+		.num-external {
+			color: var(--color-warning-200);
 		}
 		
 		table {

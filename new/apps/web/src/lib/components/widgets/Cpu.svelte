@@ -4,7 +4,6 @@
 	import { onMount } from 'svelte';
 	import { dev } from '$app/environment';
 	import Widget from '../../common/ModalWidget.svelte';
-	import AudioDevices from './AudioDevices.svelte';
 
 	interface CpuInfo {
 		CurrentClockSpeed: number;
@@ -93,16 +92,16 @@
 </script>
 
 <!-- CPU -->
-<Widget title="CPU" modalId="cpu-modal">
+<Widget title="CPU">
 	{#snippet widgetContents()}
-		<div class="green">
+		<span>
 			{cpu.Name}
-		</div>
+		</span>
 		<div>Callsign</div>
 	{/snippet}
 
 	{#snippet modalContents()}
-		<table slot="modal-body" class="table">
+		<table class="table">
 			<tbody>
 				<tr>
 					<td>Name</td>
@@ -139,3 +138,14 @@
 		</table>
 	</div> -->
 </Widget>
+
+<style>
+	span {
+		color: var(--color-secondary-50);
+	}
+
+	div {
+		color: var(--color-surface-300);
+		font-size: 13pt;
+	}
+</style>
