@@ -23,16 +23,18 @@
 </div>
 
 <style>
+
 	.vp {
 		background-color: var(--color-surface-950);
 		margin: 0;
 		padding: 0;
-		width: 100vw !important;
 		/* flex-grow: 0;
 		flex-shrink: 0; */
 	}
 
-	:global(body) {
-		width: 100vw !important;
+	#legacy-content {
+		/* Some legacy content is escaping and it should not
+		be allowed to do so */
+		overflow: hidden;
 	}
 </style>

@@ -21,7 +21,7 @@
 	onclick={() => {
 			expanded = true;
 		}}
-	class="widget">
+	class="_widget">
 	<h1>{title}</h1>
 	<div class="widget-values">
 			{@render widgetContents()}
@@ -29,41 +29,41 @@
 </button>
 
 {#if expanded}
-<span class="backdrop" onclick={() => {expanded = false}}>
+<span class="backdrop" onclick={() => {expanded = false}} role="none">
 </span>
-<div class="modal">
-			<!-- modal header -->
-			<div>
-				<h5>{title}</h5>
-				<button onclick={() => {expanded = false;}} type="button" aria-label="Close"
-				></button>
-			</div>
+<div class="_modal">
+	<!-- modal header -->
+	<div>
+		<h5>{title}</h5>
+		<button onclick={() => {expanded = false;}} type="button" aria-label="Close"
+		></button>
+	</div>
 
-			<div class="modal-body">
-				{@render modalContents()}
-			</div>
+	<div class="modal-body">
+		{@render modalContents()}
+	</div>
 
-			<!-- more info -->
-			<!-- <div class="modal-body">
-				{@render extraModalContents()}
-			</div> -->
+	<!-- more info -->
+	<!-- <div class="modal-body">
+		{@render extraModalContents()}
+	</div> -->
 
-			<!-- footer -->
-				<div>
-					<!-- {#if extraModalContents}
-						<button
-							type="button"
-							class="btn btn-secondary"
-							id={modalId + '-more-info-button'}
-							onclick={() => infoClick(modalId)}>More Info</button
-						>
-					{/if} -->
-					<button
-						onclick={() => {expanded = false;}}
-						type="button">Close</button
-					>
-				</div>
-			</div>
+	<!-- footer -->
+	<div>
+		<!-- {#if extraModalContents}
+			<button
+				type="button"
+				class="btn btn-secondary"
+				id={modalId + '-more-info-button'}
+				onclick={() => infoClick(modalId)}>More Info</button
+			>
+		{/if} -->
+		<button
+			onclick={() => {expanded = false;}}
+			type="button">Close</button
+		>
+	</div>
+	</div>
 {/if}
 <style>
 .widget-values {
@@ -74,16 +74,11 @@
 	font-size: 16pt;
 }
 
-.widget h1 {
-	font-size: 13pt;
-	font-weight: 400;
-	margin: 0;
-	padding-top: 5px;
-	padding-bottom: 8px;
-	text-align: center;
-}
-
-.widget {
+/*
+Underscore needed to stop bootstrap from interfering with css
+can be removed when bootstrap is
+*/
+._widget {
 	cursor: pointer;
 	/* TODO: rem-ify */
 	width: 260px;
@@ -93,6 +88,16 @@
 
 	background-color: var(--color-surface-900);
 	border-radius: 6px;
+	color: var(--base-font-color-dark);
+}
+
+._widget h1 {
+	font-size: 13pt;
+	font-weight: 400;
+	margin: 0;
+	padding-top: 5px;
+	padding-bottom: 8px;
+	text-align: center;
 	color: var(--base-font-color-dark);
 }
 
@@ -106,16 +111,11 @@
 	background-color: #00000099;
 }
 
-.modal {
+._modal {
 	/* pending removal of bootstrap */
-	display: inline !important;
-	position: absolute;
-	width: auto;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50);
 	max-width: 500px;
 	z-index: 1055;
 	background-color: var(--color-surface-900);
+	color: var(--base-font-color-dark);
 }
 </style>
