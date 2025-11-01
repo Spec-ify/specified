@@ -26,8 +26,8 @@ else
 
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.dark.min.css" rel="stylesheet">
-    <link href="static/css/themes.css" rel="stylesheet" >
-    <link href="static/css/main.css" rel="stylesheet">
+    <link href="css/themes.css" rel="stylesheet" >
+    <link href="css/main.css" rel="stylesheet">
 </head>
 <div class="textbox metadata-detail tablebox widget json-data" id="login-form">
 <h1>Specify Archive Login</h1>
@@ -51,7 +51,7 @@ else
 ></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/sc-2.0.7/datatables.min.js"></script>
-<script defer="defer" src="static/js/main.js"></script>';
+<script defer="defer" src="js/main.js"></script>';
     }
 }
 ?>

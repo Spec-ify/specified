@@ -13,9 +13,9 @@ $profile_name = pathinfo($json_file, PATHINFO_FILENAME);
 
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.dark.min.css" rel="stylesheet">
-    <link href="static/css/themes.css?v=2" rel="stylesheet">
-    <link href="static/css/main.css?v=2" rel="stylesheet">
-    <link href="static/css/tables.css" rel="stylesheet">
+    <link href="css/themes.css?v=2" rel="stylesheet">
+    <link href="css/main.css?v=2" rel="stylesheet">
+    <link href="css/tables.css" rel="stylesheet">
 
     <!--This section is for the discord embed card. Need to expand upon it. -->
     <meta name="og:title" content="<?= $json_data["BasicInfo"]["Hostname"] ?>" />
@@ -31,10 +31,10 @@ $profile_name = pathinfo($json_file, PATHINFO_FILENAME);
         window.PROFILE_NAME = "<?= $profile_name ?>";
     </script>
     <!--This should be first to make sure the themes load on time-->
-    <script defer src="static/js/themes.js?v=2"></script>
+    <script defer src="js/themes.js?v=2"></script>
 
     <!--Konami Code for Dev Stuff-->
-    <script defer="defer" src="static/js/konami.js"></script>
+    <script defer="defer" src="js/konami.js"></script>
 
     <!--Table Rendering-->
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.slim.min.js"></script>
@@ -44,6 +44,6 @@ $profile_name = pathinfo($json_file, PATHINFO_FILENAME);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js" type="text/javascript"></script>
 
     <!--Main Scripts-->
-    <script defer="defer" src="static/js/tables.js?v=1" type="module"></script>
-    <script defer="defer" src="static/js/main.js?v=2"></script>
+    <script defer="defer" src="js/tables.js?v=1" type="module"></script>
+    <script defer="defer" src="js/main.js?v=2"></script>
 </head>

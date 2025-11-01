@@ -129,7 +129,7 @@ tr:nth-child(even) {
     <script nonce="<?= $nonce ?>">
         window.PROFILE_NAME = "<?= $profile_name ?>";
     </script>
-    <script defer="defer" src="static/js/redir.js"></script>
+    <script defer="defer" src="js/redir.js"></script>
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
