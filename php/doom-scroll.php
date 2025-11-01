@@ -190,8 +190,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
         rel="stylesheet"/>
-    <link href="static/css/doom-scroll.css" rel="stylesheet" />
-    <link href="static/css/tables.css" rel="stylesheet" />
+    <link href="css/doom-scroll.css" rel="stylesheet" />
+    <link href="css/tables.css" rel="stylesheet" />
 
     <!--This section is for the discord embed card. Need to expand upon it. -->
     <meta name="og:title" content="<?= $json_data["BasicInfo"]["Hostname"] ?>"/>
@@ -206,10 +206,10 @@
     <script nonce="<?= $script_nonce ?>">
         window.PROFILE_NAME = "<?= $profile_name ?>";
     </script>
-    <script defer src="static/js/doom-scroll.js?v=1" type="module"></script>
+    <script defer src="js/doom-scroll.js?v=1" type="module"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.slim.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/sc-2.0.7/datatables.min.js"></script>
-    <script src="static/js/konami.js"></script>
+    <script src="js/konami.js"></script>
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
