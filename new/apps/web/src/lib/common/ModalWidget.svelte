@@ -9,17 +9,20 @@
 		widgetContents,
 		/** what's displayed when the widget is in modal mode*/
 		modalContents,
+		/** "more info" contents*/
+		extraModalContents,
 	} = $props();
 
 	// TODO: support for "more info" is not currently
 	// implemented. When it is, it should not make use
 	// of IDs
-	let expanded = $state(false);
+	let modalExpanded = $state(false);
+	let moreInfoExpanded = $state(false);
 </script>
 
 <button
 	onclick={() => {
-			expanded = true;
+			modalExpanded = true;
 		}}
 	class="_widget">
 	<h1>{title}</h1>
@@ -28,14 +31,14 @@
 	</div>
 </button>
 
-{#if expanded}
-<span class="backdrop" onclick={() => {expanded = false}} role="none">
+{#if modalExpanded}
+<span class="backdrop" onclick={() => {modalExpanded = false}} role="none">
 </span>
 <div class="_modal">
 	<!-- modal header -->
 	<div>
 		<h5>{title}</h5>
-		<button onclick={() => {expanded = false;}} type="button" aria-label="Close"
+		<button onclick={() => {modalExpanded = false;}} type="button" aria-label="Close"
 		></button>
 	</div>
 
@@ -43,23 +46,24 @@
 		{@render modalContents()}
 	</div>
 
-	<!-- more info -->
-	<!-- <div class="modal-body">
-		{@render extraModalContents()}
-	</div> -->
+	<!-- more info -->	
+	{#if extraModalContents && moreInfoExpanded == true}
+		<div class="modal-body">
+			{@render extraModalContents()}
+		</div>
+	{/if}
 
 	<!-- footer -->
 	<div>
-		<!-- {#if extraModalContents}
+		{#if extraModalContents && moreInfoExpanded == false}
 			<button
 				type="button"
 				class="btn btn-secondary"
-				id={modalId + '-more-info-button'}
-				onclick={() => infoClick(modalId)}>More Info</button
+				onclick={() => {moreInfoExpanded = true}}>More Info</button
 			>
-		{/if} -->
+		{/if}
 		<button
-			onclick={() => {expanded = false;}}
+			onclick={() => {modalExpanded = false;}}
 			type="button">Close</button
 		>
 	</div>
