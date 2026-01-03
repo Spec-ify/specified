@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import { dev } from '$app/environment';
 	import Widget from '../../common/ModalWidget.svelte';
+	import IntersectionObserver from "svelte-intersection-observer";
 
 	interface CpuInfo {
 		CurrentClockSpeed: number;
@@ -27,6 +28,9 @@
 	let response: any = $state();
 	let fetched: boolean = $state(false);
 	let cpuName: string = $state('...');
+
+	let cpuIntersect: boolean = false;
+	let cpuElement: HTMLElement;
 
 	async function cpuLookup() {
 		if (dev) {
@@ -61,27 +65,6 @@
 			cpuName = response.name;
 		}
 	}
-
-	onMount(() => {
-		cpuLookup().then();
-		const  observer = new IntersectionObserver((entries) => {
-			if (entries[0].isIntersecting) {
-				cpuLookup().then();
-				unobserve();
-			}
-		});
-
-		let cpuDatabase = document.getElementById('cpu-info-title');
-		if (cpuDatabase) {
-			observer.observe(cpuDatabase);
-		}
-
-		function unobserve() {
-			if (cpuDatabase) {
-				observer.unobserve(cpuDatabase);
-			}
-		}
-	});
 </script>
 
 <!-- CPU -->
@@ -125,7 +108,13 @@
 	{/snippet}
 
 	{#snippet extraModalContents()}
-		<h6 class="modal-title" id="cpu-info-title">Database results for: {cpuName}</h6>
+		
+		<IntersectionObserver once bind:element={cpuElement} bind:intersecting={cpuIntersect} on:intersect={(e)=>{
+			cpuLookup().then();
+		}}>
+			<h6 bind:this={cpuElement} class="modal-title" id="cpu-info-title">Database results for: {cpuName}</h6>
+		</IntersectionObserver>
+		
 		<table class="table">
 			<tbody id="fetched-cpu-info">
 				{#if fetched}
