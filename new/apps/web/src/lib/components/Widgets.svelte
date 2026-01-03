@@ -19,7 +19,8 @@
 
 <div class="widgets">
 	<Cpu cpu={report.Hardware.Cpu} />
-	<!--<RAM ramData={rawJSON.Hardware.Ram} pagefileData={rawJSON.System.PageFile} />
+	<Ram ram={report.Hardware.Ram} pagefile={report.System.PageFile}/>
+	<!--
 	<Motherboard
 		tpmData={rawJSON.Security.Tpm}
 		motherboardData={rawJSON.Hardware.Motherboard}
