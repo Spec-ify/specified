@@ -24,8 +24,11 @@
 		cpu
 	}: Props = $props();
 
+	let response: any = $state();
+	let fetched: boolean = $state(false);
+	let cpuName: string = $state('...');
+
 	async function cpuLookup() {
-		let response;
 		if (dev) {
 			console.info('Trying local server for hwapi');
 			try {
@@ -52,26 +55,16 @@
 				})
 			).json();
 		}
-		// update the title element to reflect the name fetched from the database
-		let infoTitle = document.getElementById('cpu-info-title');
-		if (infoTitle) {
-			infoTitle.innerHTML = infoTitle.innerHTML.slice(0, -3) + response.name;
-		}
 
-		let tableContents = '';
-		// add new elements to the table for every kv in the database
-		for (const [key, value] of Object.entries(response.attributes)) {
-			tableContents += `<tr><td>${key}</td><td>${value}</td></tr>`;
-		}
-		// cpuTable.innerHTML = tableContents;
-		let fetchedTitle = document.getElementById('fetched-cpu-info');
-		if (fetchedTitle) {
-			fetchedTitle.innerHTML = tableContents;
+		if (response){
+			fetched = true;
+			cpuName = response.name;
 		}
 	}
 
 	onMount(() => {
-		const observer = new IntersectionObserver((entries) => {
+		cpuLookup().then();
+		const  observer = new IntersectionObserver((entries) => {
 			if (entries[0].isIntersecting) {
 				cpuLookup().then();
 				unobserve();
@@ -131,12 +124,22 @@
 		</table>
 	{/snippet}
 
-	<!-- <div slot="extras" class="modal-body" id="cpu-modal-info-table" style="display:none;">
-		<h6 class="modal-title" id="cpu-info-title">Database results for: ...</h6>
+	{#snippet extraModalContents()}
+		<h6 class="modal-title" id="cpu-info-title">Database results for: {cpuName}</h6>
 		<table class="table">
-			<tbody id="fetched-cpu-info"> </tbody>
+			<tbody id="fetched-cpu-info">
+				{#if fetched}
+					{#each Object.entries(response.attributes) as [key, value]}
+						<tr>
+							<td>{key}</td>
+							<td>{value}</td>
+						</tr>
+					{/each}
+				{/if}
+			</tbody>
 		</table>
-	</div> -->
+	{/snippet}
+
 </Widget>
 
 <style>
