@@ -19,8 +19,5 @@
     "workspaces": [
         "apps/*",
         "packages/*"
-    ],
-    "dependencies": {
-        "svelte-intersection-observer": "^1.0.0"
-    }
+    ]
 }
