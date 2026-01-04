@@ -20,6 +20,8 @@
 
 <div class="widgets">
 	<Cpu cpu={report.Hardware.Cpu} />
+	<Os security={report.Security} basicInfo={report.BasicInfo} />
+	<!--<RAM ramData={rawJSON.Hardware.Ram} pagefileData={rawJSON.System.PageFile} />
 	<Motherboard
 		tpm={report.Security.Tpm}
 		motherboard={report.Hardware.Motherboard}
