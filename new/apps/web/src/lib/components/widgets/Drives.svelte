@@ -1,228 +1,174 @@
 <!-- NOT YET MIGRATED TO NEW WIDGET SYSTEM -->
 <script lang="ts">
+	import { isPartiallyEmittedExpression } from 'typescript';
 	import Widget from '../../common/ModalWidget.svelte';
+	import Widgets from '../Widgets.svelte';
+    
+    interface partitionInfo {
+        PartitionCapacity: number;
+        PartitionFree: number;
+        PartitionLabel: string;
+        PartitionLetter: null;
+        Filesystem: string;
+        CfgMgrErrorCode: number;
+        LastErrorCode: number;
+        DirtyBitSet: boolean;
+        BitlockerEncryptionStatus: boolean;
+    }
+
+    interface smartInfo {
+        Id: number;
+        Name: string;
+        RawValue: string;
+    }
+    
+    interface driveInfo {
+        DeviceName: string;
+        SerialNumber: string;
+        DiskNumber: number;
+        DiskCapacity: number;
+        DiskFree: number;
+        BlockSize: number;
+        MediaType: string;
+        InterfaceType: string;
+        PartitionScheme: string;
+        Partitions: Array<partitionInfo>;
+        SmartData: Array<smartInfo>;
+    }
+
+    interface driveProcessedInfo {
+        partitionCapacityTotal: number;
+        partitionFreeTotal: number;
+        capacityMatch: boolean;
+        data: driveInfo;
+    }
+    
+    interface Props {
+		drives: Array<driveInfo>;
+	}
+
+	let {
+		drives
+	}: Props = $props();
+
+    let drivesProcessed: Array<driveProcessedInfo> = []; 
+
+    drives.forEach((drive: driveInfo)=>{
+        
+        let partitionCapacityTotal: number = 0, partitionFreeTotal: number = 0;
+        drive.Partitions.forEach((partition: partitionInfo)=>{
+            partitionCapacityTotal += partition.PartitionCapacity;
+            partitionFreeTotal += partition.PartitionFree;
+        })
+        
+        let inpDrive: driveProcessedInfo = {
+            partitionCapacityTotal: partitionCapacityTotal,
+            partitionFreeTotal: partitionFreeTotal,
+            capacityMatch: (partitionCapacityTotal == drive.DiskCapacity ? true : false),
+            data: drive,
+        }
+
+        drivesProcessed.push(inpDrive);
+    })
+
 </script>
 
-<!--
+{#each drivesProcessed as drive}
+    <Widget title={drive.data.DeviceName}>
+        {#snippet widgetContents()}
+            <span>{Math.round((drive.data.DiskCapacity - drive.partitionFreeTotal) / 1073741824 )} GB / {Math.floor((drive.data.DiskCapacity) / 1073741824 )} GB</span>
+            <div>{Math.round(((drive.data.DiskCapacity - drive.partitionFreeTotal) / drive.data.DiskCapacity) * 100)}%</div>
+        {/snippet}
+        
+        {#snippet modalContents()}
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Name</td>
+                            <td>SN</td>
+                            <td>#</td>
+                            <td>Capacity</td>
+                            <td>Free</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{drive.data.DeviceName}</td>
+                            <td>{drive.data.SerialNumber}</td>
+                            <td>{drive.data.DiskNumber}</td>
+                            <td>{Math.floor(drive.data.DiskCapacity / 1073741824)} GB</td>
+                            <td>{Math.floor(drive.data.DiskFree / 1073741824)} GB</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-# Drives
- 
-Could probably use a foreach on array that adds a widget component for each drive detected
+            <div>
+                <h6>Partitions</h6>
+                <!-- TO-DO: PARTITION BAR -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Label</td>
+                            <td>Letter</td>
+                            <td>Capacity</td>
+                            <td>Free</td>
+                            <td>FS Type</td>
+                            <td>CfgMgr Error Code</td>
+                            <td>Last Error Code</td>
+                            <td>Dirty Bit</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {#each drive.data.Partitions as partition}
+                            <tr>
+                                <td>{partition.PartitionLabel}</td>
+                                <td>{partition.PartitionLetter}</td>
+                                <td>{Math.floor(partition.PartitionCapacity / 1048576)} MB</td>
+                                <td>{Math.floor(partition.PartitionFree / 1048576)} MB</td>
+                                <td>{partition.Filesystem}</td>
+                                <td>{partition.CfgMgrErrorCode}</td>
+                                <td>{partition.LastErrorCode}</td>
+                                <td>{partition.DirtyBitSet}</td>
+                            </tr>
+                        {/each}
+                    </tbody>
+                </table>
+            </div>
 
--->
-<div class="widgets-widgets widgets" data-hide="false">
-	<!-- <?php
-    $drives_amount = safe_count($json_data['Hardware']['Storage']);
+            <div>
+                <h6>SMART</h6>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Index</td>
+                            <td>Name</td>
+                            <td>Value</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {#each drive.data.SmartData as smartVal}
+                            <tr>
+                                <td>{smartVal.Id}</td>
+                                <td>{smartVal.Name}</td>
+                                <td>{smartVal.RawValue}</td>
+                            </tr>
+                        {/each}
+                    </tbody>
+                </table>
+            </div>
+        {/snippet}
+    </Widget>
+{/each}
 
-    foreach ($json_data['Hardware']['Storage'] as $driveKey => $drive) {
-        $drive_size_raw = $drive['DiskCapacity'];
-        $drive_free_raw = getDriveFree($drive);
-        $device_name = $drive['DeviceName'];
-        $drive_taken_raw = $drive_size_raw - $drive_free_raw;
-        $drive_size = floor(bytesToGigabytes($drive_size_raw));
-        $drive_taken = floor(bytesToGigabytes($drive_taken_raw));
-        // the drive size can sometimes be zero if the drive is failing
-        if ($drive_taken != 0 && $drive_size != 0) {
-            $drive_percentage = round($drive_taken / $drive_size * 100);
-        } else $drive_percentage = 0;
-        $flavor_color = '';
+<style>
+	span {
+		color: var(--color-secondary-50);
+	}
 
-        if ($drive_percentage >= 80) {
-            $flavor_color = "red";
-        } elseif ($drive_percentage >= 50 && $drive_percentage <= 79) {
-            $flavor_color = "yellow";
-        } elseif ($drive_percentage >= 0 && $drive_percentage <= 49) {
-            $flavor_color = "green";
-        }
-        if (abs(floor(bytesToGigabytes($drive['DiskCapacity'])) -
-            floor(bytesToGigabytes(getDriveCapacity($drive)))) > 5) {
-            $flavor_color = "red";
-        }
-
-        $letters = array_filter(
-            array_column($drive['Partitions'], 'PartitionLetter')
-        );
-        $lettersString = implode(", ", $letters);
-
-        echo '
-                <div class="widget widget-disk hover" type="button" data-mdb-toggle="modal" data-mdb-target="#drive-modal' . $driveKey . '">
-                    <h1>' . $device_name . ' ' . $lettersString . '</h1>
-                    <div class="widget-values">
-                        <div class="widget-value">
-                            <div class="widget-single-value">
-                                <span
-                                                               class="' . $flavor_color . '">' . (int)$drive_taken . ' GB</span>
-                                <span>/</span>
-                                <span>' . (int) $drive_size . ' GB</span>
-                            </div>
-                            <div>' . $drive_percentage . '%</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal fade" id="drive-modal' . $driveKey . '" tabindex="-1" aria-labelledby="drive-modal" aria-hidden="true">
-                    <div class="modal-dialog modal-xl">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="modal-label">' . $device_name . ' ' . $lettersString . '</h5>
-                                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <table class="table">
-                                    <thead>
-                                    <th>Name</th>
-                                    <th>SN</th>
-                                    <th>#</th>
-                                    <th>Capacity</th>
-                                    <th>Free</th>
-                                    </thead>
-                                    <tbody>
-                                    ' . '<td>' . $drive['DeviceName'] . '</td>' . '
-                                    ' . '<td>' . $drive['SerialNumber'] . '</td>' . '
-                                    ' . '<td>' . $drive['DiskNumber'] . '</td>' . '
-                                    ' . '<td>' . floor(bytesToGigabytes($drive['DiskCapacity'])) . 'GB</td>' . '
-                                    ' . '<td>' . floor(bytesToGigabytes(getDriveFree($drive))) . 'GB</td>' . '
-                                    </tbody>
-                                </table>
-                                <h5>Partitions</h5>
-                                <div class="progress partition-whole-bar">
-                            ';
-
-        foreach ($drive['Partitions'] as $part) {
-            $part_size = $part['PartitionCapacity'];
-            $part_taken = $part_size - $part['PartitionFree'];
-            $part_display = "";
-            if (!empty($part['PartitionLabel'])) {
-                $part_display .= $part['PartitionLabel'];
-                if (isset($part['PartitionLetter'])) {
-                    $part_display .= " ({$part['PartitionLetter']})";
-                }
-            } else if (isset($part['PartitionLetter'])) { // and not partition label
-                $part_display = $part['PartitionLetter'];
-            }
-            if (!empty($part_display))
-                $part_display .= '<br/>';
-            $fs_display = $part['Filesystem'] ?? 'Unknown';
-
-            // The "drive size + 1" is a terrible fix for division by 0 errors
-            echo '
-                                <div class="progress progress-bar partition-one-bar" style="width: ' . $part_size / ($drive_size_raw + 1) * 100 . '%;">
-                                    <span class="partition-bar-label">
-                                        ' . $part_display /* this will already have <br/> if not empty */ . '
-                                        ' . $fs_display . '<br/>
-                                        ' . "$part_taken / $part_size MB Used" . '
-                                    </span>
-                                    <div class="progress-bar partition-space-bar" style="width: ' . $part_taken / $part_size * 100 . '%;"></div>
-                                </div>
-                                ';
-        }
-
-        echo '
-                                </div>
-                                <table class="table">
-                                    <thead>
-                                        <th>Label</th>
-                                        <th>Letter</th>
-                                        <th>Capacity</th>
-                                        <th>Free</th>
-                                        <th>FS Type</th>
-                                        <th>CfgMgr Error Code</th>
-                                        <th>Last Error Code</th>
-                                        <th>Dirty Bit</th>
-                                    </thead>
-                                    <tbody>
-                                    ';
-        foreach ($drive['Partitions'] as $part) {
-            echo '
-                                <tr>
-                                    <td>' . $part['PartitionLabel'] . '</td>
-                                    <td>' . $part['PartitionLetter'] . '</td>
-                                    <td>' . floor(bytesToMegabytes($part['PartitionCapacity'])) . ' MB</td>
-                                    <td>' . floor(bytesToMegabytes($part['PartitionFree'])) . ' MB</td>
-                                    <td>' . $part['Filesystem'] . '</td>
-                                    <td>' . $part['CfgMgrErrorCode'] . '</td>
-                                    <td>' . $part['LastErrorCode'] . '</td>
-                                    <td>' . $part['DirtyBitSet'] . '</td>
-                                </tr>
-                                ';
-        }
-        echo '
-                                    </tbody>
-                                </table>
-                            <h5>SMART</h5>
-                            ';
-        if (is_array($drive['SmartData']) && count($drive['SmartData']) != 0) {
-            echo
-            '
-                                <div class="smart-table-wrapper">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Index</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Value</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                ';
-
-            // two SMART chunks for 2 columns of table
-            list($smart1, $smart2) = array_chunk($drive['SmartData'], ceil(safe_count($drive['SmartData']) / 2));
-
-            foreach ($smart1 as $smartEntry) {
-                echo
-                '
-                                        <tr>
-                                            <th scope="row">' . $smartEntry['Id'] . '</th>
-                                            <td>' . $smartEntry['Name'] . '</td>
-                                            <td>' . $smartEntry['RawValue'] . '</td>
-                                        </tr>';
-            }
-
-            echo '
-                                        </tbody>
-                                    </table>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Index</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Value</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                ';
-
-            foreach ($smart2 as $smartEntry) {
-                echo
-                '
-                                        <tr>
-                                            <th scope="row">' . $smartEntry['Id'] . '</th>
-                                            <td>' . $smartEntry['Name'] . '</td>
-                                            <td>' . $smartEntry['RawValue'] . '</td>
-                                        </tr>';
-            }
-
-            echo
-            '
-                                        </tbody>
-                                    </table>
-                                </div>
-                                ';
-        } else {
-            echo
-            '
-                        <h5>Sorry, no SMART data was found for this device.</h5>
-                        ';
-        }
-        echo
-        '
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>';
-    }
-    ?> -->
-</div>
+	div {
+		color: var(--color-surface-300);
+		font-size: 13pt;
+	}
+</style>
