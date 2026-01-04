@@ -2,41 +2,77 @@
 <script lang="ts">
 	import Widget from '../../common/ModalWidget.svelte';
 
-	export let nicData: any;
+	interface NicInfo {
+        DefaultIPGateway: Array<string>;
+        Description: string;
+        DHCPEnabled: boolean;
+        DHCPLeaseExpires: string;
+        DHCPLeaseObtained: string;
+        DHCPServer: string;
+        DNSDomain: null,
+        DNSDomainSuffixSearchOrder: Array<string>;
+        DNSHostName: string;
+        DNSServerSearchOrder: Array<string>;
+        InterfaceIndex: number;
+        IPAddress: Array<string>;
+        IPEnabled: boolean;
+        IPSubnet: Array<string>;
+        MACAddress: string;
+        LinkSpeed: number;
+        PhysicalAdapter: boolean;
+        FullDuplex: boolean;
+        MediaConnectState: number;
+        MediaDuplexState: number;
+        MtuSize: number;
+        Name: string;
+        OperationalStatusDownMediaDisconnected: boolean;
+        PermanentAddress: string;
+        PromiscuousMode: boolean;
+        State: number;
+        DNSIPV6: string;
+        DNSIsStatic: boolean;
+	}
+
+	interface Props {
+		nic: Array<NicInfo>;
+	}
+
+	let {
+		nic
+	}: Props = $props();
 
 	function findNic() {
-		let nicText = '';
-		nicData.forEach((adapter: any, _: any) => {
+		let physicalAdapters: Array<string> = [];
+
+		nic.forEach((adapter: NicInfo, _: any) => {
 			if (adapter.PhysicalAdapter && adapter.IPAddress) {
-				if (Object.values(adapter.IPAddress).length > 0) nicText = adapter.Description;
+				if (adapter.IPAddress.length > 0) {
+					return adapter.Description;
+				};
 			}
+
+			if (adapter.PhysicalAdapter) physicalAdapters.push(adapter.Description);
 		});
 
-		nicData.forEach((_: string, adapter: Record<string, any>) => {
-			if (adapter.PhysicalAdapter) nicText = adapter.Description;
-		});
-
-		if (nicText == '') {
-			return 'Disconnected';
-		} else {
-			return nicText;
+		if (physicalAdapters.length > 0){
+			return physicalAdapters[0];
 		}
+
+		return 'Disconnected';
 	}
 </script>
 
 <!-- NIC -->
 
-<Widget title="NIC" modalId="nic-modal">
-	<div slot="values">
+<Widget title="NIC">
+	{#snippet widgetContents()}
 		<div class="widget-value">
-			<div class="green">
-				{findNic()}
-			</div>
+			<span>{findNic()}</span>
 		</div>
-	</div>
+	{/snippet}
 
-	<div slot="modal-body">
-		{#each nicData as adapter}
+	{#snippet modalContents()}
+		{#each nic as adapter}
 			<table class="table nic">
 				<tbody>
 					<tr>
@@ -121,7 +157,7 @@
 					</tr>
 					<tr>
 						<td>Physical Adapter?</td>
-						<td>{adapter.PhysicalAdapter ?? 'unknown'}</td>
+						<td>{adapter.PhysicalAdapter ?? 'Unknown'}</td>
 					</tr>
 					{#if adapter.LinkSpeed}
 						<tr>
@@ -137,12 +173,6 @@
 									{DNSIPV6}<br />
 								{/each}
 							</td>
-						</tr>
-					{/if}
-					{#if adapter.DNSIsStatic}
-						<tr>
-							<td>Is DNS Static?</td>
-							<td>{adapter.DNSIsStatic}</td>
 						</tr>
 					{/if}
 					{#if adapter.DNSIsStatic}
@@ -192,5 +222,16 @@
 				</tbody>
 			</table>
 		{/each}
-	</div>
+	{/snippet}
 </Widget>
+
+<style>
+	span {
+		color: var(--color-secondary-50);
+	}
+
+	div {
+		color: var(--color-surface-300);
+		font-size: 13pt;
+	}
+</style>

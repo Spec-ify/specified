@@ -19,6 +19,7 @@
 
 <div class="widgets">
 	<Cpu cpu={report.Hardware.Cpu} />
+	<Nic nic={report.Network.Adapters} />
 	<!--<RAM ramData={rawJSON.Hardware.Ram} pagefileData={rawJSON.System.PageFile} />
 	<Motherboard
 		tpmData={rawJSON.Security.Tpm}
