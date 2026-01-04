@@ -17,7 +17,7 @@
 
 	interface Props {
 		cpu: CpuInfo;
-		cpuMoreInfo: Response<any>;
+		cpuMoreInfo: Promise<any>;
 	}
 
 	let {
@@ -68,17 +68,21 @@
 	{/snippet}
 
 	{#snippet extraModalContents()}
-		<h6 class="modal-title">Database results for: {cpuMoreInfo.name}</h6>
-		<table class="table">
-			<tbody>
-				{#each Object.entries(cpuMoreInfo.attributes) as [key, value]}
-					<tr>
-						<td>{key}</td>
-						<td>{value}</td>
-					</tr>
-				{/each}
-			</tbody>
-		</table>
+		{#await cpuMoreInfo}
+			<h6 class="modal-title">Database results for: ...</h6>
+		{:then reposnse}
+			<h6 class="modal-title">Database results for: {reposnse.name}</h6>
+			<table class="table">
+				<tbody>
+					{#each Object.entries(reposnse.attributes) as [key, value]}
+						<tr>
+							<td>{key}</td>
+							<td>{value}</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		{/await}
 	{/snippet}
 
 </Widget>

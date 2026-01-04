@@ -68,6 +68,6 @@ export const load: ServerLoad = async ({ fetch }) => {
 	const tabbedInfoHTML = await (
 		await fetch(`http://localhost:8080/tabbed_info.php/?file=${FILE_PATH}`)
 	).text();
-	const cpuMoreInfo = await cpuLookup(report.Hardware.Cpu);
+	const cpuMoreInfo = cpuLookup(report.Hardware.Cpu);
 	return { report, cpuMoreInfo, widgetHTML, tableHTML, tabbedInfoHTML };
 };
