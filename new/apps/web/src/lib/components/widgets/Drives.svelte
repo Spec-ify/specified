@@ -3,6 +3,7 @@
 	import { isPartiallyEmittedExpression } from 'typescript';
 	import Widget from '../../common/ModalWidget.svelte';
 	import Widgets from '../Widgets.svelte';
+	import PartitionBar from '../logic/PartitionBar.svelte';
     
     interface partitionInfo {
         PartitionCapacity: number;
@@ -106,7 +107,8 @@
 
             <div>
                 <h6>Partitions</h6>
-                <!-- TO-DO: PARTITION BAR -->
+                <PartitionBar partitions={drive.data.Partitions} />
+                <div class="divider"></div>
                 <table class="table">
                     <thead>
                         <tr>
@@ -171,4 +173,8 @@
 		color: var(--color-surface-300);
 		font-size: 13pt;
 	}
+
+    .divider {
+        padding-top: 0.5rem;
+    }
 </style>
