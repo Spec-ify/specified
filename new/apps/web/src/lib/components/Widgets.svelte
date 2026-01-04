@@ -19,6 +19,7 @@
 
 <div class="widgets">
 	<Cpu cpu={report.Hardware.Cpu} />
+	<Gpu gpus={report.Hardware.Gpu} monitors={report.Hardware.Monitors} />
 	<!--<RAM ramData={rawJSON.Hardware.Ram} pagefileData={rawJSON.System.PageFile} />
 	<Motherboard
 		tpmData={rawJSON.Security.Tpm}
