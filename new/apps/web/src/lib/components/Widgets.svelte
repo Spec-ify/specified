@@ -19,6 +19,11 @@
 
 <div class="widgets">
 	<Cpu cpu={report.Hardware.Cpu} />
+	<Motherboard
+		tpm={report.Security.Tpm}
+		motherboard={report.Hardware.Motherboard}
+		bios={report.Hardware.BiosInfo}
+	/>
 	<!--<RAM ramData={rawJSON.Hardware.Ram} pagefileData={rawJSON.System.PageFile} />
 	<Motherboard
 		tpmData={rawJSON.Security.Tpm}
