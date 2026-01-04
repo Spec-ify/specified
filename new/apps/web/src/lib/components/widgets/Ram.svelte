@@ -128,7 +128,7 @@
 
 	.flex-container {
 		display: flex;
-		flex-flow: row;
+		flex-flow: row wrap;
 		max-width: inherit;
 	}
 </style>
