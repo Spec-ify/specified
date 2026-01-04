@@ -2,9 +2,7 @@
 
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { dev } from '$app/environment';
 	import Widget from '../../common/ModalWidget.svelte';
-	import IntersectionObserver from "svelte-intersection-observer";
 
 	interface CpuInfo {
 		CurrentClockSpeed: number;
@@ -19,52 +17,14 @@
 
 	interface Props {
 		cpu: CpuInfo;
+		cpuMoreInfo: Response<any>;
 	}
 
 	let {
-		cpu
+		cpu,
+		cpuMoreInfo
 	}: Props = $props();
 
-	let response: any = $state();
-	let fetched: boolean = $state(false);
-	let cpuName: string = $state('...');
-
-	let cpuIntersect: boolean = false;
-	let cpuElement: HTMLElement;
-
-	async function cpuLookup() {
-		if (dev) {
-			console.info('Trying local server for hwapi');
-			try {
-				response = await (
-					await fetch(
-						`http://localhost:3000/api/cpus/?name=${encodeURIComponent(cpu.Name)}`,
-						{
-							method: 'GET',
-							mode: 'cors'
-						}
-					)
-				).json();
-			} catch (e) {
-				console.warn(
-					'Could not connect to local hwapi instance, falling back to spec-ify.com'
-				);
-			}
-		}
-		if (!response) {
-			response = await (
-				await fetch(`https://spec-ify.com/api/cpus/?name=${encodeURIComponent(cpu.Name)}`, {
-					method: 'GET',
-					mode: 'cors'
-				})
-			).json();
-		}
-
-		if (response){
-			fetched = true;
-			cpuName = response.name;
-		}
-	}
 </script>
 
 <!-- CPU -->
@@ -108,23 +68,15 @@
 	{/snippet}
 
 	{#snippet extraModalContents()}
-		
-		<IntersectionObserver once bind:element={cpuElement} bind:intersecting={cpuIntersect} on:intersect={(e)=>{
-			cpuLookup().then();
-		}}>
-			<h6 bind:this={cpuElement} class="modal-title" id="cpu-info-title">Database results for: {cpuName}</h6>
-		</IntersectionObserver>
-		
+		<h6 class="modal-title">Database results for: {cpuMoreInfo.name}</h6>
 		<table class="table">
-			<tbody id="fetched-cpu-info">
-				{#if fetched}
-					{#each Object.entries(response.attributes) as [key, value]}
-						<tr>
-							<td>{key}</td>
-							<td>{value}</td>
-						</tr>
-					{/each}
-				{/if}
+			<tbody>
+				{#each Object.entries(cpuMoreInfo.attributes) as [key, value]}
+					<tr>
+						<td>{key}</td>
+						<td>{value}</td>
+					</tr>
+				{/each}
 			</tbody>
 		</table>
 	{/snippet}
