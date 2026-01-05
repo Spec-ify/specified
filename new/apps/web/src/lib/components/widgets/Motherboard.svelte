@@ -3,13 +3,13 @@
 	import Widget from '../../common/ModalWidget.svelte';
 	import { lists } from '$lib/common/lists';
 
-	interface motherboardInfo {
+	interface MotherboardInfo {
 		Manufacturer: string;
 		Product: string;
 		SerialNumber: string;
 	}
 
-	interface tpmInfo {
+	interface TpmInfo {
 		IsActivated_InitialValue: boolean,
 		IsEnabled_InitialValue: boolean,
 		IsOwned_InitialValue: boolean,
