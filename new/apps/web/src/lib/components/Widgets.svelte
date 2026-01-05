@@ -34,7 +34,7 @@
 </div>
 
 <div class="widgets">
-	<Drives />
+	<Drives drives={report.Hardware.Storage}/>
 </div>
 
 <div class="widgets">
