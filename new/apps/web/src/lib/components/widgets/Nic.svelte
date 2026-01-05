@@ -41,7 +41,7 @@
 		nics
 	}: Props = $props();
 
-	function findPrimaryAdapter(nics: Array<NicInfo>) {
+	function findPrimaryAdapter(nics: Array<NicInfo>): string {
 		let physicalAdapters: Array<string> = [];
 
 		nics.forEach((adapter: NicInfo, _: any) => {
