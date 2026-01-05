@@ -15,6 +15,7 @@
 	import PowerProfiles from './widgets/PowerProfiles.svelte';
 
 	export let report;
+	export let cpuMoreInfo;
 </script>
 
 <div class="widgets">
