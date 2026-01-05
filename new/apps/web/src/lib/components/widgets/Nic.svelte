@@ -34,26 +34,30 @@
 	}
 
 	interface Props {
-		nic: Array<NicInfo>;
+		nics: Array<NicInfo>;
 	}
 
 	let {
-		nic
+		nics
 	}: Props = $props();
 
-	function findNic() {
+	function findPrimaryAdapter(nics: Array<NicInfo>) {
 		let physicalAdapters: Array<string> = [];
 
-		nic.forEach((adapter: NicInfo, _: any) => {
+		nics.forEach((adapter: NicInfo, _: any) => {
+			// if adapter is *physical*, AND has a determined IP address
 			if (adapter.PhysicalAdapter && adapter.IPAddress) {
 				if (adapter.IPAddress.length > 0) {
 					return adapter.Description;
 				};
 			}
 
+			// identify and push physical adapters here, so we dont have to .forEach() the list later
 			if (adapter.PhysicalAdapter) physicalAdapters.push(adapter.Description);
 		});
 
+		// if there are none with an assigned IP address, but there are physical adapters,
+		// return the first in the array
 		if (physicalAdapters.length > 0){
 			return physicalAdapters[0];
 		}
@@ -62,17 +66,17 @@
 	}
 </script>
 
-<!-- NIC -->
+<!-- NICs -->
 
 <Widget title="NIC">
 	{#snippet widgetContents()}
 		<div class="widget-value">
-			<span>{findNic()}</span>
+			<span>{findPrimaryAdapter(nics)}</span>
 		</div>
 	{/snippet}
 
 	{#snippet modalContents()}
-		{#each nic as adapter}
+		{#each nics as adapter}
 			<table class="table nic">
 				<tbody>
 					<tr>
