@@ -15,18 +15,20 @@
 	import PowerProfiles from './widgets/PowerProfiles.svelte';
 
 	export let report;
+	export let cpuMoreInfo;
 </script>
 
 <div class="widgets">
 	<Cpu cpu={report.Hardware.Cpu} />
-	<Gpu gpus={report.Hardware.Gpu} monitors={report.Hardware.Monitors} />
-	<!--<RAM ramData={rawJSON.Hardware.Ram} pagefileData={rawJSON.System.PageFile} />
 	<Motherboard
-		tpmData={rawJSON.Security.Tpm}
-		motherboardData={rawJSON.Hardware.Motherboard}
-		biosData={rawJSON.Hardware.BiosInfo}
+		tpm={report.Security.Tpm}
+		motherboard={report.Hardware.Motherboard}
+		bios={report.Hardware.BiosInfo}
 	/>
-	<GPU rawGPUData={rawJSON.Hardware.Gpu} rawMonitorData={rawJSON.Hardware.Monitors} />
+	<Ram ram={report.Hardware.Ram} pagefile={report.System.PageFile}/>
+	<Gpu gpus={report.Hardware.Gpu} monitors={report.Hardware.Monitors} />
+
+	<!--
 	<OS securityData={rawJSON.Security} basicinfoData={rawJSON.BasicInfo} />
 	<NIC nicData={rawJSON.Network.Adapters} /> -->
 </div>
