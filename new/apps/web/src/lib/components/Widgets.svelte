@@ -15,10 +15,11 @@
 	import PowerProfiles from './widgets/PowerProfiles.svelte';
 
 	export let report;
+	export let cpuMoreInfo;
 </script>
 
 <div class="widgets">
-	<Cpu cpu={report.Hardware.Cpu} />
+	<Cpu cpu={report.Hardware.Cpu} cpuMoreInfo={cpuMoreInfo} />
 	<!--<RAM ramData={rawJSON.Hardware.Ram} pagefileData={rawJSON.System.PageFile} />
 	<Motherboard
 		tpmData={rawJSON.Security.Tpm}
