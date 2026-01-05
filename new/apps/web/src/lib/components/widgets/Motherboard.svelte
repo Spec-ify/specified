@@ -24,8 +24,8 @@
 	}
 	
 	interface Props {
-		tpm: tpmInfo;
-		motherboard: motherboardInfo;
+		tpm: TpmInfo;
+		motherboard: MotherboardInfo;
 		bios: Array<any>;
 	}
 
