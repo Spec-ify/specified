@@ -20,7 +20,7 @@ interface CpuInfo {
  * @param CPU info of report
  * @return (Response) Response of database with info
  */
-async function cpuLookup(cpu: CpuInfo) {
+async function cpuLookup(cpu: CpuInfo): Response {
 	let response: Response | undefined;
 
 	if (dev) {
