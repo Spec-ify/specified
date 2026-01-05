@@ -1,11 +1,9 @@
 <!-- NOT YET MIGRATED TO NEW WIDGET SYSTEM -->
 <script lang="ts">
-	import { isPartiallyEmittedExpression } from 'typescript';
 	import Widget from '../../common/ModalWidget.svelte';
-	import Widgets from '../Widgets.svelte';
 	import PartitionBar from '../logic/PartitionBar.svelte';
     
-    interface partitionInfo {
+    interface PartitionInfo {
         PartitionCapacity: number;
         PartitionFree: number;
         PartitionLabel: string;
@@ -17,13 +15,13 @@
         BitlockerEncryptionStatus: boolean;
     }
 
-    interface smartInfo {
+    interface SmartInfo {
         Id: number;
         Name: string;
         RawValue: string;
     }
     
-    interface driveInfo {
+    interface DriveInfo {
         DeviceName: string;
         SerialNumber: string;
         DiskNumber: number;
@@ -33,36 +31,36 @@
         MediaType: string;
         InterfaceType: string;
         PartitionScheme: string;
-        Partitions: Array<partitionInfo>;
-        SmartData: Array<smartInfo>;
+        Partitions: Array<PartitionInfo>;
+        SmartData: Array<SmartInfo>;
     }
 
-    interface driveProcessedInfo {
+    interface DriveProcessedInfo {
         partitionCapacityTotal: number;
         partitionFreeTotal: number;
         capacityMatch: boolean;
-        data: driveInfo;
+        data: DriveInfo;
     }
     
     interface Props {
-		drives: Array<driveInfo>;
+		drives: Array<DriveInfo>;
 	}
 
 	let {
 		drives
 	}: Props = $props();
 
-    let drivesProcessed: Array<driveProcessedInfo> = []; 
+    let drivesProcessed: Array<DriveProcessedInfo> = []; 
 
-    drives.forEach((drive: driveInfo)=>{
+    for (const drive of drives) {
         
         let partitionCapacityTotal: number = 0, partitionFreeTotal: number = 0;
-        drive.Partitions.forEach((partition: partitionInfo)=>{
+        for (const partition of drive.Partitions) {
             partitionCapacityTotal += partition.PartitionCapacity;
             partitionFreeTotal += partition.PartitionFree;
-        })
+        }
         
-        let inpDrive: driveProcessedInfo = {
+        let inpDrive: DriveProcessedInfo = {
             partitionCapacityTotal: partitionCapacityTotal,
             partitionFreeTotal: partitionFreeTotal,
             capacityMatch: (partitionCapacityTotal == drive.DiskCapacity ? true : false),
@@ -70,7 +68,7 @@
         }
 
         drivesProcessed.push(inpDrive);
-    })
+    }
 
 </script>
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 
-    interface partitionInfo {
+    interface PartitionInfo {
         PartitionCapacity: number;
         PartitionFree: number;
         PartitionLabel: string;
@@ -13,18 +13,14 @@
     }
 
     interface Props {
-		partitions: Array<partitionInfo>;
+		partitions: Array<PartitionInfo>;
 	}
 
 	let {
 		partitions
 	}: Props = $props();
 
-    let partitionTotal: number = 0;
-
-    partitions.forEach((partition: partitionInfo)=>{
-        partitionTotal += partition.PartitionCapacity
-    })
+    const partitionTotal: number = partitions.reduce((total, part) => total + part.PartitionCapacity, 0)
 
 </script>
 
