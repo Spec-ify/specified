@@ -20,13 +20,13 @@
 
 <div class="widgets">
 	<Cpu cpu={report.Hardware.Cpu} />
+	<Motherboard
+		tpm={report.Security.Tpm}
+		motherboard={report.Hardware.Motherboard}
+		bios={report.Hardware.BiosInfo}
+	/>
 	<Ram ram={report.Hardware.Ram} pagefile={report.System.PageFile}/>
 	<!--
-	<Motherboard
-		tpmData={rawJSON.Security.Tpm}
-		motherboardData={rawJSON.Hardware.Motherboard}
-		biosData={rawJSON.Hardware.BiosInfo}
-	/>
 	<GPU rawGPUData={rawJSON.Hardware.Gpu} rawMonitorData={rawJSON.Hardware.Monitors} />
 	<OS securityData={rawJSON.Security} basicinfoData={rawJSON.BasicInfo} />
 	<NIC nicData={rawJSON.Network.Adapters} /> -->
