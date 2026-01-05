@@ -1,20 +1,69 @@
-<!-- NOT YET IMPLEMENTED IN NEW WIDGET SYSTEM -->
 <script lang="ts">
 	import Widget from '../../common/ModalWidget.svelte';
-	import Rambuilder from '../logic/RamBuilder.svelte';
 
-	export let ramData;
-	export let pagefileData;
+	interface RamInfo {
+		DeviceLocation: string;
+		BankLocator: string;
+		Manufacturer: string;
+		SerialNumber: string;
+		PartNumber: string;
+		ConfiguredSpeed: number;
+		Capacity: number;
+	}
+
+	interface PagefileInfo {
+		AllocatedBaseSize: number;
+		Caption: string;
+		CurrentUsage: number;
+		PeakUsage: number;
+	}
+
+	interface Props {
+		ram: Array<RamInfo>;
+		pagefile: PagefileInfo;
+	}
+
+	let {
+		ram,
+		pagefile
+	}: Props = $props();
+
+	const flexBasis: string = `${100 / (Object.keys(ram).length % 4 ? Object.keys(ram).length % 4 : 4)}%`;
+
 </script>
 
 <!-- RAM -->
 
-<Widget title="Memory" modalId="ram-modal">
-	<div slot="values">
-		<Rambuilder data={ramData} />
-	</div>
+<Widget title="Memory">
 
-	<div slot="modal-body">
+	{#snippet widgetContents()}
+		<div class="flex-container">
+			{#each ram as ramStick, i}
+
+				{#if ramStick.Capacity > 0}
+					<div style="flex: 1 1 {flexBasis};">
+						<span>{Math.floor(ramStick.Capacity / 1000)} GB</span>
+						<div>DIMM {i+1}</div>
+					</div>
+				{:else}
+					<div style="flex: 1 1 {flexBasis};">
+						<span style="color: rgb(215,27,27);">--</span>
+						<div>DIMM {i+1}</div>
+					</div>
+				{/if}
+
+				<!-- 
+					Checks if report has more than 4 RAM Modules, 
+					and if each block has reached the 4th module in this row
+				-->
+				{#if Object.keys(ram).length > 4 && (i + 1) % 4 == 0}
+					<div style="flex-basis: 100%;"></div>
+				{/if}
+			{/each}
+		</div>
+	{/snippet}
+
+	{#snippet modalContents()}
 		<h5>Physical Memory</h5>
 		<table class="table">
 			<thead>
@@ -27,7 +76,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each ramData as ramStick}
+				{#each ram as ramStick}
 					{#if ramStick['Capacity'] <= 0}
 						<tr>
 							<td>{ramStick['DeviceLocation']}</td>
@@ -50,21 +99,38 @@
 			<tbody>
 				<tr>
 					<td>File Path</td>
-					<td>{pagefileData.Caption}</td>
+					<td>{pagefile.Caption}</td>
 				</tr>
 				<tr>
 					<td>Allocated Base Size</td>
-					<td>{pagefileData.AllocatedBaseSize} MB</td>
+					<td>{pagefile.AllocatedBaseSize} MB</td>
 				</tr>
 				<tr>
 					<td>Current Usage</td>
-					<td>{pagefileData.CurrentUsage} MB</td>
+					<td>{pagefile.CurrentUsage} MB</td>
 				</tr>
 				<tr>
 					<td>Peak Usage</td>
-					<td>{pagefileData.PeakUsage} MB</td>
+					<td>{pagefile.PeakUsage} MB</td>
 				</tr>
 			</tbody>
 		</table>
-	</div>
+	{/snippet}
 </Widget>
+
+<style>
+	span {
+		color: var(--color-secondary-50);
+	}
+
+	div {
+		color: var(--color-surface-300);
+		font-size: 13pt;
+	}
+
+	.flex-container {
+		display: flex;
+		flex-flow: row wrap;
+		max-width: inherit;
+	}
+</style>
