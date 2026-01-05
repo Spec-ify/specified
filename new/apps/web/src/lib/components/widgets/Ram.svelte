@@ -29,8 +29,7 @@
 		pagefile
 	}: Props = $props();
 
-	console.log(Object.keys(ram).length % 4 ? Object.keys(ram).length % 4 : 4);
-	let flexBasis: string = `${100 / (Object.keys(ram).length % 4 ? Object.keys(ram).length % 4 : 4)}%`;
+	const flexBasis: string = `${100 / (Object.keys(ram).length % 4 ? Object.keys(ram).length % 4 : 4)}%`;
 
 </script>
 
@@ -54,8 +53,12 @@
 					</div>
 				{/if}
 
+				<!-- 
+					Checks if report has more than 4 RAM Modules, 
+					and if each block has reached the 4th module in this row
+				-->
 				{#if Object.keys(ram).length > 4 && (i + 1) % 4 == 0}
-					<div style="flex-basis: 100%;"/>
+					<div style="flex-basis: 100%;"></div>
 				{/if}
 			{/each}
 		</div>
