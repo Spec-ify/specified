@@ -47,7 +47,7 @@
 	</div>
 
 	<!-- more info -->	
-	{#if extraModalContents && moreInfoExpanded == true}
+	{#if extraModalContents && moreInfoExpanded}
 		<div class="modal-body">
 			{@render extraModalContents()}
 		</div>

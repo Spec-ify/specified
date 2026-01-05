@@ -14,6 +14,12 @@ interface CpuInfo {
 	ThreadCount: number;
 }
 
+/*
+ * Looks up CPU name on HWAPI database
+ * 
+ * @param CPU info of report
+ * @return (Response) Response of database with info
+ */
 async function cpuLookup(cpu: CpuInfo) {
 	let response: Response | undefined;
 
@@ -38,7 +44,7 @@ async function cpuLookup(cpu: CpuInfo) {
 
 	if (!response) {
 		response = await (
-			await fetch(`https://spec-ify.com/api/cpus/?name=${encodeURIComponent(cpu.Name)}`, {
+			await fetch(`https://spec-ifygoon.com/api/cpus/?name=${encodeURIComponent(cpu.Name)}`, {
 				method: 'GET',
 				mode: 'cors'
 			})

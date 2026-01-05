@@ -1,7 +1,6 @@
 <!-- NOT YET MIGRATED TO NEW WIDGET SYSTEM -->
 
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Widget from '../../common/ModalWidget.svelte';
 
 	interface CpuInfo {
@@ -70,11 +69,11 @@
 	{#snippet extraModalContents()}
 		{#await cpuMoreInfo}
 			<h6 class="modal-title">Database results for: ...</h6>
-		{:then reposnse}
-			<h6 class="modal-title">Database results for: {reposnse.name}</h6>
+		{:then response}
+			<h6 class="modal-title">Database results for: {response.name}</h6>
 			<table class="table">
 				<tbody>
-					{#each Object.entries(reposnse.attributes) as [key, value]}
+					{#each Object.entries(response.attributes) as [key, value]}
 						<tr>
 							<td>{key}</td>
 							<td>{value}</td>
