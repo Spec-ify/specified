@@ -1,6 +1,7 @@
 <!-- NOT YET MIGRATED TO NEW WIDGET SYSTEM -->
 <script lang="ts">
 	import Widget from '../../common/ModalWidget.svelte';
+	import { bytesToMegabytes } from '$lib/common/constants';
 
 	interface GpuInfo {
 		AdapterRAM: number;
@@ -52,7 +53,7 @@
 
 	{#snippet modalContents()}
 		<div class="modal-body">
-			{#if !(gpus == null)}
+			{#if gpus !== null}
 				<h5>GPU Info</h5>
 				<table class="table">
 					<thead>
@@ -67,7 +68,7 @@
 						{#each Object.values(gpus) as gpu}
 							<tr>
 								<td>{gpu.Description}</td>
-								<td>{gpu.AdapterRAM / 1048576} MB</td>
+								<td>{gpu.AdapterRAM / bytesToMegabytes} MB</td>
 								<td>{gpu.CurrentHorizontalResolution} x {gpu.CurrentVerticalResolution}</td>
 								<td>{gpu.CurrentRefreshRate} Hz</td>
 							</tr>
@@ -76,7 +77,7 @@
 				</table>
 			{/if}
 
-			{#if !(monitors == null)}
+			{#if monitors !== null}
 				<h5>Monitor Info</h5>
 				<table class="table">
 					<thead>
@@ -89,7 +90,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						{#each Object.values(monitors) as monitor}
+						{#each monitors as monitor}
 							<tr>
 								<td>{monitor.Name}</td>
 								<td>{monitor.DedicatedMemory} MB</td>
