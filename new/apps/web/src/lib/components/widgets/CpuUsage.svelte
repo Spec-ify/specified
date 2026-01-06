@@ -6,15 +6,23 @@
 </script>
 
 <!-- CPU Usage -->
-<Widget title="CPU Usage" type="" modalId="cpu-usage-modal">
-	<div slot="values">
+<Widget title="CPU Usage">
+	{#snippet widgetContents()}
 		<div class="widget-value">
-			<div class="widget-value">
-				<span class="green">
-					{cpuloadData ?? '--'}%
-					<!-- <?= $json_data['Hardware']['Cpu']['LoadPercentage'] ?? '--' ?>% -->
-				</span>
-			</div>
+			<span class="green">
+				{cpuloadData ?? '--'}%
+			</span>
 		</div>
-	</div>
+	{/snippet}
 </Widget>
+
+<style>
+	span {
+		color: var(--color-secondary-50);
+	}
+
+	div {
+		color: var(--color-surface-300);
+		font-size: 13pt;
+	}
+</style>
