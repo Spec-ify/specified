@@ -19,9 +19,9 @@
 </script>
 
 <div class="widgets">
-	<Cpu cpu={report.Hardware.Cpu} />
+	<Cpu cpu={report.Hardware.Cpu} cpuMoreInfo={cpuMoreInfo}/>
 	<Os security={report.Security} basicInfo={report.BasicInfo} />
-	<!--<RAM ramData={rawJSON.Hardware.Ram} pagefileData={rawJSON.System.PageFile} />
+	<Ram ram={report.Hardware.Ram} pagefile={report.System.PageFile}/>
 	<Motherboard
 		tpm={report.Security.Tpm}
 		motherboard={report.Hardware.Motherboard}
