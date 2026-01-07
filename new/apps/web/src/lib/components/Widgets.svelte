@@ -38,7 +38,7 @@
 </div>
 
 <div class="widgets">
-	<CpuUsage cpuloadData={report.Hardware.Cpu.LoadPercentage} />
+	<CpuUsage cpuLoad={report.Hardware.Cpu.LoadPercentage} />
 	<!-- <CpuUsage cpuloadData={rawJSON.Hardware.Cpu.LoadPercentage} />
 	<RamUsage runprocData={rawJSON.System.RunningProcesses} ramData={rawJSON.Hardware.Ram} />
 	<Temps /> -->

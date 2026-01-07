@@ -2,7 +2,13 @@
 <script lang="ts">
 	import Widget from '../../common/ModalWidget.svelte';
 
-	export let cpuloadData;
+	interface Props {
+		cpuLoad: number;
+	}
+
+	let {
+		cpuLoad,
+	}: Props = $props();
 </script>
 
 <!-- CPU Usage -->
@@ -10,7 +16,7 @@
 	{#snippet widgetContents()}
 		<div class="widget-value">
 			<span class="green">
-				{cpuloadData ?? '--'}%
+				{cpuLoad ?? '--'}%
 			</span>
 		</div>
 	{/snippet}
