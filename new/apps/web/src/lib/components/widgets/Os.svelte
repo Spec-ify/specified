@@ -50,12 +50,12 @@
 
 	interface Props {
 		security: SecurityInfo;
-		basicInfo: BasicInfo;
+		basic: BasicInfo;
 	}
 
 	let {
 		security,
-		basicInfo
+		basic
 	}: Props = $props();
 
 	let tpmStatus = 'Disabled';
@@ -73,8 +73,8 @@
 <Widget title="Operating System">
 	{#snippet widgetContents()}
 		<div class="widget-value">
-			<span>{basicInfo.Edition}</span>
-			<div>{basicInfo.FriendlyVersion}</div>
+			<span>{basic.Edition}</span>
+			<div>{basic.FriendlyVersion}</div>
 		</div>
 	{/snippet}
 
@@ -84,35 +84,35 @@
 			<tbody>
 				<tr>
 					<td>Edition</td>
-					<td>{basicInfo.Edition}</td>
+					<td>{basic.Edition}</td>
 				</tr>
 				<tr>
 					<td>Version</td>
-					<td>{basicInfo.Version}</td>
+					<td>{basic.Version}</td>
 				</tr>
 				<tr>
 					<td>Friendly Version</td>
-					<td>{basicInfo.FriendlyVersion}</td>
+					<td>{basic.FriendlyVersion}</td>
 				</tr>
 				<tr>
 					<td>Install Date</td>
-					<td>{basicInfo.InstallDate}</td>
+					<td>{basic.InstallDate}</td>
 				</tr>
 				<tr>
 					<td>Uptime</td>
-					<td>{basicInfo.Uptime}</td>
+					<td>{basic.Uptime}</td>
 				</tr>
 				<tr>
 					<td>Hostname</td>
-					<td>{basicInfo.Hostname}</td>
+					<td>{basic.Hostname}</td>
 				</tr>
 				<tr>
 					<td>Username</td>
-					<td>{basicInfo.Username}</td>
+					<td>{basic.Username}</td>
 				</tr>
 				<tr>
 					<td>Domain</td>
-					<td>{basicInfo.Domain}</td>
+					<td>{basic.Domain}</td>
 				</tr>
 				<tr>
 					<td>UAC Status</td>
@@ -126,7 +126,7 @@
 				</tr>
 				<tr>
 					<td>Boot Mode</td>
-					<td>{basicInfo.BootMode}</td>
+					<td>{basic.BootMode}</td>
 				</tr>
 				<tr>
 					<td>Secure Boot</td>
@@ -136,7 +136,7 @@
 				</tr>
 				<tr>
 					<td>Boot State</td>
-					<td>{basicInfo.BootState}</td>
+					<td>{basic.BootState}</td>
 				</tr>
 				<tr>
 					<td>TPM Status</td>

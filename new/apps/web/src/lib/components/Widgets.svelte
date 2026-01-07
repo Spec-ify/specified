@@ -20,7 +20,7 @@
 
 <div class="widgets">
 	<Cpu cpu={report.Hardware.Cpu} cpuMoreInfo={cpuMoreInfo}/>
-	<Os security={report.Security} basicInfo={report.BasicInfo} />
+	<Os security={report.Security} basic={report.BasicInfo} />
 	<Ram ram={report.Hardware.Ram} pagefile={report.System.PageFile}/>
 	<Motherboard
 		tpm={report.Security.Tpm}
