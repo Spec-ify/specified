@@ -20,18 +20,27 @@
 	let moreInfoExpanded = $state(false);
 </script>
 
-<button
-	onclick={() => {
-			modalExpanded = true;
-		}}
-	class="_widget">
-	<h1>{title}</h1>
-	<div class="widget-values">
-			{@render widgetContents()}
+{#if modalContents}
+	<button
+		onclick={() => {
+				modalExpanded = true;
+			}}
+		class="_widget">
+		<h1>{title}</h1>
+		<div class="widget-values">
+				{@render widgetContents()}
+		</div>
+	</button>
+{:else}
+	<div class="_widget">
+		<h1>{title}</h1>
+		<div class="widget-values">
+				{@render widgetContents()}
+		</div>
 	</div>
-</button>
+{/if}
 
-{#if modalExpanded}
+{#if modalContents && modalExpanded}
 <span class="backdrop" onclick={() => {modalExpanded = false}} role="none">
 </span>
 <div class="_modal">
