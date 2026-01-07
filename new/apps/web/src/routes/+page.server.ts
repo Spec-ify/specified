@@ -44,7 +44,7 @@ async function cpuLookup(cpu: CpuInfo): Response {
 
 	if (!response) {
 		response = await (
-			await fetch(`https://spec-ifygoon.com/api/cpus/?name=${encodeURIComponent(cpu.Name)}`, {
+			await fetch(`https://spec-ify.com/api/cpus/?name=${encodeURIComponent(cpu.Name)}`, {
 				method: 'GET',
 				mode: 'cors'
 			})

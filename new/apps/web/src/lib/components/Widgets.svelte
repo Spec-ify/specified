@@ -19,7 +19,7 @@
 </script>
 
 <div class="widgets">
-	<Cpu cpu={report.Hardware.Cpu} />
+	<Cpu cpu={report.Hardware.Cpu} cpuMoreInfo={cpuMoreInfo}/>
 	<Motherboard
 		tpm={report.Security.Tpm}
 		motherboard={report.Hardware.Motherboard}
@@ -27,7 +27,7 @@
 	/>
 	<Ram ram={report.Hardware.Ram} pagefile={report.System.PageFile}/>
 	<Gpu gpus={report.Hardware.Gpu} monitors={report.Hardware.Monitors} />
-	<Nic nic={report.Network.Adapters} />
+	<Nic nics={report.Network.Adapters} />
 	<!--
 	<OS securityData={rawJSON.Security} basicinfoData={rawJSON.BasicInfo} />
 -->
