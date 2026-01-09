@@ -1,22 +1,49 @@
 <!-- NOT YET IMPLEMENTED IN NEW WIDGET SYSTEM -->
 <script lang="ts">
 	import Widget from '../../common/ModalWidget.svelte';
+	import { bytesToGigabytes } from '$lib/common/constants';
 
-	export let runprocData;
-	export let ramData;
+	interface RunningProcessInfo {
+		ProcessName: string;
+        Count: number;
+        ExePath: string;
+        Id: number;
+        WorkingSet: number;
+        CpuPercent: number;
+	}
+
+	interface RamInfo {
+		DeviceLocation: string;
+		BankLocator: string;
+		Manufacturer: string;
+		SerialNumber: string;
+		PartNumber: string;
+		ConfiguredSpeed: number;
+		Capacity: number;
+	}
+
+	interface Props {
+		runningProcesses: Array<RunningProcessInfo>;
+		ram: Array<RamInfo>;
+	}
+
+	let {
+		runningProcesses,
+		ram
+	}: Props = $props();
 
 	let workingSet: number = 0;
-
-	runprocData.forEach((process: any) => {
+	runningProcesses.forEach((process: any) => {
 		workingSet += process.WorkingSet;
 	});
 
-	let ramUsed = Math.round((workingSet / 1073741824) * 100) / 100;
+	const ramUsed = Math.round((workingSet / bytesToGigabytes) * 100) / 100;
+	
 	let totalRam: number = 0;
 	let ramUsedPercent: number = 0;
 
-	if (ramData) {
-		ramData.forEach((stick: any) => {
+	if (ram) {
+		ram.forEach((stick: any) => {
 			let capacity = stick.Capacity;
 			if (capacity > 0) {
 				totalRam += Math.floor(capacity / 1024);
@@ -28,21 +55,30 @@
 </script>
 
 <!-- RAM Usage -->
-<Widget title="Memory Usage" type="" modalId="memory-usage-modal">
-	<div slot="values">
-		<div class="widget-value">
-			<div class="widget-single-value">
-				<span class="green">
-					{ramUsed} GB
-				</span>
-				<span>/</span>
-				<span>
-					{totalRam} GB
-				</span>
-			</div>
-			<div>
-				{ramUsedPercent}%
-			</div>
+<Widget title="Memory Usage">
+	{#snippet widgetContents()}
+		<span class="green">
+			{ramUsed} GB / {totalRam} GB
+		</span>
+		<div>
+			{ramUsedPercent}%
 		</div>
-	</div>
+	{/snippet}
 </Widget>
+
+<style>
+	.green {
+		color: var(--color-secondary-50);
+	}
+
+	div {
+		color: var(--color-surface-300);
+		font-size: 13pt;
+	}
+
+	.flex-container {
+		display: flex;
+		flex-flow: row wrap;
+		max-width: inherit;
+	}
+</style>
