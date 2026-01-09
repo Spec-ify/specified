@@ -40,12 +40,8 @@
 </div>
 
 <div class="widgets">
-	<RamUsage runningProcesses={report.System.RunningProcesses} ram={report.Hardware.Ram} />
-	<CpuUsage cpuLoad={report.Hardware.Cpu.LoadPercentage} />
-	<!-- 
-	<Temps /> -->
+	<Temps />
 	<AudioDevices audioDevices={report.Hardware.AudioDevices}/>
-	<!-- <PowerProfiles /> -->
 </div>
 
 <style>
