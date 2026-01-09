@@ -20,6 +20,8 @@
 
 <div class="widgets">
 	<Cpu cpu={report.Hardware.Cpu} cpuMoreInfo={cpuMoreInfo}/>
+	<Os security={report.Security} basic={report.BasicInfo} />
+	<Ram ram={report.Hardware.Ram} pagefile={report.System.PageFile}/>
 	<Motherboard
 		tpm={report.Security.Tpm}
 		motherboard={report.Hardware.Motherboard}
@@ -39,8 +41,8 @@
 
 <div class="widgets">
 	<RamUsage runningProcesses={report.System.RunningProcesses} ram={report.Hardware.Ram} />
-	<!-- <CpuUsage cpuloadData={rawJSON.Hardware.Cpu.LoadPercentage} />
-	<RamUsage runprocData={rawJSON.System.RunningProcesses} ramData={rawJSON.Hardware.Ram} />
+	<CpuUsage cpuLoad={report.Hardware.Cpu.LoadPercentage} />
+	<!-- 
 	<Temps /> -->
 	<AudioDevices audioDevices={report.Hardware.AudioDevices}/>
 	<!-- <PowerProfiles /> -->
