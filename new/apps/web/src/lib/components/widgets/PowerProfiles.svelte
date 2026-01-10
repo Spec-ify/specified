@@ -20,7 +20,7 @@
 	}
 
 	interface Props {
-		powerprofiles: Array<PowerProfileInfo>;
+		powerProfiles: Array<PowerProfileInfo>;
 		batteries: Array<BatteryInfo>;
 	}
 
