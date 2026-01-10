@@ -24,13 +24,13 @@
 	}
 
 	let {
-		powerprofiles,
+		powerProfiles,
 		batteries
 	}: Props = $props();
 
 	let activeProfile: PowerProfileInfo;
 
-	powerprofiles.forEach((profile: PowerProfileInfo)=>{
+	powerProfiles.forEach((profile: PowerProfileInfo)=>{
 		if (profile.IsActive){
 			activeProfile = profile
 			return
@@ -59,7 +59,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each powerprofiles as profile}
+				{#each powerProfiles as profile}
 					<tr>
 						<td>{profile.Description}</td>
 						<td>{profile.ElementName}</td>
