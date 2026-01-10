@@ -1,40 +1,53 @@
-<!-- NOT YET IMPLEMENTED IN NEW WIDGET SYSTEM -->
 <script lang="ts">
 	import Widget from '../../common/ModalWidget.svelte';
+
+	interface PowerProfileInfo {
+		Caption: string;
+        Description: string;
+        ElementName: string;
+        InstanceID: string;
+        IsActive: boolean;	
+	}
+
+	interface BatteryInfo {
+		Name: string;
+        Manufacturer: string;
+        Chemistry: string;
+        Design_Capacity: string;
+        Full_Charge_Capacity: string;
+        Remaining_Life_Percentage: string;
+	}
+
+	interface Props {
+		powerProfiles: Array<PowerProfileInfo>;
+		batteries: Array<BatteryInfo>;
+	}
+
+	let {
+		powerProfiles,
+		batteries
+	}: Props = $props();
+
+	let activeProfile: PowerProfileInfo;
+
+	powerProfiles.forEach((profile: PowerProfileInfo)=>{
+		if (profile.IsActive){
+			activeProfile = profile
+			return
+		}
+	})
 </script>
 
 <!-- Power Profiles -->
-<Widget title="Power Profiles" modalId="power-modal">
-	<div slot="values">
+<Widget title="Power Profiles">
+	{#snippet widgetContents()}
 		<div class="widget-value">
-			<!-- <?php
-            if ($json_data['System']['PowerProfiles']) {
-                $profile_count = safe_count($json_data['System']['PowerProfiles']);
-                $profile_color = '';
-                $current_profile = '';
-                if ($profile_count != 0) {
-                    for ($profile = 0; $profile < $profile_count; $profile++) {
-                        if ($json_data['System']['PowerProfiles'][$profile]['IsActive']) {
-                            $current_profile =  $json_data['System']['PowerProfiles'][$profile]['ElementName'];
-                        }
-                    }
-                    if (str_contains(strtolower($current_profile), 'balanced')) {
-                        $profile_color = '--yellow';
-                    } elseif (str_contains(strtolower($current_profile), 'high')) {
-                        $profile_color = '--red';
-                    } elseif (str_contains(strtolower($current_profile), 'saver')) {
-                        $profile_color = '--green';
-                    }
-
-                    echo '<span style="color: var(' . $profile_color . ');">' . $current_profile . '</span>';
-                }
-            }
-            ?> -->
+			<span>{activeProfile.ElementName}</span>
 			<div style="font-size: 10pt;">Current Profile</div>
 		</div>
-	</div>
+	{/snippet}
 
-	<div class="modal-body">
+	{#snippet modalContents()}
 		<h4>Power Profiles</h4>
 		<table id="power-table" class="table">
 			<thead>
@@ -45,6 +58,16 @@
 					<th>Status</th>
 				</tr>
 			</thead>
+			<tbody>
+				{#each powerProfiles as profile}
+					<tr>
+						<td>{profile.Description}</td>
+						<td>{profile.ElementName}</td>
+						<td>{profile.InstanceID}</td>
+						<td>{profile.IsActive}</td>
+					</tr>
+				{/each}
+			</tbody>
 		</table>
 		<br />
 		<h4>Battery</h4>
@@ -58,6 +81,28 @@
 					<th>Current Full Charge Capacity</th>
 				</tr>
 			</thead>
+			<tbody>
+				{#each batteries as battery}
+					<tr>
+						<td>{battery.Name}</td>
+						<td>{battery.Manufacturer}</td>
+						<td>{battery.Chemistry}</td>
+						<td>{battery.Design_Capacity}</td>
+						<td>{battery.Full_Charge_Capacity}</td>
+					</tr>
+				{/each}
+			</tbody>
 		</table>
-	</div>
+	{/snippet}
 </Widget>
+
+<style>
+	span {
+		color: var(--color-secondary-50);
+	}
+
+	div {
+		color: var(--color-surface-300);
+		font-size: 13pt;
+	}
+</style>
