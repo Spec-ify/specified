@@ -29,26 +29,18 @@
 
     // Set Latest Version
     foreach ($eoldata as $eolitem) {
-        // Windows 10
-        if (!$eolitem['lts']
-            && !str_contains($eolitem['cycle'], '-e')
-            && str_contains($eolitem['cycle'], '10')
-            && $found10 === false) {
-            $latestver = $latestver . $eolitem['latest'] . ' ';
-            $found10 = true;
-        }
-
         // Windows 11
-        if (!$eolitem['lts']
+        if (!(bool) $eolitem['lts']
             && !str_contains($eolitem['cycle'], '-e')
-            && str_contains($eolitem['cycle'], '11')
-            && $found11 == false) {
+            && str_contains($eolitem['cycle'], '11') 
+            && $found11 == false
+            && !str_contains($eolitem['latest'], '10.0.28000')) {
             $latestver = $latestver . $eolitem['latest'] . ' ';
             $found11 = true;
         }
 
         // Break out of loop
-        if ($found10 == true && $found11 == true) {
+        if ($found11 == true) {
             break;
         }
     }
