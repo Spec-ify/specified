@@ -874,16 +874,18 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                         <div class="green">
 
                                             <?php
+                                            // the displayed adapter is the first one which has an IP address, or if none have an IP, then the first physical adapter.
                                             $adapterText = "Disconnected";
 
                                             foreach ($json_data['Network']['Adapters'] as $adapter) {
                                                 if ((bool) $adapter['PhysicalAdapter'] && is_array($adapter['IPAddress']) && count($adapter['IPAddress']) > 0) {
                                                     $adapterText = $adapter['Description'];
+                                                    $foundAdapter = true;
                                                     break;
                                                 }
                                             };
 
-                                            if ($adapter == "") {
+                                            if (!$foundAdapter) {
                                                 foreach ($json_data['Network']['Adapters'] as $adapter) {
                                                     if ((bool) $adapter['PhysicalAdapter']) {
                                                         $adapterText = $adapter['Description'];
@@ -1204,7 +1206,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     $part_size = $part['PartitionCapacity'];
                                     $part_taken = $part_size - $part['PartitionFree'];
                                     $part_display = "";
-                                    if (!empty($part['PartitionLabel'])) {
+                                    if ($part['PartitionLabel'] !== '') {
                                         $part_display .= $part['PartitionLabel'];
                                         if (isset($part['PartitionLetter'])) {
                                             $part_display .= " ({$part['PartitionLetter']})";
@@ -1212,7 +1214,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     } else if (isset($part['PartitionLetter'])) { // and not partition label
                                         $part_display = $part['PartitionLetter'];
                                     }
-                                    if (!empty($part_display))
+                                    if ($part_display !== '')
                                         $part_display .= '<br/>';
                                     $fs_display = $part['Filesystem'] ?? 'Unknown';
 
@@ -1599,7 +1601,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     ';
                                 }
 
-                                if (!empty($json_data['Hardware']['Batteries'])) {
+                                if (count($json_data['Hardware']['Batteries']) > 0) {
                                     foreach ($json_data['Hardware']['Batteries'] as $battery) {
                                         $cap = floatval($battery["Remaining_Life_Percentage"]);
                                         if (
@@ -1618,7 +1620,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 foreach ($json_data['Hardware']['Storage'] as $disk) {
                                     foreach ($disk['Partitions'] as $partNum => $part) {
                                         if (isset($part['DirtyBitSet']) && $part['DirtyBitSet']) {
-                                            if (empty($part['PartitionLetter'])) {
+                                            if ($part['PartitionLetter'] === '') {
                                                 $noteshtml .= "
                                                 <p>
                                                     Dirty bit set on <span>partition $partNum ({$disk['DeviceName']})</span>
@@ -1692,7 +1694,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
 
 
-                                if (!empty($noteshtml)) {
+                                if ($noteshtml !== '') {
                                     $noteshtml = '<br>' . $noteshtml;
                                     echo $noteshtml;
                                 }
@@ -1738,7 +1740,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     $driveKey += 1;
                                 }
 
-                                if (!empty($drivehtml)) {
+                                if ($drivehtml !== '') {
                                     $drivehtml = '<br> <h4 style="margin:5px; color:var(--meta-h4-color);">Drive / SMART Notes</h4>' . $drivehtml;
                                     echo $drivehtml;
                                 }
@@ -1757,7 +1759,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
                                 foreach ($json_data['System']['ChoiceRegistryValues'] as $regkey) {
 
-                                    if ($regkey['Value'] && !in_array($regkey['Value'], $defaultRegKeys[$regkey['Name']])){
+                                    if ($regkey['Value'] && !in_array($regkey['Value'], $defaultRegKeys[$regkey['Name']], true)){
                                         $reghtml .= '
                                             <p>
                                                 Registry Value <span>' . $regkey['Name'] . '</span> found set, value of <span>' . $regkey['Value'] . '</span>
@@ -1766,7 +1768,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
                                 }
 
-                                if (!empty($reghtml)) {
+                                if ($reghtml !== '') {
                                     $reghtml = '<br> <h4 style="margin:5px; color:var(--meta-h4-color);">Notable Registry Changes</h4>' . $reghtml;
                                     echo $reghtml;
                                 }
@@ -1777,7 +1779,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 <?php
                                 $puphtml = '';
 
-                                if (!empty($pupsfoundInstalled)) {
+                                if (count($pupsfoundInstalled) > 0) {
 
                                     $puphtml .= '<h4>Notable Software found Installed</h4>';
 
@@ -1790,7 +1792,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     $puphtml .= '</table>';
                                 }
 
-                                if (!empty($pupsfoundRunning)) {
+                                if (count($pupsfoundRunning) > 0) {
 
                                     $puphtml .= '<h4>Notable Software found Running</h4>';
 
@@ -1803,7 +1805,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     $puphtml .= '</table>';
                                 }
 
-                                if (!empty($puphtml)) {
+                                if ($puphtml !== '') {
                                     echo $puphtml;
                                 } else {
                                     echo '<h4>No Notable Software found, yay!</h4>';
@@ -1904,7 +1906,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                                         </div>
                                                         <div class="modal-body" id="browser-container' . $browser['Name'] . '">';
                                                             foreach ($browser['Profiles'] as $browserprofile) {
-                                                                $profileKey = array_search($browserprofile, $browser['Profiles']);
+                                                                $profileKey = array_search($browserprofile, $browser['Profiles'], true);
                                                                 echo '
                                                             <h2>' . $browser['Name'] . ' Profile "' . $browser['Profiles'][$profileKey]['name'] . '"</h2>
                                                             <table id="' . $browser['Name'] . 'Profile' . $profileKey . 'Table" class="table">
