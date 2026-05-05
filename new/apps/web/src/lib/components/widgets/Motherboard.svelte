@@ -59,7 +59,7 @@
 
 	function filterBiosCharacteristics(rawList: [string, any]) {
 		let finalCharac = [''];
-		const characList = lists['biosCharacteristicsList'];
+		const characList = lists['biosCharacteristics'];
 
 		rawList.forEach((key: number) => {
 			finalCharac.push(characList[key]);

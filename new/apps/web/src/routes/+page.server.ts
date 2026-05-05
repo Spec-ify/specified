@@ -14,6 +14,18 @@ interface CpuInfo {
 	ThreadCount: number;
 }
 
+interface EolListEntry {
+	cycle: string;
+	releaseLabel: string
+	releaseDate: string
+	eol: string
+	latest: string
+	link: string
+	lts: boolean
+	support: string
+	extendedSupport: boolean
+}
+
 /*
  * Looks up CPU name on HWAPI database
  * 
@@ -56,7 +68,7 @@ async function cpuLookup(cpu: CpuInfo): Response {
 	}
 }
 
-async function eolLookup(): Promise<Response> {
+async function eolLookup(): Array<EolListEntry> {
 	return await (
 		await fetch(
 			`https://endoflife.date/api/windows.json`,

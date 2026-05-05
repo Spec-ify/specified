@@ -11,13 +11,13 @@
 
     // EOL Check
 
-    let valid: Boolean = false, 
-        latest: Boolean = false, 
-        insider: Boolean = false;
+    let valid: boolean = false, 
+        latest: boolean = false, 
+        insider: boolean = false;
 
     function eolCheck() {
 
-        let windows11: Boolean = false;
+        let windows11: boolean = false;
         let latestVersions: Array<string> = [];
         let validVersions: Array<string> = [];
 
@@ -27,6 +27,7 @@
                 !(version.lts)
                 && !(version.cycle.includes("-e"))
                 && (version.cycle.includes("11"))
+                && !version.latest.includes("10.0.28000")
                 && !windows11
             ){
                 latestVersions.push(version.latest);
@@ -88,26 +89,30 @@
         {#if insider}
             <p>Insider</p>
         {:else}
-            <span>{ valid ? "Not EOL" : "EOL" }</span>{ (valid && !latest) ? ", but " : "and " }<span>{latest ? "Up-to-date" : "not Up-to-date"}</span>.
+            <span>{ valid ? "Not EOL" : "EOL" }</span>{ (valid && !latest) ? ", but " : " and " }<span>{latest ? "Up-to-date" : "not Up-to-date"}</span>.
         {/if}
         <span>(version {report.BasicInfo.FriendlyVersion}, build {report.BasicInfo.Version})</span>
     </li>
     
     <li>
-        The current uptime is {days} days, {hours} hours, {minutes} minutes, and {seconds} seconds.
+        <p>
+            The current uptime is {days} days, {hours} hours, {minutes} minutes, and {seconds} seconds.
+        </p>
     </li>
 
     <li>
-        {#if report.Security.AvList.length > 0}
-            Currently Installed AVs are: 
-            <span>
-                {#each report.Security.AvList as antivirus}
-                    {antivirus}
-                {/each}
-            </span>
-        {:else}
-            There are no installed AVs!
-        {/if}
+        <p>
+            {#if report.Security.AvList.length > 0}
+                Currently Installed AVs are: 
+                <span>
+                    {#each report.Security.AvList as antivirus}
+                        {antivirus}
+                    {/each}
+                </span>
+            {:else}
+                There are no installed AVs!
+            {/if}
+        </p>
     </li>
 
     {#if report.System.UsernameSpecialCharacters}
@@ -271,11 +276,11 @@
     
     -->
 
-    {#each report.System.ChoiceRegistryValues as regkey}
-        {#if regkey.Value && !lists.defaultRegKeys[regkey.Name].includes(regkey.Value)}
+    {#each report.System.ChoiceRegistryValues as regEntry}
+        {#if regEntry.Value && !lists.defaultRegEntries[regEntry.Name].includes(regEntry.Value)}
             <li>
                 <p>
-                    Registry Value <span>{regkey.Name}</span> found set, value of <span>{regkey.Value}</span>.
+                    Registry Value <span>{regEntry.Name}</span> found set, value of <span>{regEntry.Value}</span>.
                 </p>
             </li>
         {/if}

@@ -1,4 +1,4 @@
-const biosCharacteristicsList: Record<number, string> = {
+const biosCharacteristics: Record<number, string> = {
 	3: 'BIOS Characteristics are not supported.',
 	4: 'ISA is supported.',
 	5: 'MCA is supported.',
@@ -30,7 +30,7 @@ const biosCharacteristicsList: Record<number, string> = {
 	31: 'NEC PC-98.'
 };
 
-const defaultRegKeys: Record<string, Array<number | null>> = {
+const defaultRegEntries: Record<string, Array<number | null>> = {
 	"TdrLevel": [3],
 	"NonBestEffortLimit": [20],
 	"NetworkThrottlingIndex": [10],
@@ -62,6 +62,6 @@ const defaultRegKeys: Record<string, Array<number | null>> = {
 }
 
 export const lists = {
-	biosCharacteristicsList: biosCharacteristicsList,
-	defaultRegKeys: defaultRegKeys
+	biosCharacteristics: biosCharacteristics,
+	defaultRegEntries: defaultRegEntries
 };
