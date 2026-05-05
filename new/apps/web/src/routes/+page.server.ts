@@ -14,6 +14,18 @@ interface CpuInfo {
 	ThreadCount: number;
 }
 
+interface EolListEntry {
+	cycle: string;
+	releaseLabel: string
+	releaseDate: string
+	eol: string
+	latest: string
+	link: string
+	lts: boolean
+	support: string
+	extendedSupport: boolean
+}
+
 /*
  * Looks up CPU name on HWAPI database
  * 
@@ -56,6 +68,18 @@ async function cpuLookup(cpu: CpuInfo): Response {
 	}
 }
 
+async function eolLookup(): Array<EolListEntry> {
+	return await (
+		await fetch(
+			`https://endoflife.date/api/windows.json`,
+			{
+				method: 'GET',
+				mode: 'cors'
+			}
+		)
+	).json();
+}
+
 export const load: ServerLoad = async ({ fetch }) => {
 	const FILE_PATH = 'files/test1.json';
 	let report;
@@ -75,5 +99,6 @@ export const load: ServerLoad = async ({ fetch }) => {
 		await fetch(`http://localhost:8080/tabbed_info.php/?file=${FILE_PATH}`)
 	).text();
 	const cpuMoreInfo = cpuLookup(report.Hardware.Cpu);
-	return { report, cpuMoreInfo, widgetHTML, tableHTML, tabbedInfoHTML };
+	const eolList = await eolLookup(); 
+	return { report, cpuMoreInfo, eolList, widgetHTML, tableHTML, tabbedInfoHTML };
 };

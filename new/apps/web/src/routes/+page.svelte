@@ -2,6 +2,8 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import Widgets from '$lib/components/Widgets.svelte';
+	import TabbedInfo from '$lib/components/TabbedInfo.svelte';
+	import { page } from '$app/state';
 
 	let { data: pageData }: { data: PageData } = $props();
 
@@ -16,6 +18,7 @@
 <!-- <div class="container h-full mx-auto flex justify-center items-center"> -->
 <div class="vp">
 	<Widgets report={pageData.report} cpuMoreInfo={pageData.cpuMoreInfo}/>
+	<TabbedInfo report={pageData.report} eolList={pageData.eolList}/>
 	<div id="legacy-content"></div>
 	<!-- <div class="space-y-5">
 		<h1 class="h1">This is the page</h1>
