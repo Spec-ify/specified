@@ -19,5 +19,8 @@
     "workspaces": [
         "apps/*",
         "packages/*"
-    ]
+    ],
+    "dependencies": {
+        "@skeletonlabs/skeleton-svelte": "^4.9.0"
+    }
 }
