@@ -1,6 +1,7 @@
 <script lang="ts">
     import { Tabs } from "@skeletonlabs/skeleton-svelte";
 	import Notes from "./tabs/Notes.svelte";
+    import WindowsUpdate from "./tabs/WindowsUpdate.svelte";
 
 	export let report;
 	export let eolList;
@@ -39,7 +40,7 @@
         </Tabs.Content>
         
         <Tabs.Content value="windows-updates">
-            e
+            <WindowsUpdate report={report}/>
         </Tabs.Content>
 
     </Tabs> 
