@@ -1,6 +1,7 @@
 <script lang="ts">
     import { Tabs } from "@skeletonlabs/skeleton-svelte";
 	import Notes from "./tabs/Notes.svelte";
+    import NotableSoftware from "./tabs/NotableSoftware.svelte";
 
 	export let report;
 	export let eolList;
@@ -23,7 +24,7 @@
         </Tabs.Content>
         
         <Tabs.Content value="notable-software">
-            a
+            <NotableSoftware report={report}/>
         </Tabs.Content>
 
         <Tabs.Content value="variables">
