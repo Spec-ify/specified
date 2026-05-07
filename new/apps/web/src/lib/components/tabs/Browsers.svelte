@@ -18,7 +18,7 @@
         <Widget title={browser.Name+(report.System.DefaultBrowser.includes(browser.Name.toLowerCase()) ? "(Default)" : "")}>
             {#snippet widgetContents()}
                 <div class="widget-contents">
-                    <img class="center" height="48px" width="48px" src="{browserImage(browser.Name)}">
+                    <img class="center" height="48px" width="48px" alt="{browser.Name}" src="{browserImage(browser.Name)}">
                 </div>
             {/snippet}
 
