@@ -1,6 +1,7 @@
 <script lang="ts">
     import { Tabs } from "@skeletonlabs/skeleton-svelte";
 	import Notes from "./tabs/Notes.svelte";
+    import Variables from "./tabs/Variables.svelte";
 
 	export let report;
 	export let eolList;
@@ -27,7 +28,7 @@
         </Tabs.Content>
 
         <Tabs.Content value="variables">
-            b
+            <Variables report={report}/>
         </Tabs.Content>
         
         <Tabs.Content value="browsers">
