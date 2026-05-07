@@ -15,7 +15,7 @@
         // params="paginate"
         // params="search"
         params: string;
-        
+
 	}
 
 	let {
@@ -24,12 +24,10 @@
         params,
 	}: Props = $props();
 
+    // SETUP PARAMETERS
+
     let search: boolean = $state(false),
         paginate: boolean = $state(false);
-
-    let currentPage: number = $state(1),
-        pageSize: number = $state(10),
-        searchTerm: string = $state('');
     
     if (params.includes("search"))
         search = true;
@@ -37,12 +35,19 @@
     if (params.includes("paginate"))
         paginate = true;
 
+    // Pagination and Search Variables
+    let currentPage: number = $state(1),
+        pageSize: number = $state(10),
+        searchTerm: string = $state('');
+
+    // Search filtering
     let finalData = $derived(searchTerm == "" ? data : data.filter(dataEntry => 
             Object.values(dataEntry).some(val => 
                 String(val).toLowerCase().includes(searchTerm.toLowerCase())
         )
     ))
 
+    // Pagination
     let start = $derived((currentPage - 1) * pageSize),
         end = $derived(start + Number(pageSize)),
         paginatedUsers = $derived(finalData.slice(start, end));
