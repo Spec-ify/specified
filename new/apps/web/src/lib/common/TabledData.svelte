@@ -3,9 +3,19 @@
     import { Pagination } from '@skeletonlabs/skeleton-svelte';
 	
 	interface Props {
+
+        // data={array}
 		data: Array<object>;
+        
+        // headers={Object.keys(array[0])}
         headers: Array<string>;
-        params: Array<string>;
+        
+        // class-style attribute system
+        // params="paginate search"
+        // params="paginate"
+        // params="search"
+        params: string;
+        
 	}
 
 	let {
