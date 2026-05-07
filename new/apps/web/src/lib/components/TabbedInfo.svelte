@@ -1,6 +1,7 @@
 <script lang="ts">
     import { Tabs } from "@skeletonlabs/skeleton-svelte";
 	import Notes from "./tabs/Notes.svelte";
+    import Browsers from "./tabs/Browsers.svelte";
 
 	export let report;
 	export let eolList;
@@ -31,7 +32,7 @@
         </Tabs.Content>
         
         <Tabs.Content value="browsers">
-            c
+            <Browsers report={report}/>
         </Tabs.Content>
         
         <Tabs.Content value="startup-tasks">
