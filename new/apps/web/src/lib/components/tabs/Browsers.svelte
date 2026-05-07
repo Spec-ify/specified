@@ -4,39 +4,9 @@
 	export let report;
 
     function browserImage(name: string) {
-        const test: string = name.toLowerCase();
-        let image: string = "";
-
-        switch (test) {
-            case "chrome":
-                image = "assets/chrome.png";
-                break;
-
-            case "firefox":
-                image = "assets/firefox.png";
-                break;
-
-            case "edge":
-                image = "assets/edge.png";
-                break;
-
-            case "opera":
-                image = "assets/opera.png";
-                break;
-
-            case "brave":
-                image = "assets/brave.png";
-                break;
-
-            case "vivaldi":
-                image = "assets/vivaldi.png";
-                break;
-
-            default:
-                image = "#";
-                break;
-
-        }
+        const browsers: Array<string> = ["chrome", "firefox", "edge", "opera", "brave", "vivaldi"],
+                test: string = name.toLowerCase(),
+                image: string = browsers.includes(test) ? `assets/${test}.png` : "#";;
 
         return image;
     }
