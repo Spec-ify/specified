@@ -62,7 +62,7 @@ interface AutoTuningLevel {
 }
 
 interface Network {
-    Adapters: Adapter;
+    Adapters: Array<Adapter>;
     Routes: Array<Route>;
     NetworkConnections: Array<NetworkConnection>;
     UDPEndpoints: Array<UDPEndpoint>;
