@@ -1,30 +1,14 @@
 <!-- NOT YET IMPLEMENTED IN NEW WIDGET SYSTEM -->
 <script lang="ts">
+	import type { RunningProcess } from '$lib/common/report/system';
+	import type { RamModule } from '$lib/common/report/hardware';
+
 	import Widget from '../../common/ModalWidget.svelte';
 	import { bytesToGigabytes } from '$lib/common/constants';
 
-	interface RunningProcessInfo {
-		ProcessName: string;
-        Count: number;
-        ExePath: string;
-        Id: number;
-        WorkingSet: number;
-        CpuPercent: number;
-	}
-
-	interface RamInfo {
-		DeviceLocation: string;
-		BankLocator: string;
-		Manufacturer: string;
-		SerialNumber: string;
-		PartNumber: string;
-		ConfiguredSpeed: number;
-		Capacity: number;
-	}
-
 	interface Props {
-		runningProcesses: Array<RunningProcessInfo>;
-		ram: Array<RamInfo>;
+		runningProcesses: Array<RunningProcess>;
+		ram: Array<RamModule>;
 	}
 
 	let {
@@ -33,7 +17,7 @@
 	}: Props = $props();
 
 	let workingSet: number = 0;
-	runningProcesses.forEach((process: any) => {
+	runningProcesses.forEach((process: RunningProcess) => {
 		workingSet += process.WorkingSet;
 	});
 
@@ -43,7 +27,7 @@
 	let ramUsedPercent: number = 0;
 
 	if (ram) {
-		ram.forEach((stick: any) => {
+		ram.forEach((stick: RamModule) => {
 			let capacity = stick.Capacity;
 			if (capacity > 0) {
 				totalRam += Math.floor(capacity / 1024);

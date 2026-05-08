@@ -1,15 +1,10 @@
 <script lang="ts">
-	import Widget from '../../common/ModalWidget.svelte';
+	import type { AudioDevice } from '$lib/common/report/hardware';
 
-	interface AudioDevice {
-		DeviceID: string,
-		Manufacturer: string,
-		Name: string,
-		Status: string,
-	};
+	import Widget from '../../common/ModalWidget.svelte';
 	
 	interface Props {
-		audioDevices: AudioDevice[]
+		audioDevices: Array<AudioDevice>
 	}
 
 	let {

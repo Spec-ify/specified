@@ -167,7 +167,7 @@ interface Battery {
     Chemistry: string;
     Design_Capacity: string;
     Full_Charge_Capacity: string;
-    Remaining_Life_Percentage: string;
+    Remaining_Life_Percentage: number;
 }
 
 interface Hardware {

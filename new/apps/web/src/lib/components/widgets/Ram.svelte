@@ -1,26 +1,12 @@
 <script lang="ts">
+	import type { RamModule } from '$lib/common/report/hardware';
+	import type { PageFile } from '$lib/common/report/system';
+
 	import Widget from '../../common/ModalWidget.svelte';
 
-	interface RamInfo {
-		DeviceLocation: string;
-		BankLocator: string;
-		Manufacturer: string;
-		SerialNumber: string;
-		PartNumber: string;
-		ConfiguredSpeed: number;
-		Capacity: number;
-	}
-
-	interface PagefileInfo {
-		AllocatedBaseSize: number;
-		Caption: string;
-		CurrentUsage: number;
-		PeakUsage: number;
-	}
-
 	interface Props {
-		ram: Array<RamInfo>;
-		pagefile: PagefileInfo;
+		ram: Array<RamModule>;
+		pagefile: PageFile;
 	}
 
 	let {

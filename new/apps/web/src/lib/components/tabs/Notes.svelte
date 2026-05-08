@@ -1,13 +1,19 @@
 <script lang="ts">
+    import type { Report } from '$lib/common/report/report';
+    import type { EolListEntry } from '$lib/common/interfaces';
+
     import { lists } from '$lib/common/lists';
+	import { bytesToGigabytes } from '$lib/common/constants';
 
-    export let report: any;
-    export let eolList: any;
+	interface Props {
+		report: Report;
+		eolList: Array<EolListEntry>;
+	}
 
-    function bytesToGigabytes(bytes) {
-        // 1073741824 = 1024 * 1024 * 1024
-        return bytes / 1073741824;
-    }
+	let {
+		report,
+		eolList
+	}: Props = $props();
 
     // EOL Check
 
@@ -21,7 +27,7 @@
         let latestVersions: Array<string> = [];
         let validVersions: Array<string> = [];
 
-        eolList.forEach((version: any) => {
+        eolList.forEach((version: EolListEntry) => {
             // Windows 11
             if (
                 !(version.lts)
@@ -70,7 +76,7 @@
             partitionTotal += partition.PartitionCapacity;
         });
 
-        if (Math.abs(Math.floor(bytesToGigabytes(partitionTotal)) - Math.floor(bytesToGigabytes(drive.DiskCapacity))) > 5)
+        if (Math.abs(Math.floor(partitionTotal / bytesToGigabytes) - Math.floor(drive.DiskCapacity / bytesToGigabytes)) > 5)
             diskCapacityIds[driveId] = partitionTotal;
     });
 </script>
@@ -148,7 +154,7 @@
         </li>
     {/if}
 
-    {#if report.Hardware.Batteries != null && report.Hardware.Batteries > 0}
+    {#if report.Hardware.Batteries != null && report.Hardware.Batteries.length > 0}
         {#each report.Hardware.Batteries as battery}
             {#if battery.Remaining_Life_Percentage < 70}
                 <li>

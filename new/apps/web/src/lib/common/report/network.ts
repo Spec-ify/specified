@@ -1,3 +1,34 @@
+interface Adapter {
+    DefaultIPGateway: Array<string>;
+    Description: string;
+    DHCPEnabled: boolean;
+    DHCPLeaseExpires: string;
+    DHCPLeaseObtained: string;
+    DHCPServer: string;
+    DNSDomain: null,
+    DNSDomainSuffixSearchOrder: Array<string>;
+    DNSHostName: string;
+    DNSServerSearchOrder: Array<string>;
+    InterfaceIndex: number;
+    IPAddress: Array<string>;
+    IPEnabled: boolean;
+    IPSubnet: Array<string>;
+    MACAddress: string;
+    LinkSpeed: number;
+    PhysicalAdapter: boolean;
+    FullDuplex: boolean;
+    MediaConnectState: number;
+    MediaDuplexState: number;
+    MtuSize: number;
+    Name: string;
+    OperationalStatusDownMediaDisconnected: boolean;
+    PermanentAddress: string;
+    PromiscuousMode: boolean;
+    State: number;
+    DNSIPV6: string;
+    DNSIsStatic: boolean;
+}
+
 interface Route {
     Description: string;
     Destination: string;
@@ -31,7 +62,7 @@ interface AutoTuningLevel {
 }
 
 interface Network {
-    Adapters: Array<Record<string, string | Array<string> | number | boolean | null>>;
+    Adapters: Adapter;
     Routes: Array<Route>;
     NetworkConnections: Array<NetworkConnection>;
     UDPEndpoints: Array<UDPEndpoint>;
@@ -44,8 +75,8 @@ interface Network {
 }
 
 export type {
-    Route, NetworkConnection, UDPEndpoint,
-    AutoTuningLevel,
+    Adapter, Route, NetworkConnection, 
+    UDPEndpoint, AutoTuningLevel,
 
     Network,
 }

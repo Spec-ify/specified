@@ -1,22 +1,13 @@
 <!-- NOT YET MIGRATED TO NEW WIDGET SYSTEM -->
 
 <script lang="ts">
+	import type { Cpu } from '$lib/common/report/hardware';
+
 	import Widget from '../../common/ModalWidget.svelte';
 
-	interface CpuInfo {
-		CurrentClockSpeed: number;
-		LoadPercentage: number;
-		Manufacturer: string;
-		Name: string;
-		// Appears to be a typo in the schema
-		NumberOfEnabledCore: number;
-		SocketDesignation: string;
-		ThreadCount: number;
-	}
-
 	interface Props {
-		cpu: CpuInfo;
-		cpuMoreInfo: Promise<any>;
+		cpu: Cpu;
+		cpuMoreInfo: Promise<Response>;
 	}
 
 	let {

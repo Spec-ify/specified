@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Report } from '$lib/common/report/report';
+
 	import Cpu from './widgets/Cpu.svelte';
 	import Ram from './widgets/Ram.svelte';
 	import Motherboard from './widgets/Motherboard.svelte';
@@ -14,8 +16,15 @@
 	import AudioDevices from './widgets/AudioDevices.svelte';
 	import PowerProfiles from './widgets/PowerProfiles.svelte';
 
-	export let report;
-	export let cpuMoreInfo;
+	interface Props {
+		report: Report;
+		cpuMoreInfo: Promise<Response>;
+	}
+
+	let {
+		report,
+		cpuMoreInfo
+	}: Props = $props();
 </script>
 
 <div class="widgets">

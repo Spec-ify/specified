@@ -1,48 +1,18 @@
 <script lang="ts">
+    import type { StorageDevice } from '$lib/common/report/hardware';
+
 	import Widget from '../../common/ModalWidget.svelte';
 	import PartitionBar from '../logic/PartitionBar.svelte';
-    
-    interface PartitionInfo {
-        PartitionCapacity: number;
-        PartitionFree: number;
-        PartitionLabel: string;
-        PartitionLetter: null;
-        Filesystem: string;
-        CfgMgrErrorCode: number;
-        LastErrorCode: number;
-        DirtyBitSet: boolean;
-        BitlockerEncryptionStatus: boolean;
-    }
-
-    interface SmartInfo {
-        Id: number;
-        Name: string;
-        RawValue: string;
-    }
-    
-    interface DriveInfo {
-        DeviceName: string;
-        SerialNumber: string;
-        DiskNumber: number;
-        DiskCapacity: number;
-        DiskFree: number;
-        BlockSize: number;
-        MediaType: string;
-        InterfaceType: string;
-        PartitionScheme: string;
-        Partitions: Array<PartitionInfo>;
-        SmartData: Array<SmartInfo>;
-    }
 
     interface DriveProcessedInfo {
         partitionCapacityTotal: number;
         partitionFreeTotal: number;
         capacityMatch: boolean;
-        data: DriveInfo;
+        data: StorageDevice;
     }
     
     interface Props {
-		drives: Array<DriveInfo>;
+		drives: Array<StorageDevice>;
 	}
 
 	let {
