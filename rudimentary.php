@@ -79,7 +79,7 @@ function scan_dir($dir) {
     $files = array(); //----------------------------------- create an empty files array to play with
     foreach (scandir($dir) as $file) {
         if ($file[0] === '.') continue; //----------------- ignores all files starting with '.'
-        if (in_array($file, $ignored)) continue; //-------- ignores all files given in $ignored
+        if (in_array($file, $ignored, true)) continue; //-------- ignores all files given in $ignored
         $files[$file] = filemtime($dir . '/' . $file); //-- add to files list
     }
     arsort($files); //------------------------------------- sort file values (creation timestamps)

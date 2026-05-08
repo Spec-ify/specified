@@ -33,7 +33,7 @@
     $randomString = bin2hex($randomBytes);
     $randomString = preg_replace('/[^A-Za-z0-9]/', '', substr($randomString, 0, 8));
 
-    if(in_array($file_ext,$extensions)== false){
+    if(in_array($file_ext,$extensions, true)== false){
         $errors[]="Extension not allowed, please choose a Specify JSON file";
     }
     

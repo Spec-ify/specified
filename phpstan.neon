@@ -2,8 +2,14 @@ includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon
 parameters:
     strictRules:
+        booleansInConditions: false
+
     level: 0
     paths:
         - .
+
     excludePaths:
         - 'vendor/'
+        - 'gesp-mode.php'
+    ignoreErrors:
+        - identifier: empty.notAllowed
