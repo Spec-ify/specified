@@ -7,7 +7,7 @@
 	import { lists } from '$lib/common/lists';
 
 	interface Props {
-		tpm: TpmDevice;
+		tpm: TpmDevice | null;
 		motherboard: Motherboard;
 		bios: Array<BiosInfo>;
 	}

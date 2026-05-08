@@ -4,7 +4,7 @@
 	import Widget from '../../common/ModalWidget.svelte';
 
 	interface Props {
-		temps: Array<TemperatureSensor>;
+		temps: Array<TemperatureSensor> | null;
 	}
 
 	let {

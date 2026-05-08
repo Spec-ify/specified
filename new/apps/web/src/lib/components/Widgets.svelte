@@ -50,7 +50,7 @@
 
 <div class="widgets">
 	<PowerProfiles powerProfiles={report.System.PowerProfiles} batteries={report.Hardware.Batteries}/>
-	<Temps />
+	<Temps temps={report.Hardware.Temperatures}/>
 	<AudioDevices audioDevices={report.Hardware.AudioDevices}/>
 </div>
 
