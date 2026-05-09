@@ -61,7 +61,53 @@ const defaultRegEntries: Record<string, Array<number | null>> = {
 	"HypervisorEnforcedCodeIntegrity": [null],
 }
 
+const notableSoftwareList: Array<string> = [
+    "smartbyte", // messes with network
+    "netlimiter", // messes with network
+    "cfosspeed", // messes with network
+    "Gigabyte Speed", // messes with network
+    "XFast LAN", // messes with network
+    "Driver Easy", // driver updater
+    "CCleaner", // debloater
+    "Wondershare", // "Adware with popups and shills, even after uninstalling it will still give you ads and popups constantly." - KayZ
+    "Vanguard", // Kernel-level Anti-cheat, causes system instability
+    "Battleye", // Kernel-level Anti-cheat, causes system instability
+    "WinAero", // tweaker
+    "GeekFreaksTuning", // tweaker
+    "citrix", // vpn
+    "tailscale", // vpn
+    "hamachi", // vpn
+    "vpn", // duh
+    "Process Lasso", // tweaker
+    "throttlestop", // overclock
+    "Hone", // tweaker
+    "MacType", // Can mess with text clarity
+    "Wave Browser", // "It's a chromium-based web browser that pushes ad notifications, reported by many AVs to be a PUP as well." - Adam
+    "LogiLDA", // adware
+    "TLauncher", // "Known token stealer, potential malware." - TheRublixCube
+    "Lunar Client", // Shady, privacy policy allows for stealing "search history", stole code, etc.
+    "BoosterX", // tweaker
+    "iTop", // vpn
+    "Wallpaper Engine", // can mess up ui
+    "voice changer", // messes with audio
+    "Voicemod", // messes with audio
+    "System Mechanic", // debloater
+    "MyCleanPC", // debloater
+    "DriverFix", // driver updater
+    "Reimage Repair", // debloater
+    "Browser Assistant", // malware
+    "KMS", // piracy tools that can have malware
+    "HWID", // cheat tools that can have malware
+    "Advanced SystemCare", // debloater
+    "salad", // crypto miner
+    "cleaner", // blanket for debloater
+    "Speedify", // messes with network
+    "UltraUXThemePatcher", // can mess up ui
+    "Lockdown Browser" // has messed up windows power plans and other things https://discord.com/channels/749314018837135390/749316166878625843/1298020309881847849
+]
+
 export const lists = {
 	biosCharacteristics: biosCharacteristics,
-	defaultRegEntries: defaultRegEntries
+	defaultRegEntries: defaultRegEntries,
+	notableSoftwareList: notableSoftwareList
 };
