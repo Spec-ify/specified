@@ -1,10 +1,12 @@
 <script lang="ts">
     import { Tabs } from "@skeletonlabs/skeleton-svelte";
 	import Notes from "./tabs/Notes.svelte";
+    import NotableSoftware from "./tabs/NotableSoftware.svelte";
     import WindowsUpdate from "./tabs/WindowsUpdate.svelte";
+    import StartupTasks from "./tabs/StartupTasks.svelte";
 
-	export let report;
-	export let eolList;
+    export let report;
+    export let eolList;
 </script>
 
 <div class="tabbed-info">
@@ -24,7 +26,7 @@
         </Tabs.Content>
         
         <Tabs.Content value="notable-software">
-            a
+            <NotableSoftware report={report}/>
         </Tabs.Content>
 
         <Tabs.Content value="variables">
@@ -36,7 +38,7 @@
         </Tabs.Content>
         
         <Tabs.Content value="startup-tasks">
-            d
+            <StartupTasks report={report}/>
         </Tabs.Content>
         
         <Tabs.Content value="windows-updates">
