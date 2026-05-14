@@ -5,6 +5,8 @@
     import NotableSoftware from "./tabs/NotableSoftware.svelte";
     import WindowsUpdate from "./tabs/WindowsUpdate.svelte";
     import StartupTasks from "./tabs/StartupTasks.svelte";
+    import Variables from "./tabs/Variables.svelte";
+
 
     export let report;
     export let eolList;
@@ -31,7 +33,7 @@
         </Tabs.Content>
 
         <Tabs.Content value="variables">
-            b
+            <Variables report={report}/>
         </Tabs.Content>
         
         <Tabs.Content value="browsers">
