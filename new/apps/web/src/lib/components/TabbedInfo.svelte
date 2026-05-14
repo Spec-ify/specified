@@ -43,7 +43,6 @@
         
         <Tabs.Content value="startup-tasks">
             <StartupTasks report={report}/>
-            <StartupTasks report={report}/>
         </Tabs.Content>
         
         <Tabs.Content value="windows-updates">
