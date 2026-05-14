@@ -1,8 +1,10 @@
 <script lang="ts">
     import { Tabs } from "@skeletonlabs/skeleton-svelte";
     import Notes from "./tabs/Notes.svelte";
+    import StartupTasks from "./tabs/StartupTasks.svelte";
     import NotableSoftware from "./tabs/NotableSoftware.svelte";
     import Variables from "./tabs/Variables.svelte";
+
 
     export let report;
     export let eolList;
@@ -37,7 +39,7 @@
         </Tabs.Content>
         
         <Tabs.Content value="startup-tasks">
-            d
+            <StartupTasks report={report}/>
         </Tabs.Content>
         
         <Tabs.Content value="windows-updates">
