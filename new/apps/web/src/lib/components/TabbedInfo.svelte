@@ -1,8 +1,11 @@
 <script lang="ts">
     import { Tabs } from "@skeletonlabs/skeleton-svelte";
     import Notes from "./tabs/Notes.svelte";
-    import StartupTasks from "./tabs/StartupTasks.svelte";
     import NotableSoftware from "./tabs/NotableSoftware.svelte";
+    import WindowsUpdate from "./tabs/WindowsUpdate.svelte";
+    import StartupTasks from "./tabs/StartupTasks.svelte";
+    import Browsers from "./tabs/Browsers.svelte";
+    import Variables from "./tabs/Variables.svelte";
 
 
     export let report;
@@ -30,11 +33,11 @@
         </Tabs.Content>
 
         <Tabs.Content value="variables">
-            b
+            <Variables report={report}/>
         </Tabs.Content>
         
         <Tabs.Content value="browsers">
-            c
+            <Browsers report={report}/>
         </Tabs.Content>
         
         <Tabs.Content value="startup-tasks">
@@ -42,7 +45,7 @@
         </Tabs.Content>
         
         <Tabs.Content value="windows-updates">
-            e
+            <WindowsUpdate report={report}/>
         </Tabs.Content>
 
     </Tabs> 
