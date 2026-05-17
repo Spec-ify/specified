@@ -3,7 +3,10 @@
     import type { EolListEntry } from "$lib/common/interfaces";
 
     import { Tabs } from "@skeletonlabs/skeleton-svelte";
-	import Notes from "./tabs/Notes.svelte";
+    import Notes from "./tabs/Notes.svelte";
+    import StartupTasks from "./tabs/StartupTasks.svelte";
+    import NotableSoftware from "./tabs/NotableSoftware.svelte";
+
 
 	interface Props {
 		report: Report;
@@ -33,7 +36,7 @@
         </Tabs.Content>
         
         <Tabs.Content value="notable-software">
-            a
+            <NotableSoftware report={report}/>
         </Tabs.Content>
 
         <Tabs.Content value="variables">
@@ -45,7 +48,7 @@
         </Tabs.Content>
         
         <Tabs.Content value="startup-tasks">
-            d
+            <StartupTasks report={report}/>
         </Tabs.Content>
         
         <Tabs.Content value="windows-updates">
