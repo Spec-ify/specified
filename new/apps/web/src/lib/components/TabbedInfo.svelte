@@ -1,4 +1,7 @@
 <script lang="ts">
+    import type { Report } from "$lib/common/report/report";
+    import type { EolListEntry } from "$lib/common/interfaces";
+
     import { Tabs } from "@skeletonlabs/skeleton-svelte";
     import Notes from "./tabs/Notes.svelte";
     import NotableSoftware from "./tabs/NotableSoftware.svelte";
@@ -8,8 +11,15 @@
     import Variables from "./tabs/Variables.svelte";
 
 
-    export let report;
-    export let eolList;
+	interface Props {
+		report: Report;
+		eolList: Array<EolListEntry>;
+	}
+
+	let {
+		report,
+		eolList
+	}: Props = $props();
 </script>
 
 <div class="tabbed-info">

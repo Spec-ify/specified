@@ -1,32 +1,15 @@
 <!-- NOT YET IMPLEMENTED IN NEW WIDGET SYSTEM -->
 <script lang="ts">
+	import type { Motherboard, BiosInfo } from '$lib/common/report/hardware';
+	import type { TpmDevice } from '$lib/common/report/security';
+
 	import Widget from '../../common/ModalWidget.svelte';
 	import { lists } from '$lib/common/lists';
 
-	interface MotherboardInfo {
-		Manufacturer: string;
-		Product: string;
-		SerialNumber: string;
-	}
-
-	interface TpmInfo {
-		IsActivated_InitialValue: boolean,
-		IsEnabled_InitialValue: boolean,
-		IsOwned_InitialValue: boolean,
-		ManufacturerId: number,
-		ManufacturerIdTxt: string,
-		ManufacturerVersion: string,
-		ManufacturerVersionFull20: string,
-		ManufacturerVersionInfo: string,
-		PhysicalPresenceVersionInfo: string,
-		SpecVersion: string,
-		IsPresent: boolean
-	}
-	
 	interface Props {
-		tpm: TpmInfo;
-		motherboard: MotherboardInfo;
-		bios: Array<any>;
+		tpm: TpmDevice | null;
+		motherboard: Motherboard;
+		bios: Array<BiosInfo>;
 	}
 
 	let {
@@ -57,7 +40,7 @@
 		return formatted;
 	}
 
-	function filterBiosCharacteristics(rawList: [string, any]) {
+	function filterBiosCharacteristics(rawList: Array<number>) {
 		let finalCharac = [''];
 		const characList = lists['biosCharacteristics'];
 

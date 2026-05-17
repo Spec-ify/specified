@@ -1,19 +1,8 @@
 <script lang="ts">
-
-    interface PartitionInfo {
-        PartitionCapacity: number;
-        PartitionFree: number;
-        PartitionLabel: string;
-        PartitionLetter: null;
-        Filesystem: string;
-        CfgMgrErrorCode: number;
-        LastErrorCode: number;
-        DirtyBitSet: boolean;
-        BitlockerEncryptionStatus: boolean;
-    }
+    import type { Partition } from "$lib/common/report/hardware";
 
     interface Props {
-		partitions: Array<PartitionInfo>;
+		partitions: Array<Partition>;
 	}
 
 	let {

@@ -1,55 +1,12 @@
 <!-- NOT YET IMPLEMENTED IN NEW WIDGET SYSTEM -->
 <script lang="ts">
+	import type { Security } from '$lib/common/report/security';
+	import type { BasicInfo } from '$lib/common/report/basicinfo';
+
 	import Widget from '../../common/ModalWidget.svelte';
 
-	interface TpmInfo {
-		IsActivated_InitialValue: boolean,
-		IsEnabled_InitialValue: boolean,
-		IsOwned_InitialValue: boolean,
-		ManufacturerId: number,
-		ManufacturerIdTxt: string,
-		ManufacturerVersion: string,
-		ManufacturerVersionFull20: string,
-		ManufacturerVersionInfo: string,
-		PhysicalPresenceVersionInfo: string,
-		SpecVersion: string,
-		IsPresent: boolean
-	}
-
-	interface SecurityInfo {
-		AvList: Array<string>;
-		ExclusionPath: Array<string>;
-		ExclusionExtension: Array<string>,
-		ExclusionProcess: Array<string>,
-		ExclusionIpAddresses: Array<string>,
-		FwList: Array<string>;
-		UacEnabled: boolean;
-		SecureBootEnabled: boolean;
-		UacLevel: number;
-		Tpm: TpmInfo;
-		WriteSuccess: boolean;
-		ErrorCount: number;
-	}
-
-	interface BasicInfo {
-		Edition: string;
-		Version: string;
-		Sku: string;
-		FriendlyVersion: string;
-		InstallDate: string;
-		Uptime: number;
-		Hostname: string;
-		Username: string;
-		Domain: string;
-		BootMode: string;
-		BootState: string;
-		SMBiosRamInformation: boolean;
-		WriteSuccess: boolean;
-		ErrorCount: number;
-	}
-
 	interface Props {
-		security: SecurityInfo;
+		security: Security;
 		basic: BasicInfo;
 	}
 

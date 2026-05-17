@@ -1,26 +1,12 @@
 <script lang="ts">
+	import type { PowerProfile } from '$lib/common/report/system';
+	import type { Battery } from '$lib/common/report/hardware';
+
 	import Widget from '../../common/ModalWidget.svelte';
 
-	interface PowerProfileInfo {
-		Caption: string;
-        Description: string;
-        ElementName: string;
-        InstanceID: string;
-        IsActive: boolean;	
-	}
-
-	interface BatteryInfo {
-		Name: string;
-        Manufacturer: string;
-        Chemistry: string;
-        Design_Capacity: string;
-        Full_Charge_Capacity: string;
-        Remaining_Life_Percentage: string;
-	}
-
 	interface Props {
-		powerProfiles: Array<PowerProfileInfo>;
-		batteries: Array<BatteryInfo>;
+		powerProfiles: Array<PowerProfile>;
+		batteries: Array<Battery>;
 	}
 
 	let {
@@ -28,9 +14,9 @@
 		batteries
 	}: Props = $props();
 
-	let activeProfile: PowerProfileInfo;
+	let activeProfile: PowerProfile;
 
-	powerProfiles.forEach((profile: PowerProfileInfo)=>{
+	powerProfiles.forEach((profile: PowerProfile)=>{
 		if (profile.IsActive){
 			activeProfile = profile
 			return

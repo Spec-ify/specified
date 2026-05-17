@@ -1,14 +1,10 @@
 <script lang="ts">
+	import type { TemperatureSensor } from '$lib/common/report/hardware';
+
 	import Widget from '../../common/ModalWidget.svelte';
 
-	interface TemperatureInfo {
-		Hardware: string;
-        SensorName: string;
-        SensorValue: number;
-	}
-
 	interface Props {
-		temps: Array<TemperatureInfo>;
+		temps: Array<TemperatureSensor> | null;
 	}
 
 	let {

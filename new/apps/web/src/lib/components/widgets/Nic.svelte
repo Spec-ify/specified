@@ -1,50 +1,21 @@
 <!-- NOT YET IMPLEMENTED IN NEW WIDGET SYSTEM -->
 <script lang="ts">
+	import type { Adapter } from '$lib/common/report/network';
+
 	import Widget from '../../common/ModalWidget.svelte';
 
-	interface NicInfo {
-        DefaultIPGateway: Array<string>;
-        Description: string;
-        DHCPEnabled: boolean;
-        DHCPLeaseExpires: string;
-        DHCPLeaseObtained: string;
-        DHCPServer: string;
-        DNSDomain: null,
-        DNSDomainSuffixSearchOrder: Array<string>;
-        DNSHostName: string;
-        DNSServerSearchOrder: Array<string>;
-        InterfaceIndex: number;
-        IPAddress: Array<string>;
-        IPEnabled: boolean;
-        IPSubnet: Array<string>;
-        MACAddress: string;
-        LinkSpeed: number;
-        PhysicalAdapter: boolean;
-        FullDuplex: boolean;
-        MediaConnectState: number;
-        MediaDuplexState: number;
-        MtuSize: number;
-        Name: string;
-        OperationalStatusDownMediaDisconnected: boolean;
-        PermanentAddress: string;
-        PromiscuousMode: boolean;
-        State: number;
-        DNSIPV6: string;
-        DNSIsStatic: boolean;
-	}
-
 	interface Props {
-		nics: Array<NicInfo>;
+		nics: Array<Adapter>;
 	}
 
 	let {
 		nics
 	}: Props = $props();
 
-	function findPrimaryAdapter(nics: Array<NicInfo>): string {
+	function findPrimaryAdapter(nics: Array<Adapter>): string {
 		let physicalAdapters: Array<string> = [];
 
-		nics.forEach((adapter: NicInfo, _: any) => {
+		nics.forEach((adapter: Adapter) => {
 			// if adapter is *physical*, AND has a determined IP address
 			if (adapter.PhysicalAdapter && adapter.IPAddress) {
 				if (adapter.IPAddress.length > 0) {
