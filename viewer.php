@@ -1154,11 +1154,14 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                 $letters = array_filter(
                                     array_column($drive['Partitions'], 'PartitionLetter')
                                 );
-                                $lettersString = implode(", ", $letters);
+                                if (version_compare(ltrim($json_data['Version'], 'v'), "1.4.0", ">=")){
+                                    $letters = array_map((fn($item) => $item . ':'), $letters);
+                                }
+                                $lettersString =implode(", ", $letters);
 
                                 echo '
 					<div class="widget widget-disk hover" type="button" data-mdb-toggle="modal" data-mdb-target="#drive-modal' . $driveKey . '">
-						<h1>' . $device_name . ' ' . $lettersString . '</h1>
+						<h1>' . $device_name . ' ' . (strlen($lettersString) > 0 ? '(' . $lettersString . ')' : '') . '</h1>
 						<div class="widget-values">
 							<div class="widget-value">
 								<div class="widget-single-value">
@@ -1175,7 +1178,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 						<div class="modal-dialog modal-xl">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title" id="modal-label">' . $device_name . ' ' . $lettersString . '</h5>
+									<h5 class="modal-title" id="modal-label">' . $device_name . ' ' . (strlen($lettersString) > 0 ? '(' . $lettersString . ')' : '') . '</h5>
 									<button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
 								</div>
 								<div class="modal-body">
@@ -1712,6 +1715,9 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                     $letters = array_filter(
                                         array_column($json_data['Hardware']['Storage'][$driveKey]['Partitions'], 'PartitionLetter')
                                     );
+                                    if (version_compare(ltrim($json_data['Version'], 'v'), "1.4.0", ">=")){
+                                        $letters = array_map((fn($item) => $item . ':'), $letters);
+                                    }
                                     $lettersString = implode(", ", $letters);
 
                                     if ($storage_device['SmartData']) {
