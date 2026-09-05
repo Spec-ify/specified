@@ -8,10 +8,10 @@
 </script>
 
 <div>
-    <div>
-        <h1>User Variables</h1>
+    <div class="flex flex-col">
+        <h1 class="text-3xl mb-2">User Variables</h1>
 
-        <table>
+        <table class="mb-2">
             <thead>
                 <tr>
                     <th>Field</th>
@@ -48,8 +48,8 @@
         </table>
     </div>
 
-    <div>
-        <h1>System Variables</h1>
+    <div class="flex flex-col">
+        <h1 class="text-3xl mb-2">System Variables</h1>
 
         <table>
             <thead>

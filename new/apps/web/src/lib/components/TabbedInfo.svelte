@@ -22,15 +22,15 @@
 	}: Props = $props();
 </script>
 
-<div class="tabbed-info">
-    <Tabs defaultValue="notes">
-        <Tabs.List>
-            <Tabs.Trigger value="notes">Notes</Tabs.Trigger>
-            <Tabs.Trigger value="notable-software">Notable Software</Tabs.Trigger>
-            <Tabs.Trigger value="variables">Variables</Tabs.Trigger>
-            <Tabs.Trigger value="browsers">Browsers</Tabs.Trigger>
-            <Tabs.Trigger value="startup-tasks">Startup Tasks</Tabs.Trigger>
-            <Tabs.Trigger value="windows-updates">Windows Updates</Tabs.Trigger>
+<div class="card bg-surface-900 p-4" >
+    <Tabs class="p-4" defaultValue="notes">
+        <Tabs.List class="mb-4">
+            <Tabs.Trigger class="btn bg-surface-800/50 text-sm" value="notes">Notes</Tabs.Trigger>
+            <Tabs.Trigger class="btn bg-surface-800/50 text-sm" value="notable-software">Notable Software</Tabs.Trigger>
+            <Tabs.Trigger class="btn bg-surface-800/50 text-sm" value="variables">Variables</Tabs.Trigger>
+            <Tabs.Trigger class="btn bg-surface-800/50 text-sm" value="browsers">Browsers</Tabs.Trigger>
+            <Tabs.Trigger class="btn bg-surface-800/50 text-sm" value="startup-tasks">Startup Tasks</Tabs.Trigger>
+            <Tabs.Trigger class="btn bg-surface-800/50 text-sm" value="windows-updates">Windows Updates</Tabs.Trigger>
             <Tabs.Indicator />
         </Tabs.List>
 

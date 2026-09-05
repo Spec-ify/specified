@@ -13,18 +13,19 @@
 
 </script>
 
-<div>
+<div class="flex flex-row items-center justify-center">
     {#each report.System.BrowserExtensions as browser}
-        <Widget title={browser.Name+(report.System.DefaultBrowser.includes(browser.Name.toLowerCase()) ? "(Default)" : "")}>
+        <Widget title={browser.Name+(report.System.DefaultBrowser.includes(browser.Name.toLowerCase()) ? " (Default)" : "")}>
             {#snippet widgetContents()}
-                <div class="widget-contents">
-                    <img class="center" height="48px" width="48px" alt="{browser.Name}" src="{browserImage(browser.Name)}">
+                <div class="w-full flex items-center justify-center">
+                    <img class="w-12" alt="{browser.Name}" src="{browserImage(browser.Name)}">
                 </div>
             {/snippet}
 
             {#snippet modalContents()}
                 {#each browser.Profiles as profile}
-                    <h1>{browser.Name} Profile "{profile.name}"</h1>
+                <div class="flex flex-col gap-4 mb-4">
+                    <h1 class="text-3xl mb-2">{browser.Name} Profile "{profile.name}"</h1>
 
                     <table>
                         <thead>
@@ -45,6 +46,9 @@
                             {/each}
                         </tbody>
                     </table>
+
+                </div>
+                    
                 {/each}
             {/snippet}
         </Widget>

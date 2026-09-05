@@ -46,38 +46,40 @@
 
 </script>
 
-<div>
-    <h1>Notable Software</h1>
+<div class="flex flex-col">
+    <h1 class="text-3xl mb-2">Notable Software</h1>
 
-    {#if pupsInstalled.length > 0}
-        {#each pupsInstalled as app}
+    <div class="list-none list-outside">
+        {#if pupsInstalled.length > 0}
+            {#each pupsInstalled as app}
+                <li>
+                    <p>
+                        {app} Found Installed.
+                    </p>
+                </li>
+            {/each}
+        {:else}
             <li>
                 <p>
-                    {app} Found Installed.
+                    No notable software found installed.
                 </p>
             </li>
-        {/each}
-    {:else}
-        <li>
-            <p>
-                No notable software found installed.
-            </p>
-        </li>
-    {/if}
+        {/if}
 
-    {#if pupsRunning.length > 0}
-        {#each pupsRunning as app}
+        {#if pupsRunning.length > 0}
+            {#each pupsRunning as app}
+                <li>
+                    <p>
+                        {app} Found running.
+                    </p>
+                </li>
+            {/each}
+        {:else}
             <li>
                 <p>
-                    {app} Found running.
+                    No notable software found running.
                 </p>
             </li>
-        {/each}
-    {:else}
-        <li>
-            <p>
-                No notable software found running.
-            </p>
-        </li>
-    {/if}
+        {/if}
+    </div>
 </div>

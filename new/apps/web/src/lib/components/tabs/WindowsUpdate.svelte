@@ -2,7 +2,7 @@
     export let report: any;
 </script>
 
-<div>
+<div class="flex flex-col overflow-auto">
     <table>
         <thead>
             <tr>

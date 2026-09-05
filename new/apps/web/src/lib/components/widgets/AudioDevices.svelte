@@ -23,8 +23,6 @@
 			<p class="num-internal">Internal : {numInternal}</p>
 			<p class="num-external">External : {numExternal}</p>
 		</div>
-	<style>
-	</style>
 	{/snippet}
 	{#snippet modalContents()}
 	<table id="audio-table" class="table">

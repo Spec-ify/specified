@@ -27,37 +27,32 @@
 	}: Props = $props();
 </script>
 
-<div class="widgets">
-	<Cpu cpu={report.Hardware.Cpu} cpuMoreInfo={cpuMoreInfo}/>
-	<Ram ram={report.Hardware.Ram} pagefile={report.System.PageFile}/>
-	<Motherboard
-		tpm={report.Security.Tpm}
-		motherboard={report.Hardware.Motherboard}
-		bios={report.Hardware.BiosInfo}
-	/>
-	<Gpu gpus={report.Hardware.Gpu} monitors={report.Hardware.Monitors} />
-	<Os security={report.Security} basic={report.BasicInfo} />
-	<Nic nics={report.Network.Adapters} />
-</div>
+<div class="flex flex-col gap-4 min-w-full">
+	<div class="flex items-stretch justify-evenly flex-wrap gap-4 w-full">
+		<Cpu cpu={report.Hardware.Cpu} cpuMoreInfo={cpuMoreInfo}/>
+		<Ram ram={report.Hardware.Ram} pagefile={report.System.PageFile}/>
+		<Motherboard
+			tpm={report.Security.Tpm}
+			motherboard={report.Hardware.Motherboard}
+			bios={report.Hardware.BiosInfo}
+		/>
+		<Gpu gpus={report.Hardware.Gpu} monitors={report.Hardware.Monitors} />
+		<Os security={report.Security} basic={report.BasicInfo} />
+		<Nic nics={report.Network.Adapters} />
+	</div>
 
-<div class="widgets">
-	<Drives drives={report.Hardware.Storage}/>
-</div>
+	<div class="flex items-stretch justify-evenly flex-wrap gap-4 w-full">
+		<Drives drives={report.Hardware.Storage}/>
+	</div>
 
-<div class="widgets">
-	<CpuUsage cpuLoad={report.Hardware.Cpu.LoadPercentage}/>
-	<RamUsage runningProcesses={report.System.RunningProcesses} ram={report.Hardware.Ram}></RamUsage>
-	<PowerProfiles powerProfiles={report.System.PowerProfiles} batteries={report.Hardware.Batteries}/>
-	<Temps temps={report.Hardware.Temperatures}/>
-	<AudioDevices audioDevices={report.Hardware.AudioDevices}/>
-</div>
+	<div class="flex items-stretch justify-evenly flex-wrap gap-4 w-full">
+		<CpuUsage cpuLoad={report.Hardware.Cpu.LoadPercentage}/>
+		<RamUsage runningProcesses={report.System.RunningProcesses} ram={report.Hardware.Ram}></RamUsage>
+		<AudioDevices audioDevices={report.Hardware.AudioDevices}/>
+		<!--
+		<Temps temps={report.Hardware.Temperatures}/>
+		-->
+		<PowerProfiles powerProfiles={report.System.PowerProfiles} batteries={report.Hardware.Batteries}/>
+	</div>
 
-<style>
-	.widgets {
-		display: flex;
-		justify-content: space-evenly;
-		flex-wrap: wrap;
-		gap: 10px;
-		margin-bottom: 10px;
-	}
-</style>
+</div>

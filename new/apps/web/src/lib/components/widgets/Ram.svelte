@@ -14,8 +14,9 @@
 		pagefile
 	}: Props = $props();
 
-	const flexBasis: string = `${100 / (Object.keys(ram).length % 4 ? Object.keys(ram).length % 4 : 4)}%`;
+	let gridcols = `grid grid-rows-${Math.floor(((ram.length - 1) / 4) + 1)} grid-cols-${ram.length > 4 ? 4 : ((ram.length - 1) % 4) + 1} gap-x-${ram.length > 4 ? 0.5 : 4 - (ram.length - 1 % 4) + 1} w-full text-center`;
 
+	console.log(gridcols);
 </script>
 
 <!-- RAM -->
@@ -23,27 +24,19 @@
 <Widget title="Memory">
 
 	{#snippet widgetContents()}
-		<div class="flex-container">
+		<div class={gridcols}>
 			{#each ram as ramStick, i}
 
 				{#if ramStick.Capacity > 0}
-					<div style="flex: 1 1 {flexBasis};">
+					<div>
 						<span class="widget-cap">{Math.floor(ramStick.Capacity / 1000)} GB</span>
 						<div>DIMM {i+1}</div>
 					</div>
 				{:else}
-					<div style="flex: 1 1 {flexBasis};">
+					<div>
 						<span style="color: rgb(215,27,27);">--</span>
 						<div>DIMM {i+1}</div>
 					</div>
-				{/if}
-
-				<!-- 
-					Checks if report has more than 4 RAM Modules, 
-					and if each block has reached the 4th module in this row
-				-->
-				{#if Object.keys(ram).length > 4 && (i + 1) % 4 == 0}
-					<div style="flex-basis: 100%;"></div>
 				{/if}
 			{/each}
 		</div>
@@ -111,11 +104,5 @@
 
 	div {
 		color: var(--color-surface-300);
-	}
-
-	.flex-container {
-		display: flex;
-		flex-flow: row wrap;
-		max-width: inherit;
 	}
 </style>

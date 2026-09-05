@@ -54,11 +54,11 @@
 
 </script>
 
-<div class="table-wrap">
+<div class="overflow-auto max-w-full flex flex-col">
     {#if params.length > 0}
-        <div class="table-options">
+        <div class="flex flex-row justify-between">
             {#if paginate}
-                <label class="label">
+                <label class="max-w-32 label">
                     <span class="label-text">Page size</span>
                     <select bind:value={pageSize} class="select">
                         <option value="5">5</option>
@@ -69,17 +69,17 @@
                     </select>
                 </label>
             {/if}
-        </div>
 
-        {#if search}
-            <label class="label">
-                <span class="label-text">Search: </span>
-                <input bind:value={searchTerm} class="input" type="text" placeholder="Input" />
-            </label>
-        {/if}
+            {#if search}
+                <label class="max-w-64 label">
+                    <span class="label-text">Search: </span>
+                    <input bind:value={searchTerm} class="input" type="text" placeholder="Input" />
+                </label>
+            {/if}
+        </div>
     {/if}
     
-    <table class="table caption-bottom">
+    <table class="overflow-auto table caption-bottom">
         <thead>
             <tr>
                 {#each headers as header}
@@ -100,26 +100,30 @@
     </table>
 
     {#if paginate}
-        <Pagination count={finalData.length} pageSize={pageSize} {currentPage} onPageChange={(event) => (currentPage = event.page)}>
-		<Pagination.PrevTrigger>
-			<a>Previous</a>
-		</Pagination.PrevTrigger>
-		<Pagination.Context>
-			{#snippet children(pagination)}
-				{#each pagination().pages as page, index (page)}
-					{#if page.type === 'page'}
-						<Pagination.Item {...page}>
-							{page.value}
-						</Pagination.Item>
-					{:else}
-						<Pagination.Ellipsis {index}>&#8230;</Pagination.Ellipsis>
-					{/if}
-				{/each}
-			{/snippet}
-		</Pagination.Context>
-		<Pagination.NextTrigger>
-			<a onclick={console.log(end)}>Next</a>
-		</Pagination.NextTrigger>
-	</Pagination>
+    <div class="min-w-full flex items-end justify-end">
+        <Pagination class="flex gap-1 flex-row" count={finalData.length} pageSize={pageSize} {currentPage} onPageChange={(event) => (currentPage = event.page)}>
+            <Pagination.PrevTrigger class="btn bg-surface-800/50 text-sm">
+                <a>Previous</a>
+            </Pagination.PrevTrigger>
+            <Pagination.Context>
+                {#snippet children(pagination)}
+                    <div class="flex flex-row gap-1">
+                        {#each pagination().pages as page, index (page)}
+                            {#if page.type === 'page'}
+                                <Pagination.Item class="cursor-pointer btn bg-surface-800/50 text-sm" {...page}>
+                                    <a>{page.value}</a>
+                                </Pagination.Item>
+                            {:else}
+                                <Pagination.Ellipsis {index}>&#8230;</Pagination.Ellipsis>
+                            {/if}
+                        {/each}
+                    </div>
+                {/snippet}
+            </Pagination.Context>
+            <Pagination.NextTrigger class="btn bg-surface-800/50 text-sm">
+                <a onclick={console.log(end)}>Next</a>
+            </Pagination.NextTrigger>
+        </Pagination>
+    </div>
     {/if}
 </div>
