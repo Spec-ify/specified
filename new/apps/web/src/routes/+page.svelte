@@ -7,15 +7,6 @@
 	import { page } from '$app/state';
 
 	let { data: pageData }: { data: PageData } = $props();
-
-	/*
-	onMount(() => {
-		// console.log(data.widgetResponse);
-		const wrapperDiv = document.getElementById('legacy-content');
-		wrapperDiv!.innerHTML = pageData.widgetHTML + pageData.tabbedInfoHTML + pageData.tableHTML;
-		// document.appendChild(wrapperDiv);
-	});
-	*/
 </script>
 
 <!-- <div class="container h-full mx-auto flex justify-center items-center"> -->
