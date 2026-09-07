@@ -263,9 +263,33 @@
                     </div>
                 </Accordion.ItemTrigger>
                 <Accordion.ItemContent class="card outline-2 outline-surface-50/20 mt-2 p-4">
-                    <code>
-                        {report.Network.HostsFile}
-                    </code>
+                    <pre>
+                        <code>
+                            {report.Network.HostsFile}
+                        </code>
+                    </pre>
+                </Accordion.ItemContent>
+            </Accordion.Item>
+        </Accordion>
+    </div>
+
+    <div class="card bg-surface-900 p-4">
+        <!-- Debug Log -->
+        <Accordion class="mb-2" collapsible>
+            <Accordion.Item value='dbg-log'>
+                <Accordion.ItemTrigger class="min-w-full text-start">
+                    <div class="hover:bg-primary-900 rounded-sm">
+                        <h3 class="p-2 px-4 text-base">
+                            Debug Log
+                        </h3>
+                    </div>
+                </Accordion.ItemTrigger>
+                <Accordion.ItemContent class="card outline-2 outline-surface-50/20 mt-2 p-4">
+                    <pre>
+                        <code>
+                            {report.DebugLogText}
+                        </code>
+                    </pre>
                 </Accordion.ItemContent>
             </Accordion.Item>
         </Accordion>
