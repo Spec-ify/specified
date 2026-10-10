@@ -58,8 +58,10 @@
         "Windhawk",      // Theming tool, can cause UI issues - exstacy
         "Rainmeter",    // Theming tool, can cause UI issues - martin311
         "TaskbarX",    // Theming tool, can cause UI issues - martin311
-        "OpenShell",    // Theming tool, can cause UI issues - martin311
-        "AOMEI"       // Catch-all for the AOMEI software suite, can cause OS issues - exstacydemon
+        "Open-Shell",    // Theming tool, can cause UI issues - martin311
+        "AOMEI",       // Catch-all for the AOMEI software suite, can cause OS issues - exstacydemon
+        "StartAllBack",    // Theming tool, can cause UI issues - martin311
+        "SteelSeries GG"   // Can mess with audio - martin311
     ];
 
     $biosCharacteristics = [
