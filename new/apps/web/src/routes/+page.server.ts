@@ -89,18 +89,7 @@ export const load: ServerLoad = async ({ fetch }) => {
 	} catch {
 		error(503, "no spec-ify instance found at localhost:8080");
 	}
-	/*
-	const widgetHTML = await (
-		await fetch(`http://localhost:8080/widgets.php?file=${FILE_PATH}`)
-	).text();
-	const tableHTML = await (
-		await fetch(`http://localhost:8080/tables.php/?file=${FILE_PATH}`)
-	).text();
-	const tabbedInfoHTML = await (
-		await fetch(`http://localhost:8080/tabbed_info.php/?file=${FILE_PATH}`)
-	).text();
-	*/
 	const cpuMoreInfo = cpuLookup(report.Hardware.Cpu);
 	const eolList = await eolLookup(); 
-	return { report, cpuMoreInfo, eolList, /*widgetHTML, tableHTML, tabbedInfoHTML*/ };
+	return { report, cpuMoreInfo, eolList, };
 };
