@@ -30,3 +30,7 @@ In another terminal window:
 ### Running dev server
 1. From the root of the repository, run `npm run dev`
 2. Navigate to `/viewer/test1` served from the URL provided by the previous command in your web browser, i.e `http://localhost:5713/viewer/test1`
+
+### Running the production server
+1. Build the production server with `npm run build`
+2. Run the server with `node build/index.js`
