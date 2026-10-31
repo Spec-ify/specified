@@ -1,25 +1,16 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
+	import Widgets from '$lib/components/Widgets.svelte';
+	import TabbedInfo from '$lib/components/TabbedInfo.svelte';
+	import Accordions from '$lib/components/Accordions.svelte';
 
-	let { data }: { data: PageData } = $props();
-	let body: HTMLBodyElement;
-	onMount(() => {
-		// console.log(data.widgetResponse);
-		const wrapperDiv = document.getElementById('legacy-content');
-		wrapperDiv!.innerHTML = data.widgetHTML + data.tabbedInfoHTML + data.tableHTML;
-	});
+	let { data: pageData }: { data: PageData } = $props();
+	let report = pageData.report;
 </script>
-<svelte:body bind:this={body}/>
-<!-- <div class="container h-full mx-auto flex justify-center items-center"> -->
-<div>
-	<div id="legacy-content">
-		<!-- populated on js side -->
+<div class="flex items-center justify-center min-w-full p-4">
+	<div class="flex flex-col gap-4 w-full">
+		<Widgets report={pageData.report} cpuMoreInfo={pageData.cpuMoreInfo}/>
+		<TabbedInfo report={pageData.report} eolList={pageData.eolList}/>
+		<Accordions report={pageData.report}/>
 	</div>
 </div>
-
-<style>
-	:global(body) {
-		background-color: var(--body-background-color);
-	}
-</style>

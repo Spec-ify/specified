@@ -6,7 +6,7 @@
     function browserImage(name: string) {
         const browsers: Array<string> = ["chrome", "firefox", "edge", "opera", "brave", "vivaldi"],
                 test: string = name.toLowerCase(),
-                image: string = browsers.includes(test) ? `assets/${test}.png` : "#";;
+                image: string = browsers.includes(test) ? `/assets/${test}.png` : "#";;
 
         return image;
     }

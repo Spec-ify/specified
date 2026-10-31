@@ -16,7 +16,6 @@
 
 	let gridcols = `grid grid-rows-${Math.floor(((ram.length - 1) / 4) + 1)} grid-cols-${ram.length > 4 ? 4 : ((ram.length - 1) % 4) + 1} gap-x-${ram.length > 4 ? 0.5 : 4 - (ram.length - 1 % 4) + 1} w-full text-center`;
 
-	console.log(gridcols);
 </script>
 
 <!-- RAM -->
