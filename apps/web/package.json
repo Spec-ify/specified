@@ -5,6 +5,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
+		"postbuild": "node -e \"const fs = require('node:fs'); fs.copyFileSync('src/lib/server/cleanup-worker.mjs', 'build/cleanup-worker.mjs'); try { fs.copyFileSync('src/lib/server/cleanup-worker.mjs', 'build/server/cleanup-worker.mjs'); } catch {}\"",
 		"preview": "vite preview",
 		"test": "npm run test:integration && npm run test:unit",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
