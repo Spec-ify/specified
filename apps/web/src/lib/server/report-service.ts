@@ -31,10 +31,21 @@ export function getReportsDir(): string {
  * Generates an 8-character deterministic hex slug for a report
  * based on Version, GenerationDate, and Hostname.
  */
-export function generateReportSlug(report: any): string {
-	const version = typeof report?.Version === 'string' ? report.Version : '';
-	const date = typeof report?.Meta?.GenerationDate === 'string' ? report.Meta.GenerationDate : '';
-	const hostname = typeof report?.BasicInfo?.Hostname === 'string' ? report.BasicInfo.Hostname : '';
+export function generateReportSlug(report: unknown): string {
+	const reportObj = (report && typeof report === 'object' ? report : {}) as Record<
+		string,
+		unknown
+	>;
+	const version = typeof reportObj.Version === 'string' ? reportObj.Version : '';
+	const meta = (
+		reportObj.Meta && typeof reportObj.Meta === 'object' ? reportObj.Meta : {}
+	) as Record<string, unknown>;
+	const basicInfo = (
+		reportObj.BasicInfo && typeof reportObj.BasicInfo === 'object' ? reportObj.BasicInfo : {}
+	) as Record<string, unknown>;
+
+	const date = typeof meta.GenerationDate === 'string' ? meta.GenerationDate : '';
+	const hostname = typeof basicInfo.Hostname === 'string' ? basicInfo.Hostname : '';
 
 	let rawString = `${version}${date}${hostname}`;
 	if (!rawString.trim()) {

@@ -16,7 +16,8 @@ export const POST: RequestHandler = async (event) => {
 		clientIp = event.getClientAddress();
 	} catch {
 		// Fallback for environments where getClientAddress is unavailable
-		clientIp = event.request.headers.get('x-forwarded-for')?.split(',')[0].trim() || '127.0.0.1';
+		clientIp =
+			event.request.headers.get('x-forwarded-for')?.split(',')[0].trim() || '127.0.0.1';
 	}
 
 	const rateLimit = checkRateLimit(clientIp);
@@ -88,8 +89,9 @@ export const POST: RequestHandler = async (event) => {
 		} else {
 			rawText = await event.request.text();
 		}
-	} catch (err: any) {
-		return json({ error: `Failed to read request body: ${err?.message || err}` }, { status: 400 });
+	} catch (err: unknown) {
+		const message = err instanceof Error ? err.message : String(err);
+		return json({ error: `Failed to read request body: ${message}` }, { status: 400 });
 	}
 
 	// Double check body size in bytes
@@ -127,11 +129,9 @@ export const POST: RequestHandler = async (event) => {
 		await fs.mkdir(reportsDir, { recursive: true });
 		const targetFile = path.join(reportsDir, `${slug}.json`);
 		await fs.writeFile(targetFile, JSON.stringify(parsedReport, null, 2), 'utf8');
-	} catch (err: any) {
-		return json(
-			{ error: `Failed to save report to disk: ${err?.message || err}` },
-			{ status: 500 }
-		);
+	} catch (err: unknown) {
+		const message = err instanceof Error ? err.message : String(err);
+		return json({ error: `Failed to save report to disk: ${message}` }, { status: 500 });
 	}
 
 	const viewerUrl = `/viewer/${slug}`;

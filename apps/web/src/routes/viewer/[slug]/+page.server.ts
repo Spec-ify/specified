@@ -1,9 +1,10 @@
 import { type ServerLoad } from '@sveltejs/kit';
-import { dev } from "$app/environment";
+import { dev } from '$app/environment';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 export const prerender = false;
 import { error } from '@sveltejs/kit';
+import type { Report } from '$lib/common/report/report';
 import {
 	getReportsDir,
 	isTestReport,
@@ -24,26 +25,23 @@ interface CpuInfo {
 
 interface EolListEntry {
 	cycle: string;
-	releaseLabel: string
-	releaseDate: string
-	eol: string
-	latest: string
-	link: string
-	lts: boolean
-	support: string
-	extendedSupport: boolean
+	releaseLabel: string;
+	releaseDate: string;
+	eol: string;
+	latest: string;
+	link: string;
+	lts: boolean;
+	support: string;
+	extendedSupport: boolean;
 }
 
 async function eolLookup(): Promise<Array<EolListEntry>> {
 	try {
 		return await (
-			await fetch(
-				`https://endoflife.date/api/windows.json`,
-				{
-					method: 'GET',
-					mode: 'cors'
-				}
-			)
+			await fetch(`https://endoflife.date/api/windows.json`, {
+				method: 'GET',
+				mode: 'cors'
+			})
 		).json();
 	} catch (e) {
 		console.warn('Could not fetch windows endoflife list:', e);
@@ -52,11 +50,11 @@ async function eolLookup(): Promise<Array<EolListEntry>> {
 }
 /*
  * Looks up CPU name on HWAPI database
- * 
+ *
  * @param CPU info of report
  * @return (Response) Response of database with info
  */
-async function cpuLookup(cpu: CpuInfo): Promise<Response | undefined> {
+async function cpuLookup(cpu: CpuInfo): Promise<Response> {
 	let response: Response | undefined;
 
 	if (dev) {
@@ -71,10 +69,8 @@ async function cpuLookup(cpu: CpuInfo): Promise<Response | undefined> {
 					}
 				)
 			).json();
-		} catch (e) {
-			console.warn(
-				'Could not connect to local hwapi instance, falling back to spec-ify.com'
-			);
+		} catch {
+			console.warn('Could not connect to local hwapi instance, falling back to spec-ify.com');
 		}
 	}
 
@@ -86,17 +82,18 @@ async function cpuLookup(cpu: CpuInfo): Promise<Response | undefined> {
 					mode: 'cors'
 				})
 			).json();
-		} catch (e) {
+		} catch {
 			console.warn('Could not connect to spec-ify.com for hwapi');
 		}
 	}
 
-	if (response){
+	if (response) {
 		return response;
 	}
+	return new Response(JSON.stringify({}));
 }
 
-export const load: ServerLoad = async ({ fetch, params }) => {
+export const load: ServerLoad = async ({ params }) => {
 	const slug = params.slug;
 	if (!slug || slug.includes('/') || slug.includes('\\') || slug.includes('..')) {
 		error(400, 'Invalid report name');
@@ -108,7 +105,10 @@ export const load: ServerLoad = async ({ fetch, params }) => {
 	try {
 		stats = await fs.stat(filePath);
 	} catch {
-		error(404, 'Report not found, make sure the report exists and the name is spelled correctly');
+		error(
+			404,
+			'Report not found, make sure the report exists and the name is spelled correctly'
+		);
 	}
 
 	// If not a test report, check creation time and delete if > 24 hours old
@@ -121,7 +121,10 @@ export const load: ServerLoad = async ({ fetch, params }) => {
 			} catch (e) {
 				console.error(`Failed to delete expired report at ${filePath}:`, e);
 			}
-			error(404, 'Report has expired and is no longer available (reports are kept for 24 hours)');
+			error(
+				404,
+				'Report has expired and is no longer available (reports are kept for 24 hours)'
+			);
 		}
 	}
 
@@ -131,7 +134,7 @@ export const load: ServerLoad = async ({ fetch, params }) => {
 	} catch {
 		error(404, 'Failed to read report file');
 	}
-	const report: any = JSON.parse(file);
+	const report: Report = JSON.parse(file);
 	const eolList = await eolLookup();
 	const cpuMoreInfo = await cpuLookup(report.Hardware.Cpu);
 	return { eolList, report, cpuMoreInfo };

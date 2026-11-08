@@ -1,9 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import {
-	spawnCleanupWorker,
-	startCleanupSchedule,
-	stopCleanupSchedule
-} from './cleanup';
+import { spawnCleanupWorker, startCleanupSchedule, stopCleanupSchedule } from './cleanup';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';

@@ -98,7 +98,9 @@ export function startCleanupSchedule(
 	spawnCleanupWorker()
 		.then((res) => {
 			if (res.deletedCount > 0) {
-				console.info(`[Cleanup Worker] Startup cleanup: removed ${res.deletedCount} expired report(s).`);
+				console.info(
+					`[Cleanup Worker] Startup cleanup: removed ${res.deletedCount} expired report(s).`
+				);
 			}
 		})
 		.catch((err) => {
