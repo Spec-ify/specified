@@ -10,6 +10,7 @@ node_modules
 
 # testing
 coverage
+test-results
 
 # svelte
 .svelte-kit
