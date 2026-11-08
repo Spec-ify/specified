@@ -75,19 +75,19 @@ export function isTestReport(filenameOrPath: string): boolean {
 
 /**
  * Extracts the effective file creation time in milliseconds.
+ * Uses the minimum of valid birthtime, ctime, and mtime to handle
+ * filesystems where birthtime is not available or differs from creation time.
  */
 export function getFileCreationTimeMs(stats: {
 	birthtimeMs: number;
 	ctimeMs: number;
 	mtimeMs: number;
 }): number {
-	if (stats.birthtimeMs && stats.birthtimeMs > 0) {
-		return stats.birthtimeMs;
+	const validTimes = [stats.birthtimeMs, stats.ctimeMs, stats.mtimeMs].filter((t) => t && t > 0);
+	if (validTimes.length === 0) {
+		return Date.now();
 	}
-	if (stats.ctimeMs && stats.ctimeMs > 0) {
-		return stats.ctimeMs;
-	}
-	return stats.mtimeMs;
+	return Math.min(...validTimes);
 }
 
 interface RateLimitRecord {
