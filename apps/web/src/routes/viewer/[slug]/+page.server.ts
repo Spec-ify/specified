@@ -5,12 +5,7 @@ import path from 'node:path';
 export const prerender = false;
 import { error } from '@sveltejs/kit';
 import type { Report } from '$lib/common/report/report';
-import {
-	getReportsDir,
-	isTestReport,
-	getFileCreationTimeMs,
-	REPORT_MAX_AGE_MS
-} from '$lib/server/report-service';
+import { getReportsDir, isTestReport, REPORT_MAX_AGE_MS } from '$lib/server/report-service';
 
 interface CpuInfo {
 	CurrentClockSpeed: number;
@@ -113,7 +108,7 @@ export const load: ServerLoad = async ({ params }) => {
 
 	// If not a test report, check creation time and delete if > 24 hours old
 	if (!isTestReport(slug)) {
-		const creationTime = getFileCreationTimeMs(stats);
+		const creationTime = Math.min(stats.mtimeMs, stats.ctimeMs);
 		const ageMs = Date.now() - creationTime;
 		if (ageMs > REPORT_MAX_AGE_MS) {
 			try {

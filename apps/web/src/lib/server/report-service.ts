@@ -1,62 +1,16 @@
-import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { dev } from '$app/environment';
 
 export const MAX_REPORT_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
 export const REPORT_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 /**
- * Returns the absolute path to the reports/ directory.
- * Works both in dev mode (cwd is apps/web) and production.
+ * Returns the path to the reports/ directory.
+ * If dev mode, returns '../../reports/'. Otherwise, './reports/'.
  */
 export function getReportsDir(): string {
-	if (process.env.REPORTS_DIR) {
-		return path.resolve(process.env.REPORTS_DIR);
-	}
-	const candidates = [
-		path.resolve(process.cwd(), 'reports'),
-		path.resolve(process.cwd(), '../../reports'),
-		path.resolve(process.cwd(), '../reports')
-	];
-	for (const candidate of candidates) {
-		if (fs.existsSync(candidate)) {
-			return candidate;
-		}
-	}
-	// Fallback
-	return path.resolve(process.cwd(), 'reports');
-}
-
-/**
- * Generates an 8-character deterministic hex slug for a report
- * based on Version, GenerationDate, and Hostname.
- */
-export function generateReportSlug(report: unknown): string {
-	const reportObj = (report && typeof report === 'object' ? report : {}) as Record<
-		string,
-		unknown
-	>;
-	const version = typeof reportObj.Version === 'string' ? reportObj.Version : '';
-	const meta = (
-		reportObj.Meta && typeof reportObj.Meta === 'object' ? reportObj.Meta : {}
-	) as Record<string, unknown>;
-	const basicInfo = (
-		reportObj.BasicInfo && typeof reportObj.BasicInfo === 'object' ? reportObj.BasicInfo : {}
-	) as Record<string, unknown>;
-
-	const date = typeof meta.GenerationDate === 'string' ? meta.GenerationDate : '';
-	const hostname = typeof basicInfo.Hostname === 'string' ? basicInfo.Hostname : '';
-
-	let rawString = `${version}${date}${hostname}`;
-	if (!rawString.trim()) {
-		try {
-			rawString = JSON.stringify(report) || crypto.randomUUID();
-		} catch {
-			rawString = crypto.randomUUID();
-		}
-	}
-
-	return crypto.createHash('md5').update(rawString).digest('hex').substring(0, 8);
+	return dev ? '../../reports/' : './reports/';
 }
 
 /**
@@ -77,28 +31,28 @@ export function isValidSpecifyReport(data: unknown): boolean {
 }
 
 /**
+ * Generates an 8-character deterministic hex slug for a report
+ * based on Version, GenerationDate, and Hostname.
+ */
+export function generateReportSlug(report: unknown): string {
+	if (!isValidSpecifyReport(report)) {
+		return crypto.randomBytes(4).toString('hex');
+	}
+	const r = report as {
+		Version?: string;
+		Meta?: { GenerationDate?: string };
+		BasicInfo?: { Hostname?: string };
+	};
+	const rawString = `${r.Version ?? ''}${r.Meta?.GenerationDate ?? ''}${r.BasicInfo?.Hostname ?? ''}`;
+	return crypto.createHash('md5').update(rawString).digest('hex').substring(0, 8);
+}
+
+/**
  * Checks whether a filename or path has the test prefix.
  */
 export function isTestReport(filenameOrPath: string): boolean {
 	const base = path.basename(filenameOrPath);
 	return base.startsWith('test');
-}
-
-/**
- * Extracts the effective file creation time in milliseconds.
- * Uses the minimum of valid birthtime, ctime, and mtime to handle
- * filesystems where birthtime is not available or differs from creation time.
- */
-export function getFileCreationTimeMs(stats: {
-	birthtimeMs: number;
-	ctimeMs: number;
-	mtimeMs: number;
-}): number {
-	const validTimes = [stats.birthtimeMs, stats.ctimeMs, stats.mtimeMs].filter((t) => t && t > 0);
-	if (validTimes.length === 0) {
-		return Date.now();
-	}
-	return Math.min(...validTimes);
 }
 
 interface RateLimitRecord {

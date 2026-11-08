@@ -1,4 +1,7 @@
 import { Worker } from 'node:worker_threads';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { getReportsDir, REPORT_MAX_AGE_MS } from './report-service';
 
 export interface CleanupResult {
@@ -8,50 +11,23 @@ export interface CleanupResult {
 }
 
 /**
- * Worker thread script to inspect reports/ and delete expired files.
+ * Resolves the path to the worker script file across dev and production.
  */
-const WORKER_SCRIPT = `
-const { parentPort, workerData } = require('node:worker_threads');
-const fs = require('node:fs');
-const path = require('node:path');
-
-const { reportsDir, maxAgeMs } = workerData;
-const now = Date.now();
-const result = {
-	checkedCount: 0,
-	deletedCount: 0,
-	deletedFiles: []
-};
-
-try {
-	if (fs.existsSync(reportsDir)) {
-		const files = fs.readdirSync(reportsDir);
-		for (const filename of files) {
-			// Skip non-json or files with the 'test' prefix
-			if (!filename.endsWith('.json') || filename.startsWith('test')) {
-				continue;
-			}
-			result.checkedCount++;
-			const fullPath = path.join(reportsDir, filename);
-			try {
-				const stats = fs.statSync(fullPath);
-				const validTimes = [stats.birthtimeMs, stats.ctimeMs, stats.mtimeMs].filter((t) => t && t > 0);
-				const creationTime = validTimes.length > 0 ? Math.min(...validTimes) : now;
-				if (now - creationTime > maxAgeMs) {
-					fs.unlinkSync(fullPath);
-					result.deletedCount++;
-					result.deletedFiles.push(filename);
-				}
-			} catch (err) {
-				console.error('[Cleanup Worker] Error processing file ' + filename + ':', err);
-			}
+export function getWorkerPath(): string {
+	const candidates = [
+		path.resolve(process.cwd(), 'src/lib/server/cleanup-worker.mjs'),
+		path.resolve(process.cwd(), 'apps/web/src/lib/server/cleanup-worker.mjs'),
+		path.resolve(process.cwd(), 'build/cleanup-worker.mjs'),
+		path.resolve(process.cwd(), 'build/server/cleanup-worker.mjs'),
+		fileURLToPath(new URL('./cleanup-worker.mjs', import.meta.url))
+	];
+	for (const candidate of candidates) {
+		if (fs.existsSync(candidate)) {
+			return candidate;
 		}
 	}
-	parentPort.postMessage({ success: true, result });
-} catch (err) {
-	parentPort.postMessage({ success: false, error: err.message || String(err) });
+	return fileURLToPath(new URL('./cleanup-worker.mjs', import.meta.url));
 }
-`;
 
 /**
  * Routine that spawns a worker thread to clean up reports older than 24 hours.
@@ -61,8 +37,8 @@ export function spawnCleanupWorker(
 	maxAgeMs = REPORT_MAX_AGE_MS
 ): Promise<CleanupResult> {
 	return new Promise((resolve, reject) => {
-		const worker = new Worker(WORKER_SCRIPT, {
-			eval: true,
+		const workerPath = getWorkerPath();
+		const worker = new Worker(workerPath, {
 			workerData: { reportsDir, maxAgeMs }
 		});
 
@@ -91,9 +67,7 @@ let cleanupTimeoutId: NodeJS.Timeout | null = null;
 /**
  * Starts the cleanup routine on startup and registers a recurring setTimeout loop.
  */
-export function startCleanupSchedule(
-	intervalMs: number = parseInt(process.env.CLEANUP_INTERVAL_MS || String(30 * 60 * 1000), 10)
-): void {
+export function startCleanupSchedule(intervalMs: number = 30 * 60 * 1000): void {
 	// 1. Run immediately on startup
 	spawnCleanupWorker()
 		.then((res) => {

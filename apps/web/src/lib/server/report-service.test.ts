@@ -3,7 +3,6 @@ import {
 	generateReportSlug,
 	isValidSpecifyReport,
 	isTestReport,
-	getFileCreationTimeMs,
 	checkRateLimit,
 	resetRateLimits,
 	getReportsDir
@@ -48,32 +47,6 @@ describe('report-service', () => {
 		expect(isTestReport('/path/to/test_sample.json')).toBe(true);
 		expect(isTestReport('e5fcd31b.json')).toBe(false);
 		expect(isTestReport('/path/to/reports/report.json')).toBe(false);
-	});
-
-	it('extracts file creation time correctly', () => {
-		expect(
-			getFileCreationTimeMs({
-				birthtimeMs: 1000,
-				ctimeMs: 2000,
-				mtimeMs: 3000
-			})
-		).toBe(1000);
-
-		expect(
-			getFileCreationTimeMs({
-				birthtimeMs: 0,
-				ctimeMs: 2000,
-				mtimeMs: 3000
-			})
-		).toBe(2000);
-
-		expect(
-			getFileCreationTimeMs({
-				birthtimeMs: 0,
-				ctimeMs: 0,
-				mtimeMs: 3000
-			})
-		).toBe(3000);
 	});
 
 	it('enforces rate limiting per IP', () => {

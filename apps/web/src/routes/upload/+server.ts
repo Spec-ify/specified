@@ -11,15 +11,7 @@ import {
 
 export const POST: RequestHandler = async (event) => {
 	// 1. Rate Limiting Check
-	let clientIp = '127.0.0.1';
-	try {
-		clientIp = event.getClientAddress();
-	} catch {
-		// Fallback for environments where getClientAddress is unavailable
-		clientIp =
-			event.request.headers.get('x-forwarded-for')?.split(',')[0].trim() || '127.0.0.1';
-	}
-
+	const clientIp = event.getClientAddress();
 	const rateLimit = checkRateLimit(clientIp);
 	if (!rateLimit.allowed) {
 		return json(
@@ -54,21 +46,11 @@ export const POST: RequestHandler = async (event) => {
 	try {
 		if (contentType.includes('multipart/form-data')) {
 			const formData = await event.request.formData();
-			// Look for file under common keys ('specify', 'file') or any File in entries
 			let fileCandidate: File | null = null;
-			const specifyField = formData.get('specify');
-			const fileField = formData.get('file');
-
-			if (specifyField instanceof File) {
-				fileCandidate = specifyField;
-			} else if (fileField instanceof File) {
-				fileCandidate = fileField;
-			} else {
-				for (const value of formData.values()) {
-					if (value instanceof File) {
-						fileCandidate = value;
-						break;
-					}
+			for (const value of formData.values()) {
+				if (value instanceof File) {
+					fileCandidate = value;
+					break;
 				}
 			}
 
