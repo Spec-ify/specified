@@ -906,7 +906,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-
+                                            <div class="row row-cols-1 row-cols-md-2">
                                             <?php
 
                                             foreach ($json_data["Network"]["Adapters"] as $nic) {
@@ -947,65 +947,14 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                                     }
                                                 }
 
-                                                $table = '<table class="table nic">
-                                                            <tr>
-                                                                <td>#</td>
-                                                                <td>' . $nic["InterfaceIndex"] . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>Name</td>
-                                                                <td>' . $nic["Description"] . '</td>
-                                                            </tr>
+                                                $table = '<div class="col mb-4"><div class="card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">#' . $nic["InterfaceIndex"] . ' ' . $nic["Description"] . '</h5>
+                                                        <table class="table nic">
 
                                                             <tr>
                                                                 <td>MAC</td>
                                                                 <td>' . $nic["MACAddress"] . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>Gateway(s)</td>
-                                                                <td>' . $gateways . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>DHCP State</td>
-                                                                <td>' . $nic["DHCPEnabled"] . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>DHCP Lease Expiry</td>
-                                                                <td>' . $nic["DHCPLeaseExpires"] . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>DHCP Lease Obtained</td>
-                                                                <td>' . $nic["DHCPLeaseObtained"] . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>DHCP Server</td>
-                                                                <td>' . $nic["DHCPServer"] . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>DNS Domain</td>
-                                                                <td>' . $nic["DNSDomain"] . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>DNS Hostname</td>
-                                                                <td>' . $nic["DNSHostName"] . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>DNS IPs</td>
-                                                                <td>' . $dnsIPs . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>DNS Suffixes</td>
-                                                                <td>' . $dnsSuffixes . '</td>
                                                             </tr>
 
                                                             <tr>
@@ -1024,8 +973,135 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                                             </tr>
 
                                                             <tr>
+                                                                <td>Gateway(s)</td>
+                                                                <td>' . $gateways . '</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>DHCP</td>
+                                                                <td>
+                                                                    <details>
+                                                                    <summary class="accordion-item" name="accordionExample">
+                                                                    ' . ($nic["DHCPEnabled"] ? 'Enabled, ' . $nic["DHCPServer"] : 'Disabled') . '
+                                                                    </summary>
+                                                                        <table class="table">
+                                                                            <tr>
+                                                                            <td>DHCP Lease Expiry</td>
+                                                                            <td>' . $nic["DHCPLeaseExpires"] . '</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                            <td>DHCP Lease Obtained</td>
+                                                                            <td>' . $nic["DHCPLeaseObtained"] . '</td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </details>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>DNS</td>
+                                                                <td>
+                                                                    <details>
+                                                                    <summary class="accordion-item" name="accordionExample">
+                                                                    ' . $dnsIPs . '
+                                                                    </summary>
+                                                                        <table class="table">
+                                                                            <tr>
+                                                                                <td>DNS Domain</td>
+                                                                                <td>' . $nic["DNSDomain"] . '</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>DNS Hostname</td>
+                                                                                <td>' . $nic["DNSHostName"] . '</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>DNS Suffixes</td>
+                                                                                <td>' . $dnsSuffixes . '</td>
+                                                                            </tr>';
+
+
+                                                                            if (isset($nic["DNSIPV6"])) {
+                                                                                // Stolen from doom-scroll.php.
+                                                                                $ipv6_dns = isset($nic['DNSIPV6']) ? ( is_array($nic['DNSIPV6']) ? $nic['DNSIPV6'] : explode(',', $nic['DNSIPV6']) ) : [];
+                                                                                $table .= '
+                                                                                        <tr>
+                                                                                            <td>IPv6 DNS?</td>
+                                                                                            <td>' . $ipv6_dns . '</td>
+                                                                                        </tr>
+                                                                                ';
+                                                                            }
+
+                                                                            if (isset($nic["DNSIsStatic"])) {
+                                                                                $table .= '
+                                                                                        <tr>
+                                                                                            <td>Is DNS Static?</td>
+                                                                                            <td>' . $nic["DNSIsStatic"] . '</td>
+                                                                                        </tr>
+                                                                                ';
+                                                                            }
+
+                                                                            $table .= '
+
+                                                                        </table>
+                                                                    </details>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
                                                                 <td>Physical Adapter?</td>
-                                                                <td>' . ($nic['PhysicalAdapter'] ?? 'unknown') . '</td>
+                                                                <td><details><summary>' . ($nic['PhysicalAdapter'] ?? 'unknown') . '</summary>';
+                                                                if (isset($nic["PhysicalAdapter"]) && (bool) $nic["PhysicalAdapter"]) {
+                                                                    $table .= '<table class="table">
+                                                                    <tr>
+                                                                    <td>Full Duplex?</td>
+                                                                    <td>' . $nic["FullDuplex"] . '</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                    <td>Media Connection State</td>
+                                                                    <td>' . $nic["MediaConnectState"] . '</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                    <td>Media Duplex State</td>
+                                                                    <td>' . $nic["MediaDuplexState"] . '</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                    <td>MTU Size</td>
+                                                                    <td>' . $nic["MtuSize"] . '</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                    <td>Name</td>
+                                                                    <td>' . $nic["Name"] . '</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                    <td>Operational Status</td>
+                                                                    <td>' . $nic["OperationalStatusDownMediaDisconnected"] . '</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                    <td>Permanent Address</td>
+                                                                    <td>' . $nic["PermanentAddress"] . '</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                    <td>Promiscuous Mode</td>
+                                                                    <td>' . $nic["PromiscuousMode"] . '</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                    <td>State</td>
+                                                                    <td>' . $nic["State"] . '</td>
+                                                                    </tr>
+                                                                    </table>';
+                                                                }
+                                                                $table .= '</details></td>
                                                             </tr>
                                                         ';
 
@@ -1038,82 +1114,16 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                                     ';
                                                 }
 
-                                                if (isset($nic["DNSIPV6"])) {
-                                                    // Stolen from doom-scroll.php.
-                                                    $ipv6_dns = isset($nic['DNSIPV6']) ? ( is_array($nic['DNSIPV6']) ? $nic['DNSIPV6'] : explode(',', $nic['DNSIPV6']) ) : [];
-                                                    $table .= '
-                                                            <tr>
-                                                                <td>IPv6 DNS?</td>
-                                                                <td>' . $ipv6_dns . '</td>
-                                                            </tr>
-                                                    ';
-                                                }
 
-                                                if (isset($nic["DNSIsStatic"])) {
-                                                    $table .= '
-                                                            <tr>
-                                                                <td>Is DNS Static?</td>
-                                                                <td>' . $nic["DNSIsStatic"] . '</td>
-                                                            </tr>
-                                                    ';
-                                                }
 
-                                                if (isset($nic["PhysicalAdapter"]) && (bool) $nic["PhysicalAdapter"]) {
-                                                    $table .= '
-                                                            <tr>
-                                                                <td>Full Duplex?</td>
-                                                                <td>' . $nic["FullDuplex"] . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>Media Connection State</td>
-                                                                <td>' . $nic["MediaConnectState"] . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>Media Duplex State</td>
-                                                                <td>' . $nic["MediaDuplexState"] . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>MTU Size</td>
-                                                                <td>' . $nic["MtuSize"] . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>Name</td>
-                                                                <td>' . $nic["Name"] . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>Operational Status</td>
-                                                                <td>' . $nic["OperationalStatusDownMediaDisconnected"] . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>Permanent Address</td>
-                                                                <td>' . $nic["PermanentAddress"] . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>Promiscuous Mode</td>
-                                                                <td>' . $nic["PromiscuousMode"] . '</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>State</td>
-                                                                <td>' . $nic["State"] . '</td>
-                                                            </tr>
-                                                    ';
-                                                }
-
-                                                $table .= '</table>';
+                                                $table .= '</table></div></div></div>';
                                                 echo $table;
                                             }
 
                                             ?>
 
-                                            <br/>
+                                            </div>
+
                                             <h5 style="margin-top: .5rem">Tuning configuration</h5>
                                             <table class="table nic">
                                             <?php
