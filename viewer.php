@@ -1113,6 +1113,18 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
                                             ?>
 
+                                            <br/>
+                                            <h5 style="margin-top: .5rem">Tuning configuration</h5>
+                                            <table class="table nic">
+                                            <?php
+                                                echo '<tr><td>' . 'ReceiveSideScaling' . '</td><td>' . $json_data["Network"]['ReceiveSideScaling'] . '</td></tr>';
+
+                                                foreach ($json_data["Network"]['AutoTuningLevelLocal'] as $key => $value) {
+                                                    echo '<tr><td>' . $key . '</td><td>' . $value . '</td></tr>';
+                                                }
+                                            ?>
+                                            </table>
+
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
