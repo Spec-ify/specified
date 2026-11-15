@@ -1158,7 +1158,7 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 
                                 echo '
 					<div class="widget widget-disk hover" type="button" data-mdb-toggle="modal" data-mdb-target="#drive-modal' . $driveKey . '">
-						<h1>' . $device_name . ' ' . $lettersString . '</h1>
+						<h1>' . $device_name . ' (' . $lettersString . ')</h1>
 						<div class="widget-values">
 							<div class="widget-value">
 								<div class="widget-single-value">
@@ -1175,22 +1175,26 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
 						<div class="modal-dialog modal-xl">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title" id="modal-label">' . $device_name . ' ' . $lettersString . '</h5>
+									<h5 class="modal-title" id="modal-label">' . $device_name . ' (' . $lettersString . ')</h5>
 									<button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
 								</div>
 								<div class="modal-body">
                                     <table class="table">
                                         <thead>
-                                        <th>Name</th>
-                                        <th>SN</th>
                                         <th>#</th>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Partition scheme</th>
+                                        <th>SN</th>
                                         <th>Capacity</th>
                                         <th>Free</th>
                                         </thead>
                                         <tbody>
-                                        ' . '<td>' . $drive['DeviceName'] . '</td>' . '
-                                        ' . '<td>' . $drive['SerialNumber'] . '</td>' . '
                                         ' . '<td>' . $drive['DiskNumber'] . '</td>' . '
+                                        ' . '<td>' . $drive['DeviceName'] . '</td>' . '
+                                        ' . '<td>' . $drive['MediaType'] . ' / ' . $drive['InterfaceType'] . '</td>' . '
+                                        ' . '<td>' . $drive['PartitionScheme'] . '</td>' . '
+                                        ' . '<td>' . $drive['SerialNumber'] . '</td>' . '
                                         ' . '<td>' . floor(bytesToGigabytes($drive['DiskCapacity'])) . 'GB</td>' . '
                                         ' . '<td>' . floor(bytesToGigabytes(getDriveFree($drive))) . 'GB</td>' . '
                                         </tbody>
@@ -1236,9 +1240,10 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                             <th>Letter</th>
                                             <th>Capacity</th>
                                             <th>Free</th>
+                                            <th>Extent Type</th>
+                                            <th>Volume Type</th>
                                             <th>FS Type</th>
-                                            <th>CfgMgr Error Code</th>
-                                            <th>Last Error Code</th>
+                                            <th>Bitlocker</th>
                                             <th>Dirty Bit</th>
                                         </thead>
                                         <tbody>
@@ -1250,9 +1255,10 @@ $pupsfoundRunning = array_filter($referenceListRunning, function($checkobj) use 
                                         <td>' . $part['PartitionLetter'] . '</td>
                                         <td>' . floor(bytesToMegabytes($part['PartitionCapacity'])) . ' MB</td>
                                         <td>' . floor(bytesToMegabytes($part['PartitionFree'])) . ' MB</td>
+                                        <td>' . $part['ExtentType'] . '</td>
+                                        <td>' . $part['VolumeType'] . '</td>
                                         <td>' . $part['Filesystem'] . '</td>
-                                        <td>' . $part['CfgMgrErrorCode'] . '</td>
-                                        <td>' . $part['LastErrorCode'] . '</td>
+                                        <td>' . $part['BitlockerEncryptionStatus'] . '</td>
                                         <td>' . $part['DirtyBitSet'] . '</td>
                                     </tr>
                                     ';
