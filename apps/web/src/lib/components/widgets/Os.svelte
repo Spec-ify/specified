@@ -10,10 +10,7 @@
 		basic: BasicInfo;
 	}
 
-	let {
-		security,
-		basic
-	}: Props = $props();
+	let { security, basic }: Props = $props();
 
 	let tpmStatus = 'Disabled';
 	let tpmManufacturer: string, tpmVersion: string;
@@ -74,7 +71,7 @@
 				<tr>
 					<td>UAC Status</td>
 					<td>
-						{security.UacEnabled ? 'Enabled' : 'Disabled' }
+						{security.UacEnabled ? 'Enabled' : 'Disabled'}
 					</td>
 				</tr>
 				<tr>
@@ -88,7 +85,7 @@
 				<tr>
 					<td>Secure Boot</td>
 					<td>
-						{security.SecureBootEnabled ? 'Enabled' : 'Disabled' }
+						{security.SecureBootEnabled ? 'Enabled' : 'Disabled'}
 					</td>
 				</tr>
 				<tr>

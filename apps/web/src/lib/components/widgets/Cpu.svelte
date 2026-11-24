@@ -10,11 +10,7 @@
 		cpuMoreInfo: Response;
 	}
 
-	let {
-		cpu,
-		cpuMoreInfo
-	}: Props = $props();
-
+	let { cpu, cpuMoreInfo }: Props = $props();
 </script>
 
 <!-- CPU -->
@@ -74,7 +70,6 @@
 			</table>
 		{/await}
 	{/snippet}
-
 </Widget>
 
 <style>

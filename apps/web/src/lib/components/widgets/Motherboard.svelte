@@ -12,11 +12,7 @@
 		bios: Array<BiosInfo>;
 	}
 
-	let {
-		tpm,
-		motherboard,
-		bios
-	}: Props = $props();
+	let { tpm, motherboard, bios }: Props = $props();
 
 	let tpmStatus = 'Disabled';
 	let tpmManufacturer: string, tpmVersion: string;

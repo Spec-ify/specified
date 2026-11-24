@@ -6,9 +6,7 @@
 		cpuLoad: number;
 	}
 
-	let {
-		cpuLoad,
-	}: Props = $props();
+	let { cpuLoad }: Props = $props();
 </script>
 
 <!-- CPU Usage -->

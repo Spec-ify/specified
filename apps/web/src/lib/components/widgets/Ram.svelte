@@ -9,32 +9,26 @@
 		pagefile: PageFile;
 	}
 
-	let {
-		ram,
-		pagefile
-	}: Props = $props();
+	let { ram, pagefile }: Props = $props();
 
-	let gridcols = `grid grid-rows-${Math.floor(((ram.length - 1) / 4) + 1)} grid-cols-${ram.length > 4 ? 4 : ((ram.length - 1) % 4) + 1} gap-x-${ram.length > 4 ? 0.5 : 4 - (ram.length - 1 % 4) + 1} w-full text-center`;
-
+	let gridcols = `grid grid-rows-${Math.floor((ram.length - 1) / 4 + 1)} grid-cols-${ram.length > 4 ? 4 : ((ram.length - 1) % 4) + 1} gap-x-${ram.length > 4 ? 0.5 : 4 - (ram.length - (1 % 4)) + 1} w-full text-center`;
 </script>
 
 <!-- RAM -->
 
 <Widget title="Memory">
-
 	{#snippet widgetContents()}
 		<div class={gridcols}>
 			{#each ram as ramStick, i}
-
 				{#if ramStick.Capacity > 0}
 					<div>
 						<span class="widget-cap">{Math.floor(ramStick.Capacity / 1000)} GB</span>
-						<div>DIMM {i+1}</div>
+						<div>DIMM {i + 1}</div>
 					</div>
 				{:else}
 					<div>
 						<span style="color: rgb(215,27,27);">--</span>
-						<div>DIMM {i+1}</div>
+						<div>DIMM {i + 1}</div>
 					</div>
 				{/if}
 			{/each}

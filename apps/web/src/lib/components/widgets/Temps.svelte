@@ -7,10 +7,7 @@
 		temps: Array<TemperatureSensor> | null;
 	}
 
-	let {
-		temps
-	}: Props = $props();
-
+	let { temps }: Props = $props();
 </script>
 
 <!-- Temps -->

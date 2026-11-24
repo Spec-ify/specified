@@ -1,18 +1,15 @@
 <script lang="ts">
 	import type { Gpu, Monitor } from '$lib/common/report/hardware';
-	
+
 	import Widget from '../../common/ModalWidget.svelte';
 	import { bytesToMegabytes } from '$lib/common/constants';
-	
+
 	interface Props {
 		gpus: Array<Gpu>;
 		monitors: Array<Monitor>;
 	}
 
-	let {
-		gpus,
-		monitors
-	}: Props = $props();
+	let { gpus, monitors }: Props = $props();
 </script>
 
 <!-- GPU -->
@@ -49,7 +46,9 @@
 							<tr>
 								<td>{gpu.Description}</td>
 								<td>{Number(gpu.AdapterRAM) / bytesToMegabytes} MB</td>
-								<td>{gpu.CurrentHorizontalResolution} x {gpu.CurrentVerticalResolution}</td>
+								<td
+									>{gpu.CurrentHorizontalResolution} x {gpu.CurrentVerticalResolution}</td
+								>
 								<td>{gpu.CurrentRefreshRate} Hz</td>
 							</tr>
 						{/each}

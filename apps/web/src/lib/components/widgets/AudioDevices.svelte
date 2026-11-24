@@ -2,20 +2,19 @@
 	import type { AudioDevice } from '$lib/common/report/hardware';
 
 	import Widget from '../../common/ModalWidget.svelte';
-	
+
 	interface Props {
-		audioDevices: Array<AudioDevice>
+		audioDevices: Array<AudioDevice>;
 	}
 
-	let {
-		audioDevices
-	}: Props = $props();
+	let { audioDevices }: Props = $props();
 
-	const numInternal = audioDevices.filter(
-		d => d.DeviceID.toLowerCase().includes("hdaudio")
-		).length;
+	const numInternal = audioDevices.filter((d) =>
+		d.DeviceID.toLowerCase().includes('hdaudio')
+	).length;
 	const numExternal = audioDevices.length - numInternal;
 </script>
+
 <!-- Audio Devices -->
 <Widget title="Audio Devices">
 	{#snippet widgetContents()}
@@ -25,52 +24,52 @@
 		</div>
 	{/snippet}
 	{#snippet modalContents()}
-	<table id="audio-table" class="table">
-		<thead>
-			<tr>
-				<th>Device ID</th>
-				<th>Manufacturer</th>
-				<th>Name</th>
-				<th>Status</th>
-			</tr>
-		</thead>
-		<tbody>
-			{#each audioDevices as audioDevice}
+		<table id="audio-table" class="table">
+			<thead>
 				<tr>
-					<td>{audioDevice.DeviceID}</td>
-					<td>{audioDevice.Manufacturer}</td>
-					<td>{audioDevice.Name}</td>
-					<td>{audioDevice.Status}</td>
+					<th>Device ID</th>
+					<th>Manufacturer</th>
+					<th>Name</th>
+					<th>Status</th>
 				</tr>
-			{/each}
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				{#each audioDevices as audioDevice}
+					<tr>
+						<td>{audioDevice.DeviceID}</td>
+						<td>{audioDevice.Manufacturer}</td>
+						<td>{audioDevice.Name}</td>
+						<td>{audioDevice.Status}</td>
+					</tr>
+				{/each}
+			</tbody>
+		</table>
 	{/snippet}
 </Widget>
 
 <style>
 	/* TODO: fix table overflow */
-		.widget-contents {
-			display: flex;
-			justify-content: space-around;
-			width: 100%;
-			font-size: 16px;
-		}
+	.widget-contents {
+		display: flex;
+		justify-content: space-around;
+		width: 100%;
+		font-size: 16px;
+	}
 
-		.num-internal {
-			color: var(--color-secondary-50);
-		}
+	.num-internal {
+		color: var(--color-secondary-50);
+	}
 
-		.num-external {
-			color: var(--color-warning-200);
-		}
-		
-		table {
-			width: 100%;
-		}
+	.num-external {
+		color: var(--color-warning-200);
+	}
 
-		td {
-			white-space: nowrap !important;
-			overflow: hidden;
-		}
+	table {
+		width: 100%;
+	}
+
+	td {
+		white-space: nowrap !important;
+		overflow: hidden;
+	}
 </style>

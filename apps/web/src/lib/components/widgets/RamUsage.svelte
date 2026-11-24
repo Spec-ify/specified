@@ -11,10 +11,7 @@
 		ram: Array<RamModule>;
 	}
 
-	let {
-		runningProcesses,
-		ram
-	}: Props = $props();
+	let { runningProcesses, ram }: Props = $props();
 
 	let workingSet: number = 0;
 	runningProcesses.forEach((process: RunningProcess) => {
@@ -22,7 +19,7 @@
 	});
 
 	const ramUsed = Math.round((workingSet / bytesToGigabytes) * 100) / 100;
-	
+
 	let totalRam: number = 0;
 	let ramUsedPercent: number = 0;
 
