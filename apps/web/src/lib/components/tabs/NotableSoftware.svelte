@@ -1,85 +1,79 @@
 <script lang="ts">
-    import { lists } from '$lib/common/lists';
+	import { lists } from '$lib/common/lists';
 
-    interface InstalledApp {
-        Name: string,
-        Version: string,
-        InstallDate: string | null
-    }
+	interface InstalledApp {
+		Name: string;
+		Version: string;
+		InstallDate: string | null;
+	}
 
-    interface RunningProcess {
-        ProcessName: string,
-        Count: number,
-        ExePath: string,
-        Id: number,
-        WorkingSet: number,
-        CpuPercent: number
-    }
+	interface RunningProcess {
+		ProcessName: string;
+		Count: number;
+		ExePath: string;
+		Id: number;
+		WorkingSet: number;
+		CpuPercent: number;
+	}
 
-    export let report: any;
+	export let report: any;
 
-    let pupsInstalled: Array<string> = [],
-        pupsRunning: Array<string> = [];
+	let pupsInstalled: Array<string> = [],
+		pupsRunning: Array<string> = [];
 
-    report.System.InstalledApps.forEach((installedApp: InstalledApp) => {
-        lists.notableSoftwareList.forEach((pupEntry) => {
-            const stringMatch: string = pupEntry.toLowerCase(),
-                    pattern: RegExp = new RegExp(`(${stringMatch})`, "i");
+	report.System.InstalledApps.forEach((installedApp: InstalledApp) => {
+		lists.notableSoftwareList.forEach((pupEntry) => {
+			const stringMatch: string = pupEntry.toLowerCase(),
+				pattern: RegExp = new RegExp(`(${stringMatch})`, 'i');
 
-            if (pattern.test(installedApp.Name))
-                pupsInstalled.push(installedApp.Name);
-        });
-    }); 
+			if (pattern.test(installedApp.Name)) pupsInstalled.push(installedApp.Name);
+		});
+	});
 
-    report.System.RunningProcesses.forEach((runningProcess: RunningProcess) => {
-        lists.notableSoftwareList.forEach((pupEntry) => {
-            const stringMatch: string = pupEntry.toLowerCase(),
-                    pattern: RegExp = new RegExp(`(${stringMatch})`, "i");
+	report.System.RunningProcesses.forEach((runningProcess: RunningProcess) => {
+		lists.notableSoftwareList.forEach((pupEntry) => {
+			const stringMatch: string = pupEntry.toLowerCase(),
+				pattern: RegExp = new RegExp(`(${stringMatch})`, 'i');
 
-            if (pattern.test(runningProcess.ProcessName))
-                pupsRunning.push(runningProcess.ProcessName);
-        });
-    });
+			if (pattern.test(runningProcess.ProcessName))
+				pupsRunning.push(runningProcess.ProcessName);
+		});
+	});
 
-    pupsInstalled = Array.from(new Set(pupsInstalled));
-    pupsRunning = Array.from(new Set(pupsRunning));
-
+	pupsInstalled = Array.from(new Set(pupsInstalled));
+	pupsRunning = Array.from(new Set(pupsRunning));
 </script>
 
 <div class="flex flex-col">
-    <h1 class="text-3xl mb-2">Notable Software</h1>
+	<h1 class="text-3xl mb-2">Notable Software</h1>
 
-    <div class="list-none list-outside">
-        {#if pupsInstalled.length > 0}
-            {#each pupsInstalled as app}
-                <li>
-                    <p>
-                        {app} Found Installed.
-                    </p>
-                </li>
-            {/each}
-        {:else}
-            <li>
-                <p>
-                    No notable software found installed.
-                </p>
-            </li>
-        {/if}
+	<div class="list-none list-outside">
+		{#if pupsInstalled.length > 0}
+			{#each pupsInstalled as app}
+				<li>
+					<p>
+						{app} Found Installed.
+					</p>
+				</li>
+			{/each}
+		{:else}
+			<li>
+				<p>No notable software found installed.</p>
+			</li>
+		{/if}
 
-        {#if pupsRunning.length > 0}
-            {#each pupsRunning as app}
-                <li>
-                    <p>
-                        {app} Found running.
-                    </p>
-                </li>
-            {/each}
-        {:else}
-            <li>
-                <p>
-                    No notable software found running.
-                </p>
-            </li>
-        {/if}
-    </div>
+		{#if pupsRunning.length > 0}
+			{#each pupsRunning as app}
+				<li>
+					<p>
+						{app} Found running.
+					</p>
+				</li>
+			{/each}
+		{:else}
+			<li>
+				<p>No notable software found running.</p>
+			</li>
+		{/if}
+	</div>
 </div>

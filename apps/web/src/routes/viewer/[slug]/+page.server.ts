@@ -5,7 +5,7 @@ import path from 'node:path';
 export const prerender = false;
 import { error } from '@sveltejs/kit';
 import type { Report } from '$lib/common/report/report';
-import { getReportsDir, isTestReport, REPORT_MAX_AGE_MS } from '$lib/server/report-service';
+import { getReportsDir, REPORT_MAX_AGE_MS } from '$lib/server/report-service';
 
 interface CpuInfo {
 	CurrentClockSpeed: number;
@@ -47,11 +47,10 @@ async function eolLookup(): Promise<Array<EolListEntry>> {
  * Looks up CPU name on HWAPI database
  *
  * @param CPU info of report
- * @return (Response) Response of database with info
+ * @return (Response) Response of database with info, or `null` if unable to connect to hwapi instance
  */
-async function cpuLookup(cpu: CpuInfo): Promise<Response> {
-	let response: Response | undefined;
-
+async function cpuLookup(cpu: CpuInfo): Promise<Response | null> {
+	let response: Response | null = null;
 	if (dev) {
 		console.info('Trying local server for hwapi');
 		try {
@@ -66,10 +65,14 @@ async function cpuLookup(cpu: CpuInfo): Promise<Response> {
 			).json();
 		} catch {
 			console.warn('Could not connect to local hwapi instance, falling back to spec-ify.com');
+			response = await (
+				await fetch(`https://spec-ify.com/api/cpus/?name=${encodeURIComponent(cpu.Name)}`, {
+					method: 'GET',
+					mode: 'cors'
+				})
+			).json();
 		}
-	}
-
-	if (!response && cpu?.Name) {
+	} else {
 		try {
 			response = await (
 				await fetch(`https://spec-ify.com/api/cpus/?name=${encodeURIComponent(cpu.Name)}`, {
@@ -82,10 +85,7 @@ async function cpuLookup(cpu: CpuInfo): Promise<Response> {
 		}
 	}
 
-	if (response) {
-		return response;
-	}
-	return new Response(JSON.stringify({}));
+	return response;
 }
 
 export const load: ServerLoad = async ({ params }) => {
@@ -107,7 +107,7 @@ export const load: ServerLoad = async ({ params }) => {
 	}
 
 	// If not a test report, check creation time and delete if > 24 hours old
-	if (!isTestReport(slug)) {
+	if (!slug.includes('test')) {
 		const creationTime = Math.min(stats.mtimeMs, stats.ctimeMs);
 		const ageMs = Date.now() - creationTime;
 		if (ageMs > REPORT_MAX_AGE_MS) {

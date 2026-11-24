@@ -110,7 +110,7 @@ export const POST: RequestHandler = async (event) => {
 	try {
 		await fs.mkdir(reportsDir, { recursive: true });
 		const targetFile = path.join(reportsDir, `${slug}.json`);
-		await fs.writeFile(targetFile, JSON.stringify(parsedReport, null, 2), 'utf8');
+		await fs.writeFile(targetFile, rawText, 'utf8');
 	} catch (err: unknown) {
 		const message = err instanceof Error ? err.message : String(err);
 		return json({ error: `Failed to save report to disk: ${message}` }, { status: 500 });

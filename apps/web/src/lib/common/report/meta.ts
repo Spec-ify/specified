@@ -1,8 +1,6 @@
 interface Meta {
-    ElapsedTime: number;
-    GenerationDate: string;
+	ElapsedTime: number;
+	GenerationDate: string;
 }
 
-export type {
-    Meta,
-}
+export type { Meta };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { load } from './+page.server';
 import { getReportsDir } from '$lib/server/report-service';
@@ -49,11 +50,11 @@ describe('/viewer/[slug] load', () => {
 		try {
 			await (load as any)({
 				params: { slug: expiredSlug },
-				fetch: vi.fn().mockImplementation(() =>
-					Promise.resolve({
+				fetch: vi.fn().mockImplementation(async () => {
+					return {
 						json: () => Promise.resolve([])
-					})
-				)
+					};
+				})
 			});
 		} catch (err) {
 			thrownError = err;

@@ -1,4 +1,3 @@
-import path from 'node:path';
 import crypto from 'node:crypto';
 import { dev } from '$app/environment';
 
@@ -45,14 +44,6 @@ export function generateReportSlug(report: unknown): string {
 	};
 	const rawString = `${r.Version ?? ''}${r.Meta?.GenerationDate ?? ''}${r.BasicInfo?.Hostname ?? ''}`;
 	return crypto.createHash('md5').update(rawString).digest('hex').substring(0, 8);
-}
-
-/**
- * Checks whether a filename or path has the test prefix.
- */
-export function isTestReport(filenameOrPath: string): boolean {
-	const base = path.basename(filenameOrPath);
-	return base.startsWith('test');
 }
 
 interface RateLimitRecord {

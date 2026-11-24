@@ -21,6 +21,8 @@ try {
 			const fullPath = path.join(reportsDir, filename);
 			try {
 				const stats = fs.statSync(fullPath);
+				// This is done because administrative changes (restoring backups, etc)
+				// can make some of the times invalid
 				const validTimes = [stats.birthtimeMs, stats.ctimeMs, stats.mtimeMs].filter(
 					(t) => t && t > 0
 				);

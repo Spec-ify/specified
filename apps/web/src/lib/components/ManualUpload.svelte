@@ -49,9 +49,9 @@
 
 		try {
 			const text = await file.text();
-			let parsed: unknown;
 			try {
-				parsed = JSON.parse(text);
+				// Ensure the uploaded file is valid json
+				JSON.parse(text);
 			} catch {
 				errorMessage = 'File contains invalid JSON.';
 				isUploading = false;
@@ -63,7 +63,7 @@
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify(parsed)
+				body: text
 			});
 
 			const result = await response.json().catch(() => null);

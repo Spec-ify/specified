@@ -31,80 +31,80 @@ const biosCharacteristics: Record<number, string> = {
 };
 
 const defaultRegEntries: Record<string, Array<number | null>> = {
-	"TdrLevel": [3],
-	"NonBestEffortLimit": [20],
-	"NetworkThrottlingIndex": [10],
-	"EnableSuperfetch": [null],
-	"DisableAntiVirus": [0],
-	"DisableAntiSpyware": [0],
-	"PUAProtection": [0],
-	"PassiveMode": [0],
-	"DontReportInfectionInformation": [1],
-	"Disabled": [0],
-	"AllowUpgradesWithUnsupportedTPMOrCPU": [null],
-	"HwSchMode": [1],
-	"UseWUServer": [1],
-	"NoAutoUpdate": [0],
-	"HiberbootEnabled": [1],
-	"AuditBoot": [1],
-	"AllowBuildPreview": [2],
-	"BypassCPUCheck": [null],
-	"BypassStorageCheck": [null],
-	"BypassRAMCheck": [null],
-	"BypassTPMCheck": [null],
-	"BypassSecureBootCheck": [null],
-	"SV2": [null],
-	"Win32PrioritySeparation": [2],
-	"Windows Error Reporting\\Disabled": [null],
-	"Windows Defender\\Passive Mode": [null],
-	"UnsupportedHardwareNotificationCache\\SV2": [null],
-	"HypervisorEnforcedCodeIntegrity": [null],
-}
+	TdrLevel: [3],
+	NonBestEffortLimit: [20],
+	NetworkThrottlingIndex: [10],
+	EnableSuperfetch: [null],
+	DisableAntiVirus: [0],
+	DisableAntiSpyware: [0],
+	PUAProtection: [0],
+	PassiveMode: [0],
+	DontReportInfectionInformation: [1],
+	Disabled: [0],
+	AllowUpgradesWithUnsupportedTPMOrCPU: [null],
+	HwSchMode: [1],
+	UseWUServer: [1],
+	NoAutoUpdate: [0],
+	HiberbootEnabled: [1],
+	AuditBoot: [1],
+	AllowBuildPreview: [2],
+	BypassCPUCheck: [null],
+	BypassStorageCheck: [null],
+	BypassRAMCheck: [null],
+	BypassTPMCheck: [null],
+	BypassSecureBootCheck: [null],
+	SV2: [null],
+	Win32PrioritySeparation: [2],
+	'Windows Error Reporting\\Disabled': [null],
+	'Windows Defender\\Passive Mode': [null],
+	'UnsupportedHardwareNotificationCache\\SV2': [null],
+	HypervisorEnforcedCodeIntegrity: [null]
+};
 
 const notableSoftwareList: Array<string> = [
-    "smartbyte", // messes with network
-    "netlimiter", // messes with network
-    "cfosspeed", // messes with network
-    "Gigabyte Speed", // messes with network
-    "XFast LAN", // messes with network
-    "Driver Easy", // driver updater
-    "CCleaner", // debloater
-    "Wondershare", // "Adware with popups and shills, even after uninstalling it will still give you ads and popups constantly." - KayZ
-    "Vanguard", // Kernel-level Anti-cheat, causes system instability
-    "Battleye", // Kernel-level Anti-cheat, causes system instability
-    "WinAero", // tweaker
-    "GeekFreaksTuning", // tweaker
-    "citrix", // vpn
-    "tailscale", // vpn
-    "hamachi", // vpn
-    "vpn", // duh
-    "Process Lasso", // tweaker
-    "throttlestop", // overclock
-    "Hone", // tweaker
-    "MacType", // Can mess with text clarity
-    "Wave Browser", // "It's a chromium-based web browser that pushes ad notifications, reported by many AVs to be a PUP as well." - Adam
-    "LogiLDA", // adware
-    "TLauncher", // "Known token stealer, potential malware." - TheRublixCube
-    "Lunar Client", // Shady, privacy policy allows for stealing "search history", stole code, etc.
-    "BoosterX", // tweaker
-    "iTop", // vpn
-    "Wallpaper Engine", // can mess up ui
-    "voice changer", // messes with audio
-    "Voicemod", // messes with audio
-    "System Mechanic", // debloater
-    "MyCleanPC", // debloater
-    "DriverFix", // driver updater
-    "Reimage Repair", // debloater
-    "Browser Assistant", // malware
-    "KMS", // piracy tools that can have malware
-    "HWID", // cheat tools that can have malware
-    "Advanced SystemCare", // debloater
-    "salad", // crypto miner
-    "cleaner", // blanket for debloater
-    "Speedify", // messes with network
-    "UltraUXThemePatcher", // can mess up ui
-    "Lockdown Browser" // has messed up windows power plans and other things https://discord.com/channels/749314018837135390/749316166878625843/1298020309881847849
-]
+	'smartbyte', // messes with network
+	'netlimiter', // messes with network
+	'cfosspeed', // messes with network
+	'Gigabyte Speed', // messes with network
+	'XFast LAN', // messes with network
+	'Driver Easy', // driver updater
+	'CCleaner', // debloater
+	'Wondershare', // "Adware with popups and shills, even after uninstalling it will still give you ads and popups constantly." - KayZ
+	'Vanguard', // Kernel-level Anti-cheat, causes system instability
+	'Battleye', // Kernel-level Anti-cheat, causes system instability
+	'WinAero', // tweaker
+	'GeekFreaksTuning', // tweaker
+	'citrix', // vpn
+	'tailscale', // vpn
+	'hamachi', // vpn
+	'vpn', // duh
+	'Process Lasso', // tweaker
+	'throttlestop', // overclock
+	'Hone', // tweaker
+	'MacType', // Can mess with text clarity
+	'Wave Browser', // "It's a chromium-based web browser that pushes ad notifications, reported by many AVs to be a PUP as well." - Adam
+	'LogiLDA', // adware
+	'TLauncher', // "Known token stealer, potential malware." - TheRublixCube
+	'Lunar Client', // Shady, privacy policy allows for stealing "search history", stole code, etc.
+	'BoosterX', // tweaker
+	'iTop', // vpn
+	'Wallpaper Engine', // can mess up ui
+	'voice changer', // messes with audio
+	'Voicemod', // messes with audio
+	'System Mechanic', // debloater
+	'MyCleanPC', // debloater
+	'DriverFix', // driver updater
+	'Reimage Repair', // debloater
+	'Browser Assistant', // malware
+	'KMS', // piracy tools that can have malware
+	'HWID', // cheat tools that can have malware
+	'Advanced SystemCare', // debloater
+	'salad', // crypto miner
+	'cleaner', // blanket for debloater
+	'Speedify', // messes with network
+	'UltraUXThemePatcher', // can mess up ui
+	'Lockdown Browser' // has messed up windows power plans and other things https://discord.com/channels/749314018837135390/749316166878625843/1298020309881847849
+];
 
 export const lists = {
 	biosCharacteristics: biosCharacteristics,

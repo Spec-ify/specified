@@ -32,7 +32,7 @@ export function getWorkerPath(): string {
 /**
  * Routine that spawns a worker thread to clean up reports older than 24 hours.
  */
-export function spawnCleanupWorker(
+export async function spawnCleanupWorker(
 	reportsDir = getReportsDir(),
 	maxAgeMs = REPORT_MAX_AGE_MS
 ): Promise<CleanupResult> {
@@ -67,19 +67,14 @@ let cleanupTimeoutId: NodeJS.Timeout | null = null;
 /**
  * Starts the cleanup routine on startup and registers a recurring setTimeout loop.
  */
-export function startCleanupSchedule(intervalMs: number = 30 * 60 * 1000): void {
+export async function startCleanupSchedule(intervalMs: number = 30 * 60 * 1000): void {
 	// 1. Run immediately on startup
-	spawnCleanupWorker()
-		.then((res) => {
-			if (res.deletedCount > 0) {
-				console.info(
-					`[Cleanup Worker] Startup cleanup: removed ${res.deletedCount} expired report(s).`
-				);
-			}
-		})
-		.catch((err) => {
-			console.error('[Cleanup Worker] Startup cleanup failed:', err);
-		});
+	const res = await spawnCleanupWorker();
+	if (res.deletedCount > 0) {
+		console.info(
+			`[Cleanup Worker] Startup cleanup: removed ${res.deletedCount} expired report(s).`
+		);
+	}
 
 	// 2. Set up recurring setTimeout loop
 	function loop() {

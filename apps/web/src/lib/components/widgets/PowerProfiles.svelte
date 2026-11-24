@@ -9,19 +9,16 @@
 		batteries: Array<Battery>;
 	}
 
-	let {
-		powerProfiles,
-		batteries
-	}: Props = $props();
+	let { powerProfiles, batteries }: Props = $props();
 
 	let activeProfile: PowerProfile;
 
-	powerProfiles.forEach((profile: PowerProfile)=>{
-		if (profile.IsActive){
-			activeProfile = profile
-			return
+	powerProfiles.forEach((profile: PowerProfile) => {
+		if (profile.IsActive) {
+			activeProfile = profile;
+			return;
 		}
-	})
+	});
 </script>
 
 <!-- Power Profiles -->

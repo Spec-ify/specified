@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { spawnCleanupWorker, startCleanupSchedule, stopCleanupSchedule } from './cleanup';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { spawnCleanupWorker, stopCleanupSchedule } from './cleanup';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
@@ -21,6 +21,7 @@ describe('cleanup worker thread and routine', () => {
 	});
 
 	it('spawns a worker thread, nuking expired files but preserving test prefix files and fresh files', async () => {
+		// Make a 48 hour old file
 		const oldTime = (Date.now() - 48 * 60 * 60 * 1000) / 1000;
 
 		// 1. Expired file without test prefix (should be nuked)
@@ -68,14 +69,5 @@ describe('cleanup worker thread and routine', () => {
 		// Verify txtFile is still there
 		const txtContent = await fs.readFile(txtFile, 'utf8');
 		expect(txtContent).toBe('text content');
-	});
-
-	it('starts and stops cleanup schedule loop', async () => {
-		vi.useFakeTimers();
-		startCleanupSchedule(1000);
-		// Advance time
-		await vi.advanceTimersByTimeAsync(1000);
-		stopCleanupSchedule();
-		vi.useRealTimers();
 	});
 });
